@@ -2,7 +2,9 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <array>
 #include <memory>
+#include <cassert>
 
 #include "x86.h"
 
@@ -48,7 +50,7 @@ namespace tana {
 		const static uint32_t FULL = 0xffffffff;
 	}
 
-    typedef struct {
+    class vcpu_ctx{
         /*
          * General Purpose Registers
          * 0 EAX
@@ -60,8 +62,25 @@ namespace tana {
          * 6 ESP
          * 7 EBP
          */
-        uint32_t gpr[GPR_NUM];
-    } vcpu_ctx;
+        uint32_t eflags;
+    public:
+        std::array<uint32_t, GPR_NUM> gpr;
+
+        void set_eflags(uint32_t data)
+        {
+            eflags = data;
+        }
+        vcpu_ctx();
+
+        bool CF();
+        bool PF();
+        bool AF();
+        bool ZF();
+        bool SF();
+        bool TF();
+        bool DF();
+        bool OF();
+    };
 
     class Operand {
     public:
@@ -93,51 +112,11 @@ namespace tana {
 
     class Routine {
     public:
-        t_type::T_ADDRESS start_addr = 0; // start address of the function
-        t_type::T_ADDRESS end_addr = 0;   // end address of the function
+        t_type::T_ADDRESS start_addr; // start address of the function
+        t_type::T_ADDRESS end_addr;   // end address of the function
         std::string rtn_name;
         std::string module_name;
+        Routine(): start_addr(0), end_addr(0), rtn_name(), module_name() {}
     };
 
-
-    namespace instruction {
-
-		enum OprID {
-			t_mov = 0,
-			t_add,
-			t_xor,
-			t_push,
-			t_pop,
-			t_sub,
-			t_sbb,
-			t_imul,
-			t_or,
-			t_shl,
-			t_shr,
-			t_neg,
-			t_not,
-			t_inc,
-			t_lea,
-			t_and,
-			t_div,
-			t_sar,
-			t_rol,
-			t_ror,
-			t_dec,
-			t_movsx,
-		    t_movzx,
-			t_cmovb,
-			t_cmovz,
-			t_xchg,
-			t_shrd,
-			t_shld,
-            t_none
-        };
-
-		OprID getOprID(std::string opcstr);
-		bool seNoEffect(std::string opcstr);
-        bool SymbolicExecutionNoEffect(x86::x86_insn insn);
-		bool isSysCall(std::string opcstr);
-		bool isExchangeable(std::string opcstr);
-    }
 }
