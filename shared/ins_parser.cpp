@@ -265,7 +265,13 @@ namespace tana {
             getline(strbuf, temp, ',');
             ins->memory_address = std::stoul(temp, 0, 16);
 
-            std::string opr_name = ins->get_opcode_operand();
+            //Get EPFLAGS
+            getline(strbuf, temp, ',');
+            if(!temp.empty())
+            {
+                ins->vcpu.set_eflags(std::stoul(temp, 0, 16));
+            }
+
             L->push_back(*ins);
 
         }

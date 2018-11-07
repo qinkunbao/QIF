@@ -29,6 +29,7 @@ namespace bittaint {
         ByteMap[bit_index] = bm;
     }
 
+
     Memory::Memory(bittaint::MemoryAddress addr,  uint32_t size)
     {
         for(int i = 0; i < size; ++i)
@@ -44,44 +45,55 @@ namespace bittaint {
         }
     }
 
-    const std::vector<BitMap> Memory::read_data(MemoryAddress addr, uint32_t size) {
-        std::vector<BitMap> data(size * BYTESIZE);
-        for (int i = 0; i < size; ++i) {
+    const std::vector<Byte> Memory::read_data(MemoryAddress addr, uint32_t size) const{
+        std::vector<Byte> data(size);
+        for (uint32_t i = 0; i < size; ++i) {
             auto memory_res = data_memory.find(addr + i);
-            if (memory_res != data_memory.end()) {
+            if (memory_res != data_memory.end())
+            {
                 Byte byte_res = (memory_res->second);
-                std::vector<BitMap> byte = byte_res.readbyte();
-                for (int bit_index = 0; bit_index < BYTESIZE; ++bit_index) {
-                    assert(byte.size() == BYTESIZE);
-                    data[i * BYTESIZE + bit_index] = byte[bit_index];
-                }
-            } else {
-                for (int bit_index = 0; bit_index < BYTESIZE; ++bit_index) {
-                    BitMap empty_bit;
-                    data[i * BYTESIZE + bit_index] = empty_bit;
-                }
+                data.push_back(byte_res);
+            }
+            else {
+                Byte empty_byte;
+                data.push_back(empty_byte);
             }
         }
         return data;
     }
 
-    void Memory::write_data(MemoryAddress addr, std::vector<BitMap> bit_map) {
-        assert(bit_map.size() % BYTESIZE == 0);
-        uint32_t byte_size = bit_map.size() / BYTESIZE;
-        for (int byte_index = 0; byte_index < addr; ++byte_index) {
-
-            Byte temp;
-            for (int bit_index = 0; bit_index < BYTESIZE; ++bit_index) {
-                temp.writebit(bit_map[byte_index * BYTESIZE + bit_index], bit_index);
-            }
-
-            data_memory[addr + byte_index] = temp;
+    void Memory::write_data(MemoryAddress addr, std::vector<Byte> byte_map) {
+        uint32_t size = byte_map.size();
+        for(uint32_t i = 0; i < size; ++i)
+        {
+            data_memory[i + addr] = byte_map[i];
         }
 
     }
 
     void Memory::taint_code(bittaint::MemoryAddress addr, bittaint::InstructionMap map) {
         code_memory.insert(std::make_pair(addr, map));
+    }
+
+    bool Memory::istainted(bittaint::MemoryAddress addr, uint32_t size) const
+    {
+        bool is_tainted = false;
+        for (uint32_t i = 0; i < size; ++i) {
+                auto memory_res = data_memory.find(addr + i);
+                if (memory_res != data_memory.end())
+                {
+                    Byte byte_res = (memory_res->second);
+                    std::vector<BitMap>  bitmap = byte_res.readbyte();
+                    for(auto &it : bitmap)
+                    {
+                        if(!it.empty())
+                            is_tainted = true;
+                    }
+                }
+
+        }
+
+        return is_tainted;
     }
 
     Register::Register() : eax(REG_BYTE), ebx(REG_BYTE), ecx(REG_BYTE), edx(REG_BYTE), \

@@ -37,36 +37,132 @@ namespace bittaint {
 
     int BitTaint::DO_X86_INS_CALL(const tana::Inst &it)
     {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 1);
+        auto op0 = it.oprd[0];
+        switch (op0->type)
+        {
+            case tana::Operand::ImmValue:
+                return 1;
+            case tana::Operand::Reg:
+                break;
+            case tana::Operand::Mem:
+                break;
+            default:
+                std::cout << "Error in " << __LINE__ << __FILE__ << std::endl;
+                exit(0);
+        }
         return 1;
+
     }
 
     int BitTaint::DO_X86_INS_PUSH(const tana::Inst &it)
     {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 1);
+        auto op0 = it.oprd[0];
+        switch (op0->type)
+        {
+            case tana::Operand::ImmValue:
+                break;
+            case tana::Operand::Reg:
+                break;
+            case tana::Operand::Mem:
+                break;
+            default:
+                std::cout << "Error in " << __LINE__ << __FILE__ << std::endl;
+                exit(0);
+        }
         return 1;
     }
 
     int BitTaint::DO_X86_INS_POP(const tana::Inst &it)
     {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 1);
+        auto op0 = it.oprd[0];
+        assert(op0->type == tana::Operand::Reg);
+        std::string reg_name(op0->field[0]);
+        auto reg_size = op0->bit / BYTESIZE;
+        auto reg_id = reg.str2id(reg_name);
+
+        auto reg_data = reg.read_register(reg_id);
+        assert(reg_data.size() == reg_size);
+
+        mem.write_data(it.memory_address, reg_data);
         return 1;
     }
 
     int BitTaint::DO_X86_INS_NEG(const tana::Inst &it)
     {
+
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 1);
+        auto op0 = it.oprd[0];
+
+        switch (op0->type)
+        {
+            case tana::Operand::Mem:
+                break;
+            case tana::Operand::Reg:
+                break;
+            default:
+                exit(0);
+        }
         return 1;
     }
 
     int BitTaint::DO_X86_INS_NOT(const tana::Inst &it)
     {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 1);
+        auto op0 = it.oprd[0];
+
+        switch (op0->type)
+        {
+            case tana::Operand::Mem:
+                break;
+            case tana::Operand::Reg:
+                break;
+            default:
+                exit(0);
+        }
         return 1;
     }
 
     int BitTaint::DO_X86_INS_INC(const tana::Inst &it)
     {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 1);
+        auto op0 = it.oprd[0];
+
+        switch (op0->type)
+        {
+            case tana::Operand::Mem:
+                break;
+            case tana::Operand::Reg:
+                break;
+            default:
+                exit(0);
+        }
         return 1;
     }
 
     int BitTaint::DO_X86_INS_DEC(const tana::Inst &it)
     {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 1);
+        auto op0 = it.oprd[0];
+
+        switch (op0->type)
+        {
+            case tana::Operand::Mem:
+                break;
+            case tana::Operand::Reg:
+                break;
+            default:
+                exit(0);
+        }
         return 1;
     }
 
@@ -175,6 +271,7 @@ namespace bittaint {
         for(auto it = start; it != end; ++it)
         {
             ret_status = execute_insn(it);
+            std::cout << "Insn: " << it->id << std::endl;
             if(ret_status == 0)
             {
                 break;

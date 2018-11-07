@@ -34,9 +34,10 @@ namespace bittaint {
         std::map<MemoryAddress, InstructionMap> code_memory;
     public:
         Memory(MemoryAddress addr, uint32_t);
-        const std::vector<BitMap> read_data(MemoryAddress addr, uint32_t size);
-        void write_data(MemoryAddress addr, std::vector<BitMap> bit_map);
+        const std::vector<Byte> read_data(MemoryAddress addr, uint32_t size) const;
+        void write_data(MemoryAddress addr, std::vector<Byte> byte_map);
         void taint_code(MemoryAddress addr, InstructionMap map);
+        bool istainted(MemoryAddress addr, uint32_t size) const;
 
     };
 
@@ -57,6 +58,7 @@ namespace bittaint {
         static tana::x86::x86_reg str2id(std::string reg_str);
         static std::string id2str(tana::x86::x86_reg reg_id);
         void write_register(tana::x86::x86_reg reg_id, std::vector<Byte>);
+        bool istainted(tana::x86::x86_reg reg);
     };
 
 }
