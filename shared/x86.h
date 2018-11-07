@@ -3694,5 +3694,7 @@ namespace tana {
         std::string reg_id2string(x86_reg reg_id);
 
         uint32_t get_reg_size(x86_reg reg_id);
+
+        bool SymbolicExecutionNoEffect(x86::x86_insn insn);
     }
 }
