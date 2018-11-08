@@ -1,5 +1,6 @@
 #include <cassert>
 #include <iostream>
+#include <algorithm>
 #include "Memory.h"
 
 
@@ -29,6 +30,35 @@ namespace bittaint {
         ByteMap[bit_index] = bm;
     }
 
+    bool Byte::istainted() const
+    {
+        bool tainted = false;
+        for(auto &bit : ByteMap)
+        {
+            if(!bit.empty())
+                tainted = true;
+            return tainted;
+
+        }
+        return tainted;
+    }
+
+
+    std::vector<int> Byte::get_tainted_flags() const
+    {
+        std::vector<int> flags;
+        for(const auto &bit : ByteMap)
+        {
+            for(const auto &index :bit)
+            {
+                int bit_index = index;
+                flags.push_back(bit_index);
+            }
+        }
+        std::sort(flags.begin(), flags.end());
+        flags.erase(std::unique(flags.begin(), flags.end()), flags.end());
+        return flags;
+    }
 
     Memory::Memory(bittaint::MemoryAddress addr,  uint32_t size)
     {
@@ -45,7 +75,7 @@ namespace bittaint {
         }
     }
 
-    const std::vector<Byte> Memory::read_data(MemoryAddress addr, uint32_t size) const{
+    std::vector<Byte> Memory::read_data(MemoryAddress addr, uint32_t size) const{
         std::vector<Byte> data(size);
         for (uint32_t i = 0; i < size; ++i) {
             auto memory_res = data_memory.find(addr + i);
@@ -71,30 +101,39 @@ namespace bittaint {
 
     }
 
-    void Memory::taint_code(bittaint::MemoryAddress addr, bittaint::InstructionMap map) {
-        code_memory.insert(std::make_pair(addr, map));
-    }
-
     bool Memory::istainted(bittaint::MemoryAddress addr, uint32_t size) const
     {
         bool is_tainted = false;
         for (uint32_t i = 0; i < size; ++i) {
-                auto memory_res = data_memory.find(addr + i);
-                if (memory_res != data_memory.end())
+            auto memory_res = data_memory.find(addr + i);
+            if (memory_res != data_memory.end())
+            {
+                Byte byte_res = (memory_res->second);
+                if(byte_res.istainted())
                 {
-                    Byte byte_res = (memory_res->second);
-                    std::vector<BitMap>  bitmap = byte_res.readbyte();
-                    for(auto &it : bitmap)
-                    {
-                        if(!it.empty())
-                            is_tainted = true;
-                    }
+                    is_tainted = true;
                 }
-
+            }
         }
 
         return is_tainted;
     }
+
+    std::vector<int> Memory::get_tainted_bit(MemoryAddress addr, uint32_t m_size) const
+    {
+        std::vector<int> bit_index;
+        std::vector<Byte> read_data = this->read_data(addr, m_size);
+        for(const auto &bits : read_data)
+        {
+            bit_index.insert(bit_index.end(), bits.get_tainted_flags().begin(), bits.get_tainted_flags().end());
+        }
+
+        std::sort(bit_index.begin(), bit_index.end());
+        bit_index.erase(std::unique(bit_index.begin(), bit_index.end()), bit_index.end());
+
+        return bit_index;
+    }
+
 
     Register::Register() : eax(REG_BYTE), ebx(REG_BYTE), ecx(REG_BYTE), edx(REG_BYTE), \
                            edi(REG_BYTE), esi(REG_BYTE), ebp(REG_BYTE), esp(REG_BYTE)
@@ -514,12 +553,38 @@ namespace bittaint {
 
         }
 
-
     }
 
     std::string Register::id2str(tana::x86::x86_reg reg_id) {
         return tana::x86::reg_id2string(reg_id);
     }
 
+    bool Register::istainted(tana::x86::x86_reg reg_id) const
+    {
+        bool tainted = false;
+        auto data = this->read_register(reg_id);
+        for(auto &byte : data)
+        {
+            if(byte.istainted())
+                tainted = true;
+            return tainted;
+        }
+        return tainted;
+    }
+
+    std::vector<int> Register::get_tainted_bit(tana::x86::x86_reg reg_id) const
+    {
+        std::vector<Byte> data = read_register(reg_id);
+        std::vector<int> bit_index;
+        for(const auto &bits : data)
+        {
+            bit_index.insert(bit_index.end(), bits.get_tainted_flags().begin(), bits.get_tainted_flags().end());
+        }
+
+        std::sort(bit_index.begin(), bit_index.end());
+        bit_index.erase(std::unique(bit_index.begin(), bit_index.end()), bit_index.end());
+
+        return bit_index;
+    }
 
 }

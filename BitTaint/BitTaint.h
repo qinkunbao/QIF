@@ -32,7 +32,8 @@
               bit_index = index;
           }
 
-          void bitUse(MemoryAddress m_addr) {
+          void bitUse(MemoryAddress m_addr)
+          {
               bit_use.push_back(m_addr);
           }
       };
@@ -43,10 +44,12 @@
           std::vector<BitDefUseChain> DefUse;
           Memory mem;
           Register reg;
-          tana::Inst eip;
+          std::vector<tana::Inst>::iterator eip;
           bool forward = true;
           std::vector<tana::Inst>::iterator start;
           std::vector<tana::Inst>::iterator end;
+
+          void update_def_use(std::vector<int> bits);
 
 
           int DO_X86_INS_CALL(const tana::Inst &it);

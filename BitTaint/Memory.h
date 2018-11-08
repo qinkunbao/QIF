@@ -25,19 +25,22 @@ namespace bittaint {
         const BitMap readbit(int bit_index) const ;
         void writebit(BitMap& bm, int bit_index);
 
+        bool istainted() const;
+
+        std::vector<int> get_tainted_flags() const ;
+
     };
 
 
     class Memory {
     private:
         std::map<MemoryAddress, Byte> data_memory;
-        std::map<MemoryAddress, InstructionMap> code_memory;
     public:
         Memory(MemoryAddress addr, uint32_t);
-        const std::vector<Byte> read_data(MemoryAddress addr, uint32_t size) const;
+        std::vector<Byte> read_data(MemoryAddress addr, uint32_t size) const;
         void write_data(MemoryAddress addr, std::vector<Byte> byte_map);
-        void taint_code(MemoryAddress addr, InstructionMap map);
         bool istainted(MemoryAddress addr, uint32_t size) const;
+        std::vector<int> get_tainted_bit(MemoryAddress addr, uint32_t size) const;
 
     };
 
@@ -58,7 +61,8 @@ namespace bittaint {
         static tana::x86::x86_reg str2id(std::string reg_str);
         static std::string id2str(tana::x86::x86_reg reg_id);
         void write_register(tana::x86::x86_reg reg_id, std::vector<Byte>);
-        bool istainted(tana::x86::x86_reg reg);
+        bool istainted(tana::x86::x86_reg reg) const;
+        std::vector<int> get_tainted_bit(tana::x86::x86_reg reg_id) const;
     };
 
 }
