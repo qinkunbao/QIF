@@ -10,7 +10,21 @@
 #include "ins_parser.h"
 #include "BitTaint.h"
 
+#define ERROR(MESSAGE) bit_taint_error_handler(__FILE__, __LINE__, MESSAGE)
+
 namespace bittaint {
+
+    void bit_taint_error_handler(const char *file, int line, const char * message)
+    {
+        std::string file_name(file);
+        std::string error_message(message);
+        std::cout << "\n********************************" << std::endl;
+        std::cout << "Error at :" << line << "\n";
+        std::cout << "File name: " << file_name << "\n";
+        std::cout << "Message: " << error_message << "\n";
+        std::cout << "********************************\n" << std::endl;
+    }
+
 
     BitTaint::BitTaint(std::string symbol_name, uint32_t m_addr, \
                        uint32_t size, std::vector<tana::Inst>::iterator s, \
@@ -31,6 +45,104 @@ namespace bittaint {
             DefUse.push_back(bool_var);
         }
     }
+
+
+    std::vector<Byte> BitTaint::bvadd(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+        auto a_size = a.size();
+        auto b_size = b.size();
+        assert(a_size == b_size);
+        std::vector<Byte> res(a_size);
+        std::vector<int> bit_res;
+        assert((a_size == 1)||(a_size == 2)||(a_size == 4));
+        for(int byte_index = 0; byte_index < a_size; ++byte_index)
+        {
+            std::vector<BitMap > a_byte_index = a[byte_index].readbyte();
+            std::vector<BitMap > b_byte_index = b[byte_index].readbyte();
+            Byte byte_res;
+            assert(a_byte_index.size() == b_byte_index.size());
+            assert(a_byte_index.size() == BYTESIZE);
+            for(auto index = 0; index < a_byte_index.size(); ++index)
+            {
+                bit_res = vector_union(a_byte_index[index], b_byte_index[index]);
+                byte_res.writebit(bit_res, index);
+            }
+            res.push_back(byte_res);
+        }
+        return res;
+    }
+
+    std::vector<Byte> BitTaint::bvsub(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+        auto a_size = a.size();
+        auto b_size = b.size();
+        assert(a_size == b_size);
+        std::vector<Byte> res(a_size);
+        std::vector<int> bit_res;
+        assert((a_size == 1)||(a_size == 2)||(a_size == 4));
+
+    }
+
+    std::vector<Byte> BitTaint::bvmul(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvudiv(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvor(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvand(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvxor(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvurem(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvshl(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvlshr(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvnot(const std::vector<Byte> &a)
+    {
+
+    }
+
+    std::vector<Byte> BitTaint::bvneg(const std::vector<Byte> &a)
+    {
+
+    }
+
+    bool BitTaint::bvcmp(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
+    bool BitTaint::notcmp(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+
+    }
+
 
     void BitTaint::update_def_use(std::vector<int> bits) {
         for (const auto &bit_index : bits) {
@@ -55,7 +167,7 @@ namespace bittaint {
                 break;
             }
             case tana::Operand::Mem: {
-                uint32_t mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
+                auto mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
                 auto mem_size = op0->bit / BYTESIZE;
                 bool is_tainted = mem.istainted(mem_addr, mem_size);
                 if (is_tainted) {
@@ -65,8 +177,7 @@ namespace bittaint {
             }
                 break;
             default:
-                std::cout << "Error in " << __LINE__ << __FILE__ << std::endl;
-                exit(0);
+                ERROR("DO_X86_INS_CALL");
         }
         return 1;
 
@@ -100,8 +211,7 @@ namespace bittaint {
             }
                 break;
             default:
-                std::cout << "Error in " << __LINE__ << __FILE__ << std::endl;
-                exit(0);
+                ERROR("DO_X86_INS_PUSH");
         }
         return 1;
     }
@@ -113,7 +223,7 @@ namespace bittaint {
         assert(op0->type == tana::Operand::Reg);
         std::string reg_name(op0->field[0]);
         auto reg_size = op0->bit / BYTESIZE;
-        auto reg_id = reg.str2id(reg_name);
+        auto reg_id = Register::str2id(reg_name);
 
         auto reg_data = reg.read_register(reg_id);
         assert(reg_data.size() == reg_size);
@@ -131,7 +241,7 @@ namespace bittaint {
         switch (op0->type) {
             case tana::Operand::Mem:
             {
-                uint32_t mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
+                auto mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
                 auto mem_size = op0->bit / BYTESIZE;
                 bool is_tainted = mem.istainted(mem_addr, mem_size);
                 if (is_tainted) {
@@ -143,7 +253,7 @@ namespace bittaint {
             case tana::Operand::Reg:
                 break;
             default:
-                exit(0);
+                ERROR("DO_X86_INS_NEG");
         }
         return 1;
     }
@@ -168,7 +278,7 @@ namespace bittaint {
             case tana::Operand::Reg:
                 break;
             default:
-                exit(0);
+                ERROR("DO_X86_INS_NOT");
         }
         return 1;
     }
@@ -181,7 +291,7 @@ namespace bittaint {
         switch (op0->type) {
             case tana::Operand::Mem:
             {
-                uint32_t mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
+                auto mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
                 auto mem_size = op0->bit / BYTESIZE;
                 bool is_tainted = mem.istainted(mem_addr, mem_size);
                 if (is_tainted) {
@@ -193,7 +303,7 @@ namespace bittaint {
             case tana::Operand::Reg:
                 break;
             default:
-                exit(0);
+                ERROR("DO_X86_INS_INC");
         }
         return 1;
     }
@@ -206,7 +316,7 @@ namespace bittaint {
         switch (op0->type) {
             case tana::Operand::Mem:
             {
-                uint32_t mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
+                auto mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
                 auto mem_size = op0->bit / BYTESIZE;
                 bool is_tainted = mem.istainted(mem_addr, mem_size);
                 if (is_tainted) {
@@ -216,13 +326,79 @@ namespace bittaint {
             }
                 break;
             case tana::Operand::Reg:
-            {
-
-            }
                 break;
             default:
-                exit(0);
+                ERROR("DO_X86_INS_DEC");
         }
+        return 1;
+    }
+
+    int BitTaint::DO_X86_INS_MOV(const tana::Inst &it) {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 2);
+        auto op0 = it.oprd[0];
+        auto op1 = it.oprd[1];
+        assert(op0->bit == op1->bit);
+        if(op0->type == tana::Operand::Reg)
+        {
+            auto reg_dest_id = tana::x86::reg_string2id(op0->field[0]);
+            if(op1->type == tana::Operand::ImmValue)
+            {
+                uint32_t imm_size = (op1->bit) / BYTESIZE;
+                uint32_t reg_size = tana::x86::get_reg_size(reg_dest_id);
+                assert(imm_size == reg_size);
+                std::vector<Byte> bytes(imm_size);
+                reg.write_register(reg_dest_id, bytes);
+
+            }
+            else if (op1->type == tana::Operand::Reg)
+            {
+                auto reg_src_id = tana::x86::reg_string2id(op1->field[1]);
+                std::vector<Byte> data = reg.read_register(reg_src_id);
+                reg.write_register(reg_dest_id, data);
+            }
+            else if (op1->type == tana::Operand::Mem)
+            {
+                std::vector<Byte> data = mem.read_data(it.memory_address, (op1->bit)/BYTESIZE);
+                reg.write_register(reg_dest_id, data);
+            }
+            else
+            {
+                ERROR("DO_X86_INS_MOV Register");
+            }
+
+        }
+        else if (op0->type == tana::Operand::Mem)
+        {
+            uint32_t m_addr = it.memory_address;
+            uint32_t m_size = op0->bit / BYTESIZE;
+
+            if(op1->type == tana::Operand::ImmValue)
+            {
+                uint32_t imm_size = (op1->bit) / BYTESIZE;
+                assert(m_size == imm_size);
+                std::vector<Byte> bytes(imm_size);
+                mem.write_data(m_addr, bytes);
+            }
+            else if (op1->type == tana::Operand::Reg)
+            {
+                auto reg_src_id = tana::x86::reg_string2id(op1->field[1]);
+                std::vector<Byte> data = reg.read_register(reg_src_id);
+                mem.write_data(m_addr, data);
+            }
+            else if (op1->type == tana::Operand::Mem)
+            {
+                std::vector<Byte> data = mem.read_data(it.memory_address, (op1->bit)/BYTESIZE);
+                mem.write_data(m_addr, data);
+            }
+        } else{
+             ERROR("DO_X86_INS_MOV Memory");
+        }
+        return 1;
+    }
+
+
+    int BitTaint::DO_X86_INS_LEA(const tana::Inst &it) {
         return 1;
     }
 
@@ -235,28 +411,6 @@ namespace bittaint {
     }
 
     int BitTaint::DO_X86_INS_CMOVB(const tana::Inst &it) {
-        return 1;
-    }
-
-    int BitTaint::DO_X86_INS_MOV(const tana::Inst &it) {
-        uint32_t opr_num = it.get_operand_number();
-        assert(opr_num == 2);
-        auto op0 = it.oprd[0];
-        auto op1 = it.oprd[1];
-        assert(op0->bit == op1->bit);
-        if(op0->type == tana::Operand::Reg)
-        {
-
-        } else if (op0->type == tana::Operand::Mem)
-        {
-
-        } else{
-
-        }
-        return 1;
-    }
-
-    int BitTaint::DO_X86_INS_LEA(const tana::Inst &it) {
         return 1;
     }
 
@@ -454,8 +608,7 @@ namespace bittaint {
                 break;
 
             default:
-                std::cout << "Error in " << __FILE__ << " Line :" << __LINE__
-                          << " Instruction ID: " << it->id << std::endl;
+                ERROR("Unrecognized instruction");
                 ret = 1;
         }
         if (ret) {

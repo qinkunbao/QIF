@@ -130,10 +130,7 @@ namespace tana {
             if (regex_search(s, m, byteptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 8;
-            } else if (regex_search(s, m, wordptr)) {
-                opr = createAddrOperand(m[1]);
-                opr->bit = 16;
-            } else if (regex_search(s, m, dwordptr)) {
+            }  else if (regex_search(s, m, dwordptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 32;
             } else if (regex_search(s, m, segptr)) {
@@ -141,6 +138,9 @@ namespace tana {
                 opr->issegaddr = true;
                 opr->bit = 32;
                 opr->segreg = m[1];
+            } else if (regex_search(s, m, wordptr)) {
+                opr = createAddrOperand(m[1]);
+                opr->bit = 16;
             } else if (regex_search(s, m, ptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 0;

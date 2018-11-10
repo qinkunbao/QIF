@@ -1,10 +1,25 @@
 #include <cassert>
 #include <iostream>
 #include <algorithm>
+#include <unordered_set>
 #include "Memory.h"
 
 
 namespace bittaint {
+
+    std::vector<int> vector_union(const std::vector<int > &a, const std::vector<int > &b)
+    {
+        std::vector<int> res;
+        std::unordered_set<int> s;
+        for (auto i : a)
+            s.insert(i);
+        for (auto i : b)
+            s.insert(i);
+
+        res.assign( s.begin(), s.end() );
+        return res;
+    }
+
 
     Byte::Byte():ByteMap (BYTESIZE)
     {
@@ -22,7 +37,7 @@ namespace bittaint {
         }
     }
 
-    const BitMap Byte::readbit(int bit_index) const {
+    BitMap Byte::readbit(int bit_index) const {
         return ByteMap[bit_index];
     }
 

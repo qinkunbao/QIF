@@ -26,10 +26,10 @@
           //Memory Address that the bit is used
           std::vector<MemoryAddress> bit_use;
       public:
-          BitDefUseChain(std::string name, MemoryAddress def_address, int index) {
-              symbol_name = name;
-              symbol_def_address = def_address;
-              bit_index = index;
+          BitDefUseChain(std::string name, MemoryAddress def_address, int index):symbol_name(name),
+                                                                                 symbol_def_address(def_address),
+                                                                                 bit_index(index)
+          {
           }
 
           void bitUse(MemoryAddress m_addr)
@@ -50,6 +50,21 @@
           std::vector<tana::Inst>::iterator end;
 
           void update_def_use(std::vector<int> bits);
+
+          static std::vector<Byte> bvadd(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvsub(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvmul(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvudiv(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvor(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvand(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvxor(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvurem(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvshl(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvlshr(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvnot(const std::vector<Byte> &a);
+          static std::vector<Byte> bvneg(const std::vector<Byte> &a);
+          static bool bvcmp(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static bool notcmp(const std::vector<Byte> &a, const std::vector<Byte> &b);
 
 
           int DO_X86_INS_CALL(const tana::Inst &it);

@@ -15,6 +15,8 @@ namespace bittaint {
     using BitMap = std::vector<int>;
     using InstructionMap = std::vector<int>;
 
+    std::vector<int> vector_union(const std::vector<int > &a, const std::vector<int > &b);
+
     class Byte {
     private:
         std::vector<BitMap> ByteMap;
@@ -22,7 +24,7 @@ namespace bittaint {
         Byte();
         const std::vector<BitMap>& readbyte() const ;
         void writebyte(std::vector<BitMap> map);
-        const BitMap readbit(int bit_index) const ;
+        BitMap readbit(int bit_index) const ;
         void writebit(BitMap& bm, int bit_index);
 
         bool istainted() const;
