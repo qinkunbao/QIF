@@ -46,6 +46,22 @@ namespace bittaint {
         }
     }
 
+    void BitTaint::update_def_use(std::vector<int> bits) {
+        for (const auto &bit_index : bits) {
+            DefUse[bit_index].bitUse(eip->addrn);
+        }
+    }
+
+
+    void BitTaint::check_memory_access(uint32_t mem_addr, uint32_t mem_size)
+    {
+        bool is_tainted = mem.istainted(mem_addr, mem_size);
+        if (is_tainted) {
+            auto bit_map = mem.get_tainted_bit(mem_addr, mem_size);
+            update_def_use(bit_map);
+        }
+    }
+
 
     std::vector<Byte> BitTaint::bvadd(const std::vector<Byte> &a, const std::vector<Byte> &b)
     {
@@ -159,11 +175,7 @@ namespace bittaint {
     }
 
 
-    void BitTaint::update_def_use(std::vector<int> bits) {
-        for (const auto &bit_index : bits) {
-            DefUse[bit_index].bitUse(eip->addrn);
-        }
-    }
+
 
     int BitTaint::DO_X86_INS_CALL(const tana::Inst &it) {
         uint32_t opr_num = it.get_operand_number();
@@ -184,11 +196,7 @@ namespace bittaint {
             case tana::Operand::Mem: {
                 auto mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
                 auto mem_size = op0->bit / BYTESIZE;
-                bool is_tainted = mem.istainted(mem_addr, mem_size);
-                if (is_tainted) {
-                    auto bit_map = mem.get_tainted_bit(mem_addr, mem_size);
-                    update_def_use(bit_map);
-                }
+                check_memory_access(mem_addr, mem_size);
             }
                 break;
             default:
@@ -221,7 +229,10 @@ namespace bittaint {
             {
                 auto reg_id = Register::str2id("esp");
                 uint32_t esp_value = it.vcpu.gpr[tana::Registers::getRegIndex(reg_id)];
-                auto read_data = mem.read_data(it.memory_address, (op0->bit)/BYTESIZE);
+                auto mem_addr = it.memory_address;
+                auto mem_size = op0->bit / BYTESIZE;
+                check_memory_access(mem_addr, mem_size);
+                auto read_data = mem.read_data(mem_addr, mem_size);
                 mem.write_data(esp_value - 4, read_data);
             }
                 break;
@@ -244,6 +255,7 @@ namespace bittaint {
         assert(reg_data.size() == reg_size);
 
         mem.write_data(it.memory_address, reg_data);
+        check_memory_access(it.memory_address, reg_data.size());
         return 1;
     }
 
@@ -256,13 +268,10 @@ namespace bittaint {
         switch (op0->type) {
             case tana::Operand::Mem:
             {
-                auto mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
+                auto mem_addr = it.memory_address;
                 auto mem_size = op0->bit / BYTESIZE;
-                bool is_tainted = mem.istainted(mem_addr, mem_size);
-                if (is_tainted) {
-                    auto bit_map = mem.get_tainted_bit(mem_addr, mem_size);
-                    update_def_use(bit_map);
-                }
+                check_memory_access(mem_addr, mem_size);
+
             }
                 break;
             case tana::Operand::Reg:
@@ -281,13 +290,9 @@ namespace bittaint {
         switch (op0->type) {
             case tana::Operand::Mem:
             {
-                uint32_t mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
+                auto mem_addr = it.memory_address;
                 auto mem_size = op0->bit / BYTESIZE;
-                bool is_tainted = mem.istainted(mem_addr, mem_size);
-                if (is_tainted) {
-                    auto bit_map = mem.get_tainted_bit(mem_addr, mem_size);
-                    update_def_use(bit_map);
-                }
+                check_memory_access(mem_addr, mem_size);
             }
                 break;
             case tana::Operand::Reg:
@@ -306,13 +311,9 @@ namespace bittaint {
         switch (op0->type) {
             case tana::Operand::Mem:
             {
-                auto mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
+                auto mem_addr = it.memory_address;
                 auto mem_size = op0->bit / BYTESIZE;
-                bool is_tainted = mem.istainted(mem_addr, mem_size);
-                if (is_tainted) {
-                    auto bit_map = mem.get_tainted_bit(mem_addr, mem_size);
-                    update_def_use(bit_map);
-                }
+                check_memory_access(mem_addr, mem_size);
             }
                 break;
             case tana::Operand::Reg:
@@ -331,13 +332,9 @@ namespace bittaint {
         switch (op0->type) {
             case tana::Operand::Mem:
             {
-                auto mem_addr = static_cast<uint32_t >(std::stoul(op0->field[0], 0, 16));
+                auto mem_addr = it.memory_address;
                 auto mem_size = op0->bit / BYTESIZE;
-                bool is_tainted = mem.istainted(mem_addr, mem_size);
-                if (is_tainted) {
-                    auto bit_map = mem.get_tainted_bit(mem_addr, mem_size);
-                    update_def_use(bit_map);
-                }
+                check_memory_access(mem_addr, mem_size);
             }
                 break;
             case tana::Operand::Reg:
@@ -353,7 +350,7 @@ namespace bittaint {
         assert(opr_num == 2);
         auto op0 = it.oprd[0];
         auto op1 = it.oprd[1];
-        assert(op0->bit == op1->bit);
+        assert((op0->bit == op1->bit)||(op1->type==tana::Operand::ImmValue));
         if(op0->type == tana::Operand::Reg)
         {
             auto reg_dest_id = tana::x86::reg_string2id(op0->field[0]);
@@ -374,6 +371,9 @@ namespace bittaint {
             }
             else if (op1->type == tana::Operand::Mem)
             {
+                auto mem_addr = it.memory_address;
+                auto mem_size = op0->bit / BYTESIZE;
+                check_memory_access(mem_addr, mem_size);
                 std::vector<Byte> data = mem.read_data(it.memory_address, (op1->bit)/BYTESIZE);
                 reg.write_register(reg_dest_id, data);
             }
@@ -387,11 +387,11 @@ namespace bittaint {
         {
             uint32_t m_addr = it.memory_address;
             uint32_t m_size = op0->bit / BYTESIZE;
+            check_memory_access(m_addr, m_size);
 
             if(op1->type == tana::Operand::ImmValue)
             {
                 uint32_t imm_size = (op1->bit) / BYTESIZE;
-                assert(m_size == imm_size);
                 std::vector<Byte> bytes(imm_size);
                 mem.write_data(m_addr, bytes);
             }
@@ -449,7 +449,10 @@ namespace bittaint {
             } else if (op0->type == tana::Operand::Mem)
             {
                 assert(op0->bit == (tana::x86::get_reg_size(reg_src_id) * BYTESIZE));
-                std::vector<Byte> op0_data = mem.read_data(it.memory_address, (op0->bit)/BYTESIZE);
+                auto mem_addr = it.memory_address;
+                auto mem_size = op0->bit / BYTESIZE;
+                check_memory_access(mem_addr, mem_size);
+                std::vector<Byte> op0_data = mem.read_data(mem_addr, mem_size);
                 auto temp_data = op0_data;
                 op0_data = op1_data;
                 op1_data = temp_data;
@@ -460,7 +463,10 @@ namespace bittaint {
         }
         else if (op1->type == tana::Operand::Mem)
         {
-            std::vector<Byte> op1_data = mem.read_data(it.memory_address, (op1->bit)/BYTESIZE);
+            auto mem_addr = it.memory_address;
+            auto mem_size = op0->bit / BYTESIZE;
+            check_memory_access(mem_addr, mem_size);
+            std::vector<Byte> op1_data = mem.read_data(mem_addr, mem_size);
             if(op0->type == tana::Operand::Reg)
             {
                 auto ref_dest_id = tana::x86::reg_string2id(op0->field[0]);
@@ -484,6 +490,65 @@ namespace bittaint {
 
 
     int BitTaint::DO_X86_INS_SUB(const tana::Inst &it) {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 2);
+        auto op0 = it.oprd[0];
+        auto op1 = it.oprd[1];
+        assert((op0->bit == op1->bit)||(op1->type==tana::Operand::ImmValue));
+        std::vector<Byte> src, dest;
+        if(op1->type == tana::Operand::ImmValue)
+        {
+            uint32_t imm_size = op0->bit / BYTESIZE;
+            std::vector<Byte> data(imm_size);
+            src = data;
+        } else if (op1->type == tana::Operand::Reg)
+        {
+            auto reg_id = tana::x86::reg_string2id(op1->field[0]);
+            src = reg.read_register(reg_id);
+
+        } else if (op1->type == tana::Operand::Mem)
+        {
+            uint32_t mem_addr = it.memory_address;
+            uint32_t mem_size = op1->bit / BYTESIZE;
+            check_memory_access(mem_addr, mem_size);
+            src = mem.read_data(mem_addr, mem_size);
+
+        } else
+        {
+            ERROR("DO_X86_INS_SUB");
+        }
+
+        if(op0->type == tana::Operand::Reg)
+        {
+            auto reg_id = tana::x86::reg_string2id(op1->field[0]);
+            dest = reg.read_register(reg_id);
+        } else if(op1->type == tana::Operand::Mem)
+        {
+            uint32_t mem_addr = it.memory_address;
+            uint32_t mem_size = op0->bit / BYTESIZE;
+            check_memory_access(mem_addr, mem_size);
+            dest = mem.read_data(mem_addr, mem_size);
+        } else
+        {
+            ERROR("DO_X86_INS_SUB");
+        }
+
+        dest = bvsub(dest, src);
+
+        if(op0->type == tana::Operand::Reg)
+        {
+            auto reg_id = tana::x86::reg_string2id(op1->field[0]);
+            reg.write_register(reg_id, dest);
+        } else if(op1->type == tana::Operand::Mem)
+        {
+            uint32_t mem_addr = it.memory_address;
+            uint32_t mem_size = op0->bit / BYTESIZE;
+            mem.write_data(mem_addr, dest);
+        } else
+        {
+            ERROR("DO_X86_INS_SUB");
+        }
+
         return 1;
     }
 
@@ -517,6 +582,65 @@ namespace bittaint {
     }
 
     int BitTaint::DO_X86_INS_ADD(const tana::Inst &it) {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 2);
+        auto op0 = it.oprd[0];
+        auto op1 = it.oprd[1];
+        assert((op0->bit == op1->bit)||(op1->type==tana::Operand::ImmValue));
+        std::vector<Byte> src, dest;
+        if(op1->type == tana::Operand::ImmValue)
+        {
+            uint32_t imm_size = op0->bit / BYTESIZE;
+            std::vector<Byte> data(imm_size);
+            src = data;
+        } else if (op1->type == tana::Operand::Reg)
+        {
+            auto reg_id = tana::x86::reg_string2id(op1->field[0]);
+            src = reg.read_register(reg_id);
+
+        } else if (op1->type == tana::Operand::Mem)
+        {
+            uint32_t mem_addr = it.memory_address;
+            uint32_t mem_size = op1->bit / BYTESIZE;
+            check_memory_access(mem_addr, mem_size);
+            src = mem.read_data(mem_addr, mem_size);
+
+        } else
+        {
+            ERROR("DO_X86_INS_SUB");
+        }
+
+        if(op0->type == tana::Operand::Reg)
+        {
+            auto reg_id = tana::x86::reg_string2id(op1->field[0]);
+            dest = reg.read_register(reg_id);
+        } else if(op1->type == tana::Operand::Mem)
+        {
+            uint32_t mem_addr = it.memory_address;
+            uint32_t mem_size = op0->bit / BYTESIZE;
+            check_memory_access(mem_addr, mem_size);
+            dest = mem.read_data(mem_addr, mem_size);
+        } else
+        {
+            ERROR("DO_X86_INS_ADD");
+        }
+
+        dest = bvadd(dest, src);
+
+        if(op0->type == tana::Operand::Reg)
+        {
+            auto reg_id = tana::x86::reg_string2id(op1->field[0]);
+            reg.write_register(reg_id, dest);
+        } else if(op1->type == tana::Operand::Mem)
+        {
+            uint32_t mem_addr = it.memory_address;
+            uint32_t mem_size = op0->bit / BYTESIZE;
+            mem.write_data(mem_addr, dest);
+        } else
+        {
+            ERROR("DO_X86_INS_ADD");
+        }
+
         return 1;
     }
 

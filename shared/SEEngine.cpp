@@ -4,7 +4,6 @@
 #include <sstream>
 #include "ins_types.h"
 #include "SEEngine.h"
-#include "Register.h"
 #include "VarMap.h"
 
 
@@ -12,19 +11,16 @@ namespace tana {
 
 // part of code from https://github.com/s3team/CryptoHunt
 
-    bool SEEngine::isImmSym(uint32_t num)
-    {
-        if(imm2sym == false){
+    bool SEEngine::isImmSym(uint32_t num) {
+        if (imm2sym == false) {
             return false;
         }
-        if (num < MAX_IMM_NUMBER)
-        {
+        if (num < MAX_IMM_NUMBER) {
             return false;
         }
         std::vector<uint32_t> common = {0xff, 0xfff, 0xffff, 0xfffff, 0xffffff, 0xffffffff, 0xff00, 0xffff0000};
         auto find_result = std::find(common.begin(), common.end(), num);
-        if (find_result != common.end())
-        {
+        if (find_result != common.end()) {
             return false;
         }
 
@@ -46,7 +42,8 @@ namespace tana {
         val[2] = nullptr;
     }
 
-    Operation::Operation(std::string opt, std::shared_ptr<Value> v1, std::shared_ptr<Value> v2, std::shared_ptr<Value> v3) {
+    Operation::Operation(std::string opt, std::shared_ptr<Value> v1, std::shared_ptr<Value> v2,
+                         std::shared_ptr<Value> v3) {
         opty = opt;
         val[0] = v1;
         val[1] = v2;
@@ -66,15 +63,14 @@ namespace tana {
         conval = con;
     }
 
-    Value::Value(ValueTy vty, uint32_t con, SEEngine* se) : opr(nullptr) {
+    Value::Value(ValueTy vty, uint32_t con, SEEngine *se) : opr(nullptr) {
         std::stringstream ss;
-        if (se->isImmSym(con)){
+        if (se->isImmSym(con)) {
             id = ++idseed;
             valty = SYMBOL;
             ss << "0x" << std::hex << con << std::dec;
             conval = ss.str();
-        }
-        else {
+        } else {
             id = ++idseed;
             valty = vty;
             ss << "0x" << std::hex << con << std::dec;
@@ -106,61 +102,58 @@ namespace tana {
     }
 
 
-	bool Value::operator==(const Value & v1)
-	{
-		const std::unique_ptr<Operation>& opr1 = opr;
-		const std::unique_ptr<Operation>& opr2 = v1.opr;
-		if ((opr == nullptr) && (v1.opr == nullptr))
-		{
-			if (valty != v1.valty)
-				return false;
-			if (valty == SYMBOL)
-				return (id == v1.id);
-			if (valty == CONCRETE)
-				return (conval) == (v1.conval);
-		}
-		if ((opr1 != nullptr) && (opr2 != nullptr))
-		{
-			std::shared_ptr<Value> l1 = nullptr, l2 = nullptr, l3 = nullptr, r1 = nullptr, r2 = nullptr, r3 = nullptr;
-			uint32_t num_l = 0;
-			uint32_t num_r = 0;
-			if (opr1->opty != opr2->opty)
-				return false;
-			if (opr1->val[0] != nullptr) {
-				++num_l;
-				l1 = opr1->val[0];
-			}
-			if (opr1->val[1] != nullptr) {
-				++num_l;
-				l2 = opr1->val[1];
-			}
-			if (opr1->val[2] != nullptr) {
-				++num_l;
-				l3 = opr1->val[2];
-			}
-			if (opr2->val[0] != nullptr) {
-				++num_r;
-				r1 = opr2->val[0];
-			}
-			if (opr2->val[1] != nullptr) {
-				++num_r;
-				r2 = opr2->val[1];
-			}
-			if (opr2->val[2] != nullptr) {
-				++num_r;
-				r3 = opr2->val[2];
-			}
-			if (num_l != num_r)
-				return false;
-			if (num_l == 1)
-				return (*l1) == (*r1);
-			if (num_l == 2)
-				return ((*l1) == (*r1)) && ((*l2) == (*r2));
-			if (num_l == 3)
-				return ((*l1) == (*r1)) && ((*l2) == (*r2)) && ((*l3) == (*r3));
-		}
-		return false;
-	}
+    bool Value::operator==(const Value &v1) {
+        const std::unique_ptr<Operation> &opr1 = opr;
+        const std::unique_ptr<Operation> &opr2 = v1.opr;
+        if ((opr == nullptr) && (v1.opr == nullptr)) {
+            if (valty != v1.valty)
+                return false;
+            if (valty == SYMBOL)
+                return (id == v1.id);
+            if (valty == CONCRETE)
+                return (conval) == (v1.conval);
+        }
+        if ((opr1 != nullptr) && (opr2 != nullptr)) {
+            std::shared_ptr<Value> l1 = nullptr, l2 = nullptr, l3 = nullptr, r1 = nullptr, r2 = nullptr, r3 = nullptr;
+            uint32_t num_l = 0;
+            uint32_t num_r = 0;
+            if (opr1->opty != opr2->opty)
+                return false;
+            if (opr1->val[0] != nullptr) {
+                ++num_l;
+                l1 = opr1->val[0];
+            }
+            if (opr1->val[1] != nullptr) {
+                ++num_l;
+                l2 = opr1->val[1];
+            }
+            if (opr1->val[2] != nullptr) {
+                ++num_l;
+                l3 = opr1->val[2];
+            }
+            if (opr2->val[0] != nullptr) {
+                ++num_r;
+                r1 = opr2->val[0];
+            }
+            if (opr2->val[1] != nullptr) {
+                ++num_r;
+                r2 = opr2->val[1];
+            }
+            if (opr2->val[2] != nullptr) {
+                ++num_r;
+                r3 = opr2->val[2];
+            }
+            if (num_l != num_r)
+                return false;
+            if (num_l == 1)
+                return (*l1) == (*r1);
+            if (num_l == 2)
+                return ((*l1) == (*r1)) && ((*l2) == (*r2));
+            if (num_l == 3)
+                return ((*l1) == (*r1)) && ((*l2) == (*r2)) && ((*l3) == (*r3));
+        }
+        return false;
+    }
 
 
     uint32_t SEEngine::arithmeticRightShift(uint32_t op1, uint32_t op2) {
@@ -228,22 +221,20 @@ namespace tana {
         imm2sym = state_type;
     }
 
-	void SEEngine::getFormulaLength(std::shared_ptr<Value> v, uint32_t& len)
-	{
-		const std::unique_ptr<Operation>& op = v->opr;
-		++len;
-		if (op == nullptr) 
-		{
-			return;
-		}
+    void SEEngine::getFormulaLength(std::shared_ptr<Value> v, uint32_t &len) {
+        const std::unique_ptr<Operation> &op = v->opr;
+        ++len;
+        if (op == nullptr) {
+            return;
+        }
 
-		if (op->val[0] != nullptr) 
-			getFormulaLength(op->val[0], len);
-		if (op->val[1] != nullptr)
-			getFormulaLength(op->val[1], len);
-		if (op->val[2] != nullptr) 
-			getFormulaLength(op->val[2], len);
-	}
+        if (op->val[0] != nullptr)
+            getFormulaLength(op->val[0], len);
+        if (op->val[1] != nullptr)
+            getFormulaLength(op->val[1], len);
+        if (op->val[2] != nullptr)
+            getFormulaLength(op->val[2], len);
+    }
 
 
     std::shared_ptr<Value>
@@ -251,7 +242,7 @@ namespace tana {
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(opty, v1);
         std::shared_ptr<Value> result;
         if (v1->isSymbol())
-            result= std::make_shared<Value>(SYMBOL, std::move(oper));
+            result = std::make_shared<Value>(SYMBOL, std::move(oper));
         else {
             result = std::make_shared<Value>(CONCRETE, std::move(oper));
         }
@@ -299,7 +290,7 @@ namespace tana {
                 std::shared_ptr<Value> origin = ctx[strName];
 
                 uint32_t mask = Registers::getRegMask(reg);
-                std::shared_ptr<Value> temp_mask= std::make_shared<Value>(CONCRETE, mask);
+                std::shared_ptr<Value> temp_mask = std::make_shared<Value>(CONCRETE, mask);
                 std::shared_ptr<Value> v1 = buildop2("and", origin, temp_mask);
                 return v1;
             }
@@ -309,10 +300,10 @@ namespace tana {
                 std::shared_ptr<Value> origin = ctx[strName];
 
                 uint32_t mask = Registers::getRegMask(reg);
-                std::shared_ptr<Value> temp_mask= std::make_shared<Value>(CONCRETE, mask);
+                std::shared_ptr<Value> temp_mask = std::make_shared<Value>(CONCRETE, mask);
                 std::shared_ptr<Value> v1 = buildop2("and", origin, temp_mask);
 
-                std::shared_ptr<Value> temp_imm= std::make_shared<Value>(CONCRETE, 0x8);
+                std::shared_ptr<Value> temp_imm = std::make_shared<Value>(CONCRETE, 0x8);
                 std::shared_ptr<Value> v_shift = buildop2("shr", v1, temp_imm);
                 return v_shift;
             }
@@ -327,11 +318,11 @@ namespace tana {
             v0 = std::make_shared<Value>(SYMBOL);
             memory[memory_address] = v0;
         }
-        if(size == T_BYTE_SIZE * T_DWORD) {
+        if (size == T_BYTE_SIZE * T_DWORD) {
             return v0;
         }
 
-        if(size == T_BYTE_SIZE * T_WORD) {
+        if (size == T_BYTE_SIZE * T_WORD) {
             std::shared_ptr<Value> temp_mask = std::make_shared<Value>(CONCRETE, 0x0000ffff);
             std::shared_ptr<Value> v1 = buildop2("and", v0, temp_mask);
             return v1;
@@ -343,16 +334,14 @@ namespace tana {
     }
 
     std::shared_ptr<Value>
-    SEEngine::Concat(std::shared_ptr<Value> v1, std::shared_ptr<Value> v2){
+    SEEngine::Concat(std::shared_ptr<Value> v1, std::shared_ptr<Value> v2) {
         std::shared_ptr<Value> low = nullptr, high = nullptr, res = nullptr;
         assert((v1->low_bit == (v2->high_bit - 1)) || (v2->low_bit == (v1->high_bit - 1)));
-        if (v1->low_bit == (v2->high_bit - 1))
-        {
+        if (v1->low_bit == (v2->high_bit - 1)) {
             high = v1;
             low = v2;
         }
-        if (v2->low_bit == (v1->high_bit - 1))
-        {
+        if (v2->low_bit == (v1->high_bit - 1)) {
             high = v2;
             low = v1;
         }
@@ -361,7 +350,7 @@ namespace tana {
     }
 
     std::shared_ptr<Value>
-    SEEngine::Extract(std::shared_ptr<Value> v, int low, int high){
+    SEEngine::Extract(std::shared_ptr<Value> v, int low, int high) {
         assert(high > low);
         std::shared_ptr<Value> res = buildop1("bvextract", v);
         res->high_bit = high;
@@ -430,7 +419,7 @@ namespace tana {
             // skip no effect instructions
             uint32_t oprnum = it->get_operand_number();
 
-            if(x86::SymbolicExecutionNoEffect(it->instruction_id)) continue;
+            if (x86::SymbolicExecutionNoEffect(it->instruction_id)) continue;
 
             if (oprnum == 0) continue;
 
@@ -441,94 +430,83 @@ namespace tana {
                 std::shared_ptr<Operand> op0 = it->oprd[0];
                 std::shared_ptr<Value> v0, res;
                 switch (opcode_id) {
-                    case x86::X86_INS_DIV:
-                        {
-                            auto eaxID = Registers::convert2RegID("eax");
-                            auto edxID = Registers::convert2RegID("edx");
-                            if (op0->type == Operand::Reg)
-                            {
+                    case x86::X86_INS_DIV: {
+                        auto eaxID = Registers::convert2RegID("eax");
+                        auto edxID = Registers::convert2RegID("edx");
+                        if (op0->type == Operand::Reg) {
 
-                            }
-                            if (op0->type == Operand::Mem)
-                            {
-
-                            }
-                        // TODO
                         }
+                        if (op0->type == Operand::Mem) {
+
+                        }
+                        // TODO
+                    }
                         break;
-                    case x86::X86_INS_PUSH:
-                        {
-                            if (op0->type == Operand::ImmValue)
-                            {
-                                uint32_t temp_concrete = stoul(op0->field[0], 0, 16);
-                                v0 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                                memory[it->memory_address] = v0;
-                            } else if (op0->type == Operand::Reg)
-                            {
-                                assert(Registers::getRegType(op0->field[0]) == FULL);
-                                memory[it->memory_address] = ctx[getRegName(op0->field[0])];
-                            } else if (op0->type == Operand::Mem)
-                            {
+                    case x86::X86_INS_PUSH: {
+                        if (op0->type == Operand::ImmValue) {
+                            uint32_t temp_concrete = stoul(op0->field[0], 0, 16);
+                            v0 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
+                            memory[it->memory_address] = v0;
+                        } else if (op0->type == Operand::Reg) {
+                            assert(Registers::getRegType(op0->field[0]) == FULL);
+                            memory[it->memory_address] = ctx[getRegName(op0->field[0])];
+                        } else if (op0->type == Operand::Mem) {
                             // The memaddr in the trace is the read address
                             // We need to compute the write address
-                                auto reg = Registers::convert2RegID("esp");
-                                uint32_t esp_index = Registers::getRegIndex(reg);
-                                uint32_t esp_value = it->vcpu.gpr[esp_index];
-							    v0 = getMemory(it->memory_address, op0->bit);
-                                memory[esp_value - 4] = v0;
-                            } else {
-                                std::cout << "push error: the operand is not Imm, Reg or Mem!" << std::endl;
-                                return 1;
-                            }
+                            auto reg = Registers::convert2RegID("esp");
+                            uint32_t esp_index = Registers::getRegIndex(reg);
+                            uint32_t esp_value = it->vcpu.gpr[esp_index];
+                            v0 = getMemory(it->memory_address, op0->bit);
+                            memory[esp_value - 4] = v0;
+                        } else {
+                            std::cout << "push error: the operand is not Imm, Reg or Mem!" << std::endl;
+                            return 1;
                         }
+                    }
                         break;
-                    case x86::X86_INS_POP:
-                        {
-                            if (op0->type == Operand::Reg) {
-                                assert(Registers::getRegType(op0->field[0]) == FULL);
-							    v0 = getMemory(it->memory_address, op0->bit);
-                                ctx[getRegName(op0->field[0])] = v0;
-                            } else {
-                                 std::cout << "pop error: the operand is not Reg!" << std::endl;
-                                return 1;
-                            }
+                    case x86::X86_INS_POP: {
+                        if (op0->type == Operand::Reg) {
+                            assert(Registers::getRegType(op0->field[0]) == FULL);
+                            v0 = getMemory(it->memory_address, op0->bit);
+                            ctx[getRegName(op0->field[0])] = v0;
+                        } else {
+                            std::cout << "pop error: the operand is not Reg!" << std::endl;
+                            return 1;
                         }
+                    }
                         break;
                     case x86::X86_INS_NEG:
-                    case x86::X86_INS_NOT:
-                        {
-                            if (op0->type == Operand::Reg) {
-                                assert(Registers::getRegType(op0->field[0]) == FULL);
-                                v0 = ctx[getRegName(op0->field[0])];
-                                res = buildop1(opcstr, v0);
-                                ctx[getRegName(op0->field[0])] = res;
-                            }
-                            else if (op0->type == Operand::Mem) {
-                                std::cout << "neg error: the operand is not Reg!" << std::endl;
-                                return 1;
-                            }
+                    case x86::X86_INS_NOT: {
+                        if (op0->type == Operand::Reg) {
+                            assert(Registers::getRegType(op0->field[0]) == FULL);
+                            v0 = ctx[getRegName(op0->field[0])];
+                            res = buildop1(opcstr, v0);
+                            ctx[getRegName(op0->field[0])] = res;
+                        } else if (op0->type == Operand::Mem) {
+                            std::cout << "neg error: the operand is not Reg!" << std::endl;
+                            return 1;
                         }
+                    }
                         break;
                     case x86::X86_INS_INC:
-                    case x86::X86_INS_DEC:
-                        {
-                            if (op0->type == Operand::Reg) {
-                                v0 = ctx[getRegName(op0->field[0])];
-                            }
-
-                            if (op0->type == Operand::Mem) {
-							    v0 = getMemory(it->memory_address, op0->bit);
-                            }
-                            res = buildop1(opcstr, v0);
-
-                            if (op0->type == Operand::Reg) {
-                                ctx[getRegName(op0->field[0])] = res;
-                            }
-
-                            if (op0->type == Operand::Mem) {
-                                memory[it->memory_address] = res;
-                            }
+                    case x86::X86_INS_DEC: {
+                        if (op0->type == Operand::Reg) {
+                            v0 = ctx[getRegName(op0->field[0])];
                         }
+
+                        if (op0->type == Operand::Mem) {
+                            v0 = getMemory(it->memory_address, op0->bit);
+                        }
+                        res = buildop1(opcstr, v0);
+
+                        if (op0->type == Operand::Reg) {
+                            ctx[getRegName(op0->field[0])] = res;
+                        }
+
+                        if (op0->type == Operand::Mem) {
+                            memory[it->memory_address] = res;
+                        }
+                    }
                         break;
 
                     default:
@@ -543,37 +521,33 @@ namespace tana {
                 std::shared_ptr<Value> v0, v1, res;
                 switch (opcode_id) {
                     case x86::X86_INS_MOVSX:
-                    case x86::X86_INS_MOVZX:
-                    {   // Hack way
+                    case x86::X86_INS_MOVZX: {   // Hack way
                         assert(op0->type == Operand::Reg);
 
                         if (op1->type == Operand::Reg) {
                             auto reg = Registers::convert2RegID(op1->field[0]);
-							v1 = getRegister(reg);
+                            v1 = getRegister(reg);
                             ctx[getRegName(op0->field[0])] = v1;
                             break;
 
                         }
                         if (op1->type == Operand::Mem) {
                             //TODO
-							v1 = getMemory(it->memory_address, op1->bit);
-							ctx[getRegName(op0->field[0])] = v1;
+                            v1 = getMemory(it->memory_address, op1->bit);
+                            ctx[getRegName(op0->field[0])] = v1;
                         }
                     }
                         break;
                     case x86::X86_INS_CMOVB:
 
-                    //case tana::instruction::t_cmovz:
-						if (next(it) == end)
-						{
-							break;
-						}
-                        if (isRegSame(*it, *next(it)))
-                        {
+                        //case tana::instruction::t_cmovz:
+                        if (next(it) == end) {
                             break;
                         }
-                    case x86::X86_INS_MOV:
-                        {
+                        if (isRegSame(*it, *next(it))) {
+                            break;
+                        }
+                    case x86::X86_INS_MOV: {
                         if (op0->type == Operand::Reg) {
                             if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
                                 uint32_t temp_concrete = stoul(op0->field[0], 0, 16);
@@ -587,7 +561,7 @@ namespace tana {
                                 3. if not, create a new value
                                 4. else load the value in that memory
                                 */
-								v1 = getMemory(it->memory_address, op1->bit);
+                                v1 = getMemory(it->memory_address, op1->bit);
                                 ctx[getRegName(op0->field[0])] = v1;
                             } else {
                                 std::cout << "op1 is not ImmValue, Reg or Mem" << std::endl;
@@ -620,11 +594,11 @@ namespace tana {
                                 std::shared_ptr<Value> f0, f1, f2; // corresponding field[0-2] in operand
                                 f0 = ctx[getRegName(op1->field[0])];
                                 f1 = ctx[getRegName(op1->field[1])];
-								if (op1->field[2] == "1") {
-									res = buildop2("add", f0, f1);
-									ctx[getRegName(op0->field[0])] = res;
-									break;
-								}
+                                if (op1->field[2] == "1") {
+                                    res = buildop2("add", f0, f1);
+                                    ctx[getRegName(op0->field[0])] = res;
+                                    break;
+                                }
                                 uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
                                 f2 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
                                 res = buildop2("imul", f1, f2);
@@ -642,13 +616,12 @@ namespace tana {
                                 uint32_t temp_concrete2 = stoul(op1->field[4], 0, 16);
                                 f3 = std::make_shared<Value>(CONCRETE, temp_concrete2, this);   //0xfffff1
                                 assert((sign == "+") || (sign == "-"));
-								if (op1->field[2] == "1") {
-									res = buildop2("add", f0, f1);
-								}
-								else {
-									res = buildop2("imul", f1, f2);
-									res = buildop2("add", f0, res);
-								}
+                                if (op1->field[2] == "1") {
+                                    res = buildop2("add", f0, f1);
+                                } else {
+                                    res = buildop2("imul", f1, f2);
+                                    res = buildop2("add", f0, res);
+                                }
                                 if (sign == "+")
                                     res = buildop2("add", res, f3);
                                 else
@@ -678,12 +651,11 @@ namespace tana {
                                 f1 = std::make_shared<Value>(CONCRETE, temp_concrete1, this);
                                 f2 = std::make_shared<Value>(CONCRETE, temp_concrete2, this);
                                 std::string sign = op1->field[2];
-								if (op1->field[1] == "1") {
-									res = f0;
-								}
-								else {
-									res = buildop2("imul", f0, f1);
-								}
+                                if (op1->field[1] == "1") {
+                                    res = f0;
+                                } else {
+                                    res = buildop2("imul", f0, f1);
+                                }
                                 if (sign == "+")
                                     res = buildop2("add", res, f2);
                                 else
@@ -709,7 +681,7 @@ namespace tana {
 
                             case 1: {
                                 std::shared_ptr<Value> f0;
-                                uint32_t temp_concrete = stoul(op1->field[0], 0 , 16);
+                                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
                                 f0 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
                                 ctx[getRegName(op0->field[0])] = f0;
                                 break;
@@ -727,14 +699,14 @@ namespace tana {
                                 ctx[getRegName(op1->field[0])] = v0; // xchg reg, reg
                                 ctx[getRegName(op0->field[0])] = v1;
                             } else if (op0->type == Operand::Mem) {
-								v0 = getMemory(it->memory_address, op0->bit);
+                                v0 = getMemory(it->memory_address, op0->bit);
                                 ctx[getRegName(op1->field[0])] = v0; // xchg mem, reg
                                 memory[it->memory_address] = v1;
                             } else {
                                 std::cout << "xchg error: 1" << std::endl;
                             }
                         } else if (op1->type == Operand::Mem) {
-							v1 = getMemory(it->memory_address, op1->bit);
+                            v1 = getMemory(it->memory_address, op1->bit);
                             if (op0->type == Operand::Reg) {
                                 v0 = ctx[getRegName(op0->field[0])];
                                 ctx[getRegName(op0->field[0])] = v1; // xchg reg, mem
@@ -761,7 +733,7 @@ namespace tana {
                         } else if (op1->type == Operand::Reg) {
                             v1 = ctx[getRegName(op1->field[0])];
                         } else if (op1->type == Operand::Mem) {
-							v1 = getMemory(it->memory_address, op1->bit);
+                            v1 = getMemory(it->memory_address, op1->bit);
                         } else {
                             std::cout << "other instructions: op1 is not ImmValue, Reg, or Mem!" << std::endl;
                             return 1;
@@ -772,7 +744,7 @@ namespace tana {
                             res = buildop2(opcstr, v0, v1);
                             ctx[getRegName(op0->field[0])] = res;
                         } else if (op0->type == Operand::Mem) { // dest op is mem
-							v0 = getMemory(it->memory_address, op0->bit);
+                            v0 = getMemory(it->memory_address, op0->bit);
                             res = buildop2(opcstr, v0, v1);
                             memory[it->memory_address] = res;
                         } else {
@@ -807,8 +779,8 @@ namespace tana {
                     case x86::X86_INS_SHRD:
                         if (op0->type == Operand::Reg &&
                             op1->type == Operand::Reg &&
-                            op2->type == Operand::ImmValue) 
-						{                                           // shld shrd reg, reg, imm
+                            op2->type ==
+                            Operand::ImmValue) {                                           // shld shrd reg, reg, imm
                             v1 = ctx[getRegName(op0->field[0])];
                             v2 = ctx[getRegName(op1->field[0])];
                             uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
@@ -847,30 +819,30 @@ namespace tana {
         return eval(f, input);
     }
 
-	bool isTree(std::shared_ptr<Value> v) {
+    bool isTree(std::shared_ptr<Value> v) {
 
-		std::list<std::shared_ptr<Value>> list_que;
-		list_que.push_back(v);
-		uint32_t count = 0;
-		while (!list_que.empty()) {
+        std::list<std::shared_ptr<Value>> list_que;
+        list_que.push_back(v);
+        uint32_t count = 0;
+        while (!list_que.empty()) {
             std::shared_ptr<Value> v = list_que.front();
-			list_que.pop_front();
-			++count;
-			//auto result = std::find(list_que.begin(), list_que.end(), v);
-			//if (result != list_que.end()) {
-			//	return false;
-			//}
-			const std::unique_ptr<Operation>& op = v->opr;
-			if (op != nullptr) {
-				if (op->val[0] != nullptr) list_que.push_back(op->val[0]);
-				if (op->val[1] != nullptr) list_que.push_back(op->val[1]);
-				if (op->val[2] != nullptr) list_que.push_back(op->val[2]);
-			}
-			if ((list_que.size() > FORMULA_MAX_LENGTH)||(count > FORMULA_MAX_LENGTH))
-				return false;
-		}
-		return true;
-	}
+            list_que.pop_front();
+            ++count;
+            //auto result = std::find(list_que.begin(), list_que.end(), v);
+            //if (result != list_que.end()) {
+            //	return false;
+            //}
+            const std::unique_ptr<Operation> &op = v->opr;
+            if (op != nullptr) {
+                if (op->val[0] != nullptr) list_que.push_back(op->val[0]);
+                if (op->val[1] != nullptr) list_que.push_back(op->val[1]);
+                if (op->val[2] != nullptr) list_que.push_back(op->val[2]);
+            }
+            if ((list_que.size() > FORMULA_MAX_LENGTH) || (count > FORMULA_MAX_LENGTH))
+                return false;
+        }
+        return true;
+    }
 
 
     std::vector<std::shared_ptr<Value>>
@@ -909,85 +881,77 @@ namespace tana {
     }
 
 
-
-	std::vector<std::shared_ptr<Value> > SEEngine::reduceValues(std::vector<std::shared_ptr<Value>> values)
-	{
-		auto values_size = values.size();
-		std::vector<bool> redundancy_table(values_size, false);
-		uint32_t values_size_after_reduction = 0;
-		for (uint32_t i = 0; i < values_size; ++i) {
-			for (uint32_t j = 0; j < values_size; ++j)
-			{
-				if (i == j) 
-				{
-					continue;
-				}
-				if (*values[i] == *values[j])
-				{
-					//std::cout << "i = " << i << "j = " << j << std::endl;
-					if (redundancy_table[i] == false) {
-						redundancy_table[j] = true;
-					}
-				}
-			}
-		}
+    std::vector<std::shared_ptr<Value> > SEEngine::reduceValues(std::vector<std::shared_ptr<Value>> values) {
+        auto values_size = values.size();
+        std::vector<bool> redundancy_table(values_size, false);
+        uint32_t values_size_after_reduction = 0;
+        for (uint32_t i = 0; i < values_size; ++i) {
+            for (uint32_t j = 0; j < values_size; ++j) {
+                if (i == j) {
+                    continue;
+                }
+                if (*values[i] == *values[j]) {
+                    //std::cout << "i = " << i << "j = " << j << std::endl;
+                    if (redundancy_table[i] == false) {
+                        redundancy_table[j] = true;
+                    }
+                }
+            }
+        }
 
 
-		for (uint32_t i = 0; i < values_size; ++i) {
-			if (redundancy_table[i] == false) {
-				++values_size_after_reduction;
-			}
-		}
+        for (uint32_t i = 0; i < values_size; ++i) {
+            if (redundancy_table[i] == false) {
+                ++values_size_after_reduction;
+            }
+        }
 
-		std::vector<std::shared_ptr<Value> > values_reduced(values_size_after_reduction);
-		uint32_t index = 0;
-		for (uint32_t i = 0; i < values_size; ++i) {
-			if (redundancy_table[i] == false) {
-				values_reduced[index] = values[i];
-				++index;
-			}
-		}
+        std::vector<std::shared_ptr<Value> > values_reduced(values_size_after_reduction);
+        uint32_t index = 0;
+        for (uint32_t i = 0; i < values_size; ++i) {
+            if (redundancy_table[i] == false) {
+                values_reduced[index] = values[i];
+                ++index;
+            }
+        }
 
-		// Remove formulas that are either too long or too short
-		assert(index == values_size_after_reduction);
+        // Remove formulas that are either too long or too short
+        assert(index == values_size_after_reduction);
 
 
-		auto iter = values_reduced.begin();
+        auto iter = values_reduced.begin();
 
-		while (iter != values_reduced.end()) {
-			uint32_t formula_size = 0;
-			SEEngine::getFormulaLength(*iter, formula_size);
-			if ((formula_size < FORMULA_MIN_LENGTH) || (formula_size > FORMULA_MAX_LENGTH))
-			{
-				iter = values_reduced.erase(iter);
-			}
-			else
-			{
-				++iter;
-			}
-		}
+        while (iter != values_reduced.end()) {
+            uint32_t formula_size = 0;
+            SEEngine::getFormulaLength(*iter, formula_size);
+            if ((formula_size < FORMULA_MIN_LENGTH) || (formula_size > FORMULA_MAX_LENGTH)) {
+                iter = values_reduced.erase(iter);
+            } else {
+                ++iter;
+            }
+        }
 
-		return values_reduced;
-	}
-	
+        return values_reduced;
+    }
+
 
     uint32_t
     SEEngine::eval(std::shared_ptr<Value> v) { //for no input
-        std::map<std::shared_ptr<Value> , uint32_t> varm;
+        std::map<std::shared_ptr<Value>, uint32_t> varm;
         assert((varmap::getInputVector(v)).empty());
         return eval(v, &varm);
     }
 
     uint32_t
     SEEngine::eval(std::shared_ptr<Value> v, std::map<std::shared_ptr<Value>, uint32_t> *inmap) {
-        const std::unique_ptr<Operation>& op = v->opr;
+        const std::unique_ptr<Operation> &op = v->opr;
         if (op == nullptr) {
             if (v->valty == CONCRETE)
                 return stoul(v->conval, 0, 16);
             else
                 return (*inmap)[v];
         } else {
-            uint32_t op0 = 0 , op1 = 0;
+            uint32_t op0 = 0, op1 = 0;
             uint32_t op2 = 0;
 
             if (op->val[0] != nullptr) op0 = eval(op->val[0], inmap);

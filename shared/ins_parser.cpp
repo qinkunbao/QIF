@@ -1,9 +1,6 @@
 ﻿#include <regex>
-#include <string>
 
-#include "x86.h"
 #include "ins_parser.h"
-#include "ins_types.h"
 
 namespace tana {
 
@@ -109,7 +106,7 @@ namespace tana {
             opr->bit = 32;
             opr->field[0] = m[0];
         } else {
-            std::cout << "Unknown data operands: " << s << "Addr: " << std::hex << addr << std::dec <<"\n";
+            std::cout << "Unknown data operands: " << s << "Addr: " << std::hex << addr << std::dec << "\n";
         }
 
         return opr;
@@ -130,7 +127,7 @@ namespace tana {
             if (regex_search(s, m, byteptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 8;
-            }  else if (regex_search(s, m, dwordptr)) {
+            } else if (regex_search(s, m, dwordptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 32;
             } else if (regex_search(s, m, segptr)) {
@@ -177,9 +174,8 @@ namespace tana {
     }
 
 
-    bool parse_trace(std::ifstream *trace_file, t_type::T_ADDRESS &addr_taint,\
-                     t_type::T_SIZE &size_taint, std::vector<Inst> *L )
-    {
+    bool parse_trace(std::ifstream *trace_file, t_type::T_ADDRESS &addr_taint, \
+                     t_type::T_SIZE &size_taint, std::vector<Inst> *L) {
         uint32_t batch_size = 1000;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, 1, addr_taint, size_taint, id);
@@ -191,7 +187,6 @@ namespace tana {
         return finish_parse;
 
     }
-
 
 
     bool parse_trace(std::ifstream *trace_file, std::vector<Inst> *L, uint32_t max_instructions, uint32_t num) {
@@ -257,7 +252,7 @@ namespace tana {
             }
 
             // get 8 register value
-            for(int i = 0; i < GPR_NUM; ++i) {
+            for (int i = 0; i < GPR_NUM; ++i) {
                 getline(strbuf, temp, ',');
                 ins->vcpu.gpr[i] = std::stoul(temp, 0, 16);
             }
@@ -267,8 +262,7 @@ namespace tana {
 
             //Get EPFLAGS
             getline(strbuf, temp, ',');
-            if(!temp.empty())
-            {
+            if (!temp.empty()) {
                 ins->vcpu.set_eflags(std::stoul(temp, 0, 16));
             }
 

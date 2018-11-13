@@ -2,14 +2,11 @@
 #include "x86.h"
 
 namespace tana {
-    namespace x86{
-        x86_insn insn_string2id(std::string insn_name)
-        {
+    namespace x86 {
+        x86_insn insn_string2id(std::string insn_name) {
             x86_insn insn_id = X86_INS_INVALID;
-            for(const auto& inst_map : insn_name_maps)
-            {
-                if (inst_map.name == insn_name)
-                {
+            for (const auto &inst_map : insn_name_maps) {
+                if (inst_map.name == insn_name) {
                     insn_id = inst_map.id;
                 }
             }
@@ -18,13 +15,10 @@ namespace tana {
 
         }
 
-        x86_reg  reg_string2id(std::string reg_name)
-        {
+        x86_reg reg_string2id(std::string reg_name) {
             x86_reg reg_id = X86_REG_INVALID;
-            for(const auto& reg_map : reg_name_maps)
-            {
-                if (reg_map.name == reg_name)
-                {
+            for (const auto &reg_map : reg_name_maps) {
+                if (reg_map.name == reg_name) {
                     reg_id = reg_map.id;
                 }
             }
@@ -33,13 +27,10 @@ namespace tana {
 
         }
 
-        std::string insn_id2string(const x86_insn id)
-        {
+        std::string insn_id2string(const x86_insn id) {
             std::string x86_opc = "None";
-            for(const auto& insn_map : insn_name_maps)
-            {
-                if (insn_map.id == id)
-                {
+            for (const auto &insn_map : insn_name_maps) {
+                if (insn_map.id == id) {
                     x86_opc = insn_map.name;
                 }
             }
@@ -47,29 +38,24 @@ namespace tana {
             return x86_opc;
         }
 
-        std::string reg_id2string(x86_reg id)
-        {
+        std::string reg_id2string(x86_reg id) {
             std::string x86_reg = "None";
-            for(const auto& reg_map : reg_name_maps)
-            {
-                if(reg_map.id == id)
-                {
+            for (const auto &reg_map : reg_name_maps) {
+                if (reg_map.id == id) {
                     x86_reg = reg_map.name;
                 }
             }
             return x86_reg;
         }
 
-        uint32_t get_reg_size(x86_reg reg_id)
-        {
+        uint32_t get_reg_size(x86_reg reg_id) {
             int id = static_cast<int>(reg_id);
             uint8_t reg_size = regsize_map_32[id];
             return static_cast<uint32_t >(reg_size);
         }
 
 
-        bool SymbolicExecutionNoEffect(x86::x86_insn insn)
-        {
+        bool SymbolicExecutionNoEffect(x86::x86_insn insn) {
             using namespace x86;
             std::set<x86::x86_insn> no_effect_inst{X86_INS_TEST, X86_INS_JMP, X86_INS_CMP, X86_INS_CALL, X86_INS_RET,
                                                    X86_INS_NOP, X86_INS_INT, X86_INS_JA, X86_INS_JAE, X86_INS_JAE,

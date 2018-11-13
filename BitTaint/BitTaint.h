@@ -50,6 +50,7 @@
           std::vector<tana::Inst>::iterator end;
 
           void update_def_use(std::vector<int> bits);
+          void check_memory_access(uint32_t mem_addr, uint32_t mem_size);
 
           static std::vector<Byte> bvadd(const std::vector<Byte> &a, const std::vector<Byte> &b);
           static std::vector<Byte> bvsub(const std::vector<Byte> &a, const std::vector<Byte> &b);
