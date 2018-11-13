@@ -80,6 +80,21 @@ namespace bittaint {
         std::vector<Byte> res(a_size);
         std::vector<int> bit_res;
         assert((a_size == 1)||(a_size == 2)||(a_size == 4));
+        for(int byte_index = a_size - 1; byte_index >= 0; --byte_index)
+        {
+            std::vector<BitMap > a_byte_index = a[byte_index].readbyte();
+            std::vector<BitMap > b_byte_index = b[byte_index].readbyte();
+            Byte byte_res;
+            assert(a_byte_index.size() == b_byte_index.size());
+            assert(a_byte_index.size() == BYTESIZE);
+            for(auto index = a_byte_index.size(); index >= 0; --index)
+            {
+                bit_res = vector_union(a_byte_index[index], b_byte_index[index]);
+                byte_res.writebit(bit_res, index);
+            }
+            res.push_back(byte_res);
+        }
+        return res;
 
     }
 
@@ -353,7 +368,7 @@ namespace bittaint {
             }
             else if (op1->type == tana::Operand::Reg)
             {
-                auto reg_src_id = tana::x86::reg_string2id(op1->field[1]);
+                auto reg_src_id = tana::x86::reg_string2id(op1->field[0]);
                 std::vector<Byte> data = reg.read_register(reg_src_id);
                 reg.write_register(reg_dest_id, data);
             }
@@ -382,7 +397,7 @@ namespace bittaint {
             }
             else if (op1->type == tana::Operand::Reg)
             {
-                auto reg_src_id = tana::x86::reg_string2id(op1->field[1]);
+                auto reg_src_id = tana::x86::reg_string2id(op1->field[0]);
                 std::vector<Byte> data = reg.read_register(reg_src_id);
                 mem.write_data(m_addr, data);
             }
@@ -415,6 +430,55 @@ namespace bittaint {
     }
 
     int BitTaint::DO_X86_INS_XCHG(const tana::Inst &it) {
+        uint32_t opr_num = it.get_operand_number();
+        assert(opr_num == 2);
+        auto op0 = it.oprd[0];
+        auto op1 = it.oprd[1];
+        if(op1->type == tana::Operand::Reg)
+        {
+            auto reg_src_id = tana::x86::reg_string2id(op1->field[0]);
+            std::vector<Byte> op1_data = reg.read_register(reg_src_id);
+            if(op0->type == tana::Operand::Reg)
+            {
+                auto ref_dest_id = tana::x86::reg_string2id(op0->field[0]);
+                std::vector<Byte> op0_data = reg.read_register(ref_dest_id);
+                auto temp_data = op0_data;
+                op0_data = op1_data;
+                op1_data = temp_data;
+
+            } else if (op0->type == tana::Operand::Mem)
+            {
+                assert(op0->bit == (tana::x86::get_reg_size(reg_src_id) * BYTESIZE));
+                std::vector<Byte> op0_data = mem.read_data(it.memory_address, (op0->bit)/BYTESIZE);
+                auto temp_data = op0_data;
+                op0_data = op1_data;
+                op1_data = temp_data;
+            } else
+            {
+                ERROR("DO_X86_INS_XCHG");
+            }
+        }
+        else if (op1->type == tana::Operand::Mem)
+        {
+            std::vector<Byte> op1_data = mem.read_data(it.memory_address, (op1->bit)/BYTESIZE);
+            if(op0->type == tana::Operand::Reg)
+            {
+                auto ref_dest_id = tana::x86::reg_string2id(op0->field[0]);
+                std::vector<Byte> op0_data = reg.read_register(ref_dest_id);
+                auto temp_data = op0_data;
+                op0_data = op1_data;
+                op1_data = temp_data;
+            } else
+            {
+                ERROR("DO_X86_INS_XCHG");
+            }
+
+        }
+        else
+        {
+            ERROR("DO_X86_INS_XCHG");
+        }
+
         return 1;
     }
 
@@ -428,6 +492,10 @@ namespace bittaint {
     }
 
     int BitTaint::DO_X86_INS_IMUL(const tana::Inst &it) {
+        return 1;
+    }
+
+    int BitTaint::DO_X86_INS_MUL(const tana::Inst &it) {
         return 1;
     }
 
@@ -552,6 +620,10 @@ namespace bittaint {
 
             case tana::x86::X86_INS_IMUL:
                 ret = DO_X86_INS_IMUL(it_insn);
+                break;
+
+            case tana::x86::X86_INS_MUL:
+                ret = DO_X86_INS_MUL(it_insn);
                 break;
 
             case tana::x86::X86_INS_SHL:

@@ -41,7 +41,7 @@ namespace bittaint {
         return ByteMap[bit_index];
     }
 
-    void Byte::writebit(BitMap &bm, int bit_index) {
+    void Byte::writebit(BitMap &bm, uint32_t bit_index) {
         ByteMap[bit_index] = bm;
     }
 
@@ -97,11 +97,11 @@ namespace bittaint {
             if (memory_res != data_memory.end())
             {
                 Byte byte_res = (memory_res->second);
-                data.push_back(byte_res);
+                data[i] = byte_res;
             }
             else {
                 Byte empty_byte;
-                data.push_back(empty_byte);
+                data[i] = empty_byte;
             }
         }
         return data;

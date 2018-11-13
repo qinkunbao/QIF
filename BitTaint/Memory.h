@@ -25,7 +25,7 @@ namespace bittaint {
         const std::vector<BitMap>& readbyte() const ;
         void writebyte(std::vector<BitMap> map);
         BitMap readbit(int bit_index) const ;
-        void writebit(BitMap& bm, int bit_index);
+        void writebit(BitMap& bm, uint32_t bit_index);
 
         bool istainted() const;
 

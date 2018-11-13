@@ -82,7 +82,10 @@
           int DO_X86_INS_XCHG(const tana::Inst &it);
           int DO_X86_INS_SUB(const tana::Inst &it);
           int DO_X86_INS_SBB(const tana::Inst &it);
+
           int DO_X86_INS_IMUL(const tana::Inst &it);
+          int DO_X86_INS_MUL(const tana::Inst &it);
+
           int DO_X86_INS_SHR(const tana::Inst &it);
           int DO_X86_INS_SHL(const tana::Inst &it);
 
