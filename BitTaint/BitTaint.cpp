@@ -607,7 +607,7 @@ namespace bittaint {
 
         } else
         {
-            ERROR("DO_X86_INS_SUB");
+            ERROR("DO_X86_INS_ADD");
         }
 
         if(op0->type == tana::Operand::Reg)
@@ -658,6 +658,15 @@ namespace bittaint {
     }
 
     int BitTaint::DO_X86_INS_LEAVE(const tana::Inst &it) {
+        //ESP = EBP
+        auto esp_id = Register::str2id("esp");
+        auto ebp_id = Register::str2id("ebp");
+        auto ebp_data = reg.read_register(ebp_id);
+        reg.write_register(esp_id, ebp_data);
+
+        //POP EBP
+        mem.write_data(it.memory_address, ebp_data);
+        check_memory_access(it.memory_address, ebp_data.size());
         return 1;
     }
 
