@@ -578,9 +578,9 @@ namespace bittaint {
 
         if(op0->type == tana::Operand::Reg)
         {
-            auto reg_id = tana::x86::reg_string2id(op1->field[0]);
+            auto reg_id = tana::x86::reg_string2id(op0->field[0]);
             dest = reg.read_register(reg_id);
-        } else if(op1->type == tana::Operand::Mem)
+        } else if(op0->type == tana::Operand::Mem)
         {
             uint32_t mem_addr = it.memory_address;
             uint32_t mem_size = op0->bit / BYTESIZE;
@@ -595,9 +595,9 @@ namespace bittaint {
 
         if(op0->type == tana::Operand::Reg)
         {
-            auto reg_id = tana::x86::reg_string2id(op1->field[0]);
+            auto reg_id = tana::x86::reg_string2id(op0->field[0]);
             reg.write_register(reg_id, dest);
-        } else if(op1->type == tana::Operand::Mem)
+        } else if(op0->type == tana::Operand::Mem)
         {
             uint32_t mem_addr = it.memory_address;
             uint32_t mem_size = op0->bit / BYTESIZE;
