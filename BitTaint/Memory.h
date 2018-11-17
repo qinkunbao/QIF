@@ -57,6 +57,7 @@ namespace bittaint {
         std::vector<Byte> edi;
         std::vector<Byte> ebp;
         std::vector<Byte> esp;
+        BitMap OF, SF, ZF, AF, CF, PF;
     public:
         Register();
         std::vector<Byte> read_register(tana::x86::x86_reg reg_id) const ;

@@ -10,6 +10,8 @@
 #include "ins_parser.h"
 #include "BitTaint.h"
 
+#include <bitset>
+
 #define ERROR(MESSAGE) bit_taint_error_handler(__FILE__, __LINE__, MESSAGE)
 
 namespace bittaint {
@@ -24,7 +26,6 @@ namespace bittaint {
         std::cout << "Message: " << error_message << "\n";
         std::cout << "********************************\n" << std::endl;
     }
-
 
     BitTaint::BitTaint(std::string symbol_name, uint32_t m_addr, \
                        uint32_t size, std::vector<tana::Inst>::iterator s, \
@@ -126,17 +127,74 @@ namespace bittaint {
 
     std::vector<Byte> BitTaint::bvor(const std::vector<Byte> &a, const std::vector<Byte> &b)
     {
+        auto a_size = a.size();
+        auto b_size = b.size();
+        assert(a_size == b_size);
+        std::vector<Byte> res(a_size);
 
+        for(std::size_t i = 0; i < a_size; ++i)
+        {
+            Byte a_byte = a[i];
+            Byte b_byte = b[i];
+            for(uint32_t j = 0; j < BYTESIZE; ++j)
+            {
+                BitMap a_map = a_byte.readbit(j);
+                BitMap b_map = b_byte.readbit(j);
+                auto ab_map = vector_union(a_map, b_map);
+                res[i].writebit(a_map, j);
+            }
+
+        }
+        return res;
+
+    }
+
+    std::vector<Byte> BitTaint::bvor(const std::vector<Byte> &a, uint32_t b)
+    {
+        std::bitset<REGISTER_SIZE> binary(b);
+        std::vector<Byte> res(a.size());
+        for(std::size_t i = 0; i < a.size(); ++i)
+        {
+            Byte a_byte = a[i];
+            for(uint32_t j = 0; j < BYTESIZE; ++j)
+            {
+                if(binary[i * BYTESIZE + j] == 0)
+                {
+                    BitMap a_map = a_byte.readbit(j);
+                    res[i].writebit(a_map, j);
+                }
+            }
+        }
+        return res;
     }
 
     std::vector<Byte> BitTaint::bvand(const std::vector<Byte> &a, const std::vector<Byte> &b)
     {
+        return bvor(a,b);
+    }
 
+    std::vector<Byte> BitTaint::bvand(const std::vector<Byte> &a, uint32_t b)
+    {
+        std::bitset<REGISTER_SIZE> binary(b);
+        std::vector<Byte> res(a.size());
+        for(std::size_t i = 0; i < a.size(); ++i)
+        {
+            Byte a_byte = a[i];
+            for(uint32_t j = 0; j < BYTESIZE; ++j)
+            {
+                if(binary[i * BYTESIZE + j] == 1)
+                {
+                    BitMap a_map = a_byte.readbit(j);
+                    res[i].writebit(a_map, j);
+                }
+            }
+        }
+        return res;
     }
 
     std::vector<Byte> BitTaint::bvxor(const std::vector<Byte> &a, const std::vector<Byte> &b)
     {
-
+        return bvor(a,b);
     }
 
     std::vector<Byte> BitTaint::bvurem(const std::vector<Byte> &a, const std::vector<Byte> &b)
@@ -690,6 +748,11 @@ namespace bittaint {
         auto insn = it->instruction_id;
         int ret = 0;
         auto it_insn = *it;
+        auto next_inst = std::next(it);
+        if (next_inst == end) {
+            return 0;
+        }
+        eip = std::next(it, 1);
         switch (insn) {
             case tana::x86::X86_INS_CALL:
                 ret = DO_X86_INS_CALL(it_insn);
@@ -817,11 +880,7 @@ namespace bittaint {
                 ret = 1;
         }
         if (ret) {
-            auto next_inst = std::next(it);
-            if (next_inst == end) {
-                return 0;
-            }
-            eip = std::next(it, 1);
+
             return 1;
         } else {
             return 0;

@@ -56,12 +56,24 @@
           static std::vector<Byte> bvsub(const std::vector<Byte> &a, const std::vector<Byte> &b);
           static std::vector<Byte> bvmul(const std::vector<Byte> &a, const std::vector<Byte> &b);
           static std::vector<Byte> bvudiv(const std::vector<Byte> &a, const std::vector<Byte> &b);
+
           static std::vector<Byte> bvor(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvor(const std::vector<Byte> &a, uint32_t b);
+
           static std::vector<Byte> bvand(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvand(const std::vector<Byte> &a, uint32_t b);
+
+
           static std::vector<Byte> bvxor(const std::vector<Byte> &a, const std::vector<Byte> &b);
-          static std::vector<Byte> bvurem(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvxor(const std::vector<Byte> &a, uint32_t b);
+
           static std::vector<Byte> bvshl(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvshl(const std::vector<Byte> &a, uint32_t b);
+
           static std::vector<Byte> bvlshr(const std::vector<Byte> &a, const std::vector<Byte> &b);
+          static std::vector<Byte> bvlshr(const std::vector<Byte> &a, uint32_t b);
+
+          static std::vector<Byte> bvurem(const std::vector<Byte> &a, const std::vector<Byte> &b);
           static std::vector<Byte> bvnot(const std::vector<Byte> &a);
           static std::vector<Byte> bvneg(const std::vector<Byte> &a);
           static bool bvcmp(const std::vector<Byte> &a, const std::vector<Byte> &b);
