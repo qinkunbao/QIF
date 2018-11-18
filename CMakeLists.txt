@@ -7,11 +7,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 include_directories(shared)
-include_directories(TaintTrace)
-include_directories(CryptoHunt)
-include_directories(SymbolicExecution)
-include_directories(DetectMagicNumber)
-include_directories(LoopDetection)
 include_directories(test)
 include_directories(BitTaint)
 
@@ -38,21 +33,6 @@ add_library(TraceLib
         shared/Function.cpp
         shared/Function.h)
 
-add_executable(taintTrace
-        TaintTrace/TaintTrace.cpp)
-
-add_executable(CryptoHunt
-        CryptoHunt/CryptoHunt.cpp)
-
-
-add_executable(SymbolicExecution
-        SymbolicExecution/SymbolicExecution.cpp)
-
-add_executable(DetectMagicNumber
-        DetectMagicNumber/DetectMagicNumber.cpp)
-
-add_executable(LoopDetection
-        LoopDetection/LoopDetection.cpp)
 
 add_executable(TestX86
         test/test_x86.cpp)
@@ -65,10 +45,5 @@ add_executable(BitTaint
         BitTaint/Memory.h)
 
 
-target_link_libraries(taintTrace TraceLib)
-target_link_libraries(CryptoHunt TraceLib)
-target_link_libraries(SymbolicExecution TraceLib)
-target_link_libraries(DetectMagicNumber TraceLib)
-target_link_libraries(LoopDetection TraceLib)
 target_link_libraries(TestX86 TraceLib)
 target_link_libraries(BitTaint TraceLib)
