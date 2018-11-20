@@ -89,29 +89,34 @@ namespace bittaint {
         return res;
     }
 
-    std::vector<Byte> BitTaint::bvsub(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    std::vector<Byte> BitTaint::bvadd(const std::vector<Byte> &a, uint32_t b)
     {
-        auto a_size = a.size();
-        auto b_size = b.size();
-        assert(a_size == b_size);
-        std::vector<Byte> res(a_size);
+        std::bitset<REGISTER_SIZE> binary(b);
+        std::vector<Byte> res(a.size());
         std::vector<int> bit_res;
-        assert((a_size == 1)||(a_size == 2)||(a_size == 4));
-        for(int byte_index = a_size - 1; byte_index >= 0; --byte_index)
+
+        for(std::size_t i = 0; i < a.size(); ++i)
         {
-            std::vector<BitMap > a_byte_index = a[byte_index].readbyte();
-            std::vector<BitMap > b_byte_index = b[byte_index].readbyte();
-            Byte byte_res;
-            assert(a_byte_index.size() == b_byte_index.size());
-            assert(a_byte_index.size() == BYTESIZE);
-            for(auto index = a_byte_index.size(); index >= 0; --index)
+            std::vector<BitMap > a_byte = a[i].readbyte();
+            for(uint32_t j = 0; j < BYTESIZE; ++j)
             {
-                bit_res = vector_union(a_byte_index[index], b_byte_index[index]);
-                byte_res.writebit(bit_res, index);
+                bit_res = vector_union(a_byte[j], bit_res);
             }
-            res.push_back(byte_res);
         }
         return res;
+
+    }
+
+
+    std::vector<Byte> BitTaint::bvsub(const std::vector<Byte> &a, const std::vector<Byte> &b)
+    {
+        return bvadd(a,b);
+
+    }
+
+    std::vector<Byte> BitTaint::bvsub(const std::vector<Byte> &a, uint32_t b)
+    {
+        return bvadd(a,b);
 
     }
 
@@ -554,11 +559,12 @@ namespace bittaint {
         auto op1 = it.oprd[1];
         assert((op0->bit == op1->bit)||(op1->type==tana::Operand::ImmValue));
         std::vector<Byte> src, dest;
+        bool imm = false;
+        uint32_t src_imm;
         if(op1->type == tana::Operand::ImmValue)
         {
-            uint32_t imm_size = op0->bit / BYTESIZE;
-            std::vector<Byte> data(imm_size);
-            src = data;
+            src_imm = std::stoul(op1->field[0], 0, 16);
+            imm = true;
         } else if (op1->type == tana::Operand::Reg)
         {
             auto reg_id = tana::x86::reg_string2id(op1->field[0]);
@@ -591,8 +597,13 @@ namespace bittaint {
             ERROR("DO_X86_INS_SUB");
         }
 
-        dest = bvsub(dest, src);
-
+        if(imm)
+        {
+            dest = bvsub(dest, src_imm);
+        }
+        else {
+            dest = bvsub(dest, src);
+        }
         if(op0->type == tana::Operand::Reg)
         {
             auto reg_id = tana::x86::reg_string2id(op0->field[0]);
