@@ -53,7 +53,7 @@ namespace tana {
 		// Memory to Register
 		void spreadTaintMemory2Register(t_type::T_ADDRESS ip_addr, t_type::T_ADDRESS addr, x86::x86_reg reg);
 
-		void taintIns(Inst ins);
+		void taintIns(Inst& ins);
 
 		void cleanALL();
 

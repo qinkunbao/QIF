@@ -8,6 +8,10 @@
 
 
 namespace tana {
+    class Value;
+    class Operation;
+    class SEEngine;
+
     enum ValueTy {
         SYMBOL, CONCRETE
     };
@@ -30,12 +34,38 @@ namespace tana {
         bvzeroext,
 
     };
-    struct Operation;
-    struct Value;
 
+
+
+    // A symbolic or concrete value in a formula
+    class Value {
+    public:
+        ValueTy valty;             // value type: SYMBOL or CONCRETE
+        std::unique_ptr<Operation> opr = nullptr;
+        std::string conval;             // concrete value
+        int id;                 // a unique id for each value
+        int low_bit = 0;
+        int high_bit = REGISTER_SIZE;
+        static int idseed;
+
+        Value(ValueTy vty);
+
+        Value(ValueTy vty, std::string con); // constructor for concrete value
+        Value(ValueTy vty, uint32_t con, SEEngine *);    // constructor for concrete value
+        Value(ValueTy vty, std::unique_ptr<Operation> oper);
+
+        Value(ValueTy vty, uint32_t con);
+
+        bool isSymbol();
+
+        bool operator==(const Value &v1);
+
+        Value &operator=(const Value &v1);
+    };
 
 // An operation taking several values to calculate a result value
-    typedef struct Operation {
+    class Operation {
+    public:
         std::string opty;
         std::shared_ptr<Value> val[3] = {nullptr, nullptr, nullptr};
 
@@ -44,7 +74,7 @@ namespace tana {
         Operation(std::string opt, std::shared_ptr<Value> v1, std::shared_ptr<Value> v2);
 
         Operation(std::string opt, std::shared_ptr<Value> v1, std::shared_ptr<Value> v2, std::shared_ptr<Value> v3);
-    } Operation;
+    };
 
 
     class SEEngine {
@@ -99,7 +129,7 @@ namespace tana {
 
         void DO_X86_INS_ADC(const Inst &it);
 
-        static inline bool isRegSame(Inst instruction1, Inst instruction2);
+        static inline bool isRegSame(Inst &instruction1, Inst &instruction2);
 
         bool memory_find(uint32_t addr) {
             auto ii = memory.find(addr);
@@ -157,29 +187,5 @@ namespace tana {
 
     };
 
-    // A symbolic or concrete value in a formula
-    typedef struct Value {
-        ValueTy valty;             // value type: SYMBOL or CONCRETE
-        std::unique_ptr<Operation> opr = nullptr;
-        std::string conval;             // concrete value
-        int id;                 // a unique id for each value
-        int low_bit = 0;
-        int high_bit = REGISTER_SIZE;
-        static int idseed;
-
-        Value(ValueTy vty);
-
-        Value(ValueTy vty, std::string con); // constructor for concrete value
-        Value(ValueTy vty, uint32_t con, SEEngine *);    // constructor for concrete value
-        Value(ValueTy vty, std::unique_ptr<Operation> oper);
-
-        Value(ValueTy vty, uint32_t con);
-
-        bool isSymbol();
-
-        bool operator==(const Value &v1);
-
-        Value &operator=(const Value &v1);
-    } Value;
 
 }

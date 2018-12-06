@@ -5,6 +5,9 @@
 #include "ins_types.h"
 #include "SEEngine.h"
 #include "VarMap.h"
+#include "error.h"
+
+#define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
 
 namespace tana {
@@ -198,7 +201,7 @@ namespace tana {
         return res;
     }
 
-    bool SEEngine::isRegSame(Inst instruction1, Inst instruction2) {
+    bool SEEngine::isRegSame(Inst& instruction1, Inst& instruction2) {
         vcpu_ctx inst1 = instruction1.vcpu;
         vcpu_ctx inst2 = instruction2.vcpu;
         for (uint32_t i = 0; i < GPR_NUM; ++i) {
@@ -459,8 +462,7 @@ namespace tana {
                             v0 = getMemory(it->memory_address, op0->bit);
                             memory[esp_value - 4] = v0;
                         } else {
-                            std::cout << "push error: the operand is not Imm, Reg or Mem!" << std::endl;
-                            return 1;
+                            ERROR("push error: the operand is not Imm, Reg or Mem!");
                         }
                     }
                         break;
@@ -470,8 +472,7 @@ namespace tana {
                             v0 = getMemory(it->memory_address, op0->bit);
                             ctx[getRegName(op0->field[0])] = v0;
                         } else {
-                            std::cout << "pop error: the operand is not Reg!" << std::endl;
-                            return 1;
+                            ERROR("pop error: the operand is not Reg!");
                         }
                     }
                         break;
@@ -483,8 +484,7 @@ namespace tana {
                             res = buildop1(opcstr, v0);
                             ctx[getRegName(op0->field[0])] = res;
                         } else if (op0->type == Operand::Mem) {
-                            std::cout << "neg error: the operand is not Reg!" << std::endl;
-                            return 1;
+                            ERROR("neg error: the operand is not Reg!");
                         }
                     }
                         break;
@@ -510,8 +510,9 @@ namespace tana {
                         break;
 
                     default:
-                        std::cout << "instruction " << it->get_opcode_operand() << " is not handled!" << std::endl;
-                        break;
+                        std::string err_msg = "instruction " + it->get_opcode_operand() + " is not handled!";
+                        ERROR(err_msg.c_str());
+
                 }
             }
 
@@ -575,7 +576,7 @@ namespace tana {
                                 memory[it->memory_address] = ctx[getRegName(op1->field[0])];
                             }
                         } else {
-                            std::cout << "Error: The first operand in MOV is not Reg or Mem!" << std::endl;
+                            ERROR("Error: The first operand in MOV is not Reg or Mem!");
                         }
                     }
                         break;
@@ -587,7 +588,7 @@ namespace tana {
                         2. op1 must be addr
                         */
                         if (op0->type != Operand::Reg || op1->type != Operand::Mem) {
-                            std::cout << "lea format error!" << std::endl;
+                            ERROR("lea format error!");
                         }
                         switch (op1->tag) {
                             case 5: {
@@ -687,8 +688,7 @@ namespace tana {
                                 break;
                             }
                             default:
-                                std::cout << "Other tags in addr is not ready for lea!" << std::endl;
-                                break;
+                                ERROR("Other tags in addr is not ready for lea!");
                         }
                         break;
                     case x86::X86_INS_XCHG:
@@ -703,7 +703,7 @@ namespace tana {
                                 ctx[getRegName(op1->field[0])] = v0; // xchg mem, reg
                                 memory[it->memory_address] = v1;
                             } else {
-                                std::cout << "xchg error: 1" << std::endl;
+                                ERROR("xchg error: 1");
                             }
                         } else if (op1->type == Operand::Mem) {
                             v1 = getMemory(it->memory_address, op1->bit);
@@ -712,10 +712,10 @@ namespace tana {
                                 ctx[getRegName(op0->field[0])] = v1; // xchg reg, mem
                                 memory[it->memory_address] = v0;
                             } else {
-                                std::cout << "xchg error 3" << std::endl;
+                                ERROR("xchg error 3");
                             }
                         } else {
-                            std::cout << "xchg error: 2" << std::endl;
+                            ERROR("xchg error: 2");
                         }
                         break;
                     case x86::X86_INS_SBB:
@@ -735,8 +735,8 @@ namespace tana {
                         } else if (op1->type == Operand::Mem) {
                             v1 = getMemory(it->memory_address, op1->bit);
                         } else {
-                            std::cout << "other instructions: op1 is not ImmValue, Reg, or Mem!" << std::endl;
-                            return 1;
+                            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+
                         }
 
                         if (op0->type == Operand::Reg) { // dest op is reg
@@ -748,8 +748,7 @@ namespace tana {
                             res = buildop2(opcstr, v0, v1);
                             memory[it->memory_address] = res;
                         } else {
-                            std::cout << "other instructions: op2 is not ImmValue, Reg, or Mem!" << std::endl;
-                            return 1;
+                            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
                         }
                         break;
                 }
@@ -772,7 +771,7 @@ namespace tana {
                             res = buildop2(opcstr, v1, v2);
                             ctx[getRegName(op0->field[0])] = res;
                         } else {
-                            std::cout << "three operands instructions other than imul are not handled!" << std::endl;
+                            ERROR("three operands instructions other than imul are not handled!");
                         }
                         break;
                     case x86::X86_INS_SHLD:
@@ -788,7 +787,7 @@ namespace tana {
                             res = buildop3(opcstr, v1, v2, v3);
                             ctx[getRegName(op0->field[0])] = res;
                         } else {
-                            std::cout << "shrd or shld is not handled!" << std::endl;
+                            ERROR("shrd or shld is not handled!");
                         }
                     default:
                         break;
@@ -796,7 +795,7 @@ namespace tana {
             }
 
             if (oprnum > 3) {
-                std::cout << "all instructions: number of operands is larger than 4!" << std::endl;
+                ERROR("all instructions: number of operands is larger than 4!");
             }
         }
         return 0;
@@ -812,7 +811,7 @@ namespace tana {
         }
 
         if (inmapkeys != inputsym) {
-            std::cout << "Some inputs don't have parameters!" << std::endl;
+            ERROR("Some inputs don't have parameters!");
             return 1;
         }
 
