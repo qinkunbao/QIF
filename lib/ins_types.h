@@ -108,6 +108,8 @@ namespace tana {
         std::string get_opcode_operand() const ;
         uint32_t get_operand_number() const;
         Inst();
+        virtual bool taint(){};
+        virtual bool symbolic_execution(){};
     };
 
     class Routine {

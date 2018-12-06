@@ -150,7 +150,7 @@ namespace tana {
 	}
 
 	void
-    Tainter::taintIns(Inst ins) {
+    Tainter::taintIns(Inst& ins) {
 		using namespace x86;
 		auto opcode = ins.instruction_id;
 		std::cout << std::hex << taintedAdress.front() << " ID: " << std::dec << ins.id << std::endl;

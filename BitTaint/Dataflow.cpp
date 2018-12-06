@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     parseOperand(inst_list.begin(), inst_list.end());
     int inst_size = inst_list.size();
 
-    auto taint = new bittaint::BitTaint("key", m_addr, m_size, inst_list.begin(), inst_list.end());
+    auto taint = new tana::bittaint::BitTaint("key", m_addr, m_size, inst_list.begin(), inst_list.end());
 
     taint->run();
 

@@ -6,33 +6,55 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
-include_directories(shared)
+include_directories(lib)
+include_directories(TaintTrace)
+include_directories(CryptoHunt)
+include_directories(SymbolicExecution)
+include_directories(DetectMagicNumber)
+include_directories(LoopDetection)
 include_directories(test)
 include_directories(BitTaint)
 
 
 add_library(TraceLib
-        shared/x86.cpp
-        shared/x86.h
-        shared/ins_parser.cpp
-        shared/ins_parser.h
-        shared/ins_types.h
-        shared/ins_types.cpp
-        shared/Engine.h
-        shared/Engine.cpp
-        shared/Register.cpp
-        shared/Register.h
-        shared/SEEngine.cpp
-        shared/SEEngine.h
-        shared/VarMap.h
-        shared/VarMap.cpp
-        shared/Tainter.cpp
-        shared/Tainter.h
-        shared/Loop.cpp
-        shared/Loop.h
-        shared/Function.cpp
-        shared/Function.h)
+        lib/error.h
+        lib/error.cpp
+        lib/x86.cpp
+        lib/x86.h
+        lib/ins_parser.cpp
+        lib/ins_parser.h
+        lib/ins_types.h
+        lib/ins_types.cpp
+        lib/Engine.h
+        lib/Engine.cpp
+        lib/Register.cpp
+        lib/Register.h
+        lib/SEEngine.cpp
+        lib/SEEngine.h
+        lib/VarMap.h
+        lib/VarMap.cpp
+        lib/Tainter.cpp
+        lib/Tainter.h
+        lib/Loop.cpp
+        lib/Loop.h
+        lib/Function.cpp
+        lib/Function.h)
 
+add_executable(taintTrace
+        TaintTrace/TaintTrace.cpp)
+
+add_executable(CryptoHunt
+        CryptoHunt/CryptoHunt.cpp)
+
+
+add_executable(SymbolicExecution
+        SymbolicExecution/SymbolicExecution.cpp)
+
+add_executable(DetectMagicNumber
+        DetectMagicNumber/DetectMagicNumber.cpp)
+
+add_executable(LoopDetection
+        LoopDetection/LoopDetection.cpp)
 
 add_executable(TestX86
         test/test_x86.cpp)
@@ -45,5 +67,10 @@ add_executable(BitTaint
         BitTaint/Memory.h)
 
 
+target_link_libraries(taintTrace TraceLib)
+target_link_libraries(CryptoHunt TraceLib)
+target_link_libraries(SymbolicExecution TraceLib)
+target_link_libraries(DetectMagicNumber TraceLib)
+target_link_libraries(LoopDetection TraceLib)
 target_link_libraries(TestX86 TraceLib)
 target_link_libraries(BitTaint TraceLib)
