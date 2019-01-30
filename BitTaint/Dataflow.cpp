@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    std::vector<Inst> inst_list;
+    std::vector<Inst_Dyn> inst_list;
 
     t_type::T_ADDRESS m_addr;
     t_type::T_SIZE  m_size;

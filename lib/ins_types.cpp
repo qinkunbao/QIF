@@ -3,7 +3,7 @@
 
 namespace tana {
 
-    std::string Inst::get_opcode_operand() const {
+    std::string Inst_Dyn::get_opcode_operand() const {
         std::string instruction_operand;
         instruction_operand += x86::insn_id2string(instruction_id);
         instruction_operand += " ";
@@ -73,20 +73,18 @@ namespace tana {
         return static_cast<bool>(eflags & 0x800);
     }
 
-    Inst::Inst():id(0), addrn(0),
-                 memory_address(0), instruction_id(x86::X86_INS_INVALID), 
-                 oprd{nullptr, nullptr, nullptr}
+    Inst_Dyn::Inst_Dyn(): memory_address(0)
     {
     }
 
-    uint32_t Inst::get_operand_number() const {
+    Inst_Base::Inst_Base():id(0), addrn(0),
+                         instruction_id(x86::X86_INS_INVALID),
+                         oprd{nullptr, nullptr, nullptr}
+    {
+    }
+
+    uint32_t Inst_Dyn::get_operand_number() const {
         return static_cast<uint32_t >(this->oprs.size());
     }
 
-    namespace instruction {
-
-
-
-
-    }
 }

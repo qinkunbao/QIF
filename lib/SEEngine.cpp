@@ -201,7 +201,7 @@ namespace tana {
         return res;
     }
 
-    bool SEEngine::isRegSame(Inst& instruction1, Inst& instruction2) {
+    bool SEEngine::isRegSame(Inst_Dyn& instruction1, Inst_Dyn& instruction2) {
         vcpu_ctx inst1 = instruction1.vcpu;
         vcpu_ctx inst2 = instruction2.vcpu;
         for (uint32_t i = 0; i < GPR_NUM; ++i) {
@@ -366,8 +366,8 @@ namespace tana {
                    std::shared_ptr<Value> v3, std::shared_ptr<Value> v4,
                    std::shared_ptr<Value> v5, std::shared_ptr<Value> v6,
                    std::shared_ptr<Value> v7, std::shared_ptr<Value> v8,
-                   std::vector<Inst>::iterator it1,
-                   std::vector<Inst>::iterator it2) {
+                   std::vector<Inst_Dyn>::iterator it1,
+                   std::vector<Inst_Dyn>::iterator it2) {
         ctx["eax"] = v1;
         ctx["ebx"] = v2;
         ctx["ecx"] = v3;
@@ -390,15 +390,15 @@ namespace tana {
     }
 
     void
-    SEEngine::init(std::vector<Inst>::iterator it1,
-                   std::vector<Inst>::iterator it2) {
+    SEEngine::init(std::vector<Inst_Dyn>::iterator it1,
+                   std::vector<Inst_Dyn>::iterator it2) {
         this->start = it1;
         this->end = it2;
     }
 
     void
-    SEEngine::initAllRegSymol(std::vector<Inst>::iterator it1,
-                              std::vector<Inst>::iterator it2) {
+    SEEngine::initAllRegSymol(std::vector<Inst_Dyn>::iterator it1,
+                              std::vector<Inst_Dyn>::iterator it2) {
         ctx["eax"] = std::make_shared<Value>(SYMBOL);
         ctx["ebx"] = std::make_shared<Value>(SYMBOL);
         ctx["ecx"] = std::make_shared<Value>(SYMBOL);

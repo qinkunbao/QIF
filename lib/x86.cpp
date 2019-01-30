@@ -61,7 +61,8 @@ namespace tana {
                                                    X86_INS_NOP, X86_INS_INT, X86_INS_JA, X86_INS_JAE, X86_INS_JAE,
                                                    X86_INS_JB, X86_INS_JBE, X86_INS_JCXZ, X86_INS_JE, X86_INS_JECXZ,
                                                    X86_INS_JG, X86_INS_JGE, X86_INS_JS, X86_INS_JNE, X86_INS_JNO,
-                                                   X86_INS_JNP, X86_INS_JNS};
+                                                   X86_INS_JNP, X86_INS_JNS, X86_INS_JZ, X86_INS_JNZ, X86_INS_INVALID,
+                                                   X86_INS_DATA16, X86_INS_JLE, X86_INS_JL};
             const bool found = no_effect_inst.find(insn) != no_effect_inst.end();
 
             if (found)

@@ -81,8 +81,8 @@ namespace tana {
     private:
         bool imm2sym = false;
         std::map<std::string, std::shared_ptr<Value>> ctx;
-        std::vector<Inst>::iterator start;
-        std::vector<Inst>::iterator end;
+        std::vector<Inst_Dyn>::iterator start;
+        std::vector<Inst_Dyn>::iterator end;
         std::map<t_type::T_ADDRESS, std::shared_ptr<Value> > memory;
 
         static inline uint32_t arithmeticRightShift(uint32_t op1, uint32_t op2);
@@ -95,41 +95,41 @@ namespace tana {
 
         static inline uint32_t shrd32(uint32_t op0, uint32_t op1, uint32_t op2);
 
-        void DO_X86_INS_PUSH(const Inst &it);
+        void DO_X86_INS_PUSH(const Inst_Dyn &it);
 
-        void DO_X86_INS_POP(const Inst &it);
+        void DO_X86_INS_POP(const Inst_Dyn &it);
 
-        void DO_X86_INS_NEG(const Inst &it);
+        void DO_X86_INS_NEG(const Inst_Dyn &it);
 
-        void DO_X86_INS_NOT(const Inst &it);
+        void DO_X86_INS_NOT(const Inst_Dyn &it);
 
-        void DO_X86_INS_INC(const Inst &it);
+        void DO_X86_INS_INC(const Inst_Dyn &it);
 
-        void DO_X86_INS_DEC(const Inst &it);
+        void DO_X86_INS_DEC(const Inst_Dyn &it);
 
-        void DO_X86_INS_MOVSX(const Inst &it);
+        void DO_X86_INS_MOVSX(const Inst_Dyn &it);
 
-        void DO_X86_INS_MOVZX(const Inst &it);
+        void DO_X86_INS_MOVZX(const Inst_Dyn &it);
 
-        void DO_X86_INS_CMOVB(const Inst &it);
+        void DO_X86_INS_CMOVB(const Inst_Dyn &it);
 
-        void DO_X86_INS_MOV(const Inst &it);
+        void DO_X86_INS_MOV(const Inst_Dyn &it);
 
-        void DO_X86_INS_LEA(const Inst &it);
+        void DO_X86_INS_LEA(const Inst_Dyn &it);
 
-        void DO_X86_INS_XCHG(const Inst &it);
+        void DO_X86_INS_XCHG(const Inst_Dyn &it);
 
-        void DO_X86_INS_SBB(const Inst &it);
+        void DO_X86_INS_SBB(const Inst_Dyn &it);
 
-        void DO_X86_INS_IMUL(const Inst &it);
+        void DO_X86_INS_IMUL(const Inst_Dyn &it);
 
-        void DO_X86_INS_SHLD(const Inst &it);
+        void DO_X86_INS_SHLD(const Inst_Dyn &it);
 
-        void DO_X86_INS_SHRD(const Inst &it);
+        void DO_X86_INS_SHRD(const Inst_Dyn &it);
 
-        void DO_X86_INS_ADC(const Inst &it);
+        void DO_X86_INS_ADC(const Inst_Dyn &it);
 
-        static inline bool isRegSame(Inst &instruction1, Inst &instruction2);
+        static inline bool isRegSame(Inst_Dyn &instruction1, Inst_Dyn &instruction2);
 
         bool memory_find(uint32_t addr) {
             auto ii = memory.find(addr);
@@ -160,14 +160,14 @@ namespace tana {
                   std::shared_ptr<Value> v3, std::shared_ptr<Value> v4,
                   std::shared_ptr<Value> v5, std::shared_ptr<Value> v6,
                   std::shared_ptr<Value> v7, std::shared_ptr<Value> v8,
-                  std::vector<Inst>::iterator it1,
-                  std::vector<Inst>::iterator it2);
+                  std::vector<Inst_Dyn>::iterator it1,
+                  std::vector<Inst_Dyn>::iterator it2);
 
-        void init(std::vector<Inst>::iterator it1,
-                  std::vector<Inst>::iterator it2);
+        void init(std::vector<Inst_Dyn>::iterator it1,
+                  std::vector<Inst_Dyn>::iterator it2);
 
-        void initAllRegSymol(std::vector<Inst>::iterator it1,
-                             std::vector<Inst>::iterator it2);
+        void initAllRegSymol(std::vector<Inst_Dyn>::iterator it1,
+                             std::vector<Inst_Dyn>::iterator it2);
 
         int symexec();
 
