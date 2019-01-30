@@ -96,20 +96,27 @@ namespace tana {
         //Operand() : bit(0), issegaddr(false) {}
     };
 
-    class Inst {
+    class Inst_Base {
     public:
         t_type::index id;  //instruction ID
         t_type::T_ADDRESS addrn; //Instruction address
         x86::x86_insn instruction_id;
         std::vector<std::string> oprs;
         std::shared_ptr<Operand> oprd[3];
+        Inst_Base();
+
+        virtual bool taint(){};
+        virtual bool symbolic_execution(){};
+    };
+
+    class Inst_Dyn : public Inst_Base {
+    public:
         vcpu_ctx vcpu;
         t_type::T_ADDRESS memory_address;
         std::string get_opcode_operand() const ;
         uint32_t get_operand_number() const;
-        Inst();
-        virtual bool taint(){};
-        virtual bool symbolic_execution(){};
+        Inst_Dyn();
+
     };
 
     class Routine {

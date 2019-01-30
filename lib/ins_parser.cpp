@@ -152,7 +152,7 @@ namespace tana {
         return opr;
     }
 
-    void parseOperand(std::vector<Inst>::iterator begin, std::vector<Inst>::iterator end) {
+    void parseOperand(std::vector<Inst_Dyn>::iterator begin, std::vector<Inst_Dyn>::iterator end) {
         // parse operands
         for (auto it = begin; it != end; ++it) {
             for (uint32_t i = 0; i < it->get_operand_number(); ++i) {
@@ -162,7 +162,7 @@ namespace tana {
 
     }
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<Inst> *L) {
+    bool parse_trace(std::ifstream *trace_file, std::vector<Inst_Dyn> *L) {
         uint32_t batch_size = 1;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, batch_size, id);
@@ -175,7 +175,7 @@ namespace tana {
 
 
     bool parse_trace(std::ifstream *trace_file, t_type::T_ADDRESS &addr_taint, \
-                     t_type::T_SIZE &size_taint, std::vector<Inst> *L) {
+                     t_type::T_SIZE &size_taint, std::vector<Inst_Dyn> *L) {
         uint32_t batch_size = 1000;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, 1, addr_taint, size_taint, id);
@@ -189,13 +189,13 @@ namespace tana {
     }
 
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<Inst> *L, uint32_t max_instructions, uint32_t num) {
+    bool parse_trace(std::ifstream *trace_file, std::vector<Inst_Dyn> *L, uint32_t max_instructions, uint32_t num) {
         t_type::T_ADDRESS addr_taint = 0;
         t_type::T_SIZE size_taint = 0;
         return parse_trace(trace_file, L, max_instructions, addr_taint, size_taint, num);
     }
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<Inst> *L, uint32_t max_instructions,
+    bool parse_trace(std::ifstream *trace_file, std::vector<Inst_Dyn> *L, uint32_t max_instructions,
                      t_type::T_ADDRESS &addr_taint, t_type::T_SIZE &size_taint, uint32_t num) {
         std::string line;
         uint32_t id_count = 1;
@@ -226,7 +226,7 @@ namespace tana {
             std::string temp, disasstr, temp_addr;
 
             //Inst *ins = new Inst();
-            std::unique_ptr<Inst> ins(new Inst());
+            std::unique_ptr<Inst_Dyn> ins(new Inst_Dyn());
 
             ins->id = num++;
             id_count++;
