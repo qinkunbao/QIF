@@ -8,6 +8,19 @@
 
 namespace tana {
 
+
+    class Block {
+    public:
+        uint32_t addr;
+        uint32_t end_addr;
+        uint32_t inputs;
+        uint32_t jump;
+        uint32_t ninstr;
+        uint32_t outputs;
+        uint32_t size;
+        bool traced;
+    };
+
     void parseOperand(std::vector<Inst_Dyn>::iterator begin, std::vector<Inst_Dyn>::iterator end);
 
     bool parse_trace(std::ifstream *trace_file, std::vector<Inst_Dyn> *L, uint32_t max_instructions,
@@ -19,4 +32,8 @@ namespace tana {
 
     bool parse_trace(std::ifstream *trace_file, t_type::T_ADDRESS &addr_taint,\
                      t_type::T_SIZE &size_taint, std::vector<Inst_Dyn> *L );
+
+    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, \
+                             std::vector<std::vector<Inst_Base>> *L);
+
 }

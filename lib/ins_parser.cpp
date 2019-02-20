@@ -1,9 +1,6 @@
 ﻿#include <regex>
-<<<<<<< HEAD:lib/ins_parser.cpp
 #include <nlohmann/json.hpp>
 
-=======
->>>>>>> 87e7a135fdd3fe5ffe1bd6714e2a79056d5304d7:lib/ins_parser.cpp
 
 #include "ins_parser.h"
 
