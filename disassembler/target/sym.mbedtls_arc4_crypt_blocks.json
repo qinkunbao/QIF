@@ -1,0 +1,22 @@
+[
+    {
+        "addr": "0x80487a3", 
+        "end_addr": "0x80487d0", 
+        "inputs": "0x0", 
+        "jump": "0x804885a", 
+        "ninstr": "0xf", 
+        "outputs": "0x1", 
+        "size": "0x2d", 
+        "traced": "0x0"
+    }, 
+    {
+        "addr": "0x80487d0", 
+        "end_addr": "0x804885a", 
+        "inputs": "0x1", 
+        "jump": "0x804885a", 
+        "ninstr": "0x31", 
+        "outputs": "0x1", 
+        "size": "0x8a", 
+        "traced": "0x0"
+    }
+]
