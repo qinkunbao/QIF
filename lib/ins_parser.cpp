@@ -1,4 +1,9 @@
 ﻿#include <regex>
+<<<<<<< HEAD:lib/ins_parser.cpp
+#include <nlohmann/json.hpp>
+
+=======
+>>>>>>> 87e7a135fdd3fe5ffe1bd6714e2a79056d5304d7:lib/ins_parser.cpp
 
 #include "ins_parser.h"
 
@@ -273,5 +278,60 @@ namespace tana {
             return false;
         else
             return true;
+    }
+
+    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, std::vector<std::vector<Inst_Base>> *L)
+    {
+
+        std::vector<Block> blocks;
+
+        nlohmann::json blocks_json = nlohmann::json::array();
+        json_file >> blocks_json;
+
+        for(auto &element: blocks_json)
+        {
+            Block block;
+            std::string str_addr, str_end_addr, str_inputs, str_jump, str_ninstr, str_outputs, str_size, str_traced;
+            str_addr = element["addr"];
+            block.addr = std::stoul(str_addr, 0 ,16);
+
+            str_end_addr = element["end_addr"];
+            block.end_addr = std::stoul(str_end_addr, 0 ,16);
+
+            str_inputs = element["inputs"];
+            block.inputs = std::stoul(str_inputs, 0 ,16);
+
+            str_jump = element["jump"];
+            block.jump = std::stoul(str_jump, 0 ,16);
+
+            str_ninstr = element["ninstr"];
+            block.ninstr = std::stoul(str_ninstr, 0 ,16);
+
+            str_outputs = element["outputs"];
+            block.outputs = std::stoul(str_outputs, 0 ,16);
+
+            str_size = element["size"];
+            block.size = std::stoul(str_size, 0 ,16);
+
+            str_traced = element["traced"];
+            block.traced = std::stoul(str_traced, 0 ,16);
+
+            blocks.push_back(block);
+        }
+
+
+
+       // std::cout << trace_file.rdbuf();
+        //std::cout << "````````````````````````````````````````\n";
+
+        std::string line;
+        while (trace_file.good())
+        {
+            getline(trace_file, line);
+            std::cout << line << std::endl;
+        }
+
+
+
     }
 }
