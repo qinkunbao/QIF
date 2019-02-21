@@ -227,7 +227,6 @@ namespace tana {
             std::istringstream strbuf(line);
             std::string temp, disasstr, temp_addr;
 
-            //Inst *ins = new Inst();
             std::unique_ptr<Inst_Dyn> ins(new Inst_Dyn());
 
             ins->id = num++;
@@ -277,13 +276,16 @@ namespace tana {
             return true;
     }
 
-    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, std::vector<std::vector<Inst_Base>> *L)
+    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, std::vector<std::vector<Inst_Base>> &L)
     {
 
         std::vector<Block> blocks;
 
         nlohmann::json blocks_json = nlohmann::json::array();
         json_file >> blocks_json;
+        uint32_t ins_id = 0;
+
+        std::vector<Inst_Base> fun_inst;
 
         for(auto &element: blocks_json)
         {
@@ -317,18 +319,66 @@ namespace tana {
         }
 
 
-
-       // std::cout << trace_file.rdbuf();
-        //std::cout << "````````````````````````````````````````\n";
-
         std::string line;
         while (trace_file.good())
         {
+
+            Inst_Base inst;
             getline(trace_file, line);
+
+            if(line.find(";") != std::string::npos)
+            {
+                continue;
+            }
+
+            if(line.find("0x") == std::string::npos)
+            {
+                continue;
+            }
+
+            char chars[] = "|\\";
+            for (unsigned int i = 0; i < strlen(chars); ++i)
+            {
+                line.erase(std::remove(line.begin(), line.end(), chars[i]), line.end());
+            }
+
+
             std::cout << line << std::endl;
+
+            std::string delimiter = "     ";
+            size_t pos = 0;
+            std::string str_addr;
+
+            pos = line.find(delimiter);
+            str_addr = line.substr(0, pos);
+
+            line.erase(0, pos + delimiter.length());
+
+            inst.id = ++ins_id;
+            inst.addrn = std::stoul(str_addr, 0, 16);
+
+
+            auto str_start = line.find_first_not_of(' ');
+            auto str_end = line.find_last_not_of(' ');
+
+            line = line.substr(str_start, str_end - str_start + 1);
+
+            std::istringstream disasbuf(line);
+
+
+            std::string opcstr, temp;
+            getline(disasbuf, opcstr, ' ');
+
+            inst.instruction_id = x86::insn_string2id(opcstr);
+
+            while (disasbuf.good()) {
+                getline(disasbuf, temp, ',');
+                if (temp.find_first_not_of(' ') != std::string::npos)
+                    inst.oprs.push_back(temp);
+            }
+
+            fun_inst.push_back(inst);
         }
-
-
 
     }
 }

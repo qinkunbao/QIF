@@ -40,6 +40,10 @@ file_name = str(sys.argv[1])
 
 r = r2pipe.open(file_name)
 r.cmd('aaaa')
+r.cmd('e asm.comments=false')
+r.cmd('e asm.lines.bb=false')
+r.cmd('e asm.bytes=false')
+
 loc_data = TMP_DIRECTORIES + 'data.json'
 r.cmd('aflj~{} > ' + loc_data)
 
