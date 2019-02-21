@@ -34,6 +34,6 @@ namespace tana {
                      t_type::T_SIZE &size_taint, std::vector<Inst_Dyn> *L );
 
     bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, \
-                             std::vector<std::vector<Inst_Base>> *L);
+                             std::vector<std::vector<Inst_Base>> &L);
 
 }
