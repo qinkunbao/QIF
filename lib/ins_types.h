@@ -105,8 +105,15 @@ namespace tana {
         std::shared_ptr<Operand> oprd[3];
         Inst_Base();
 
-        virtual bool taint(){};
-        virtual bool symbolic_execution(){};
+        uint32_t get_operand_number() const;
+        virtual bool taint(){ return true; };
+        virtual bool symbolic_execution(){ return true; };
+    };
+
+    class Inst_Static : public  Inst_Base {
+    public:
+        Inst_Static();
+        void parseOperand();
     };
 
     class Inst_Dyn : public Inst_Base {
@@ -114,8 +121,8 @@ namespace tana {
         vcpu_ctx vcpu;
         t_type::T_ADDRESS memory_address;
         std::string get_opcode_operand() const ;
-        uint32_t get_operand_number() const;
         Inst_Dyn();
+        void parseOperand();
 
     };
 

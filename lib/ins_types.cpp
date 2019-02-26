@@ -1,5 +1,6 @@
 #include <string>
 #include "ins_types.h"
+#include "ins_parser.h"
 
 namespace tana {
 
@@ -83,8 +84,29 @@ namespace tana {
     {
     }
 
-    uint32_t Inst_Dyn::get_operand_number() const {
+    Inst_Static::Inst_Static()
+    {
+    }
+
+    uint32_t Inst_Base::get_operand_number() const {
         return static_cast<uint32_t >(this->oprs.size());
+    }
+
+
+    void Inst_Dyn::parseOperand()
+    {
+        for (uint32_t i = 0; i < this->get_operand_number(); ++i)
+        {
+            this->oprd[i] = createOperand(this->oprs[i], this->addrn);
+        }
+    }
+
+    void Inst_Static::parseOperand()
+    {
+        for (uint32_t i = 0; i < this->get_operand_number(); ++i)
+        {
+            this->oprd[i] = createOperand(this->oprs[i], this->addrn);
+        }
     }
 
 }

@@ -41,8 +41,7 @@ int printFormulas(char* filename)
 	std::vector<Inst_Dyn> inst_list;
 	parse_trace(&infile, &inst_list);
 	infile.close();
-	parseOperand(inst_list.begin(), inst_list.end());
-
+	//parseOperand(inst_list.begin(), inst_list.end());
 	// Bit symbolic execution
 	SEEngine *se = new SEEngine(Imm2SymState);
 	se->initAllRegSymol(inst_list.begin(), inst_list.end());
@@ -99,8 +98,6 @@ int main(int argc, char **argv) {
 	infile1.close();
 	infile2.close();
 
-	parseOperand(inst_list1.begin(), inst_list1.end());
-	parseOperand(inst_list2.begin(), inst_list2.end());
 
 	// Symbolic execution
 	SEEngine *se1 = new SEEngine(Imm2SymState);
