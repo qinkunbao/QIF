@@ -39,8 +39,6 @@ int main(int argc, char* argv[]) {
 
 	while (!parse_trace(&trace_file, &inst_list, batch_size, start_addr, m_size, id)) {
 
-		parseOperand(inst_list.begin(), inst_list.end());
-		
 		for (auto it = inst_list.begin(); it != inst_list.end(); ++it) {
 			taint.taintIns(*it);
 		}

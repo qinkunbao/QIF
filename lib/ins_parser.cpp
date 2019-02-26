@@ -108,11 +108,12 @@ namespace tana {
             opr->bit = 32;
             opr->field[0] = m[0];
         } else {
-            std::cout << "Unknown data operands: " << s << "Addr: " << std::hex << addr << std::dec << "\n";
+            std::cout << "Unknown data operands: " << s << " Addr: " << std::hex << addr << std::dec << "\n";
         }
 
         return opr;
     }
+
 
     std::shared_ptr<Operand> createOperand(std::string s, uint32_t addr) {
         std::regex ptr("ptr \\[(.*)\\]");
@@ -154,15 +155,17 @@ namespace tana {
         return opr;
     }
 
-    void parseOperand(std::vector<Inst_Dyn>::iterator begin, std::vector<Inst_Dyn>::iterator end) {
-        // parse operands
-        for (auto it = begin; it != end; ++it) {
-            for (uint32_t i = 0; i < it->get_operand_number(); ++i) {
+
+    void parseOperand(std::vector<Inst_Base> *Inst)
+    {
+        for(auto it = Inst->begin(); it != Inst->end(); ++it)
+
+            for (uint32_t i = 0; i < it->get_operand_number(); ++i)
+            {
                 it->oprd[i] = createOperand(it->oprs[i], it->addrn);
             }
-        }
-
     }
+
 
     bool parse_trace(std::ifstream *trace_file, std::vector<Inst_Dyn> *L) {
         uint32_t batch_size = 1;
@@ -267,6 +270,8 @@ namespace tana {
                 ins->vcpu.set_eflags(std::stoul(temp, 0, 16));
             }
 
+            ins->parseOperand();
+
             L->push_back(*ins);
 
         }
@@ -276,7 +281,7 @@ namespace tana {
             return true;
     }
 
-    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, std::vector<std::vector<Inst_Base>> &L)
+    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, std::vector<std::vector<Inst_Static>> &L)
     {
 
         std::vector<Block> blocks;
@@ -323,7 +328,7 @@ namespace tana {
         while (trace_file.good())
         {
 
-            Inst_Base inst;
+            Inst_Static inst;
             getline(trace_file, line);
 
             if(line.find(";") != std::string::npos)
@@ -377,8 +382,15 @@ namespace tana {
                     inst.oprs.push_back(temp);
             }
 
+
+
             fun_inst.push_back(inst);
         }
+
+        if (trace_file.good())
+            return false;
+        else
+            return true;
 
     }
 }
