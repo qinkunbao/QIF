@@ -1,0 +1,4 @@
+Index: 14 Unsupported Instruction: cmp eax, 0x40
+Index: 15 Unsupported Instruction: jnz 0x8048918
+Index: 25 Unsupported Instruction: test eax, eax
+size: 0

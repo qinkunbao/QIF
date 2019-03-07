@@ -1,0 +1,8 @@
+Index: 76 Unsupported Instruction: cmp dword ptr [ebp-0x20], 0xf
+size: 6
+Formula index: 0 Length: 49 Formula: add(add(xor(and(SYM_ID47,SYM_ID49),xor(and(SYM_ID38,SYM_ID47),and(SYM_ID38,SYM_ID49))),xor(xor(ror(SYM_ID38,Con(0x2)),ror(SYM_ID38,Con(0xd))),rol(SYM_ID38,Con(0xa)))),add(SYM_ID36,add(add(add(xor(xor(ror(SYM_ID9,Con(0x6)),ror(SYM_ID9,Con(0xb))),rol(SYM_ID9,Con(0x7))),SYM_ID18),xor(and(SYM_ID9,SYM_ID22),and(SYM_ID9,SYM_ID20))),SYM_ID27)))
+Formula index: 1 Length: 23 Formula: add(add(add(xor(xor(ror(SYM_ID9,Con(0x6)),ror(SYM_ID9,Con(0xb))),rol(SYM_ID9,Con(0x7))),SYM_ID18),xor(and(SYM_ID9,SYM_ID22),and(SYM_ID9,SYM_ID20))),SYM_ID27)
+Formula index: 2 Length: 11 Formula: xor(xor(ror(SYM_ID38,Con(0x2)),ror(SYM_ID38,Con(0xd))),rol(SYM_ID38,Con(0xa)))
+Formula index: 3 Length: 25 Formula: add(SYM_ID36,add(add(add(xor(xor(ror(SYM_ID9,Con(0x6)),ror(SYM_ID9,Con(0xb))),rol(SYM_ID9,Con(0x7))),SYM_ID18),xor(and(SYM_ID9,SYM_ID22),and(SYM_ID9,SYM_ID20))),SYM_ID27))
+Formula index: 4 Length: 27 Formula: add(add(SYM_ID36,add(add(add(xor(xor(ror(SYM_ID9,Con(0x6)),ror(SYM_ID9,Con(0xb))),rol(SYM_ID9,Con(0x7))),SYM_ID18),xor(and(SYM_ID9,SYM_ID22),and(SYM_ID9,SYM_ID20))),SYM_ID27)),SYM_ID55)
+Formula index: 5 Length: 23 Formula: add(xor(and(SYM_ID47,SYM_ID49),xor(and(SYM_ID38,SYM_ID47),and(SYM_ID38,SYM_ID49))),xor(xor(ror(SYM_ID38,Con(0x2)),ror(SYM_ID38,Con(0xd))),rol(SYM_ID38,Con(0xa))))

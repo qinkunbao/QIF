@@ -1,0 +1,5 @@
+size: 4
+Formula index: 0 Length: 7 Formula: xor(xor(SYM_ID29,ror(SYM_ID18,Con(0x2))),SYM_ID31)
+Formula index: 1 Length: 19 Formula: add(rol(add(SYM_ID15,sub(add(rol(SYM_ID9,Con(0x1)),SYM_ID4),Con(0x70e44324))),Con(0x5)),xor(xor(SYM_ID29,ror(SYM_ID18,Con(0x2))),SYM_ID31))
+Formula index: 2 Length: 9 Formula: add(SYM_ID15,sub(add(rol(SYM_ID9,Con(0x1)),SYM_ID4),Con(0x70e44324)))
+Formula index: 3 Length: 7 Formula: xor(SYM_ID25,xor(xor(SYM_ID20,SYM_ID21),SYM_ID23))

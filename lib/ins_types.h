@@ -5,10 +5,13 @@
 #include <array>
 #include <memory>
 #include <cassert>
+#include <iostream>
 
 #include "x86.h"
 
 namespace tana {
+
+    class SEEngine;
 
     const static uint32_t T_BYTE = 1;
     const static uint32_t T_WORD = 2;
@@ -104,27 +107,34 @@ namespace tana {
         std::vector<std::string> oprs;
         std::shared_ptr<Operand> oprd[3];
         Inst_Base();
+        std::string get_opcode_operand() const ;
 
+        virtual void print() const;
         uint32_t get_operand_number() const;
-        virtual bool taint(){ return true; };
-        virtual bool symbolic_execution(){ return true; };
     };
 
     class Inst_Static : public  Inst_Base {
     public:
         Inst_Static();
         void parseOperand();
+
     };
 
     class Inst_Dyn : public Inst_Base {
     public:
         vcpu_ctx vcpu;
         t_type::T_ADDRESS memory_address;
-        std::string get_opcode_operand() const ;
         Inst_Dyn();
         void parseOperand();
+		virtual bool symbolic_execution(SEEngine &se)
+		{
 
-    };
+		    std::cout << "Index: " << id <<" Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
+		    return true;
+		};
+		virtual bool taint(){ return true; };
+
+	};
 
     class Routine {
     public:
@@ -134,5 +144,192 @@ namespace tana {
         std::string module_name;
         Routine(): start_addr(0), end_addr(0), rtn_name(), module_name() {}
     };
+
+
+    namespace inst_dyn_details {
+        bool two_operand(SEEngine &se, Inst_Dyn *inst);
+    }
+
+
+	class Dyn_X86_INS_PUSH : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_POP : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_NEG : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_NOT : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+
+	};
+
+	class Dyn_X86_INS_INC : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_DEC : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_MOVSX : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_MOVZX : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_CMOVB : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_MOV : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) override;
+	};
+
+	class Dyn_X86_INS_LEA : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_XCHG : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_SBB : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_IMUL : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_SHLD : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	class Dyn_X86_INS_SHRD : public Inst_Dyn {
+	public:
+		bool symbolic_execution(SEEngine &se) final;
+	};
+
+	//two operands
+
+    class Dyn_X86_INS_ADD : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+
+    };
+
+    class Dyn_X86_INS_SUB : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+
+    };
+
+
+    class Dyn_X86_INS_AND : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+    };
+
+	class Dyn_X86_INS_ADC : public Inst_Dyn {
+	public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+	};
+
+    class Dyn_X86_INS_ROR : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+    };
+
+    class Dyn_X86_INS_ROL : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+    };
+
+    class Dyn_X86_INS_OR : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+    };
+
+    class Dyn_X86_INS_XOR : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+    };
+
+    class Dyn_X86_INS_SHL : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+    };
+
+    class Dyn_X86_INS_SHR : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+    };
+
+    class Dyn_X86_INS_SAR : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final
+        {
+            return inst_dyn_details::two_operand(se, this);
+        }
+    };
+
+    class Inst_Dyn_Factory
+    {
+    public:
+        static std::unique_ptr<Inst_Dyn> makeInst (x86::x86_insn id);
+    };
+
 
 }

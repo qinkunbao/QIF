@@ -1,0 +1,4 @@
+8048f72;mov dword ptr [edx], eax;0,94be008,5c,bffafba0,bffafba0,bffafba0,bffafb8c,bffafc38,bffafba0,
+8048f74;lea ecx, ptr [ecx-0x4];0,94be008,5c,bffafba0,bffafba0,bffafba0,bffafb8c,bffafc38,0,
+8048f77;test ecx, 0xfffffffc;0,94be008,58,bffafba0,bffafba0,bffafba0,bffafb8c,bffafc38,0,
+8048f7d;lea edx, ptr [edx+0x4];0,94be008,58,bffafba0,bffafba0,bffafba0,bffafb8c,bffafc38,0,

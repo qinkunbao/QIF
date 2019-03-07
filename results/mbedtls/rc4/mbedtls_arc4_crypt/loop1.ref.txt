@@ -1,0 +1,5 @@
+Index: 51 Unsupported Instruction: cmp eax, dword ptr [ebp+0xc]
+size: 3
+Formula index: 0 Length: 13 Formula: and(add(and(and(SYM_ID26,Con(0xff)),Con(0xff)),and(and(SYM_ID16,Con(0xff)),Con(0xff))),Con(0xff))
+Formula index: 1 Length: 7 Formula: xor(and(SYM_ID45,Con(0xff)),and(SYM_ID38,Con(0xff)))
+Formula index: 2 Length: 9 Formula: and(add(and(and(SYM_ID16,Con(0xff)),Con(0xff)),SYM_ID21),Con(0xff))

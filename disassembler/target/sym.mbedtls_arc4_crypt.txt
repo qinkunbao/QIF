@@ -1,0 +1,90 @@
+/ (fcn) sym.mbedtls_arc4_crypt 223
+|   sym.mbedtls_arc4_crypt (int arg_8h, int arg_ch, int arg_10h, int arg_14h);
+| ; var int local_1ch @ ebp-0x1c
+| ; var int local_18h @ ebp-0x18
+| ; var int local_14h @ ebp-0x14
+| ; var int local_10h @ ebp-0x10
+| ; var int local_ch @ ebp-0xc
+| ; var int local_8h @ ebp-0x8
+| ; arg int arg_8h @ ebp+0x8
+| ; arg int arg_ch @ ebp+0xc
+| ; arg int arg_10h @ ebp+0x10
+| ; arg int arg_14h @ ebp+0x14
+| 0x080487a3      push ebp
+| 0x080487a4      mov ebp, esp
+| 0x080487a6      push ebx
+| 0x080487a7      sub esp, 0x20
+| 0x080487aa      mov eax, dword [arg_8h]
+| 0x080487ad      mov eax, dword [eax]
+| 0x080487af      mov dword [local_1ch], eax
+| 0x080487b2      mov eax, dword [arg_8h]
+| 0x080487b5      mov eax, dword [eax + 4]
+| 0x080487b8      mov dword [local_18h], eax
+| 0x080487bb      mov eax, dword [arg_8h]
+| 0x080487be      add eax, 8
+| 0x080487c1      mov dword [local_10h], eax
+| 0x080487c4      mov dword [local_14h], 0
+| 0x080487cb      jmp 0x804885a
+| 0x080487d0      mov eax, dword [local_1ch]
+| 0x080487d3      add eax, 1
+| 0x080487d6      and eax, 0xff
+| 0x080487db      mov dword [local_1ch], eax
+| 0x080487de      mov edx, dword [local_1ch]
+| 0x080487e1      mov eax, dword [local_10h]
+| 0x080487e4      add eax, edx
+| 0x080487e6      movzx eax, byte [eax]
+| 0x080487e9      movzx eax, al
+| 0x080487ec      mov dword [local_ch], eax
+| 0x080487ef      mov edx, dword [local_18h]
+| 0x080487f2      mov eax, dword [local_ch]
+| 0x080487f5      add eax, edx
+| 0x080487f7      and eax, 0xff
+| 0x080487fc      mov dword [local_18h], eax
+| 0x080487ff      mov edx, dword [local_18h]
+| 0x08048802      mov eax, dword [local_10h]
+| 0x08048805      add eax, edx
+| 0x08048807      movzx eax, byte [eax]
+| 0x0804880a      movzx eax, al
+| 0x0804880d      mov dword [local_8h], eax
+| 0x08048810      mov edx, dword [local_1ch]
+| 0x08048813      mov eax, dword [local_10h]
+| 0x08048816      add eax, edx
+| 0x08048818      mov edx, dword [local_8h]
+| 0x0804881b      mov byte [eax], dl
+| 0x0804881d      mov edx, dword [local_18h]
+| 0x08048820      mov eax, dword [local_10h]
+| 0x08048823      add eax, edx
+| 0x08048825      mov edx, dword [local_ch]
+| 0x08048828      mov byte [eax], dl
+| 0x0804882a      mov edx, dword [arg_14h]
+| 0x0804882d      mov eax, dword [local_14h]
+| 0x08048830      add eax, edx
+| 0x08048832      mov ecx, dword [arg_10h]
+| 0x08048835      mov edx, dword [local_14h]
+| 0x08048838      add edx, ecx
+| 0x0804883a      movzx ebx, byte [edx]
+| 0x0804883d      mov edx, dword [local_ch]
+| 0x08048840      mov ecx, edx
+| 0x08048842      mov edx, dword [local_8h]
+| 0x08048845      add edx, ecx
+| 0x08048847      movzx ecx, dl
+| 0x0804884a      mov edx, dword [local_10h]
+| 0x0804884d      add edx, ecx
+| 0x0804884f      movzx edx, byte [edx]
+| 0x08048852      xor edx, ebx
+| 0x08048854      mov byte [eax], dl
+| 0x08048856      add dword [local_14h], 1
+| 0x0804885a      mov eax, dword [local_14h]
+| 0x0804885d      cmp eax, dword [arg_ch]
+| 0x08048860      jb 0x80487d0
+| 0x08048866      mov eax, dword [arg_8h]
+| 0x08048869      mov edx, dword [local_1ch]
+| 0x0804886c      mov dword [eax], edx
+| 0x0804886e      mov eax, dword [arg_8h]
+| 0x08048871      mov edx, dword [local_18h]
+| 0x08048874      mov dword [eax + 4], edx
+| 0x08048877      mov eax, 0
+| 0x0804887c      add esp, 0x20
+| 0x0804887f      pop ebx
+| 0x08048880      pop ebp
+\ 0x08048881      ret

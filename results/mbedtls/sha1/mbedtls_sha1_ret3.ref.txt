@@ -1,0 +1,200 @@
+Unknown data operands: nop  Addr: b7f01a8e
+Index: 2 Unsupported Instruction: jmp dword ptr [ebx+0x8]
+Index: 8 Unsupported Instruction: call 0xb7f067e0
+Index: 14 Unsupported Instruction: call 0xb7f1176d
+Index: 16 Unsupported Instruction: ret
+Index: 36 Unsupported Instruction: cmp dl, 0x7
+Index: 38 Unsupported Instruction: jnz 0xb7f0696f
+Index: 39 Unsupported Instruction: test byte ptr [ebx+0xd], 0x3
+Index: 41 Unsupported Instruction: jnz 0xb7f06910
+Index: 43 Unsupported Instruction: test edx, edx
+Index: 44 Unsupported Instruction: jz 0xb7f068f0
+Index: 51 Unsupported Instruction: test ecx, ecx
+Index: 53 Unsupported Instruction: None edx, ecx
+Index: 55 Unsupported Instruction: test ecx, ecx
+Index: 57 Unsupported Instruction: jnz 0xb7f06950
+Index: 68 Unsupported Instruction: call 0xb7f01a60
+Index: 75 Unsupported Instruction: call 0xb7f11771
+Index: 77 Unsupported Instruction: ret
+Index: 86 Unsupported Instruction: test al, al
+Index: 87 Unsupported Instruction: jz 0xb7f01aa3
+Index: 88 Unsupported Instruction: data16 nop 
+Index: 95 Unsupported Instruction: test al, al
+Index: 96 Unsupported Instruction: jnz 0xb7f01a90
+Index: 103 Unsupported Instruction: test al, al
+Index: 104 Unsupported Instruction: jnz 0xb7f01a90
+Index: 111 Unsupported Instruction: test al, al
+Index: 112 Unsupported Instruction: jnz 0xb7f01a90
+Index: 119 Unsupported Instruction: test al, al
+Index: 120 Unsupported Instruction: jnz 0xb7f01a90
+Index: 127 Unsupported Instruction: test al, al
+Index: 128 Unsupported Instruction: jnz 0xb7f01a90
+Index: 135 Unsupported Instruction: test al, al
+Index: 136 Unsupported Instruction: jnz 0xb7f01a90
+Index: 143 Unsupported Instruction: test al, al
+Index: 144 Unsupported Instruction: jnz 0xb7f01a90
+Index: 151 Unsupported Instruction: test al, al
+Index: 152 Unsupported Instruction: jnz 0xb7f01a90
+Index: 159 Unsupported Instruction: test al, al
+Index: 160 Unsupported Instruction: jnz 0xb7f01a90
+Index: 167 Unsupported Instruction: test al, al
+Index: 168 Unsupported Instruction: jnz 0xb7f01a90
+Index: 175 Unsupported Instruction: test al, al
+Index: 176 Unsupported Instruction: jnz 0xb7f01a90
+Index: 183 Unsupported Instruction: test al, al
+Index: 184 Unsupported Instruction: jnz 0xb7f01a90
+Index: 191 Unsupported Instruction: test al, al
+Index: 192 Unsupported Instruction: jnz 0xb7f01a90
+Index: 199 Unsupported Instruction: test al, al
+Index: 200 Unsupported Instruction: jnz 0xb7f01a90
+Index: 207 Unsupported Instruction: test al, al
+Index: 208 Unsupported Instruction: jnz 0xb7f01a90
+Index: 215 Unsupported Instruction: test al, al
+Index: 216 Unsupported Instruction: jnz 0xb7f01a90
+Index: 223 Unsupported Instruction: test al, al
+Index: 224 Unsupported Instruction: jnz 0xb7f01a90
+Index: 231 Unsupported Instruction: test al, al
+Index: 232 Unsupported Instruction: jnz 0xb7f01a90
+Index: 239 Unsupported Instruction: test al, al
+Index: 240 Unsupported Instruction: jnz 0xb7f01a90
+Index: 247 Unsupported Instruction: test al, al
+Index: 248 Unsupported Instruction: jnz 0xb7f01a90
+Index: 255 Unsupported Instruction: test al, al
+Index: 256 Unsupported Instruction: jnz 0xb7f01a90
+Index: 263 Unsupported Instruction: test al, al
+Index: 264 Unsupported Instruction: jnz 0xb7f01a90
+Index: 271 Unsupported Instruction: test al, al
+Index: 272 Unsupported Instruction: jnz 0xb7f01a90
+Index: 279 Unsupported Instruction: test esi, esi
+Index: 280 Unsupported Instruction: jz 0xb7f01ad6
+Index: 283 Unsupported Instruction: test ecx, ecx
+Index: 285 Unsupported Instruction: jnz 0xb7f01c92
+Index: 286 Unsupported Instruction: test eax, eax
+Index: 288 Unsupported Instruction: jz 0xb7f01cb8
+Index: 296 Unsupported Instruction: jmp 0xb7f01b25
+Index: 311 Unsupported Instruction: call 0xb7f00fc0
+Index: 316 Unsupported Instruction: call 0xb7f11769
+Index: 318 Unsupported Instruction: ret
+Index: 337 Unsupported Instruction: nop
+Index: 340 Unsupported Instruction: cmp edi, dword ptr [esp+0x88]
+Index: 341 Unsupported Instruction: jz 0xb7f01108
+Index: 345 Unsupported Instruction: jz 0xb7f01041
+Index: 346 Unsupported Instruction: test byte ptr [edi+0x195], 0x20
+Index: 347 Unsupported Instruction: jnz 0xb7f01108
+Index: 349 Unsupported Instruction: test byte ptr [eax-0x300], 0x8
+Index: 350 Unsupported Instruction: jnz 0xb7f01120
+Index: 352 Unsupported Instruction: test eax, eax
+Index: 354 Unsupported Instruction: jz 0xb7f01108
+Index: 360 Unsupported Instruction: test edx, edx
+Index: 365 Unsupported Instruction: jz 0xb7f01160
+Index: 379 Unsupported Instruction: test al, 0x1
+Index: 380 Unsupported Instruction: jnz 0xb7f015a0
+Index: 383 Unsupported Instruction: test edx, edx
+Index: 384 Unsupported Instruction: jz 0xb7f01108
+Index: 386 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 387 Unsupported Instruction: None 0xb7f01010
+Index: 390 Unsupported Instruction: cmp edi, dword ptr [esp+0x88]
+Index: 391 Unsupported Instruction: jz 0xb7f01108
+Index: 395 Unsupported Instruction: jz 0xb7f01041
+Index: 396 Unsupported Instruction: test byte ptr [edi+0x195], 0x20
+Index: 397 Unsupported Instruction: jnz 0xb7f01108
+Index: 399 Unsupported Instruction: test byte ptr [eax-0x300], 0x8
+Index: 400 Unsupported Instruction: jnz 0xb7f01120
+Index: 402 Unsupported Instruction: test eax, eax
+Index: 404 Unsupported Instruction: jz 0xb7f01108
+Index: 410 Unsupported Instruction: test edx, edx
+Index: 415 Unsupported Instruction: jz 0xb7f01160
+Index: 429 Unsupported Instruction: test al, 0x1
+Index: 430 Unsupported Instruction: jnz 0xb7f015a0
+Index: 433 Unsupported Instruction: div dword ptr [esp+0x18]
+Index: 436 Unsupported Instruction: test eax, eax
+Index: 437 Unsupported Instruction: jz 0xb7f010d2
+Index: 447 Unsupported Instruction: jmp 0xb7f015eb
+Index: 452 Unsupported Instruction: jnz 0xb7f015e0
+Index: 454 Unsupported Instruction: test al, 0x1
+Index: 455 Unsupported Instruction: jnz 0xb7f017fb
+Index: 460 Unsupported Instruction: jnz 0xb7f015e0
+Index: 478 Unsupported Instruction: call 0xb7f00e30
+Index: 483 Unsupported Instruction: call 0xb7f11769
+Index: 485 Unsupported Instruction: ret
+Index: 493 Unsupported Instruction: test ebp, ebp
+Index: 494 Unsupported Instruction: jnz 0xb7f00e62
+Index: 496 Unsupported Instruction: cmp word ptr [esi+0xe], 0x0
+Index: 497 Unsupported Instruction: None al
+Index: 499 Unsupported Instruction: test dword ptr [esp+0x34], ebp
+Index: 500 Unsupported Instruction: jnz 0xb7f00f43
+Index: 502 Unsupported Instruction: bt ebp, edi
+Index: 503 Unsupported Instruction: None 0xb7f00f43
+Index: 504 Unsupported Instruction: cmp esi, edx
+Index: 507 Unsupported Instruction: jz 0xb7f00eab
+Index: 509 Unsupported Instruction: test edi, edi
+Index: 511 Unsupported Instruction: jz 0xb7f00f00
+Index: 512 Unsupported Instruction: test eax, eax
+Index: 513 Unsupported Instruction: jz 0xb7f00ef5
+Index: 522 Unsupported Instruction: cmp eax, ecx
+Index: 523 Unsupported Instruction: None 0xb7f00ef5
+Index: 530 Unsupported Instruction: ret
+Index: 532 Unsupported Instruction: test eax, eax
+Index: 533 Unsupported Instruction: jnz 0xb7f019c1
+Index: 538 Unsupported Instruction: jmp 0xb7f01200
+Index: 540 Unsupported Instruction: test eax, eax
+Index: 541 Unsupported Instruction: jz 0xb7f014b0
+Index: 546 Unsupported Instruction: cmp al, 0x2
+Index: 547 Unsupported Instruction: jz 0xb7f01240
+Index: 548 Unsupported Instruction: cmp al, 0xa
+Index: 549 Unsupported Instruction: jz 0xb7f01270
+Index: 550 Unsupported Instruction: cmp al, 0x1
+Index: 551 Unsupported Instruction: jz 0xb7f01252
+Index: 562 Unsupported Instruction: ret
+Index: 564 Unsupported Instruction: cmp eax, 0x0
+Index: 565 Unsupported Instruction: jle 0xb7f01b10
+Index: 568 Unsupported Instruction: test eax, eax
+Index: 569 Unsupported Instruction: jz 0xb7f01cb8
+Index: 572 Unsupported Instruction: test eax, eax
+Index: 573 Unsupported Instruction: jz 0xb7f01b76
+Index: 576 Unsupported Instruction: cmp dl, 0x3
+Index: 577 Unsupported Instruction: jz 0xb7f01bd0
+Index: 583 Unsupported Instruction: cmp dl, 0x2
+Index: 584 Unsupported Instruction: jz 0xb7f01ce7
+Index: 586 Unsupported Instruction: test edi, edi
+Index: 587 Unsupported Instruction: jz 0xb7f01e68
+Index: 590 Unsupported Instruction: test edx, 0x804
+Index: 591 Unsupported Instruction: jnz 0xb7f01e77
+Index: 600 Unsupported Instruction: ret 0x14
+Index: 604 Unsupported Instruction: test eax, eax
+Index: 605 Unsupported Instruction: jnz 0xb7f06918
+Index: 607 Unsupported Instruction: test ebx, ebx
+Index: 608 Unsupported Instruction: jz 0xb7f06900
+Index: 609 Unsupported Instruction: test edi, edi
+Index: 610 Unsupported Instruction: jz 0xb7f06908
+Index: 615 Unsupported Instruction: cmp dl, 0xa
+Index: 616 Unsupported Instruction: jz 0xb7f06968
+Index: 619 Unsupported Instruction: test edx, edx
+Index: 620 Unsupported Instruction: jnz 0xb7f068e3
+Index: 627 Unsupported Instruction: ret
+Index: 632 Unsupported Instruction: ret 0xc
+Index: 637 Unsupported Instruction: call 0xb55c2960
+Index: 639 Unsupported Instruction: ret
+Index: 641 Unsupported Instruction: cmp dword ptr [ebp+0x10], 0x0
+Index: 642 Unsupported Instruction: jnz 0xb55fb004
+Index: 662 Unsupported Instruction: cmp eax, dword ptr [ebp+0x10]
+Index: 663 Unsupported Instruction: None 0xb55fb04c
+Index: 664 Unsupported Instruction: cmp dword ptr [ebp-0x14], 0x0
+Index: 665 Unsupported Instruction: jz 0xb55fb0da
+Index: 666 Unsupported Instruction: cmp dword ptr [ebp+0x10], 0x3f
+Index: 667 Unsupported Instruction: None 0xb55fb0b3
+Index: 668 Unsupported Instruction: cmp dword ptr [ebp+0x10], 0x0
+Index: 669 Unsupported Instruction: jz 0xb55fb103
+Index: 678 Unsupported Instruction: call 0xb55c1640
+Index: 679 Unsupported Instruction: jmp dword ptr [ebx+0xc4]
+size: 10
+Formula index: 0 Length: 7 Formula: add(and(SYM_ID432,Con(0x3f)),add(SYM_ID431,Con(0x1c)))
+Formula index: 1 Length: 7 Formula: add(add(SYM_ID341,imul(SYM_ID340,Con(0x4))),Con(0x4))
+Formula index: 2 Length: 11 Formula: sar(sub(add(add(SYM_ID341,imul(SYM_ID340,Con(0x4))),Con(0x4)),SYM_ID341),Con(0x2))
+Formula index: 3 Length: 15 Formula: add(shl(sar(sub(add(add(SYM_ID341,imul(SYM_ID340,Con(0x4))),Con(0x4)),SYM_ID341),Con(0x2)),Con(0x4)),SYM_ID28)
+Formula index: 4 Length: 13 Formula: add(sub(sub(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x4c))
+Formula index: 5 Length: 13 Formula: add(sub(sub(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x48))
+Formula index: 6 Length: 7 Formula: sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x50))
+Formula index: 7 Length: 7 Formula: sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x48))
+Formula index: 8 Length: 7 Formula: add(shl(shr(SYM_ID22,Con(0x8)),Con(0x4)),SYM_ID28)
+Formula index: 9 Length: 9 Formula: add(shl(and(and(SYM_ID34,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID41)

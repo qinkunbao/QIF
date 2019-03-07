@@ -1,0 +1,2 @@
+8048830;mov dword ptr [edi+eax*4], eax;0,0,bfd2bf40,804a020,8048a15,bfd2bb00,bfd2bacc,fffffffb,bfd2bb00,
+8048833;add al, 0x1;0,0,bfd2bf40,804a020,8048a15,bfd2bb00,bfd2bacc,fffffffb,0,

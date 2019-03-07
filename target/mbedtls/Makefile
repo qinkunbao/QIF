@@ -3,7 +3,7 @@ CFLAGS = -m32
 CFLAGS_DEBUG = -m32 -DDEBUG
 PWD= $(shell pwd)
 MBEDTLS = $(PWD)/mbedtls/build/library
-LDFLAGS= -L./mbedtls/build/library -Wl,-rpath $(MBEDTLS) -I./mbedtls/include -lmbedcrypto
+LDFLAGS= -L./mbedtls/build/library -Wl,-rpath $(MBEDTLS) -I./mbedtls/include -l:libmbedcrypto.a
 
 
 # Note:  We're using rpath to tell the binary where to find mbedtls. 

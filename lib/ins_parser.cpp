@@ -3,6 +3,7 @@
 
 
 #include "ins_parser.h"
+#include "ins_types.h"
 
 namespace tana {
 
@@ -11,6 +12,105 @@ namespace tana {
     std::shared_ptr<Operand> createDataOperand(std::string s, uint32_t addr);
 
     std::shared_ptr<Operand> createOperand(std::string s, uint32_t addr);
+
+    std::shared_ptr<Operand> createAddrOperandStatic(std::string s)
+    {
+        std::regex addr1("0x[[:xdigit:]]+");
+        std::regex addr2("eax|ebx|ecx|edx|esi|edi|esp|ebp");
+        std::regex addr3("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
+
+        std::regex addr4("(eax|ebx|ecx|edx|esi|edi|esp|ebp)(\\+|-)(0x[[:xdigit:]]+)");
+        std::regex addr5("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\+(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
+        std::regex addr6("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])(\\+|-)(0x[[:xdigit:]]+)");
+
+        std::regex addr7(
+                "(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\+(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])(\\+|-)(0x[[:xdigit:]]+)");
+
+
+        std::regex addr8("arg(.*)");
+        std::regex addr9("local(.*)");
+
+        //Operand *opr = new Operand();
+        std::shared_ptr<Operand> opr(new Operand());
+        std::smatch m;
+
+        // pay attention to the matching order: long sequence should be matched first,
+        // then the subsequence.
+        if (regex_search(s, m, addr8)) { // addr8: arg_8h
+            opr->type = Operand::Mem;
+            opr->tag = 8;
+            opr->field[0] = s;
+            return opr;
+        }
+
+        if (regex_search(s, m, addr9)) { // addr9: local_1ch
+            opr->type = Operand::Mem;
+            opr->tag = 9;
+            opr->field[0] = s;
+            return opr;
+        }
+
+
+        if (regex_search(s, m, addr7)) { // addr7: eax+ebx*2+0xfffff1
+            opr->type = Operand::Mem;
+            opr->tag = 7;
+            opr->field[0] = m[1]; // eax
+            opr->field[1] = m[2]; // ebx
+            opr->field[2] = m[3]; // 2
+            opr->field[3] = m[4]; // +
+            opr->field[4] = m[5]; // 0xfffff1
+            return opr;
+        }
+        if (regex_search(s, m, addr4)) { // addr4: eax+0xfffff1
+            // cout << "addr 4: " << s << endl;
+            opr->type = Operand::Mem;
+            opr->tag = 4;
+            opr->field[0] = m[1];
+            opr->field[1] = m[2];
+            opr->field[2] = m[3];
+            return opr;
+        }
+        if (regex_search(s, m, addr5)) { // addr5: eax+ebx*2
+            opr->type = Operand::Mem;
+            opr->tag = 5;
+            opr->field[0] = m[1]; // eax
+            opr->field[1] = m[2]; // ebx
+            opr->field[2] = m[3]; // 2
+            return opr;
+        }
+        if (regex_search(s, m, addr6)) { // addr6: eax*2+0xfffff1
+            opr->type = Operand::Mem;
+            opr->tag = 6;
+            opr->field[0] = m[1]; // eax
+            opr->field[1] = m[2]; // 2
+            opr->field[2] = m[3]; // +
+            opr->field[3] = m[4]; // 0xfffff1
+            return opr;
+        }
+        if (regex_search(s, m, addr3)) { // addr3: eax*2
+            opr->type = Operand::Mem;
+            opr->tag = 3;
+            opr->field[0] = m[1];
+            opr->field[1] = m[2];
+            return opr;
+        }
+        if (regex_search(s, m, addr1)) { // addr1: Immdiate value address
+            opr->type = Operand::Mem;
+            opr->tag = 1;
+            opr->field[0] = m[0];
+            return opr;
+        }
+        if (regex_search(s, m, addr2)) { // addr2: 32 bit register address
+            // cout << "addr 2: " << s << endl;
+            opr->type = Operand::Mem;
+            opr->tag = 2;
+            opr->field[0] = m[0];
+            return opr;
+        }
+
+        std::cout << "Unknown addr operands: " << s << std::endl;
+        return opr;
+    }
 
     std::shared_ptr<Operand> createAddrOperand(std::string s) {
         // regular expressions addresses
@@ -84,6 +184,8 @@ namespace tana {
     std::shared_ptr<Operand> createDataOperand(std::string s, uint32_t addr) {
         // Regular expressions for Immvalue and Registers
         std::regex immvalue("0x[[:xdigit:]]+");
+        std::regex immvalue1("[[:xdigit:]]+");
+
         std::regex reg8("al|ah|bl|bh|cl|ch|dl|dh");
         std::regex reg16("ax|bx|cx|dx|si|di|bp|cs|ds|es|fs|gs|ss");
         std::regex reg32("eax|ebx|ecx|edx|esi|edi|esp|ebp|st0|st1|st2|st3|st4|st5");
@@ -95,34 +197,88 @@ namespace tana {
             opr->type = Operand::Reg;
             opr->bit = 32;
             opr->field[0] = m[0];
-        } else if (regex_search(s, m, reg16)) { // 16 bit register
+            return opr;
+        }
+        if (regex_search(s, m, reg16)) { // 16 bit register
             opr->type = Operand::Reg;
             opr->bit = 16;
             opr->field[0] = m[0];
-        } else if (regex_search(s, m, reg8)) { // 8 bit register
+            return opr;
+        }
+        if (regex_search(s, m, reg8)) { // 8 bit register
             opr->type = Operand::Reg;
             opr->bit = 8;
             opr->field[0] = m[0];
-        } else if (regex_search(s, m, immvalue)) {
+            return opr;
+        }
+        if (regex_search(s, m, immvalue)) {
             opr->type = Operand::ImmValue;
             opr->bit = 32;
             opr->field[0] = m[0];
-        } else {
-            std::cout << "Unknown data operands: " << s << " Addr: " << std::hex << addr << std::dec << "\n";
+            return opr;
+        }
+        if (regex_search(s, m, immvalue1)) {
+            opr->type = Operand::ImmValue;
+            opr->bit = 32;
+            opr->field[0] = m[0];
+            return opr;
+        }
+        std::cout << "Unknown data operands: " << s << " Addr: " << std::hex << addr << std::dec << "\n";
+        return opr;
+    }
+
+    std::shared_ptr<Operand> createOperandStatic(std::string s, uint32_t addr)
+    {
+        std::regex ptr("\\[(.*)\\]");
+        std::regex byteptr("byte \\[(.*)\\]");
+        std::regex wordptr("word \\[(.*)\\]");
+        std::regex dwordptr("dword \\[(.*)\\]");
+        std::regex segptr("dword (fs|gs):\\[(.*)\\]");
+        std::smatch m;
+
+        std::shared_ptr<Operand> opr;
+
+        if ((s.find("[") != std::string::npos)&&(s.find("]") != std::string::npos))
+        {
+            if (regex_search(s, m, byteptr)) {
+                opr = createAddrOperandStatic(m[1]);
+                opr->bit = 8;
+            } else if (regex_search(s, m, dwordptr)) {
+                opr = createAddrOperandStatic(m[1]);
+                opr->bit = 32;
+            } else if (regex_search(s, m, segptr)) {
+                opr = createAddrOperandStatic(m[2]);
+                opr->issegaddr = true;
+                opr->bit = 32;
+                opr->segreg = m[1];
+            } else if (regex_search(s, m, wordptr)) {
+                opr = createAddrOperandStatic(m[1]);
+                opr->bit = 16;
+            } else if (regex_search(s, m, ptr)) {
+                opr = createAddrOperandStatic(m[1]);
+                opr->bit = 0;
+            } else {
+                std::cout << "Unkown addr: " << s << std::endl;
+            }
+
+        }
+        else
+        {
+            opr = createDataOperand(s, addr);
         }
 
         return opr;
     }
 
 
-    std::shared_ptr<Operand> createOperand(std::string s, uint32_t addr) {
+    std::shared_ptr<Operand> createOperand(std::string s, uint32_t addr)
+    {
         std::regex ptr("ptr \\[(.*)\\]");
         std::regex byteptr("byte ptr \\[(.*)\\]");
         std::regex wordptr("word ptr \\[(.*)\\]");
         std::regex dwordptr("dword ptr \\[(.*)\\]");
         std::regex segptr("dword ptr (fs|gs):\\[(.*)\\]");
         std::smatch m;
-
 
         std::shared_ptr<Operand> opr;
 
@@ -145,7 +301,7 @@ namespace tana {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 0;
             } else {
-                std::cout << "Unkown addr: " << s << std::endl;
+                std::cout << "Unknown addr: " << s << std::endl;
             }
         } else {                   // Operand is data
             // cout << "data operand: " << s << endl;
@@ -156,18 +312,8 @@ namespace tana {
     }
 
 
-    void parseOperand(std::vector<Inst_Base> *Inst)
-    {
-        for(auto it = Inst->begin(); it != Inst->end(); ++it)
 
-            for (uint32_t i = 0; i < it->get_operand_number(); ++i)
-            {
-                it->oprd[i] = createOperand(it->oprs[i], it->addrn);
-            }
-    }
-
-
-    bool parse_trace(std::ifstream *trace_file, std::vector<Inst_Dyn> *L) {
+    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Dyn>> &L) {
         uint32_t batch_size = 1;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, batch_size, id);
@@ -180,7 +326,7 @@ namespace tana {
 
 
     bool parse_trace(std::ifstream *trace_file, t_type::T_ADDRESS &addr_taint, \
-                     t_type::T_SIZE &size_taint, std::vector<Inst_Dyn> *L) {
+                     t_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Dyn>> &L) {
         uint32_t batch_size = 1000;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, 1, addr_taint, size_taint, id);
@@ -194,13 +340,13 @@ namespace tana {
     }
 
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<Inst_Dyn> *L, uint32_t max_instructions, uint32_t num) {
+    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Dyn>> &L, uint32_t max_instructions, uint32_t num) {
         t_type::T_ADDRESS addr_taint = 0;
         t_type::T_SIZE size_taint = 0;
         return parse_trace(trace_file, L, max_instructions, addr_taint, size_taint, num);
     }
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<Inst_Dyn> *L, uint32_t max_instructions,
+    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Dyn>> &L, uint32_t max_instructions,
                      t_type::T_ADDRESS &addr_taint, t_type::T_SIZE &size_taint, uint32_t num) {
         std::string line;
         uint32_t id_count = 1;
@@ -230,24 +376,27 @@ namespace tana {
             std::istringstream strbuf(line);
             std::string temp, disasstr, temp_addr;
 
-            std::unique_ptr<Inst_Dyn> ins(new Inst_Dyn());
-
-            ins->id = num++;
+            auto ins_index = num++;
             id_count++;
+
             // instruction address
             getline(strbuf, temp_addr, ';');
-            ins->addrn = stoul(temp_addr, 0, 16);
+            auto ins_addrn = std::stoul(temp_addr, 0, 16);
 
             // get dissassemble string
             getline(strbuf, disasstr, ';');
-            //ins->dissass = disasstr;
             std::istringstream disasbuf(disasstr);
 
-            std::string opcstr = "";
+            std::string opcstr;
             getline(disasbuf, opcstr, ' ');
-
             //ins->opcstr = opcstr;
-            ins->instruction_id = x86::insn_string2id(opcstr);
+            auto ins_id = x86::insn_string2id(opcstr);
+
+            std::unique_ptr<Inst_Dyn> ins = Inst_Dyn_Factory::makeInst(ins_id);
+
+            ins->id = ins_index;
+            ins->addrn = ins_addrn;
+            ins->instruction_id = ins_id;
 
             while (disasbuf.good()) {
                 getline(disasbuf, temp, ',');
@@ -272,13 +421,52 @@ namespace tana {
 
             ins->parseOperand();
 
-            L->push_back(*ins);
+            L.push_back(std::move(ins));
 
         }
         if (trace_file->good())
             return false;
         else
             return true;
+    }
+
+    bool get_inst_for_each_block(std::vector<Block> blocks, std::vector<std::vector<Inst_Static>> &L, std::vector<Inst_Static> &fun_inst)
+    {
+        bool copy_flag = false;
+        for(auto const &b : blocks)
+        {
+            auto start_addr = b.addr;
+            auto end_addr = b.end_addr;
+
+            std::vector<Inst_Static> blocks_inst;
+
+            for (auto const &ins : fun_inst)
+            {
+                if (ins.addrn == start_addr)
+                {
+                    copy_flag = true;
+                }
+
+                if (!copy_flag)
+                {
+                    continue;
+                }
+
+                Inst_Static ins_t = ins;
+                blocks_inst.push_back(ins_t);
+
+                if (ins.addrn == end_addr)
+                {
+                    copy_flag = false;
+                    blocks_inst.pop_back();
+                }
+
+
+            }
+
+            L.push_back(blocks_inst);
+        }
+        return true;
     }
 
     bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, std::vector<std::vector<Inst_Static>> &L)
@@ -290,7 +478,7 @@ namespace tana {
         json_file >> blocks_json;
         uint32_t ins_id = 0;
 
-        std::vector<Inst_Base> fun_inst;
+        std::vector<Inst_Static> fun_inst;
 
         for(auto &element: blocks_json)
         {
@@ -348,8 +536,6 @@ namespace tana {
             }
 
 
-            std::cout << line << std::endl;
-
             std::string delimiter = "     ";
             size_t pos = 0;
             std::string str_addr;
@@ -382,10 +568,12 @@ namespace tana {
                     inst.oprs.push_back(temp);
             }
 
-
+            inst.parseOperand();
 
             fun_inst.push_back(inst);
         }
+
+        get_inst_for_each_block(blocks, L, fun_inst);
 
         if (trace_file.good())
             return false;

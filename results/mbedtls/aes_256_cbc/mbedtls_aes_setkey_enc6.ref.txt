@@ -1,0 +1,4 @@
+Index: 10 Unsupported Instruction: test eax, eax
+Index: 11 Unsupported Instruction: jz 0x8048ce0
+Index: 56 Unsupported Instruction: cmp dword ptr [ebp-0x818], 0x0
+Index: 57 Unsupported Instruction: jz 0x8048e02

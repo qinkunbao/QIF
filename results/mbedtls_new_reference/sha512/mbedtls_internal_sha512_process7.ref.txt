@@ -1,0 +1,2 @@
+size: 1
+Formula index: 0 Length: 6 Formula: or(shld(SYM_ID5,SYM_ID1,Con(0x10)),SYM_ID14)
