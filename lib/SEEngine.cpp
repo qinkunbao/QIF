@@ -12,7 +12,7 @@
 
 namespace tana {
 
-// part of code from https://github.com/s3team/CryptoHunt
+// part of code is from https://github.com/s3team/CryptoHunt
 
     bool SEEngine::isImmSym(uint32_t num) {
         if (imm2sym == false) {
@@ -201,7 +201,7 @@ namespace tana {
         return res;
     }
 
-    bool SEEngine::isRegSame(Inst_Dyn& instruction1, Inst_Dyn& instruction2) {
+    bool SEEngine::isRegSame(Inst_Dyn &instruction1, Inst_Dyn &instruction2) {
         vcpu_ctx inst1 = instruction1.vcpu;
         vcpu_ctx inst2 = instruction2.vcpu;
         for (uint32_t i = 0; i < GPR_NUM; ++i) {
@@ -366,8 +366,8 @@ namespace tana {
                    std::shared_ptr<Value> v3, std::shared_ptr<Value> v4,
                    std::shared_ptr<Value> v5, std::shared_ptr<Value> v6,
                    std::shared_ptr<Value> v7, std::shared_ptr<Value> v8,
-                   std::vector<Inst_Dyn>::iterator it1,
-                   std::vector<Inst_Dyn>::iterator it2) {
+                   std::vector<std::unique_ptr<Inst_Dyn>>::iterator it1,
+                   std::vector<std::unique_ptr<Inst_Dyn>>::iterator it2) {
         ctx["eax"] = v1;
         ctx["ebx"] = v2;
         ctx["ecx"] = v3;
@@ -390,15 +390,15 @@ namespace tana {
     }
 
     void
-    SEEngine::init(std::vector<Inst_Dyn>::iterator it1,
-                   std::vector<Inst_Dyn>::iterator it2) {
+    SEEngine::init(std::vector<std::unique_ptr<Inst_Dyn>>::iterator it1,
+                   std::vector<std::unique_ptr<Inst_Dyn>>::iterator it2) {
         this->start = it1;
         this->end = it2;
     }
 
     void
-    SEEngine::initAllRegSymol(std::vector<Inst_Dyn>::iterator it1,
-                              std::vector<Inst_Dyn>::iterator it2) {
+    SEEngine::initAllRegSymol(std::vector<std::unique_ptr<Inst_Dyn>>::iterator it1,
+                              std::vector<std::unique_ptr<Inst_Dyn>>::iterator it2) {
         ctx["eax"] = std::make_shared<Value>(SYMBOL);
         ctx["ebx"] = std::make_shared<Value>(SYMBOL);
         ctx["ecx"] = std::make_shared<Value>(SYMBOL);
@@ -414,391 +414,22 @@ namespace tana {
 
 
     int
-    SEEngine::symexec() {
+    SEEngine::run(){
+        for (auto inst = start; inst != end; ++inst)
+        {
+            auto it = inst->get();
+            bool status = it->symbolic_execution(*this);
+            if (x86::SymbolicExecutionNoEffect(it->instruction_id))
+                continue;
 
-        for (auto it = start; it != end; ++it) {
-            // cout << hex << it->addrn << ": ";
-            // cout << it->opcstr << '\n';
-            // skip no effect instructions
-            uint32_t oprnum = it->get_operand_number();
-
-            if (x86::SymbolicExecutionNoEffect(it->instruction_id)) continue;
-
-            if (oprnum == 0) continue;
-
-            auto opcode_id = it->instruction_id;
-            auto opcstr = x86::insn_id2string(opcode_id);
-
-            if (oprnum == 1) {
-                std::shared_ptr<Operand> op0 = it->oprd[0];
-                std::shared_ptr<Value> v0, res;
-                switch (opcode_id) {
-                    case x86::X86_INS_DIV: {
-                        auto eaxID = Registers::convert2RegID("eax");
-                        auto edxID = Registers::convert2RegID("edx");
-                        if (op0->type == Operand::Reg) {
-
-                        }
-                        if (op0->type == Operand::Mem) {
-
-                        }
-                        // TODO
-                    }
-                        break;
-                    case x86::X86_INS_PUSH: {
-                        if (op0->type == Operand::ImmValue) {
-                            uint32_t temp_concrete = stoul(op0->field[0], 0, 16);
-                            v0 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                            memory[it->memory_address] = v0;
-                        } else if (op0->type == Operand::Reg) {
-                            assert(Registers::getRegType(op0->field[0]) == FULL);
-                            memory[it->memory_address] = ctx[getRegName(op0->field[0])];
-                        } else if (op0->type == Operand::Mem) {
-                            // The memaddr in the trace is the read address
-                            // We need to compute the write address
-                            auto reg = Registers::convert2RegID("esp");
-                            uint32_t esp_index = Registers::getRegIndex(reg);
-                            uint32_t esp_value = it->vcpu.gpr[esp_index];
-                            v0 = getMemory(it->memory_address, op0->bit);
-                            memory[esp_value - 4] = v0;
-                        } else {
-                            ERROR("push error: the operand is not Imm, Reg or Mem!");
-                        }
-                    }
-                        break;
-                    case x86::X86_INS_POP: {
-                        if (op0->type == Operand::Reg) {
-                            assert(Registers::getRegType(op0->field[0]) == FULL);
-                            v0 = getMemory(it->memory_address, op0->bit);
-                            ctx[getRegName(op0->field[0])] = v0;
-                        } else {
-                            ERROR("pop error: the operand is not Reg!");
-                        }
-                    }
-                        break;
-                    case x86::X86_INS_NEG:
-                    case x86::X86_INS_NOT: {
-                        if (op0->type == Operand::Reg) {
-                            assert(Registers::getRegType(op0->field[0]) == FULL);
-                            v0 = ctx[getRegName(op0->field[0])];
-                            res = buildop1(opcstr, v0);
-                            ctx[getRegName(op0->field[0])] = res;
-                        } else if (op0->type == Operand::Mem) {
-                            ERROR("neg error: the operand is not Reg!");
-                        }
-                    }
-                        break;
-                    case x86::X86_INS_INC:
-                    case x86::X86_INS_DEC: {
-                        if (op0->type == Operand::Reg) {
-                            v0 = ctx[getRegName(op0->field[0])];
-                        }
-
-                        if (op0->type == Operand::Mem) {
-                            v0 = getMemory(it->memory_address, op0->bit);
-                        }
-                        res = buildop1(opcstr, v0);
-
-                        if (op0->type == Operand::Reg) {
-                            ctx[getRegName(op0->field[0])] = res;
-                        }
-
-                        if (op0->type == Operand::Mem) {
-                            memory[it->memory_address] = res;
-                        }
-                    }
-                        break;
-
-                    default:
-                        std::string err_msg = "instruction " + it->get_opcode_operand() + " is not handled!";
-                        ERROR(err_msg.c_str());
-
-                }
+            if (!status)
+            {
+                ERROR("No recognized instruction");
+                return false;
             }
 
-            if (oprnum == 2) {
-                std::shared_ptr<Operand> op0 = it->oprd[0];
-                std::shared_ptr<Operand> op1 = it->oprd[1];
-                std::shared_ptr<Value> v0, v1, res;
-                switch (opcode_id) {
-                    case x86::X86_INS_MOVSX:
-                    case x86::X86_INS_MOVZX: {   // Hack way
-                        assert(op0->type == Operand::Reg);
-
-                        if (op1->type == Operand::Reg) {
-                            auto reg = Registers::convert2RegID(op1->field[0]);
-                            v1 = getRegister(reg);
-                            ctx[getRegName(op0->field[0])] = v1;
-                            break;
-
-                        }
-                        if (op1->type == Operand::Mem) {
-                            //TODO
-                            v1 = getMemory(it->memory_address, op1->bit);
-                            ctx[getRegName(op0->field[0])] = v1;
-                        }
-                    }
-                        break;
-                    case x86::X86_INS_CMOVB:
-
-                        //case tana::instruction::t_cmovz:
-                        if (next(it) == end) {
-                            break;
-                        }
-                        if (isRegSame(*it, *next(it))) {
-                            break;
-                        }
-                    case x86::X86_INS_MOV: {
-                        if (op0->type == Operand::Reg) {
-                            if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
-                                uint32_t temp_concrete = stoul(op0->field[0], 0, 16);
-                                v1 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                                ctx[getRegName(op0->field[0])] = v1;
-                            } else if (op1->type == Operand::Reg) { // mov reg, reg
-                                ctx[getRegName(op0->field[0])] = ctx[getRegName(op1->field[0])];
-                            } else if (op1->type == Operand::Mem) { // mov reg, dword ptr [ebp+0x1]
-                                /* 1. Get mem address
-                                2. check whether the mem address has been accessed
-                                3. if not, create a new value
-                                4. else load the value in that memory
-                                */
-                                v1 = getMemory(it->memory_address, op1->bit);
-                                ctx[getRegName(op0->field[0])] = v1;
-                            } else {
-                                std::cout << "op1 is not ImmValue, Reg or Mem" << std::endl;
-                                return 1;
-                            }
-                        } else if (op0->type == Operand::Mem) {
-                            if (op1->type == Operand::ImmValue) { // mov dword ptr [ebp+0x1], 0x1111
-                                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-                                memory[it->memory_address] = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                            } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
-                                memory[it->memory_address] = ctx[getRegName(op1->field[0])];
-                            }
-                        } else {
-                            ERROR("Error: The first operand in MOV is not Reg or Mem!");
-                        }
-                    }
-                        break;
-                    case x86::X86_INS_LEA:
-
-                        /* lea reg, ptr [edx+eax*1]
-                        interpret lea instruction based on different address type
-                        1. op0 must be reg
-                        2. op1 must be addr
-                        */
-                        if (op0->type != Operand::Reg || op1->type != Operand::Mem) {
-                            ERROR("lea format error!");
-                        }
-                        switch (op1->tag) {
-                            case 5: {
-                                std::shared_ptr<Value> f0, f1, f2; // corresponding field[0-2] in operand
-                                f0 = ctx[getRegName(op1->field[0])];
-                                f1 = ctx[getRegName(op1->field[1])];
-                                if (op1->field[2] == "1") {
-                                    res = buildop2("add", f0, f1);
-                                    ctx[getRegName(op0->field[0])] = res;
-                                    break;
-                                }
-                                uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
-                                f2 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                                res = buildop2("imul", f1, f2);
-                                res = buildop2("add", f0, res);
-                                ctx[getRegName(op0->field[0])] = res;
-                                break;
-                            }
-                            case 7: {
-                                std::shared_ptr<Value> f0, f1, f2, f3; // addr7: eax+ebx*2+0xfffff1
-                                f0 = ctx[getRegName(op1->field[0])];       //eax
-                                f1 = ctx[getRegName(op1->field[1])];       //ebx
-                                uint32_t temp_concrete1 = stoul(op1->field[2], 0, 16);
-                                f2 = std::make_shared<Value>(CONCRETE, temp_concrete1, this);   //2
-                                std::string sign = op1->field[3];          //+
-                                uint32_t temp_concrete2 = stoul(op1->field[4], 0, 16);
-                                f3 = std::make_shared<Value>(CONCRETE, temp_concrete2, this);   //0xfffff1
-                                assert((sign == "+") || (sign == "-"));
-                                if (op1->field[2] == "1") {
-                                    res = buildop2("add", f0, f1);
-                                } else {
-                                    res = buildop2("imul", f1, f2);
-                                    res = buildop2("add", f0, res);
-                                }
-                                if (sign == "+")
-                                    res = buildop2("add", res, f3);
-                                else
-                                    res = buildop2("sub", res, f3);
-                                ctx[getRegName(op0->field[0])] = res;
-                                break;
-                            }
-                            case 4: {
-                                std::shared_ptr<Value> f0, f1; // addr4: eax+0xfffff1
-                                f0 = ctx[getRegName(op1->field[0])];       //eax
-                                uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
-                                f1 = std::make_shared<Value>(CONCRETE, temp_concrete, this);   //0xfffff1
-                                std::string sign = op1->field[1];          //+
-                                if (sign == "+")
-                                    res = buildop2("add", f0, f1);
-                                else
-                                    res = buildop2("sub", f0, f1);
-                                ctx[getRegName(op0->field[0])] = res;
-                                break;
-                            }
-                            case 6: {
-                                std::shared_ptr<Value> f0, f1, f2; // addr6: eax*2+0xfffff1
-                                f0 = ctx[getRegName(op1->field[0])];
-                                uint32_t temp_concrete1 = stoul(op1->field[1]);
-                                uint32_t temp_concrete2 = stoul(op1->field[3]);
-
-                                f1 = std::make_shared<Value>(CONCRETE, temp_concrete1, this);
-                                f2 = std::make_shared<Value>(CONCRETE, temp_concrete2, this);
-                                std::string sign = op1->field[2];
-                                if (op1->field[1] == "1") {
-                                    res = f0;
-                                } else {
-                                    res = buildop2("imul", f0, f1);
-                                }
-                                if (sign == "+")
-                                    res = buildop2("add", res, f2);
-                                else
-                                    res = buildop2("sub", res, f2);
-                                ctx[getRegName(op0->field[0])] = res;
-                                break;
-                            }
-                            case 3: {
-                                std::shared_ptr<Value> f0, f1;          // addr3: eax*2
-                                f0 = ctx[getRegName(op1->field[0])];
-
-                                uint32_t temp_concrete = stoul(op1->field[1]);
-                                f1 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                                res = buildop2("imul", f0, f1);
-                                ctx[getRegName(op0->field[0])] = res;
-                                break;
-                            }
-
-                            case 2: {
-                                ctx[getRegName(op0->field[0])] = ctx[getRegName(op1->field[0])];
-                                break;
-                            }
-
-                            case 1: {
-                                std::shared_ptr<Value> f0;
-                                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-                                f0 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                                ctx[getRegName(op0->field[0])] = f0;
-                                break;
-                            }
-                            default:
-                                ERROR("Other tags in addr is not ready for lea!");
-                        }
-                        break;
-                    case x86::X86_INS_XCHG:
-                        if (op1->type == Operand::Reg) {
-                            v1 = ctx[getRegName(op1->field[0])];
-                            if (op0->type == Operand::Reg) {
-                                v0 = ctx[getRegName(op0->field[0])];
-                                ctx[getRegName(op1->field[0])] = v0; // xchg reg, reg
-                                ctx[getRegName(op0->field[0])] = v1;
-                            } else if (op0->type == Operand::Mem) {
-                                v0 = getMemory(it->memory_address, op0->bit);
-                                ctx[getRegName(op1->field[0])] = v0; // xchg mem, reg
-                                memory[it->memory_address] = v1;
-                            } else {
-                                ERROR("xchg error: 1");
-                            }
-                        } else if (op1->type == Operand::Mem) {
-                            v1 = getMemory(it->memory_address, op1->bit);
-                            if (op0->type == Operand::Reg) {
-                                v0 = ctx[getRegName(op0->field[0])];
-                                ctx[getRegName(op0->field[0])] = v1; // xchg reg, mem
-                                memory[it->memory_address] = v0;
-                            } else {
-                                ERROR("xchg error 3");
-                            }
-                        } else {
-                            ERROR("xchg error: 2");
-                        }
-                        break;
-                    case x86::X86_INS_SBB:
-                        if (op1->type == Operand::Reg) {
-
-                        }
-                        if (op1->type == Operand::Mem) {
-
-                        }
-
-                    default:
-                        if (op1->type == Operand::ImmValue) {
-                            uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-                            v1 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                        } else if (op1->type == Operand::Reg) {
-                            v1 = ctx[getRegName(op1->field[0])];
-                        } else if (op1->type == Operand::Mem) {
-                            v1 = getMemory(it->memory_address, op1->bit);
-                        } else {
-                            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
-
-                        }
-
-                        if (op0->type == Operand::Reg) { // dest op is reg
-                            v0 = ctx[getRegName(op0->field[0])];
-                            res = buildop2(opcstr, v0, v1);
-                            ctx[getRegName(op0->field[0])] = res;
-                        } else if (op0->type == Operand::Mem) { // dest op is mem
-                            v0 = getMemory(it->memory_address, op0->bit);
-                            res = buildop2(opcstr, v0, v1);
-                            memory[it->memory_address] = res;
-                        } else {
-                            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
-                        }
-                        break;
-                }
-            }
-
-            if (oprnum == 3) {
-                std::shared_ptr<Operand> op0 = it->oprd[0];
-                std::shared_ptr<Operand> op1 = it->oprd[1];
-                std::shared_ptr<Operand> op2 = it->oprd[2];
-                std::shared_ptr<Value> v1, v2, v3, res;
-                switch (opcode_id) {
-                    case x86::X86_INS_IMUL:
-                        if (op0->type == Operand::Reg &&
-                            op1->type == Operand::Reg &&
-                            op2->type == Operand::ImmValue) { // imul reg, reg, imm
-                            v1 = ctx[getRegName(op1->field[0])];
-
-                            uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
-                            v2 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                            res = buildop2(opcstr, v1, v2);
-                            ctx[getRegName(op0->field[0])] = res;
-                        } else {
-                            ERROR("three operands instructions other than imul are not handled!");
-                        }
-                        break;
-                    case x86::X86_INS_SHLD:
-                    case x86::X86_INS_SHRD:
-                        if (op0->type == Operand::Reg &&
-                            op1->type == Operand::Reg &&
-                            op2->type ==
-                            Operand::ImmValue) {                                           // shld shrd reg, reg, imm
-                            v1 = ctx[getRegName(op0->field[0])];
-                            v2 = ctx[getRegName(op1->field[0])];
-                            uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
-                            v3 = std::make_shared<Value>(CONCRETE, temp_concrete, this);
-                            res = buildop3(opcstr, v1, v2, v3);
-                            ctx[getRegName(op0->field[0])] = res;
-                        } else {
-                            ERROR("shrd or shld is not handled!");
-                        }
-                    default:
-                        break;
-                }
-            }
-
-            if (oprnum > 3) {
-                ERROR("all instructions: number of operands is larger than 4!");
-            }
         }
-        return 0;
+        return true;
     }
 
 
@@ -1001,4 +632,593 @@ namespace tana {
             }
         }
     }
+
+
+    bool Dyn_X86_INS_PUSH::symbolic_execution(SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+
+
+        std::shared_ptr<Value> v0;
+
+        if (op0->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op0->field[0], 0, 16);
+            v0 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+            se.writeMemory(this->memory_address, v0);
+            return true;
+        }
+
+
+        if (op0->type == Operand::Reg) {
+            //memory[this->memory_address] = ctx[getRegName(op0->field[0])];
+            auto regName = se.getRegName(op0->field[0]);
+            auto reg_v = se.readRegister(regName);
+            se.writeMemory(this->memory_address, reg_v);
+            return true;
+        }
+        if (op0->type == Operand::Mem) {
+            // The memaddr in the trace is the read address
+            // We need to compute the write address
+            auto reg = Registers::convert2RegID("esp");
+            uint32_t esp_index = Registers::getRegIndex(reg);
+            uint32_t esp_value = this->vcpu.gpr[esp_index];
+            v0 = se.getMemory(this->memory_address, op0->bit);
+            se.writeMemory(esp_value - 4, v0);
+            return true;
+        }
+
+
+        ERROR("push error: the operand is not Imm, Reg or Mem!");
+        return false;
+    }
+
+    bool Dyn_X86_INS_POP::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+
+
+        if (op0->type == Operand::Reg) {
+            assert(Registers::getRegType(op0->field[0]) == FULL);
+            auto v0 = se.getMemory(this->memory_address, op0->bit);
+            se.writeRegister(se.getRegName(op0->field[0]), v0);
+            return true;
+        }
+
+        ERROR("pop error: the operand is not Reg!");
+        return false;
+
+    }
+
+    bool Dyn_X86_INS_NEG::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        auto opcode_id = this->instruction_id;
+        auto opcstr = x86::insn_id2string(opcode_id);
+
+
+        if (op0->type == Operand::Reg) {
+            assert(Registers::getRegType(op0->field[0]) == FULL);
+            auto v0 = se.readRegister(se.getRegName(op0->field[0]));
+            auto res = buildop1(opcstr, v0);
+            auto regName = se.getRegName(op0->field[0]);
+            se.writeRegister(regName, res);
+            return true;
+        }
+        ERROR("neg error: the operand is not Reg!");
+        return false;
+    }
+
+    bool Dyn_X86_INS_NOT::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        auto opcode_id = this->instruction_id;
+        auto opcstr = x86::insn_id2string(opcode_id);
+
+        if (op0->type == Operand::Reg) {
+            assert(Registers::getRegType(op0->field[0]) == FULL);
+            auto v0 = se.readRegister(se.getRegName(op0->field[0]));
+            auto res = buildop1(opcstr, v0);
+            auto regName = se.getRegName(op0->field[0]);
+            se.writeRegister(regName, res);
+            return true;
+        }
+        ERROR("neg error: the operand is not Reg!");
+        return false;
+    }
+
+    bool Dyn_X86_INS_INC::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        auto opcode_id = this->instruction_id;
+        auto opcstr = x86::insn_id2string(opcode_id);
+        std::shared_ptr<Value> v0, res;
+
+        if (op0->type == Operand::Reg) {
+            v0 = se.readRegister(se.getRegName(op0->field[0]));
+        }
+
+        if (op0->type == Operand::Mem) {
+            v0 = se.getMemory(this->memory_address, op0->bit);
+        }
+        res = buildop1(opcstr, v0);
+
+        if (op0->type == Operand::Reg) {
+            se.writeRegister(se.getRegName(op0->field[0]), res);
+        }
+
+        if (op0->type == Operand::Mem) {
+            //memory[it->memory_address] = res;
+            se.writeMemory(this->memory_address, res);
+        }
+        return true;
+
+    }
+
+    bool Dyn_X86_INS_DEC::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        auto opcode_id = this->instruction_id;
+        auto opcstr = x86::insn_id2string(opcode_id);
+        std::shared_ptr<Value> v0, res;
+
+        if (op0->type == Operand::Reg) {
+            v0 = se.readRegister(se.getRegName(op0->field[0]));
+        }
+
+        if (op0->type == Operand::Mem) {
+            v0 = se.getMemory(this->memory_address, op0->bit);
+        }
+        res = buildop1(opcstr, v0);
+
+        if (op0->type == Operand::Reg) {
+            se.writeRegister(se.getRegName(op0->field[0]), res);
+        }
+
+        if (op0->type == Operand::Mem) {
+            //memory[it->memory_address] = res;
+            se.writeMemory(this->memory_address, res);
+        }
+        return true;
+
+    }
+
+
+    bool Dyn_X86_INS_MOVSX::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Value> v0, v1, res;
+        auto opcode_id = this->instruction_id;
+
+        if (op1->type == Operand::Reg) {
+            auto reg = Registers::convert2RegID(op1->field[0]);
+            v1 = se.getRegister(reg);
+            se.writeRegister(se.getRegName(op0->field[0]), v1);
+            return true;
+
+        }
+        if (op1->type == Operand::Mem) {
+            //TODO
+            v1 = se.getMemory(this->memory_address, op1->bit);
+            se.writeRegister(se.getRegName(op0->field[0]), v1);
+            return true;
+        }
+        return false;
+    }
+
+    bool Dyn_X86_INS_MOVZX::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Value> v0, v1, res;
+        auto opcode_id = this->instruction_id;
+
+        if (op1->type == Operand::Reg) {
+            auto reg = Registers::convert2RegID(op1->field[0]);
+            v1 = se.getRegister(reg);
+            se.writeRegister(se.getRegName(op0->field[0]), v1);
+            return true;
+
+        }
+        if (op1->type == Operand::Mem) {
+            //TODO
+            v1 = se.getMemory(this->memory_address, op1->bit);
+            se.writeRegister(se.getRegName(op0->field[0]), v1);
+            return true;
+        }
+
+        ERROR("MOVZX");
+        return false;
+    }
+
+    bool Dyn_X86_INS_CMOVB::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Value> v0, v1, res;
+        auto opcode_id = this->instruction_id;
+        //TODO
+        return true;
+
+    }
+
+    bool Dyn_X86_INS_MOV::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Value> v0, v1, res;
+        auto opcode_id = this->instruction_id;
+
+        if (op0->type == Operand::Reg)
+        {
+            if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
+                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+                v1 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+                se.writeRegister(se.getRegName(op0->field[0]), v1);
+
+                return true;
+            }
+            if (op1->type == Operand::Reg) { // mov reg, reg
+                //ctx[getRegName(op0->field[0])] = ctx[getRegName(op1->field[0])];
+                v1 = se.readRegister(se.getRegName(op1->field[0]));
+                se.writeRegister(se.getRegName(op0->field[0]), v1);
+                return true;
+            }
+            if (op1->type == Operand::Mem) { // mov reg, dword ptr [ebp+0x1]
+                /* 1. Get mem address
+                2. check whether the mem address has been accessed
+                3. if not, create a new value
+                4. else load the value in that memory
+                */
+                v1 = se.getMemory(this->memory_address, op1->bit);
+                se.writeRegister(se.getRegName(op0->field[0]), v1);
+                return true;
+            }
+
+            ERROR("op1 is not ImmValue, Reg or Mem");
+            return false;
+        }
+        if (op0->type == Operand::Mem) {
+            if (op1->type == Operand::ImmValue) { // mov dword ptr [ebp+0x1], 0x1111
+                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+                se.writeMemory(this->memory_address, std::make_shared<Value>(CONCRETE, temp_concrete, &se));
+                return true;
+            } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
+                //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
+                v1 = se.readRegister(se.getRegName(op1->field[0]));
+                se.writeMemory(this->memory_address, v1);
+                return true;
+            }
+        }
+        ERROR("Error: The first operand in MOV is not Reg or Mem!");
+        return false;
+    }
+
+    bool Dyn_X86_INS_LEA::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Value> v0, v1, res;
+        auto opcode_id = this->instruction_id;
+
+        /* lea reg, ptr [edx+eax*1]
+           interpret lea instruction based on different address type
+           1. op0 must be reg
+           2. op1 must be addr
+        */
+        if (op0->type != Operand::Reg || op1->type != Operand::Mem) {
+            ERROR("lea format error!");
+            return false;
+        }
+        switch (op1->tag) {
+            case 5: {
+                std::shared_ptr<Value> f0, f1, f2; // corresponding field[0-2] in operand
+                //f0 = ctx[getRegName(op1->field[0])];
+                //f1 = ctx[getRegName(op1->field[1])];
+
+                f0 = se.readRegister(se.getRegName(op1->field[0]));
+                f1 = se.readRegister(se.getRegName(op1->field[1]));
+                if (op1->field[2] == "1") {
+                    res = buildop2("add", f0, f1);
+                    //ctx[getRegName(op0->field[0])] = res;
+                    se.writeRegister(se.getRegName(op0->field[0]), res);
+                    return true;
+                }
+                uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
+                f2 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+                res = buildop2("imul", f1, f2);
+                res = buildop2("add", f0, res);
+                se.writeRegister(se.getRegName(op0->field[0]), res);
+                return true;
+            }
+            case 7: {
+                std::shared_ptr<Value> f0, f1, f2, f3; // addr7: eax+ebx*2+0xfffff1
+                //f0 = ctx[getRegName(op1->field[0])];       //eax
+                //f1 = ctx[getRegName(op1->field[1])];       //ebx
+
+                f0 = se.readRegister(se.getRegName(op1->field[0]));
+                f1 = se.readRegister(se.getRegName(op1->field[1]));
+
+                uint32_t temp_concrete1 = stoul(op1->field[2], 0, 16);
+                f2 = std::make_shared<Value>(CONCRETE, temp_concrete1, &se);   //2
+                std::string sign = op1->field[3];          //+
+                uint32_t temp_concrete2 = stoul(op1->field[4], 0, 16);
+                f3 = std::make_shared<Value>(CONCRETE, temp_concrete2, &se);   //0xfffff1
+                assert((sign == "+") || (sign == "-"));
+                if (op1->field[2] == "1") {
+                    res = buildop2("add", f0, f1);
+                } else {
+                    res = buildop2("imul", f1, f2);
+                    res = buildop2("add", f0, res);
+                }
+                if (sign == "+")
+                    res = buildop2("add", res, f3);
+                else
+                    res = buildop2("sub", res, f3);
+                //ctx[getRegName(op0->field[0])] = res;
+
+                se.writeRegister(se.getRegName(op0->field[0]), res);
+
+                return true;
+            }
+            case 4: {
+                std::shared_ptr<Value> f0, f1; // addr4: eax+0xfffff1
+                //f0 = ctx[getRegName(op1->field[0])];       //eax
+                f0 = se.readRegister(se.getRegName(op1->field[0]));
+                uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
+                f1 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);   //0xfffff1
+                std::string sign = op1->field[1];          //+
+                if (sign == "+")
+                    res = buildop2("add", f0, f1);
+                else
+                    res = buildop2("sub", f0, f1);
+                //ctx[getRegName(op0->field[0])] = res;
+
+                se.writeRegister(se.getRegName(op0->field[0]), res);
+                return true;
+            }
+            case 6: {
+                std::shared_ptr<Value> f0, f1, f2; // addr6: eax*2+0xfffff1
+                //f0 = ctx[getRegName(op1->field[0])];
+                f0 = se.readRegister(se.getRegName(op1->field[0]));
+                uint32_t temp_concrete1 = stoul(op1->field[1]);
+                uint32_t temp_concrete2 = stoul(op1->field[3]);
+
+                f1 = std::make_shared<Value>(CONCRETE, temp_concrete1, &se);
+                f2 = std::make_shared<Value>(CONCRETE, temp_concrete2, &se);
+                std::string sign = op1->field[2];
+                if (op1->field[1] == "1") {
+                    res = f0;
+                } else {
+                    res = buildop2("imul", f0, f1);
+                }
+                if (sign == "+")
+                    res = buildop2("add", res, f2);
+                else
+                    res = buildop2("sub", res, f2);
+                //ctx[getRegName(op0->field[0])] = res;
+
+                se.writeRegister(se.getRegName(op0->field[0]), res);
+                return true;
+            }
+            case 3: {
+                std::shared_ptr<Value> f0, f1;          // addr3: eax*2
+                //f0 = ctx[getRegName(op1->field[0])];
+                f0 = se.readRegister(se.getRegName(op1->field[0]));
+
+                uint32_t temp_concrete = stoul(op1->field[1]);
+                f1 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+                res = buildop2("imul", f0, f1);
+                //ctx[getRegName(op0->field[0])] = res;
+                se.writeRegister(se.getRegName(op0->field[0]), res);
+                return true;
+            }
+
+            case 2: {
+                //ctx[getRegName(op0->field[0])] = ctx[getRegName(op1->field[0])];
+
+                v1 = se.readRegister(se.getRegName(op1->field[0]));
+                se.writeRegister(se.getRegName(op0->field[0]), v1);
+
+                return true;
+            }
+
+            case 1: {
+                std::shared_ptr<Value> f0;
+                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+                f0 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+                //ctx[getRegName(op0->field[0])] = f0;
+                se.writeRegister(se.getRegName(op0->field[0]), f0);
+
+
+                return true;
+            }
+            default:
+                ERROR("Other tags in addr is not ready for lea!");
+                return false;
+        }
+
+    }
+
+
+    bool Dyn_X86_INS_XCHG::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Value> v0, v1, res;
+        auto opcode_id = this->instruction_id;
+
+        if (op1->type == Operand::Reg)
+        {
+            v1 = se.readRegister(se.getRegName(op1->field[0]));
+            if (op0->type == Operand::Reg)
+            {
+                v0 = se.readRegister(se.getRegName(op0->field[0]));
+                //ctx[getRegName(op1->field[0])] = v0; // xchg reg, reg
+                //ctx[getRegName(op0->field[0])] = v1;
+
+                se.writeRegister(se.getRegName(op1->field[0]), v0);
+                se.writeRegister(se.getRegName(op0->field[0]), v1);
+
+                return true;
+            }
+            if (op0->type == Operand::Mem)
+            {
+                v0 = se.getMemory(this->memory_address, op0->bit);
+                //ctx[getRegName(op1->field[0])] = v0; // xchg mem, reg
+                //memory[it->memory_address] = v1;
+                se.writeRegister(se.getRegName(op1->field[0]), v0);
+                se.writeMemory(this->memory_address, v1);
+
+                return true;
+            }
+            ERROR("xchg error: 1");
+            return false;
+        }
+        if (op1->type == Operand::Mem) {
+            v1 = se.getMemory(this->memory_address, op1->bit);
+            if (op0->type == Operand::Reg) {
+                v0 = se.readRegister(se.getRegName(op0->field[0]));
+                se.writeRegister(se.getRegName(op0->field[0]), v1); // xchg reg, mem
+                se.writeMemory(this->memory_address, v0);
+            }
+            ERROR("xchg error 3");
+            return false;
+
+        }
+        ERROR("xchg error: 2");
+        return false;
+    }
+
+    bool Dyn_X86_INS_SBB::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+
+        if (op1->type == Operand::Reg) {
+
+        }
+        if (op1->type == Operand::Mem) {
+
+        }
+        return true;
+    }
+
+
+    bool Dyn_X86_INS_IMUL::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Operand> op2 = this->oprd[2];
+        std::shared_ptr<Value> v1, v2, v3, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = x86::insn_id2string(opcode_id);
+        if (op0->type == Operand::Reg &&
+            op1->type == Operand::Reg &&
+            op2->type == Operand::ImmValue) { // imul reg, reg, imm
+            v1 = se.readRegister(se.getRegName(op1->field[0]));
+
+            uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
+            v2 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+            res = buildop2(opcstr, v1, v2);
+            se.writeRegister(se.getRegName(op0->field[0]), res);
+            return true;
+        }
+
+        ERROR("three operands instructions other than imul are not handled!");
+        return false;
+
+    }
+
+
+    bool Dyn_X86_INS_SHLD::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Operand> op2 = this->oprd[2];
+        std::shared_ptr<Value> v1, v2, v3, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = x86::insn_id2string(opcode_id);
+
+        if (op0->type == Operand::Reg &&
+            op1->type == Operand::Reg &&
+            op2->type ==
+            Operand::ImmValue) {                                           // shld shrd reg, reg, imm
+            v1 = se.readRegister(se.getRegName(op0->field[0]));
+            v2 = se.readRegister(se.getRegName(op1->field[0]));
+            uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
+            v3 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+            res = buildop3(opcstr, v1, v2, v3);
+            se.writeRegister(se.getRegName(op0->field[0]), res);
+            return true;
+        }
+
+        ERROR("shld is not handled!");
+        return false;
+
+    }
+
+    bool Dyn_X86_INS_SHRD::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<Operand> op2 = this->oprd[2];
+        std::shared_ptr<Value> v1, v2, v3, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = x86::insn_id2string(opcode_id);
+
+        if (op0->type == Operand::Reg &&
+            op1->type == Operand::Reg &&
+            op2->type ==
+            Operand::ImmValue) {                                           // shld shrd reg, reg, imm
+            v1 = se.readRegister(se.getRegName(op0->field[0]));
+            v2 = se.readRegister(se.getRegName(op1->field[0]));
+            uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
+            v3 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+            res = buildop3(opcstr, v1, v2, v3);
+            se.writeRegister(se.getRegName(op0->field[0]), res);
+            return true;
+        }
+
+        ERROR("shrd is not handled!");
+        return false;
+    }
+
+
+    bool inst_dyn_details::two_operand(SEEngine &se, Inst_Dyn *inst)
+    {
+        std::shared_ptr<Operand> op0 = inst->oprd[0];
+        std::shared_ptr<Operand> op1 = inst->oprd[1];
+        std::shared_ptr<Value> v1, v0, res;
+        auto opcode_id = inst->instruction_id;
+        auto opcstr = x86::insn_id2string(opcode_id);
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+            v1 = std::make_shared<Value>(CONCRETE, temp_concrete, &se);
+        } else if (op1->type == Operand::Reg) {
+            v1 = se.readRegister(se.getRegName(op1->field[0]));
+        } else if (op1->type == Operand::Mem) {
+            v1 = se.getMemory(inst->memory_address, op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+            return false;
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se.readRegister(se.getRegName(op0->field[0]));
+            res = buildop2(opcstr, v0, v1);
+            se.writeRegister(se.getRegName(op0->field[0]), res);
+            return true;
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se.getMemory(inst->memory_address, op0->bit);
+            res = buildop2(opcstr, v0, v1);
+            se.writeMemory(inst->memory_address, res);
+            return true;
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+            return false;
+        }
+    }
+
 }

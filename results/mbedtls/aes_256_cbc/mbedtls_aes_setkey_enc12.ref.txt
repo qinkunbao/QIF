@@ -1,0 +1,59 @@
+Index: 143 Unsupported Instruction: cmp dword ptr [ebp-0x10], 0x6
+Index: 144 Unsupported Instruction: jbe 0x804936f
+Index: 145 Unsupported Instruction: nop
+Index: 148 Unsupported Instruction: leave
+Index: 154 Unsupported Instruction: test eax, eax
+Index: 155 Unsupported Instruction: jnz 0x8049005
+Index: 157 Unsupported Instruction: cmp eax, 0xc0
+Index: 158 Unsupported Instruction: jz 0x8049028
+Index: 159 Unsupported Instruction: cmp eax, 0x100
+Index: 160 Unsupported Instruction: jz 0x8049033
+Index: 163 Unsupported Instruction: jmp 0x8049048
+Index: 165 Unsupported Instruction: cmp eax, 0xffffffff
+Index: 166 Unsupported Instruction: jnz 0x8049067
+Index: 168 Unsupported Instruction: test eax, eax
+Index: 169 Unsupported Instruction: jz 0x804908a
+Index: 177 Unsupported Instruction: jmp 0x804911a
+Index: 180 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 181 Unsupported Instruction: None 0x80490a5
+Index: 223 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 224 Unsupported Instruction: None 0x80490a5
+Index: 266 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 267 Unsupported Instruction: None 0x80490a5
+Index: 309 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 310 Unsupported Instruction: None 0x80490a5
+Index: 352 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 353 Unsupported Instruction: None 0x80490a5
+Index: 395 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 396 Unsupported Instruction: None 0x80490a5
+Index: 438 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 439 Unsupported Instruction: None 0x80490a5
+Index: 481 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 482 Unsupported Instruction: None 0x80490a5
+Index: 524 Unsupported Instruction: cmp eax, dword ptr [ebp-0x10]
+Index: 525 Unsupported Instruction: None 0x80490a5
+Index: 528 Unsupported Instruction: cmp eax, 0xc
+Index: 529 Unsupported Instruction: jz 0x804923a
+Index: 530 Unsupported Instruction: cmp eax, 0xe
+Index: 531 Unsupported Instruction: jz 0x8049363
+Index: 533 Unsupported Instruction: jmp 0x8049512
+Index: 534 Unsupported Instruction: cmp dword ptr [ebp-0x10], 0x6
+size: 18
+Formula index: 0 Length: 19 Formula: add(shl(add(add(add(add(add(add(add(Con(0x0),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x2)),Con(0x3))
+Formula index: 1 Length: 21 Formula: or(or(shl(and(and(SYM_ID581,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID571,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID594,Con(0xff)),Con(0xff)),Con(0x10)))
+Formula index: 2 Length: 29 Formula: or(shl(and(and(SYM_ID607,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID581,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID571,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID594,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 3 Length: 29 Formula: or(shl(and(and(SYM_ID229,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID203,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID193,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID216,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 4 Length: 29 Formula: or(shl(and(and(SYM_ID283,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID257,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID247,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID270,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 5 Length: 29 Formula: or(shl(and(and(SYM_ID337,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID311,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID301,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID324,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 6 Length: 29 Formula: or(shl(and(and(SYM_ID391,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID365,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID355,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID378,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 7 Length: 29 Formula: or(shl(and(and(SYM_ID445,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID419,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID409,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID432,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 8 Length: 29 Formula: or(shl(and(and(SYM_ID499,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID473,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID463,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID486,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 9 Length: 29 Formula: or(shl(and(and(SYM_ID553,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID527,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID517,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID540,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 10 Length: 33 Formula: xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 11 Length: 35 Formula: xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71)
+Formula index: 12 Length: 37 Formula: xor(xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71),SYM_ID79)
+Formula index: 13 Length: 39 Formula: xor(xor(xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71),SYM_ID79),SYM_ID87)
+Formula index: 14 Length: 31 Formula: xor(shl(and(and(SYM_ID23,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID95,and(and(SYM_ID100,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID112,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID126,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 15 Length: 33 Formula: xor(xor(shl(and(and(SYM_ID23,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID95,and(and(SYM_ID100,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID112,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID126,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID149)
+Formula index: 16 Length: 35 Formula: xor(xor(xor(shl(and(and(SYM_ID23,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID95,and(and(SYM_ID100,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID112,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID126,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID149),SYM_ID157)
+Formula index: 17 Length: 37 Formula: xor(xor(xor(xor(shl(and(and(SYM_ID23,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID95,and(and(SYM_ID100,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID112,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID126,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID149),SYM_ID157),SYM_ID18)

@@ -1,0 +1,16 @@
+Index: 81 Unsupported Instruction: cmp ebx, 0x80590c0
+Index: 83 Unsupported Instruction: jz 0x8048ee0
+Index: 87 Unsupported Instruction: test edx, edx
+Index: 89 Unsupported Instruction: jnz 0x8048db0
+Index: 98 Unsupported Instruction: jmp 0x8048dc5
+Index: 171 Unsupported Instruction: cmp ebx, 0x80590c0
+Index: 173 Unsupported Instruction: jz 0x8048ee0
+Index: 177 Unsupported Instruction: test edx, edx
+size: 7
+Formula index: 0 Length: 25 Formula: and(or(shr(and(or(shr(SYM_ID4,Con(0x2)),shl(SYM_ID1,Con(0x1a))),Con(0xfffffff)),Con(0x1)),shl(and(or(shr(SYM_ID4,Con(0x2)),shl(SYM_ID1,Con(0x1a))),Con(0xfffffff)),Con(0x1b))),Con(0xfffffff))
+Formula index: 1 Length: 25 Formula: and(or(shr(and(or(shr(SYM_ID3,Con(0x2)),shl(SYM_ID3,Con(0x1a))),Con(0xfffffff)),Con(0x1)),shl(and(or(shr(SYM_ID3,Con(0x2)),shl(SYM_ID3,Con(0x1a))),Con(0xfffffff)),Con(0x1b))),Con(0xfffffff))
+Formula index: 2 Length: 23 Formula: or(shr(and(or(shr(SYM_ID3,Con(0x2)),shl(SYM_ID3,Con(0x1a))),Con(0xfffffff)),Con(0x1)),shl(and(or(shr(SYM_ID3,Con(0x2)),shl(SYM_ID3,Con(0x1a))),Con(0xfffffff)),Con(0x1b)))
+Formula index: 3 Length: 21 Formula: ror(or(and(or(or(or(SYM_ID43,SYM_ID44),SYM_ID46),SYM_ID66),Con(0xffff)),shl(or(or(or(SYM_ID72,SYM_ID75),SYM_ID84),SYM_ID95),Con(0x10))),Con(0x1e))
+Formula index: 4 Length: 27 Formula: ror(or(xor(or(or(or(SYM_ID72,SYM_ID75),SYM_ID84),SYM_ID95),or(or(or(SYM_ID72,SYM_ID75),SYM_ID84),SYM_ID95)),shr(or(or(or(SYM_ID43,SYM_ID44),SYM_ID46),SYM_ID66),Con(0x10))),Con(0x1a))
+Formula index: 5 Length: 21 Formula: ror(or(and(or(or(or(SYM_ID148,SYM_ID44),SYM_ID150),SYM_ID170),Con(0xffff)),shl(or(or(or(SYM_ID176,SYM_ID75),SYM_ID84),SYM_ID197),Con(0x10))),Con(0x1e))
+Formula index: 6 Length: 27 Formula: ror(or(xor(or(or(or(SYM_ID176,SYM_ID75),SYM_ID84),SYM_ID197),or(or(or(SYM_ID176,SYM_ID75),SYM_ID84),SYM_ID197)),shr(or(or(or(SYM_ID148,SYM_ID44),SYM_ID150),SYM_ID170),Con(0x10))),Con(0x1a))

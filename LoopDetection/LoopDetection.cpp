@@ -26,18 +26,18 @@ int main(int argc, char **argv) {
         std::cout << "Open file error!" << std::endl;
         return 1;
     }
-    vector<Inst_Dyn> inst_list;
+    vector<std::unique_ptr<Inst_Dyn>> inst_list;
     uint32_t batch_size = 2000;
     uint32_t id = 1;
 
-    while (!parse_trace(&infile, &inst_list, batch_size, id))
+    while (!parse_trace(&infile, inst_list, batch_size, id))
     {
         id = id + batch_size;
     }
 
     id = inst_list.size();
-    auto result = loop::loopDetection(&inst_list, id);
-    loop::outPrintLoops(result, file_name);
+    //auto result = loop::loopDetection(inst_list, id);
+    //loop::outPrintLoops(result, file_name);
 
     return 0;
 }

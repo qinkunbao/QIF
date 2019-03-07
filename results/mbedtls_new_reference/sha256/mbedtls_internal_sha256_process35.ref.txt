@@ -1,0 +1,5 @@
+Index: 1 Unsupported Instruction: cmp dword ptr [ebp-0x148], 0x7
+Index: 2 Unsupported Instruction: jbe 0xf56b3e66
+Index: 13 Unsupported Instruction: cmp dword ptr [ebp-0x148], 0x7
+Index: 14 Unsupported Instruction: jbe 0xf56b3e66
+size: 0

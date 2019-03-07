@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include <memory>
 #include "ins_parser.h"
 #include "SEEngine.h"
 #include "VarMap.h"
@@ -29,47 +30,50 @@ std::string random_string(size_t length)
 	return str;
 }
 
-int printFormulas(char* filename) 
+int printFormulas(char* filename)
 {
-     std::ifstream infile(filename);
+	std::ifstream infile(filename);
 
 	if (!infile.is_open()) {
 		fprintf(stderr, "Failed to open file %s\n", filename);
-		return 1; 
+		return 1;
 	}
 
-	std::vector<Inst_Dyn> inst_list;
-	parse_trace(&infile, &inst_list);
+	std::vector<unique_ptr<Inst_Dyn>> inst_list;
+	parse_trace(&infile, inst_list);
 	infile.close();
-	//parseOperand(inst_list.begin(), inst_list.end());
+
 	// Bit symbolic execution
 	SEEngine *se = new SEEngine(Imm2SymState);
 	se->initAllRegSymol(inst_list.begin(), inst_list.end());
-	se->symexec();
+	se->run();
 
 	std::vector<std::shared_ptr<Value>> output_se = se->getAllOutput();
 	output_se = se->reduceValues(output_se);
 	std::cout << "size: " << output_se.size() << std::endl;
-    // Print all formulas in output_se
+	// Print all formulas in output_se
 	stringstream ss;
 	uint32_t length = 0;
-    for(size_t i = 0; i < output_se.size(); i++) {
-    	varmap::printV(output_se[i], ss, length);
+	for(size_t i = 0; i < output_se.size(); i++) {
+		varmap::printV(output_se[i], ss, length);
 		cout << "Formula index: " << i << " Length: " << length << " Formula: " << ss.str() << "\n";
 		ss.str("");
 		length = 0;
-    }
-    delete se;
+	}
+	delete se;
 
-    return 0;
+	return 0;
 }
 
 
 int main(int argc, char **argv) {
 
     if(argc == 2) {
-        return printFormulas(argv[1]);
-    }
+        printFormulas(argv[1]);
+
+        return 1;
+
+	}
 
 	if (argc != 3) {
 		std::cout << "Usage:" << std::endl; 
@@ -90,10 +94,10 @@ int main(int argc, char **argv) {
 	}
 
 
-	std::vector<Inst_Dyn> inst_list1, inst_list2;
+	std::vector<unique_ptr<Inst_Dyn>> inst_list1, inst_list2;
 
-	parse_trace(&infile1, &inst_list1);
-	parse_trace(&infile2, &inst_list2);
+	parse_trace(&infile1, inst_list1);
+	parse_trace(&infile2, inst_list2);
 
 	infile1.close();
 	infile2.close();
@@ -102,11 +106,11 @@ int main(int argc, char **argv) {
 	// Symbolic execution
 	SEEngine *se1 = new SEEngine(Imm2SymState);
 	se1->initAllRegSymol(inst_list1.begin(), inst_list1.end());
-	se1->symexec();
+	se1->run();
 
 	SEEngine *se2 = new SEEngine(Imm2SymState);
 	se2->initAllRegSymol(inst_list2.begin(), inst_list2.end());
-	se2->symexec();
+	se2->run();
 
 	auto output_se1 = se1->getAllOutput();
 	auto output_se2 = se2->getAllOutput();

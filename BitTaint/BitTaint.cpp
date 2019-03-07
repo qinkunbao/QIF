@@ -104,11 +104,11 @@ namespace tana {
         }
 
         std::vector<Byte> BitTaint::bvmul(const std::vector<Byte> &a, const std::vector<Byte> &b) {
-
+            return a;
         }
 
         std::vector<Byte> BitTaint::bvudiv(const std::vector<Byte> &a, const std::vector<Byte> &b) {
-
+            return a;
         }
 
         std::vector<Byte> BitTaint::bvor(const std::vector<Byte> &a, const std::vector<Byte> &b) {
@@ -171,31 +171,32 @@ namespace tana {
         }
 
         std::vector<Byte> BitTaint::bvurem(const std::vector<Byte> &a, const std::vector<Byte> &b) {
+            return a;
 
         }
 
         std::vector<Byte> BitTaint::bvshl(const std::vector<Byte> &a, const std::vector<Byte> &b) {
-
+            return a;
         }
 
         std::vector<Byte> BitTaint::bvlshr(const std::vector<Byte> &a, const std::vector<Byte> &b) {
-
+            return a;
         }
 
         std::vector<Byte> BitTaint::bvnot(const std::vector<Byte> &a) {
-
+            return a;
         }
 
         std::vector<Byte> BitTaint::bvneg(const std::vector<Byte> &a) {
-
+            return a;
         }
 
         bool BitTaint::bvcmp(const std::vector<Byte> &a, const std::vector<Byte> &b) {
-
+            return true;
         }
 
         bool BitTaint::notcmp(const std::vector<Byte> &a, const std::vector<Byte> &b) {
-
+            return true;
         }
 
 

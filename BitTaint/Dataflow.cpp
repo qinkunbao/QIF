@@ -11,6 +11,7 @@
 #include <fstream>
 #include <algorithm>
 #include <string>
+#include <memory>
 #include "ins_parser.h"
 #include "BitTaint.h"
 
@@ -32,19 +33,18 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    std::vector<Inst_Dyn> inst_list;
+    std::vector<std::unique_ptr<Inst_Dyn>> inst_list;
 
     t_type::T_ADDRESS m_addr;
     t_type::T_SIZE  m_size;
 
-    parse_trace(&infile, m_addr, m_size, &inst_list);
+    parse_trace(&infile, m_addr, m_size, inst_list);
     infile.close();
-    parseOperand(inst_list.begin(), inst_list.end());
     int inst_size = inst_list.size();
 
-    auto taint = new tana::bittaint::BitTaint("key", m_addr, m_size, inst_list.begin(), inst_list.end());
+    //auto taint = new tana::bittaint::BitTaint("key", m_addr, m_size, inst_list.begin(), inst_list.end());
 
-    taint->run();
+    //taint->run();
 
     return 0;
 }

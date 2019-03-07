@@ -1,0 +1,121 @@
+Index: 1 Unsupported Instruction: cmp edx, 0x1e
+Index: 2 Unsupported Instruction: None 0x804e940
+Index: 3 Unsupported Instruction: jmp dword ptr [edx*4+0x805a200]
+Index: 6 Unsupported Instruction: cmp ebp, 0x5
+Index: 7 Unsupported Instruction: jbe 0x804ec90
+Index: 9 Unsupported Instruction: cmp edx, 0x101
+Index: 10 Unsupported Instruction: None 0x8050210
+Index: 25 Unsupported Instruction: call 0x8058f40
+Index: 107 Unsupported Instruction: cmp edi, 0xe
+Index: 108 Unsupported Instruction: None 0x805907d
+Index: 131 Unsupported Instruction: test ecx, ecx
+Index: 132 Unsupported Instruction: jz 0x80590ee
+Index: 138 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 139 Unsupported Instruction: None 0x8059110
+Index: 141 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 142 Unsupported Instruction: jb 0x8059054
+Index: 143 Unsupported Instruction: cmp edi, 0xe
+Index: 144 Unsupported Instruction: None 0x805907d
+Index: 167 Unsupported Instruction: test ecx, ecx
+Index: 168 Unsupported Instruction: jz 0x80590ee
+Index: 174 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 175 Unsupported Instruction: None 0x8059110
+Index: 177 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 178 Unsupported Instruction: jb 0x8059054
+Index: 179 Unsupported Instruction: cmp edi, 0xe
+Index: 180 Unsupported Instruction: None 0x805907d
+Index: 190 Unsupported Instruction: test ecx, ecx
+Index: 191 Unsupported Instruction: jz 0x80590ee
+Index: 197 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 198 Unsupported Instruction: None 0x8059110
+Index: 200 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 201 Unsupported Instruction: jb 0x8059054
+Index: 202 Unsupported Instruction: cmp edi, 0xe
+Index: 203 Unsupported Instruction: None 0x805907d
+Index: 226 Unsupported Instruction: test ecx, ecx
+Index: 227 Unsupported Instruction: jz 0x80590ee
+Index: 233 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 234 Unsupported Instruction: None 0x8059110
+Index: 236 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 237 Unsupported Instruction: jb 0x8059054
+Index: 238 Unsupported Instruction: cmp edi, 0xe
+Index: 239 Unsupported Instruction: None 0x805907d
+Index: 249 Unsupported Instruction: test ecx, ecx
+Index: 250 Unsupported Instruction: jz 0x80590ee
+Index: 256 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 257 Unsupported Instruction: None 0x8059110
+Index: 259 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 260 Unsupported Instruction: jb 0x8059054
+Index: 261 Unsupported Instruction: cmp edi, 0xe
+Index: 262 Unsupported Instruction: None 0x805907d
+Index: 285 Unsupported Instruction: test ecx, ecx
+Index: 286 Unsupported Instruction: jz 0x80590ee
+Index: 292 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 293 Unsupported Instruction: None 0x8059110
+Index: 295 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 296 Unsupported Instruction: jb 0x8059054
+Index: 297 Unsupported Instruction: cmp edi, 0xe
+Index: 298 Unsupported Instruction: None 0x805907d
+Index: 308 Unsupported Instruction: test ecx, ecx
+Index: 309 Unsupported Instruction: jz 0x80590ee
+Index: 315 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 316 Unsupported Instruction: None 0x8059110
+Index: 318 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 319 Unsupported Instruction: jb 0x8059054
+Index: 320 Unsupported Instruction: cmp edi, 0xe
+Index: 321 Unsupported Instruction: None 0x805907d
+Index: 344 Unsupported Instruction: test ecx, ecx
+Index: 345 Unsupported Instruction: jz 0x80590ee
+Index: 351 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 352 Unsupported Instruction: None 0x8059110
+Index: 354 Unsupported Instruction: cmp dword ptr [esp], esi
+Index: 355 Unsupported Instruction: jb 0x8059054
+Index: 356 Unsupported Instruction: cmp edi, 0xe
+Index: 357 Unsupported Instruction: None 0x805907d
+Index: 367 Unsupported Instruction: test ecx, ecx
+Index: 368 Unsupported Instruction: jz 0x80590ee
+Index: 369 Unsupported Instruction: test dl, 0x10
+Index: 370 Unsupported Instruction: jnz 0x8059198
+Index: 373 Unsupported Instruction: jz 0x80591db
+Index: 374 Unsupported Instruction: cmp edi, 0xe
+Index: 375 Unsupported Instruction: jbe 0x8059420
+Index: 389 Unsupported Instruction: jmp 0x80591e4
+Index: 399 Unsupported Instruction: test dl, 0x10
+Index: 401 Unsupported Instruction: jnz 0x8059251
+Index: 406 Unsupported Instruction: cmp edx, edi
+Index: 407 Unsupported Instruction: jbe 0x8059280
+Index: 423 Unsupported Instruction: cmp eax, ecx
+Index: 425 Unsupported Instruction: jbe 0x805948e
+Index: 432 Unsupported Instruction: jmp 0x80594b0
+Index: 436 Unsupported Instruction: cmp esi, 0x2
+Index: 443 Unsupported Instruction: None 0x80594a8
+Index: 444 Unsupported Instruction: test esi, esi
+Index: 448 Unsupported Instruction: jz 0x80596b3
+Index: 450 Unsupported Instruction: cmp esi, 0x2
+Index: 452 Unsupported Instruction: jnz 0x80598cc
+Index: 454 Unsupported Instruction: jmp 0x80590f9
+Index: 456 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
+Index: 457 Unsupported Instruction: None 0x8059110
+Index: 474 Unsupported Instruction: cmp ebx, eax
+Index: 475 Unsupported Instruction: jbe 0x8059408
+Index: 486 Unsupported Instruction: cmp esi, ebx
+Index: 487 Unsupported Instruction: None 0x8059176
+Index: 501 Unsupported Instruction: ret
+Index: 513 Unsupported Instruction: cmp eax, 0x3f3f
+Index: 514 Unsupported Instruction: jnz 0x804f860
+size: 15
+Formula index: 0 Length: 127 Formula: sub(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x10)),and(SYM_ID338,Con(0xff))),and(and(and(SYM_ID332,Con(0xff)),Con(0xf)),Con(0xff))),shl(shr(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x10)),and(SYM_ID338,Con(0xff))),and(and(and(SYM_ID332,Con(0xff)),Con(0xf)),Con(0xff))),Con(0x3)),Con(0x3)))
+Formula index: 1 Length: 523 Formula: and(sub(shl(Con(0x1),sub(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x10)),and(SYM_ID338,Con(0xff))),and(and(and(SYM_ID332,Con(0xff)),Con(0xf)),Con(0xff))),shl(shr(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x10)),and(SYM_ID338,Con(0xff))),and(and(and(SYM_ID332,Con(0xff)),Con(0xf)),Con(0xff))),Con(0x3)),Con(0x3)))),Con(0x1)),shr(shr(add(shr(shr(add(shr(shr(add(shr(shr(add(shr(shr(add(shr(add(SYM_ID5,add(shl(and(SYM_ID66,Con(0xff)),add(SYM_ID2,Con(0x8))),shl(and(SYM_ID69,Con(0xff)),SYM_ID2))),and(SYM_ID90,Con(0xff))),add(shl(and(SYM_ID101,Con(0xff)),add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x8))),shl(and(SYM_ID104,Con(0xff)),sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff)))))),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),add(shl(and(SYM_ID155,Con(0xff)),add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x8))),shl(and(SYM_ID158,Con(0xff)),sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff)))))),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),add(shl(and(SYM_ID206,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x8))),shl(and(SYM_ID209,Con(0xff)),sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff)))))),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),add(shl(and(SYM_ID260,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x8))),shl(and(SYM_ID263,Con(0xff)),sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff)))))),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),add(shl(and(SYM_ID314,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x8))),shl(and(SYM_ID317,Con(0xff)),sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff)))))),and(SYM_ID338,Con(0xff))),and(and(SYM_ID332,Con(0xff)),Con(0xf))))
+Formula index: 2 Length: 19 Formula: add(add(add(add(add(add(add(add(add(SYM_ID13,Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x4))
+Formula index: 3 Length: 13 Formula: add(add(add(add(add(add(SYM_ID6,Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2))
+Formula index: 4 Length: 417 Formula: sub(add(add(add(add(add(add(add(add(SYM_ID13,Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(and(SYM_ID335,Con(0xffff)),and(sub(shl(Con(0x1),and(and(SYM_ID332,Con(0xff)),Con(0xf))),Con(0x1)),shr(add(shr(shr(add(shr(shr(add(shr(shr(add(shr(shr(add(shr(add(SYM_ID5,add(shl(and(SYM_ID66,Con(0xff)),add(SYM_ID2,Con(0x8))),shl(and(SYM_ID69,Con(0xff)),SYM_ID2))),and(SYM_ID90,Con(0xff))),add(shl(and(SYM_ID101,Con(0xff)),add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x8))),shl(and(SYM_ID104,Con(0xff)),sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff)))))),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),add(shl(and(SYM_ID155,Con(0xff)),add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x8))),shl(and(SYM_ID158,Con(0xff)),sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff)))))),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),add(shl(and(SYM_ID206,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x8))),shl(and(SYM_ID209,Con(0xff)),sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff)))))),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),add(shl(and(SYM_ID260,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x8))),shl(and(SYM_ID263,Con(0xff)),sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff)))))),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),add(shl(and(SYM_ID314,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x8))),shl(and(SYM_ID317,Con(0xff)),sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff)))))),and(SYM_ID338,Con(0xff))))))
+Formula index: 5 Length: 11 Formula: add(SYM_ID30,shl(add(shr(sub(SYM_ID33,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2)))
+Formula index: 6 Length: 11 Formula: sub(SYM_ID33,shl(add(shr(sub(SYM_ID33,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2)))
+Formula index: 7 Length: 9 Formula: shl(add(shr(sub(SYM_ID33,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2))
+Formula index: 8 Length: 7 Formula: add(shr(sub(SYM_ID33,Con(0x4)),Con(0x2)),Con(0x1))
+Formula index: 9 Length: 399 Formula: add(and(SYM_ID335,Con(0xffff)),and(sub(shl(Con(0x1),and(and(SYM_ID332,Con(0xff)),Con(0xf))),Con(0x1)),shr(add(shr(shr(add(shr(shr(add(shr(shr(add(shr(shr(add(shr(add(SYM_ID5,add(shl(and(SYM_ID66,Con(0xff)),add(SYM_ID2,Con(0x8))),shl(and(SYM_ID69,Con(0xff)),SYM_ID2))),and(SYM_ID90,Con(0xff))),add(shl(and(SYM_ID101,Con(0xff)),add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x8))),shl(and(SYM_ID104,Con(0xff)),sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff)))))),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),add(shl(and(SYM_ID155,Con(0xff)),add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x8))),shl(and(SYM_ID158,Con(0xff)),sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff)))))),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),add(shl(and(SYM_ID206,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x8))),shl(and(SYM_ID209,Con(0xff)),sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff)))))),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),add(shl(and(SYM_ID260,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x8))),shl(and(SYM_ID263,Con(0xff)),sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff)))))),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),add(shl(and(SYM_ID314,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x8))),shl(and(SYM_ID317,Con(0xff)),sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff)))))),and(SYM_ID338,Con(0xff)))))
+Formula index: 10 Length: 395 Formula: and(sub(shl(Con(0x1),and(and(SYM_ID332,Con(0xff)),Con(0xf))),Con(0x1)),shr(add(shr(shr(add(shr(shr(add(shr(shr(add(shr(shr(add(shr(add(SYM_ID5,add(shl(and(SYM_ID66,Con(0xff)),add(SYM_ID2,Con(0x8))),shl(and(SYM_ID69,Con(0xff)),SYM_ID2))),and(SYM_ID90,Con(0xff))),add(shl(and(SYM_ID101,Con(0xff)),add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x8))),shl(and(SYM_ID104,Con(0xff)),sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff)))))),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),add(shl(and(SYM_ID155,Con(0xff)),add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x8))),shl(and(SYM_ID158,Con(0xff)),sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff)))))),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),add(shl(and(SYM_ID206,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x8))),shl(and(SYM_ID209,Con(0xff)),sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff)))))),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),add(shl(and(SYM_ID260,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x8))),shl(and(SYM_ID263,Con(0xff)),sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff)))))),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),add(shl(and(SYM_ID314,Con(0xff)),add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x8))),shl(and(SYM_ID317,Con(0xff)),sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff)))))),and(SYM_ID338,Con(0xff))))
+Formula index: 11 Length: 23 Formula: sub(add(add(add(add(add(add(add(add(SYM_ID13,Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(sub(SYM_ID11,SYM_ID16),SYM_ID13))
+Formula index: 12 Length: 27 Formula: add(sub(sub(add(SYM_ID13,SYM_ID11),Con(0x101)),add(add(add(add(add(add(add(add(add(SYM_ID13,Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x4))),Con(0x101))
+Formula index: 13 Length: 77 Formula: sub(add(add(add(add(add(add(SYM_ID6,Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2)),shr(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x10)),and(SYM_ID338,Con(0xff))),and(and(and(SYM_ID332,Con(0xff)),Con(0xf)),Con(0xff))),Con(0x3)))
+Formula index: 14 Length: 85 Formula: add(sub(sub(add(SYM_ID6,SYM_ID8),Con(0x5)),sub(add(add(add(add(add(add(SYM_ID6,Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2)),Con(0x2)),shr(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(sub(add(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID90,Con(0xff))),Con(0x10)),and(SYM_ID125,Con(0xff))),and(SYM_ID144,Con(0xff))),Con(0x10)),and(SYM_ID144,Con(0xff))),and(SYM_ID195,Con(0xff))),Con(0x10)),and(SYM_ID230,Con(0xff))),and(SYM_ID249,Con(0xff))),Con(0x10)),and(SYM_ID284,Con(0xff))),and(SYM_ID303,Con(0xff))),Con(0x10)),and(SYM_ID338,Con(0xff))),and(and(and(SYM_ID332,Con(0xff)),Con(0xf)),Con(0xff))),Con(0x3)))),Con(0x5))

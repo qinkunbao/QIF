@@ -1,0 +1,5 @@
+size: 4
+Formula index: 0 Length: 31 Formula: shr(xor(xor(SYM_ID9,and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff))),and(xor(shr(xor(SYM_ID16,shl(and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)),Con(0x8))),Con(0x2)),xor(SYM_ID9,and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)))),Con(0x33333333))),Con(0x10))
+Formula index: 1 Length: 33 Formula: xor(xor(SYM_ID16,shl(and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)),Con(0x8))),shl(and(xor(shr(xor(SYM_ID16,shl(and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)),Con(0x8))),Con(0x2)),xor(SYM_ID9,and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)))),Con(0x33333333)),Con(0x2)))
+Formula index: 2 Length: 29 Formula: xor(xor(SYM_ID9,and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff))),and(xor(shr(xor(SYM_ID16,shl(and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)),Con(0x8))),Con(0x2)),xor(SYM_ID9,and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)))),Con(0x33333333)))
+Formula index: 3 Length: 21 Formula: and(xor(shr(xor(SYM_ID16,shl(and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)),Con(0x8))),Con(0x2)),xor(SYM_ID9,and(xor(SYM_ID1,SYM_ID9),Con(0xff00ff)))),Con(0x33333333))

@@ -1,0 +1,9 @@
+Index: 61 Unsupported Instruction: cmp dword ptr [ebp-0x18], 0x8
+Index: 62 Unsupported Instruction: jz 0x8048b0d
+size: 6
+Formula index: 0 Length: 21 Formula: xor(xor(xor(xor(xor(xor(SYM_ID35,xor(SYM_ID13,xor(SYM_ID31,xor(xor(SYM_ID18,SYM_ID23),SYM_ID27)))),SYM_ID41),SYM_ID49),SYM_ID57),SYM_ID67),SYM_ID10)
+Formula index: 1 Length: 11 Formula: xor(SYM_ID35,xor(SYM_ID13,xor(SYM_ID31,xor(xor(SYM_ID18,SYM_ID23),SYM_ID27))))
+Formula index: 2 Length: 13 Formula: xor(xor(SYM_ID35,xor(SYM_ID13,xor(SYM_ID31,xor(xor(SYM_ID18,SYM_ID23),SYM_ID27)))),SYM_ID41)
+Formula index: 3 Length: 15 Formula: xor(xor(xor(SYM_ID35,xor(SYM_ID13,xor(SYM_ID31,xor(xor(SYM_ID18,SYM_ID23),SYM_ID27)))),SYM_ID41),SYM_ID49)
+Formula index: 4 Length: 17 Formula: xor(xor(xor(xor(SYM_ID35,xor(SYM_ID13,xor(SYM_ID31,xor(xor(SYM_ID18,SYM_ID23),SYM_ID27)))),SYM_ID41),SYM_ID49),SYM_ID57)
+Formula index: 5 Length: 19 Formula: xor(xor(xor(xor(xor(SYM_ID35,xor(SYM_ID13,xor(SYM_ID31,xor(xor(SYM_ID18,SYM_ID23),SYM_ID27)))),SYM_ID41),SYM_ID49),SYM_ID57),SYM_ID67)

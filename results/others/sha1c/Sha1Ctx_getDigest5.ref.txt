@@ -1,0 +1,20 @@
+Index: 4 Unsupported Instruction: cmp dword ptr [ebp-0x58], 0xf
+Index: 5 Unsupported Instruction: jle 0x804879f
+Index: 25 Unsupported Instruction: call 0x804855b
+Index: 34 Unsupported Instruction: ret
+Index: 41 Unsupported Instruction: call 0x804855b
+Index: 50 Unsupported Instruction: ret
+Index: 57 Unsupported Instruction: call 0x80485b8
+Index: 61 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x0
+Index: 62 Unsupported Instruction: js 0x80485ca
+Index: 63 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x4f
+Index: 64 Unsupported Instruction: jle 0x80485e0
+Index: 65 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x13
+Index: 66 Unsupported Instruction: None 0x80485fa
+Index: 67 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x27
+Index: 68 Unsupported Instruction: None 0x804860b
+Index: 69 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x3b
+Index: 70 Unsupported Instruction: None 0x8048626
+Index: 78 Unsupported Instruction: jmp 0x804862f
+Index: 79 Unsupported Instruction: leave
+Index: 80 Unsupported Instruction: ret

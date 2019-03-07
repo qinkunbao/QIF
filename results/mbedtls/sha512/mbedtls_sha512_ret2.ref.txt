@@ -1,0 +1,15 @@
+Index: 97 Unsupported Instruction: cmp dword ptr [ebp-0x2f4], 0x4f
+size: 13
+Formula index: 0 Length: 33 Formula: add(SYM_ID69,add(add(SYM_ID37,xor(xor(shrd(SYM_ID13,SYM_ID12,Con(0x13)),shld(SYM_ID13,SYM_ID12,Con(0x3))),shrd(SYM_ID13,SYM_ID12,Con(0x6)))),xor(xor(shrd(SYM_ID43,SYM_ID42,Con(0x1)),shrd(SYM_ID43,SYM_ID42,Con(0x8))),shrd(SYM_ID43,SYM_ID42,Con(0x7)))))
+Formula index: 1 Length: 29 Formula: adc(adc(SYM_ID36,xor(shr(SYM_ID12,Con(0x6)),xor(shrd(SYM_ID12,SYM_ID13,Con(0x13)),shld(SYM_ID12,SYM_ID13,Con(0x3))))),xor(shr(SYM_ID42,Con(0x7)),xor(shrd(SYM_ID42,SYM_ID43,Con(0x1)),shrd(SYM_ID42,SYM_ID43,Con(0x8)))))
+Formula index: 2 Length: 31 Formula: adc(SYM_ID68,adc(adc(SYM_ID36,xor(shr(SYM_ID12,Con(0x6)),xor(shrd(SYM_ID12,SYM_ID13,Con(0x13)),shld(SYM_ID12,SYM_ID13,Con(0x3))))),xor(shr(SYM_ID42,Con(0x7)),xor(shrd(SYM_ID42,SYM_ID43,Con(0x1)),shrd(SYM_ID42,SYM_ID43,Con(0x8))))))
+Formula index: 3 Length: 14 Formula: xor(xor(shrd(SYM_ID43,SYM_ID42,Con(0x1)),shrd(SYM_ID43,SYM_ID42,Con(0x8))),shrd(SYM_ID43,SYM_ID42,Con(0x7)))
+Formula index: 4 Length: 13 Formula: xor(shr(SYM_ID42,Con(0x7)),xor(shrd(SYM_ID42,SYM_ID43,Con(0x1)),shrd(SYM_ID42,SYM_ID43,Con(0x8))))
+Formula index: 5 Length: 9 Formula: xor(shrd(SYM_ID43,SYM_ID42,Con(0x1)),shrd(SYM_ID43,SYM_ID42,Con(0x8)))
+Formula index: 6 Length: 9 Formula: xor(shrd(SYM_ID42,SYM_ID43,Con(0x1)),shrd(SYM_ID42,SYM_ID43,Con(0x8)))
+Formula index: 7 Length: 14 Formula: xor(xor(shrd(SYM_ID13,SYM_ID12,Con(0x13)),shld(SYM_ID13,SYM_ID12,Con(0x3))),shrd(SYM_ID13,SYM_ID12,Con(0x6)))
+Formula index: 8 Length: 13 Formula: xor(shr(SYM_ID12,Con(0x6)),xor(shrd(SYM_ID12,SYM_ID13,Con(0x13)),shld(SYM_ID12,SYM_ID13,Con(0x3))))
+Formula index: 9 Length: 9 Formula: xor(shrd(SYM_ID13,SYM_ID12,Con(0x13)),shld(SYM_ID13,SYM_ID12,Con(0x3)))
+Formula index: 10 Length: 9 Formula: xor(shrd(SYM_ID12,SYM_ID13,Con(0x13)),shld(SYM_ID12,SYM_ID13,Con(0x3)))
+Formula index: 11 Length: 16 Formula: add(SYM_ID37,xor(xor(shrd(SYM_ID13,SYM_ID12,Con(0x13)),shld(SYM_ID13,SYM_ID12,Con(0x3))),shrd(SYM_ID13,SYM_ID12,Con(0x6))))
+Formula index: 12 Length: 15 Formula: adc(SYM_ID36,xor(shr(SYM_ID12,Con(0x6)),xor(shrd(SYM_ID12,SYM_ID13,Con(0x13)),shld(SYM_ID12,SYM_ID13,Con(0x3)))))

@@ -1,0 +1,60 @@
+Index: 3 Unsupported Instruction: cmp edi, dword ptr [esp+0x88]
+Index: 4 Unsupported Instruction: jz 0xb7ee6108
+Index: 8 Unsupported Instruction: jz 0xb7ee6041
+Index: 9 Unsupported Instruction: test byte ptr [edi+0x195], 0x20
+Index: 10 Unsupported Instruction: jnz 0xb7ee6108
+Index: 12 Unsupported Instruction: test byte ptr [eax-0x300], 0x8
+Index: 13 Unsupported Instruction: jnz 0xb7ee6120
+Index: 15 Unsupported Instruction: test eax, eax
+Index: 17 Unsupported Instruction: jz 0xb7ee6108
+Index: 23 Unsupported Instruction: test edx, edx
+Index: 28 Unsupported Instruction: jz 0xb7ee6160
+Index: 42 Unsupported Instruction: test al, 0x1
+Index: 43 Unsupported Instruction: jnz 0xb7ee65a0
+Index: 46 Unsupported Instruction: test edx, edx
+Index: 47 Unsupported Instruction: jz 0xb7ee6108
+Index: 48 Unsupported Instruction: test al, al
+Index: 49 Unsupported Instruction: jz 0xb7ee6108
+Index: 52 Unsupported Instruction: test eax, eax
+Index: 53 Unsupported Instruction: jz 0xb7ee6108
+Index: 55 Unsupported Instruction: call 0xb7eed260
+Index: 61 Unsupported Instruction: call 0xb7ef6769
+Index: 63 Unsupported Instruction: ret
+Index: 68 Unsupported Instruction: call 0xb7ef5e30
+Index: 72 Unsupported Instruction: cmp al, byte ptr [edx]
+Index: 73 Unsupported Instruction: jnz 0xb7ef5e47
+Index: 77 Unsupported Instruction: ret
+Index: 79 Unsupported Instruction: test eax, eax
+Index: 80 Unsupported Instruction: jz 0xb7eed2a9
+Index: 82 Unsupported Instruction: test esi, esi
+Index: 83 Unsupported Instruction: jnz 0xb7eed297
+Index: 87 Unsupported Instruction: call 0xb7ef5e30
+Index: 91 Unsupported Instruction: cmp al, byte ptr [edx]
+Index: 92 Unsupported Instruction: jnz 0xb7ef5e47
+Index: 95 Unsupported Instruction: test al, al
+Index: 96 Unsupported Instruction: jnz 0xb7ef5e38
+Index: 98 Unsupported Instruction: cmp al, byte ptr [edx]
+Index: 99 Unsupported Instruction: jnz 0xb7ef5e47
+Index: 102 Unsupported Instruction: test al, al
+Index: 103 Unsupported Instruction: jnz 0xb7ef5e38
+Index: 105 Unsupported Instruction: cmp al, byte ptr [edx]
+Index: 106 Unsupported Instruction: jnz 0xb7ef5e47
+Index: 109 Unsupported Instruction: test al, al
+Index: 110 Unsupported Instruction: jnz 0xb7ef5e38
+Index: 112 Unsupported Instruction: cmp al, byte ptr [edx]
+Index: 113 Unsupported Instruction: jnz 0xb7ef5e47
+Index: 116 Unsupported Instruction: test al, al
+Index: 117 Unsupported Instruction: jnz 0xb7ef5e38
+Index: 119 Unsupported Instruction: cmp al, byte ptr [edx]
+Index: 120 Unsupported Instruction: jnz 0xb7ef5e47
+Index: 124 Unsupported Instruction: ret
+Index: 126 Unsupported Instruction: test eax, eax
+Index: 127 Unsupported Instruction: jnz 0xb7eed290
+Index: 129 Unsupported Instruction: test esi, esi
+Index: 130 Unsupported Instruction: jz 0xb7eed2b8
+Index: 135 Unsupported Instruction: ret
+Index: 136 Unsupported Instruction: test eax, eax
+Index: 137 Unsupported Instruction: jnz 0xb7ee67f1
+Index: 138 Unsupported Instruction: nop
+Index: 141 Unsupported Instruction: cmp dword ptr [esp], esi
+size: 0

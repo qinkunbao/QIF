@@ -1,0 +1,17 @@
+Index: 3 Unsupported Instruction: cmp edi, dword ptr [esp+0x88]
+Index: 4 Unsupported Instruction: jz 0xb7f5f108
+Index: 8 Unsupported Instruction: jz 0xb7f5f041
+Index: 9 Unsupported Instruction: test byte ptr [edi+0x195], 0x20
+Index: 10 Unsupported Instruction: jnz 0xb7f5f108
+Index: 12 Unsupported Instruction: test byte ptr [eax-0x300], 0x8
+Index: 13 Unsupported Instruction: jnz 0xb7f5f120
+Index: 15 Unsupported Instruction: test eax, eax
+Index: 17 Unsupported Instruction: jz 0xb7f5f108
+Index: 23 Unsupported Instruction: test edx, edx
+Index: 28 Unsupported Instruction: jz 0xb7f5f160
+Index: 42 Unsupported Instruction: test al, 0x1
+Index: 43 Unsupported Instruction: jnz 0xb7f5f5a0
+Index: 46 Unsupported Instruction: test edx, edx
+Index: 47 Unsupported Instruction: jz 0xb7f5f108
+Index: 49 Unsupported Instruction: cmp dword ptr [esp], esi
+size: 0

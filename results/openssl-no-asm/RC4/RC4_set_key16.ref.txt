@@ -1,0 +1,228 @@
+Unknown data operands: nop  Addr: b7f999ae
+Index: 4 Unsupported Instruction: test eax, eax
+Index: 6 Unsupported Instruction: jz 0xb5523912
+Index: 10 Unsupported Instruction: cmp edx, 0x3
+Index: 11 Unsupported Instruction: jz 0xb55239a0
+Index: 12 Unsupported Instruction: cmp edx, 0x4
+Index: 13 Unsupported Instruction: jz 0xb5523978
+Index: 22 Unsupported Instruction: call edx
+Index: 25 Unsupported Instruction: call 0xb7fa3761
+Index: 27 Unsupported Instruction: ret
+Index: 47 Unsupported Instruction: js 0xb7f99ad3
+Index: 57 Unsupported Instruction: jmp 0xb7f9992a
+Index: 62 Unsupported Instruction: call dword ptr [eax+ecx*1+0x7f8]
+Index: 65 Unsupported Instruction: ret
+Index: 69 Unsupported Instruction: test ecx, ecx
+Index: 70 Unsupported Instruction: jz 0xb7f99900
+Index: 75 Unsupported Instruction: cmp dword ptr [ebp-0x34], edx
+Index: 76 Unsupported Instruction: jnz 0xb7f99900
+Index: 84 Unsupported Instruction: jmp 0xb7f99987
+Index: 85 Unsupported Instruction: cmp eax, dword ptr [eax+0x14]
+Index: 86 Unsupported Instruction: jnz 0xb7f99980
+Index: 87 Unsupported Instruction: cmp ecx, edx
+Index: 88 Unsupported Instruction: jbe 0xb7f99c08
+Index: 94 Unsupported Instruction: test eax, eax
+Index: 95 Unsupported Instruction: jnz 0xb7f99987
+Index: 96 Unsupported Instruction: cmp eax, dword ptr [eax+0x14]
+Index: 97 Unsupported Instruction: jnz 0xb7f99980
+Index: 98 Unsupported Instruction: cmp ecx, edx
+Index: 99 Unsupported Instruction: jbe 0xb7f99c08
+Index: 105 Unsupported Instruction: test eax, eax
+Index: 106 Unsupported Instruction: jnz 0xb7f99987
+Index: 107 Unsupported Instruction: cmp eax, dword ptr [eax+0x14]
+Index: 108 Unsupported Instruction: jnz 0xb7f99980
+Index: 109 Unsupported Instruction: cmp ecx, edx
+Index: 110 Unsupported Instruction: jbe 0xb7f99c08
+Index: 116 Unsupported Instruction: test eax, eax
+Index: 117 Unsupported Instruction: jnz 0xb7f99987
+Index: 118 Unsupported Instruction: cmp eax, dword ptr [eax+0x14]
+Index: 119 Unsupported Instruction: jnz 0xb7f99980
+Index: 120 Unsupported Instruction: cmp ecx, edx
+Index: 121 Unsupported Instruction: jbe 0xb7f99c08
+Index: 127 Unsupported Instruction: test eax, eax
+Index: 128 Unsupported Instruction: jnz 0xb7f99987
+Index: 129 Unsupported Instruction: data16 nop 
+Index: 131 Unsupported Instruction: cmp edx, ecx
+Index: 133 Unsupported Instruction: None al
+Index: 134 Unsupported Instruction: test esi, esi
+Index: 135 Unsupported Instruction: jnz 0xb7f999c7
+Index: 136 Unsupported Instruction: test al, al
+Index: 137 Unsupported Instruction: jnz 0xb7f99c2a
+Index: 139 Unsupported Instruction: test ebx, ebx
+Index: 140 Unsupported Instruction: jz 0xb7f999de
+Index: 147 Unsupported Instruction: call 0xb7f99640
+Index: 153 Unsupported Instruction: call 0xb7fa3771
+Index: 155 Unsupported Instruction: ret
+Index: 158 Unsupported Instruction: cmp edx, 0x1
+Index: 160 Unsupported Instruction: jz 0xb7f997d3
+Index: 170 Unsupported Instruction: test eax, eax
+Index: 172 Unsupported Instruction: None cl
+Index: 183 Unsupported Instruction: call 0xb7fa34f0
+Index: 188 Unsupported Instruction: jecxz 0xb7fa352d
+Index: 191 Unsupported Instruction: jz 0xb7fa3519
+Index: 196 Unsupported Instruction: None stosd dword ptr [edi]
+Index: 197 Unsupported Instruction: None stosd dword ptr [edi]
+Index: 199 Unsupported Instruction: None stosb byte ptr [edi]
+Index: 202 Unsupported Instruction: ret
+Index: 209 Unsupported Instruction: jmp 0xb7f996de
+Index: 222 Unsupported Instruction: cmp ebx, dword ptr [ebx+0x14]
+Index: 223 Unsupported Instruction: jnz 0xb7f996b0
+Index: 224 Unsupported Instruction: cmp dword ptr [ebx+0x20c], 0xffffffff
+Index: 225 Unsupported Instruction: jz 0xb7f996b0
+Index: 228 Unsupported Instruction: cmp dword ptr [ebp-0x1c], eax
+Index: 230 Unsupported Instruction: None 0xb7f996b0
+Index: 237 Unsupported Instruction: test eax, eax
+Index: 238 Unsupported Instruction: jz 0xb7f997e0
+Index: 240 Unsupported Instruction: test eax, eax
+Index: 241 Unsupported Instruction: jnz 0xb7f99837
+Index: 245 Unsupported Instruction: cmp dword ptr [ebp-0x1c], eax
+Index: 246 Unsupported Instruction: jb 0xb7f9972a
+Index: 250 Unsupported Instruction: test eax, eax
+Index: 251 Unsupported Instruction: jz 0xb7f997e0
+Index: 254 Unsupported Instruction: test edx, edx
+Index: 255 Unsupported Instruction: jz 0xb7f997e0
+Index: 257 Unsupported Instruction: cmp ebx, edx
+Index: 258 Unsupported Instruction: jnz 0xb7f99740
+Index: 260 Unsupported Instruction: test edx, edx
+Index: 261 Unsupported Instruction: jz 0xb7f997e0
+Index: 263 Unsupported Instruction: cmp ebx, edx
+Index: 264 Unsupported Instruction: jnz 0xb7f99740
+Index: 266 Unsupported Instruction: test edx, edx
+Index: 267 Unsupported Instruction: jz 0xb7f997e0
+Index: 269 Unsupported Instruction: test eax, eax
+Index: 270 Unsupported Instruction: jnz 0xb7f99837
+Index: 274 Unsupported Instruction: cmp dword ptr [ebp-0x1c], eax
+Index: 275 Unsupported Instruction: jb 0xb7f9972a
+Index: 276 Unsupported Instruction: jmp 0xb7f996b0
+Index: 277 Unsupported Instruction: cmp dword ptr [ebp-0x20], edi
+Index: 279 Unsupported Instruction: jz 0xb7f997d0
+Index: 291 Unsupported Instruction: call 0xb7fa34f0
+Index: 296 Unsupported Instruction: jecxz 0xb7fa352d
+Index: 299 Unsupported Instruction: jz 0xb7fa3519
+Index: 304 Unsupported Instruction: None stosd dword ptr [edi]
+Index: 306 Unsupported Instruction: None stosb byte ptr [edi]
+Index: 309 Unsupported Instruction: ret
+Index: 323 Unsupported Instruction: cmp ebx, dword ptr [ebx+0x14]
+Index: 324 Unsupported Instruction: jnz 0xb7f996b0
+Index: 325 Unsupported Instruction: cmp dword ptr [ebx+0x20c], 0xffffffff
+Index: 326 Unsupported Instruction: jz 0xb7f996b0
+Index: 329 Unsupported Instruction: cmp dword ptr [ebp-0x1c], eax
+Index: 331 Unsupported Instruction: None 0xb7f996b0
+Index: 338 Unsupported Instruction: test eax, eax
+Index: 339 Unsupported Instruction: jz 0xb7f997e0
+Index: 341 Unsupported Instruction: test eax, eax
+Index: 342 Unsupported Instruction: jnz 0xb7f99837
+Index: 346 Unsupported Instruction: cmp dword ptr [ebp-0x1c], eax
+Index: 347 Unsupported Instruction: jb 0xb7f9972a
+Index: 348 Unsupported Instruction: jmp 0xb7f996b0
+Index: 349 Unsupported Instruction: cmp dword ptr [ebp-0x20], edi
+Index: 351 Unsupported Instruction: jz 0xb7f997d0
+Index: 363 Unsupported Instruction: call 0xb7fa34f0
+Index: 368 Unsupported Instruction: jecxz 0xb7fa352d
+Index: 371 Unsupported Instruction: jz 0xb7fa3519
+Index: 372 Unsupported Instruction: jp 0xb7fa350e
+Index: 373 Unsupported Instruction: stosb byte ptr [edi]
+Index: 375 Unsupported Instruction: jz 0xb7fa352d
+Index: 376 Unsupported Instruction: stosb byte ptr [edi]
+Index: 378 Unsupported Instruction: jz 0xb7fa352d
+Index: 381 Unsupported Instruction: ret
+Index: 395 Unsupported Instruction: cmp ebx, dword ptr [ebx+0x14]
+Index: 396 Unsupported Instruction: jnz 0xb7f996b0
+Index: 397 Unsupported Instruction: cmp dword ptr [ebx+0x20c], 0xffffffff
+Index: 398 Unsupported Instruction: jz 0xb7f996b0
+Index: 401 Unsupported Instruction: cmp dword ptr [ebp-0x1c], eax
+Index: 403 Unsupported Instruction: None 0xb7f996b0
+Index: 404 Unsupported Instruction: cmp dword ptr [ebp-0x20], edi
+Index: 406 Unsupported Instruction: jz 0xb7f997d0
+Index: 413 Unsupported Instruction: ret 0x4
+Index: 417 Unsupported Instruction: call dword ptr [eax+ecx*1+0x7fc]
+Index: 420 Unsupported Instruction: ret
+Index: 422 Unsupported Instruction: test ebx, ebx
+Index: 424 Unsupported Instruction: jz 0xb7f99abc
+Index: 430 Unsupported Instruction: test al, 0x8
+Index: 431 Unsupported Instruction: jz 0xb7f99aa5
+Index: 435 Unsupported Instruction: test eax, eax
+Index: 436 Unsupported Instruction: jz 0xb7f99b10
+Index: 438 Unsupported Instruction: test byte ptr [ecx-0x300], 0x2
+Index: 439 Unsupported Instruction: jnz 0xb7f99b30
+Index: 445 Unsupported Instruction: test eax, eax
+Index: 447 Unsupported Instruction: jz 0xb7f99a79
+Index: 449 Unsupported Instruction: call dword ptr [edi+esi*4-0x4]
+Index: 450 Unsupported Instruction: cmp byte ptr [0x804a01c], 0x0
+Index: 451 Unsupported Instruction: jnz 0x804840c
+Index: 455 Unsupported Instruction: call 0x8048380
+Index: 458 Unsupported Instruction: cmp eax, 0x6
+Index: 459 Unsupported Instruction: jbe 0x80483a9
+Index: 460 Unsupported Instruction: ret
+Index: 462 Unsupported Instruction: leave
+Index: 463 Unsupported Instruction: ret
+Index: 465 Unsupported Instruction: jnz 0xb7f99a70
+Index: 467 Unsupported Instruction: test eax, eax
+Index: 468 Unsupported Instruction: jz 0xb7f99a87
+Index: 471 Unsupported Instruction: call eax
+Index: 474 Unsupported Instruction: call 0x8048370
+Index: 476 Unsupported Instruction: ret
+Index: 480 Unsupported Instruction: ret
+Index: 482 Unsupported Instruction: test ecx, ecx
+Index: 483 Unsupported Instruction: jnz 0xb7f99aa5
+Index: 487 Unsupported Instruction: test edx, edx
+Index: 488 Unsupported Instruction: jnz 0xb7f99b6e
+Index: 492 Unsupported Instruction: cmp dword ptr [ebp-0x38], eax
+Index: 493 Unsupported Instruction: jnz 0xb7f99a18
+Index: 498 Unsupported Instruction: test al, 0x8
+Index: 499 Unsupported Instruction: jz 0xb7f99aa5
+Index: 503 Unsupported Instruction: cmp dword ptr [ebp-0x38], eax
+Index: 504 Unsupported Instruction: jnz 0xb7f99a18
+Index: 509 Unsupported Instruction: test al, 0x8
+Index: 510 Unsupported Instruction: jz 0xb7f99aa5
+Index: 514 Unsupported Instruction: test eax, eax
+Index: 515 Unsupported Instruction: jz 0xb7f99b10
+Index: 517 Unsupported Instruction: test eax, eax
+Index: 518 Unsupported Instruction: jz 0xb7f99a87
+Index: 520 Unsupported Instruction: test ecx, ecx
+Index: 521 Unsupported Instruction: jnz 0xb7f99aa5
+Index: 525 Unsupported Instruction: test edx, edx
+Index: 526 Unsupported Instruction: jnz 0xb7f99b6e
+Index: 530 Unsupported Instruction: cmp dword ptr [ebp-0x38], eax
+Index: 531 Unsupported Instruction: jnz 0xb7f99a18
+Index: 536 Unsupported Instruction: test al, 0x8
+Index: 537 Unsupported Instruction: jz 0xb7f99aa5
+Index: 541 Unsupported Instruction: test eax, eax
+Index: 542 Unsupported Instruction: jz 0xb7f99b10
+Index: 544 Unsupported Instruction: test eax, eax
+Index: 545 Unsupported Instruction: jz 0xb7f99a87
+Index: 547 Unsupported Instruction: test ecx, ecx
+Index: 548 Unsupported Instruction: jnz 0xb7f99aa5
+Index: 552 Unsupported Instruction: test edx, edx
+Index: 553 Unsupported Instruction: jnz 0xb7f99b6e
+Index: 557 Unsupported Instruction: cmp dword ptr [ebp-0x38], eax
+Index: 558 Unsupported Instruction: jnz 0xb7f99a18
+Index: 563 Unsupported Instruction: cmp eax, 0xffffffff
+Index: 564 Unsupported Instruction: jnz 0xb7f9992a
+Index: 566 Unsupported Instruction: test edi, edi
+Index: 567 Unsupported Instruction: jnz 0xb7f99af2
+Index: 571 Unsupported Instruction: test eax, eax
+Index: 572 Unsupported Instruction: jnz 0xb7f998b8
+Index: 574 Unsupported Instruction: test byte ptr [eax-0x300], 0x80
+Index: 575 Unsupported Instruction: jnz 0xb7f99bc0
+Index: 581 Unsupported Instruction: ret
+size: 19
+Formula index: 0 Length: 19 Formula: add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1))
+Formula index: 1 Length: 21 Formula: add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1))
+Formula index: 2 Length: 15 Formula: xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)))
+Formula index: 3 Length: 17 Formula: add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1))
+Formula index: 4 Length: 13 Formula: add(add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1)),Con(0x1))
+Formula index: 5 Length: 87 Formula: add(sub(sub(sub(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0xc)),Con(0x4c)),and(add(add(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))),Con(0x10)),Con(0xfffffff0))),imul(add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1)),Con(0x2)))
+Formula index: 6 Length: 71 Formula: add(sub(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1))),sub(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1))))
+Formula index: 7 Length: 21 Formula: sub(sub(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0xc)),Con(0x4c))
+Formula index: 8 Length: 45 Formula: sub(add(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),imul(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x4))),Con(0x4))
+Formula index: 9 Length: 11 Formula: imul(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x4))
+Formula index: 10 Length: 47 Formula: sub(sub(add(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),imul(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x4))),Con(0x4)),Con(0x4))
+Formula index: 11 Length: 25 Formula: sub(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))
+Formula index: 12 Length: 31 Formula: add(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),imul(add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1)),Con(0x4)))
+Formula index: 13 Length: 17 Formula: sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)))
+Formula index: 14 Length: 73 Formula: sub(sub(sub(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0xc)),Con(0x4c)),and(add(add(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))),Con(0x10)),Con(0xfffffff0)))
+Formula index: 15 Length: 23 Formula: add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))
+Formula index: 16 Length: 9 Formula: add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10))
+Formula index: 17 Length: 13 Formula: sub(sub(add(add(add(SYM_ID31,Con(0x14774)),Con(0x20)),imul(SYM_ID41,Con(0x4c))),Con(0x48)),Con(0x4c))
+Formula index: 18 Length: 9 Formula: add(add(add(add(Con(0x0),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))

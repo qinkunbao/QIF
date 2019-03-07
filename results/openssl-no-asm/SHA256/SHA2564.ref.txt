@@ -1,0 +1,21 @@
+Index: 660 Unsupported Instruction: jmp 0x8048dee
+Index: 1245 Unsupported Instruction: cmp ebx, 0x40
+Index: 1246 Unsupported Instruction: jnz 0x8048dc0
+Index: 1846 Unsupported Instruction: cmp ebx, 0x40
+Index: 1847 Unsupported Instruction: jnz 0x8048dc0
+Index: 2447 Unsupported Instruction: cmp ebx, 0x40
+Index: 2448 Unsupported Instruction: jnz 0x8048dc0
+Index: 3048 Unsupported Instruction: cmp ebx, 0x40
+Index: 3049 Unsupported Instruction: jnz 0x8048dc0
+Index: 3649 Unsupported Instruction: cmp ebx, 0x40
+Index: 3650 Unsupported Instruction: jnz 0x8048dc0
+Index: 4250 Unsupported Instruction: cmp ebx, 0x40
+Index: 4251 Unsupported Instruction: jnz 0x8048dc0
+Index: 4287 Unsupported Instruction: cmp eax, 0xffffffff
+size: 6
+Formula index: 0 Length: 13 Formula: add(add(add(add(add(add(Con(0x10),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8))
+Formula index: 1 Length: 13 Formula: add(add(add(add(add(add(SYM_ID550,Con(0x20)),Con(0x20)),Con(0x20)),Con(0x20)),Con(0x20)),Con(0x20))
+Formula index: 2 Length: 13 Formula: and(add(add(add(add(add(Con(0x10),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0xf))
+Formula index: 3 Length: 15 Formula: add(add(add(add(add(add(add(Con(0x10),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0xd))
+Formula index: 4 Length: 15 Formula: and(add(add(add(add(add(add(Con(0x10),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0xf)),Con(0xf))
+Formula index: 5 Length: 13 Formula: add(add(add(add(add(add(Con(0x10),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0x8)),Con(0xe))

@@ -1,0 +1,12 @@
+Index: 1 Unsupported Instruction: test edi, edi
+Index: 2 Unsupported Instruction: jz 0xb5560a30
+Index: 5 Unsupported Instruction: cmp eax, ebp
+Index: 6 Unsupported Instruction: jnz 0xb5560960
+Index: 8 Unsupported Instruction: test ebx, ebx
+Index: 9 Unsupported Instruction: jnz 0xb556096e
+Index: 11 Unsupported Instruction: test edi, edi
+Index: 13 Unsupported Instruction: jz 0xb55609b9
+Index: 15 Unsupported Instruction: test edx, edx
+Index: 16 Unsupported Instruction: jle 0xb5560ad0
+Index: 18 Unsupported Instruction: cmp dword ptr [ebx+0x14], eax
+size: 0

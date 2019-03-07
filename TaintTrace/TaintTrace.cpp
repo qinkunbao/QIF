@@ -27,17 +27,18 @@ int main(int argc, char* argv[]) {
 	}
 	tana::Function func(&library_file);
 
-	vector<Inst_Dyn> inst_list;
+	vector<std::unique_ptr<Inst_Dyn>> inst_list;
 	t_type::T_ADDRESS start_addr = 0;
 	t_type::T_SIZE m_size = 0;
 
 	uint32_t id = 1;
 	uint32_t batch_size = 1000;
-	parse_trace(&trace_file, &inst_list, 1, start_addr, m_size, id);
+	parse_trace(&trace_file, inst_list, 1, start_addr, m_size, id);
 	Tainter taint(start_addr, m_size);
 
 
-	while (!parse_trace(&trace_file, &inst_list, batch_size, start_addr, m_size, id)) {
+	/*
+	while (!parse_trace(&trace_file, inst_list, batch_size, start_addr, m_size, id)) {
 
 		for (auto it = inst_list.begin(); it != inst_list.end(); ++it) {
 			taint.taintIns(*it);
@@ -50,6 +51,7 @@ int main(int argc, char* argv[]) {
 		}
 		id = id + batch_size;
 	}
+	 */
 
 	list<t_type::T_ADDRESS> taintedAddr;
 	taintedAddr = taint.getTaintedAddress();

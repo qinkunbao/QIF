@@ -1,0 +1,8 @@
+Index: 1 Unsupported Instruction: cmp dword ptr [ebp-0x148], 0x7
+Index: 2 Unsupported Instruction: jbe 0xf56b28ef
+Index: 9 Unsupported Instruction: cmp dword ptr [ebp-0x148], 0x7
+Index: 10 Unsupported Instruction: jbe 0xf56b28ef
+Index: 17 Unsupported Instruction: cmp dword ptr [ebp-0x148], 0x7
+Index: 18 Unsupported Instruction: jbe 0xf56b28ef
+size: 1
+Formula index: 0 Length: 7 Formula: add(add(add(SYM_ID10,Con(0x1)),Con(0x1)),Con(0x1))

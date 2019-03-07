@@ -33,8 +33,19 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    std::vector<std::vector<Inst_Base>> inst_list;
-    parse_static_trace(infile1, infile2, &inst_list);
+    std::vector<std::vector<Inst_Static>> inst_list;
+    parse_static_trace(infile1, infile2, inst_list);
+
+
+    for(auto const &b : inst_list)
+    {
+        std::cout << "Block:  " << std::endl;
+        for(auto const &inst : b)
+        {
+            inst.print();
+        }
+
+    }
 
     return 0;
 }

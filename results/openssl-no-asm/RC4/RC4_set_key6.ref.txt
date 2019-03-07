@@ -1,0 +1,6 @@
+Index: 1 Unsupported Instruction: cmp eax, dword ptr [eax+0x14]
+Index: 2 Unsupported Instruction: jnz 0xb7f99980
+Index: 3 Unsupported Instruction: cmp ecx, edx
+Index: 4 Unsupported Instruction: jbe 0xb7f99c08
+Index: 10 Unsupported Instruction: test eax, eax
+size: 0
