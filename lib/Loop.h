@@ -54,7 +54,7 @@ namespace tana {
                                           uint32_t history_length,
                                           uint32_t min_loop_length);
 
-        std::vector<Loop> loopDetection(std::vector<Inst_Dyn> *L, uint32_t id);
+        std::vector<Loop> loopDetection(const std::vector<std::unique_ptr<Inst_Dyn>> &L, uint32_t id);
 
         std::vector<Loop> loopDetectionFast(std::vector<Inst_Dyn> *L, uint32_t id);
 

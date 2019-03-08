@@ -187,10 +187,18 @@ namespace tana {
         }
 
 
-        std::vector<Loop> loopDetection(std::vector<Inst_Dyn> *L, uint32_t id)
+        std::vector<Loop> loopDetection(const std::vector<std::unique_ptr<Inst_Dyn>> &Lptr, uint32_t id)
         {
             std::vector<Loop> confirmLoop;
 			std::list<Loop> potential_loops;
+            std::vector<Inst_Dyn> Inst;
+            for(const auto &ins: Lptr)
+            {
+                Inst.push_back(*ins);
+            }
+
+            std::vector<Inst_Dyn> *L = &Inst;
+
             Loop current_loop = Loop(L->cend(), L->cend());
             std::cout << id << " instructions in total\n";
             for(auto it = L->cbegin(); it != L->cend(); ++it)
