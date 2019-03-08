@@ -418,9 +418,9 @@ namespace tana {
         for (auto inst = start; inst != end; ++inst)
         {
             auto it = inst->get();
-            bool status = it->symbolic_execution(*this);
             if (x86::SymbolicExecutionNoEffect(it->instruction_id))
                 continue;
+            bool status = it->symbolic_execution(*this);
 
             if (!status)
             {
@@ -1113,6 +1113,13 @@ namespace tana {
         std::shared_ptr<Value> v1, v2, v3, res;
         auto opcode_id = this->instruction_id;
         auto opcstr = x86::insn_id2string(opcode_id);
+        if(this->get_operand_number() == 1)
+        {
+            //TODO
+            return true;
+        }
+
+
         if (op0->type == Operand::Reg &&
             op1->type == Operand::Reg &&
             op2->type == Operand::ImmValue) { // imul reg, reg, imm
