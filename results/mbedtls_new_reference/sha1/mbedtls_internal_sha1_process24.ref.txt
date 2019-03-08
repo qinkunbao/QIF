@@ -2,7 +2,3 @@ size: 3
 Formula index: 0 Length: 15 Formula: rol(add(SYM_ID18,add(add(rol(SYM_ID12,Con(0x1)),add(SYM_ID4,xor(SYM_ID1,SYM_ID9))),Con(0x5a827999))),Con(0x5))
 Formula index: 1 Length: 13 Formula: add(SYM_ID18,add(add(rol(SYM_ID12,Con(0x1)),add(SYM_ID4,xor(SYM_ID1,SYM_ID9))),Con(0x5a827999)))
 Formula index: 2 Length: 7 Formula: xor(SYM_ID28,xor(xor(SYM_ID23,SYM_ID24),SYM_ID26))
-size: 3
-Formula index: 0 Length: 15 Formula: rol(add(SYM_ID18,add(add(rol(SYM_ID12,Con(0x1)),add(SYM_ID4,xor(SYM_ID1,SYM_ID9))),Con(0x5a827999))),Con(0x5))
-Formula index: 1 Length: 13 Formula: add(SYM_ID18,add(add(rol(SYM_ID12,Con(0x1)),add(SYM_ID4,xor(SYM_ID1,SYM_ID9))),Con(0x5a827999)))
-Formula index: 2 Length: 7 Formula: xor(SYM_ID28,xor(xor(SYM_ID23,SYM_ID24),SYM_ID26))

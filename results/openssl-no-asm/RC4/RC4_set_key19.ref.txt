@@ -1,7 +1,1 @@
-Index: 3 Unsupported Instruction: test edi, edi
-Index: 4 Unsupported Instruction: jz 0xb5560c70
-Index: 5 Unsupported Instruction: test byte ptr [edi], 0x2
-Index: 6 Unsupported Instruction: jnz 0xb5560c10
-Index: 8 Unsupported Instruction: test edx, edx
-size: 0
 size: 0

@@ -1,23 +1,2 @@
-Index: 2 Unsupported Instruction: jmp 0x804e9d9
-Index: 3 Unsupported Instruction: cmp edx, 0x1e
-Index: 4 Unsupported Instruction: None 0x804e940
-Index: 5 Unsupported Instruction: jmp dword ptr [edx*4+0x805a200]
-Index: 6 Unsupported Instruction: cmp ebp, 0x5
-Index: 7 Unsupported Instruction: jbe 0x804ec90
-Index: 26 Unsupported Instruction: cmp ebx, eax
-Index: 27 Unsupported Instruction: None 0x804ed39
-Index: 28 Unsupported Instruction: test ebp, ebp
-Index: 29 Unsupported Instruction: jz 0x804ff30
-Index: 32 Unsupported Instruction: jmp 0x804ecf8
-Index: 48 Unsupported Instruction: cmp eax, ecx
-Index: 49 Unsupported Instruction: None 0x804ecf0
-Index: 54 Unsupported Instruction: cmp byte ptr [esp+0x1c], 0x0
-Index: 55 Unsupported Instruction: jnz 0x80504f0
-Index: 56 Unsupported Instruction: test byte ptr [esp+0x1c], 0xf0
-Index: 57 Unsupported Instruction: jz 0x80505cd
-Index: 65 Unsupported Instruction: test byte ptr [esp+0x1c], 0x20
-Index: 66 Unsupported Instruction: jz 0x8050749
-size: 1
-Formula index: 0 Length: 9 Formula: sub(add(SYM_ID2,Con(0x8)),and(and(SYM_ID23,Con(0xff)),Con(0xff)))
 size: 1
 Formula index: 0 Length: 9 Formula: sub(add(SYM_ID2,Con(0x8)),and(and(SYM_ID23,Con(0xff)),Con(0xff)))

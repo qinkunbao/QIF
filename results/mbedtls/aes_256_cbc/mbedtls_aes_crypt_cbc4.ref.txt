@@ -1,5 +1,2 @@
-Index: 15 Unsupported Instruction: cmp dword ptr [ebp-0x20], 0xf
-size: 1
-Formula index: 0 Length: 7 Formula: xor(and(SYM_ID18,Con(0xff)),and(SYM_ID13,Con(0xff)))
 size: 1
 Formula index: 0 Length: 7 Formula: xor(and(SYM_ID18,Con(0xff)),and(SYM_ID13,Con(0xff)))

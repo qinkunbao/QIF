@@ -1,5 +1,1 @@
-Index: 2 Unsupported Instruction: test edx, edx
-Index: 3 Unsupported Instruction: jz 0xb7f997e0
-Index: 5 Unsupported Instruction: cmp ebx, edx
-size: 0
 size: 0

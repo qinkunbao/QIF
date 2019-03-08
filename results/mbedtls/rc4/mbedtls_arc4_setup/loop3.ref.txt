@@ -1,9 +1,3 @@
-Index: 2 Unsupported Instruction: cmp eax, dword ptr [ebp+0x10]
-Index: 3 Unsupported Instruction: jb 0xb569db58
-Index: 37 Unsupported Instruction: cmp dword ptr [ebp-0x14], 0xff
-size: 2
-Formula index: 0 Length: 17 Formula: add(SYM_ID12,and(add(and(and(SYM_ID23,Con(0xff)),Con(0xff)),add(SYM_ID19,and(and(SYM_ID14,Con(0xff)),Con(0xff)))),Con(0xff)))
-Formula index: 1 Length: 15 Formula: and(add(and(and(SYM_ID23,Con(0xff)),Con(0xff)),add(SYM_ID19,and(and(SYM_ID14,Con(0xff)),Con(0xff)))),Con(0xff))
 size: 2
 Formula index: 0 Length: 17 Formula: add(SYM_ID12,and(add(and(and(SYM_ID23,Con(0xff)),Con(0xff)),add(SYM_ID19,and(and(SYM_ID14,Con(0xff)),Con(0xff)))),Con(0xff)))
 Formula index: 1 Length: 15 Formula: and(add(and(and(SYM_ID23,Con(0xff)),Con(0xff)),add(SYM_ID19,and(and(SYM_ID14,Con(0xff)),Con(0xff)))),Con(0xff))

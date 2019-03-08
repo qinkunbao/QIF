@@ -3,8 +3,3 @@ Formula index: 0 Length: 31 Formula: sub(add(rol(xor(SYM_ID19,xor(xor(SYM_ID14,S
 Formula index: 1 Length: 19 Formula: add(rol(add(SYM_ID9,SYM_ID1),Con(0x5)),or(and(or(SYM_ID23,ror(SYM_ID12,Con(0x2))),SYM_ID26),and(SYM_ID23,ror(SYM_ID12,Con(0x2)))))
 Formula index: 2 Length: 7 Formula: xor(SYM_ID19,xor(xor(SYM_ID14,SYM_ID15),SYM_ID17))
 Formula index: 3 Length: 9 Formula: rol(xor(SYM_ID19,xor(xor(SYM_ID14,SYM_ID15),SYM_ID17)),Con(0x1))
-size: 4
-Formula index: 0 Length: 31 Formula: sub(add(rol(xor(SYM_ID19,xor(xor(SYM_ID14,SYM_ID15),SYM_ID17)),Con(0x1)),add(rol(add(SYM_ID9,SYM_ID1),Con(0x5)),or(and(or(SYM_ID23,ror(SYM_ID12,Con(0x2))),SYM_ID26),and(SYM_ID23,ror(SYM_ID12,Con(0x2)))))),Con(0x70e44324))
-Formula index: 1 Length: 19 Formula: add(rol(add(SYM_ID9,SYM_ID1),Con(0x5)),or(and(or(SYM_ID23,ror(SYM_ID12,Con(0x2))),SYM_ID26),and(SYM_ID23,ror(SYM_ID12,Con(0x2)))))
-Formula index: 2 Length: 7 Formula: xor(SYM_ID19,xor(xor(SYM_ID14,SYM_ID15),SYM_ID17))
-Formula index: 3 Length: 9 Formula: rol(xor(SYM_ID19,xor(xor(SYM_ID14,SYM_ID15),SYM_ID17)),Con(0x1))

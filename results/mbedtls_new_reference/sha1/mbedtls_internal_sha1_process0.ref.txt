@@ -1,6 +1,3 @@
 size: 2
 Formula index: 0 Length: 23 Formula: or(or(shl(and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID19,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID29,Con(0xff)),Con(0xff)),Con(0x8)))
 Formula index: 1 Length: 29 Formula: or(and(and(SYM_ID39,Con(0xff)),Con(0xff)),or(or(shl(and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID19,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID29,Con(0xff)),Con(0xff)),Con(0x8))))
-size: 2
-Formula index: 0 Length: 23 Formula: or(or(shl(and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID19,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID29,Con(0xff)),Con(0xff)),Con(0x8)))
-Formula index: 1 Length: 29 Formula: or(and(and(SYM_ID39,Con(0xff)),Con(0xff)),or(or(shl(and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID19,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID29,Con(0xff)),Con(0xff)),Con(0x8))))

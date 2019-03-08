@@ -1,3 +1,1 @@
-Index: 12 Unsupported Instruction: cmp esi, dword ptr [esp+0x18]
-size: 0
 size: 0

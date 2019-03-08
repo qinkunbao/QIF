@@ -1,7 +1,1 @@
-Index: 4 Unsupported Instruction: test eax, eax
-Index: 5 Unsupported Instruction: jz 0xb7f997e0
-Index: 7 Unsupported Instruction: test eax, eax
-Index: 8 Unsupported Instruction: jnz 0xb7f99837
-Index: 12 Unsupported Instruction: cmp dword ptr [ebp-0x1c], eax
-size: 0
 size: 0

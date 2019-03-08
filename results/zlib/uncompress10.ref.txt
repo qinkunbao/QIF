@@ -1,34 +1,3 @@
-Index: 1 Unsupported Instruction: cmp edx, 0x1e
-Index: 2 Unsupported Instruction: None 0x804e940
-Index: 3 Unsupported Instruction: jmp dword ptr [edx*4+0x805a200]
-Index: 4 Unsupported Instruction: cmp ebp, 0x5
-Index: 5 Unsupported Instruction: jbe 0x804ec90
-Index: 7 Unsupported Instruction: cmp edx, 0x101
-Index: 8 Unsupported Instruction: None 0x8050210
-Index: 23 Unsupported Instruction: call 0x8058f40
-Index: 105 Unsupported Instruction: cmp edi, 0xe
-Index: 106 Unsupported Instruction: None 0x805907d
-Index: 129 Unsupported Instruction: test ecx, ecx
-Index: 130 Unsupported Instruction: jz 0x80590ee
-Index: 136 Unsupported Instruction: cmp dword ptr [esp+0x4], esi
-Index: 137 Unsupported Instruction: None 0x8059110
-Index: 154 Unsupported Instruction: cmp ebx, eax
-Index: 155 Unsupported Instruction: jbe 0x8059408
-Index: 166 Unsupported Instruction: cmp esi, ebx
-Index: 167 Unsupported Instruction: None 0x8059176
-Index: 181 Unsupported Instruction: ret
-Index: 193 Unsupported Instruction: cmp eax, 0x3f3f
-Index: 194 Unsupported Instruction: jnz 0x804f860
-size: 9
-Formula index: 0 Length: 19 Formula: sub(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),shl(shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)),Con(0x3)))
-Formula index: 1 Length: 43 Formula: and(sub(shl(Con(0x1),sub(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),shl(shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)),Con(0x3)))),Con(0x1)),shr(add(SYM_ID5,add(shl(and(SYM_ID65,Con(0xff)),add(SYM_ID2,Con(0x8))),shl(and(SYM_ID68,Con(0xff)),SYM_ID2))),and(SYM_ID89,Con(0xff))))
-Formula index: 2 Length: 11 Formula: add(SYM_ID29,shl(add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2)))
-Formula index: 3 Length: 11 Formula: sub(SYM_ID32,shl(add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2)))
-Formula index: 4 Length: 9 Formula: shl(add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2))
-Formula index: 5 Length: 7 Formula: add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con(0x1))
-Formula index: 6 Length: 11 Formula: add(sub(sub(add(SYM_ID11,SYM_ID9),Con(0x101)),add(SYM_ID11,Con(0x1))),Con(0x101))
-Formula index: 7 Length: 13 Formula: sub(add(SYM_ID6,Con(0x2)),shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)))
-Formula index: 8 Length: 21 Formula: add(sub(sub(add(SYM_ID6,SYM_ID8),Con(0x5)),sub(add(SYM_ID6,Con(0x2)),shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)))),Con(0x5))
 size: 9
 Formula index: 0 Length: 19 Formula: sub(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),shl(shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)),Con(0x3)))
 Formula index: 1 Length: 43 Formula: and(sub(shl(Con(0x1),sub(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),shl(shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)),Con(0x3)))),Con(0x1)),shr(add(SYM_ID5,add(shl(and(SYM_ID65,Con(0xff)),add(SYM_ID2,Con(0x8))),shl(and(SYM_ID68,Con(0xff)),SYM_ID2))),and(SYM_ID89,Con(0xff))))

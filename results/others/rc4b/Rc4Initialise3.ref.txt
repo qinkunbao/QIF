@@ -1,9 +1,4 @@
 Index: 11 Unsupported Instruction: div dword ptr [ebp+0x10]
-Index: 42 Unsupported Instruction: cmp dword ptr [ebp-0xc], 0xff
-size: 2
-Formula index: 0 Length: 19 Formula: add(add(and(add(and(and(SYM_ID24,Con(0xff)),Con(0xff)),add(and(and(SYM_ID14,Con(0xff)),Con(0xff)),SYM_ID19)),Con(0xff)),SYM_ID9),Con(0x8))
-Formula index: 1 Length: 15 Formula: and(add(and(and(SYM_ID24,Con(0xff)),Con(0xff)),add(and(and(SYM_ID14,Con(0xff)),Con(0xff)),SYM_ID19)),Con(0xff))
-Index: 11 Unsupported Instruction: div dword ptr [ebp+0x10]
 size: 2
 Formula index: 0 Length: 19 Formula: add(add(and(add(and(and(SYM_ID24,Con(0xff)),Con(0xff)),add(and(and(SYM_ID14,Con(0xff)),Con(0xff)),SYM_ID19)),Con(0xff)),SYM_ID9),Con(0x8))
 Formula index: 1 Length: 15 Formula: and(add(and(and(SYM_ID24,Con(0xff)),Con(0xff)),add(and(and(SYM_ID14,Con(0xff)),Con(0xff)),SYM_ID19)),Con(0xff))

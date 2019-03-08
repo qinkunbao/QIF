@@ -1,24 +1,2 @@
-Index: 5 Unsupported Instruction: call 0xb544a260
-Index: 6 Unsupported Instruction: jmp dword ptr [ebx+0x48]
-Index: 10 Unsupported Instruction: cmp ecx, 0x1
-Index: 11 Unsupported Instruction: jbe 0xb53706c0
-Index: 12 Unsupported Instruction: pxor xmm0, xmm0
-Index: 13 Unsupported Instruction: cmp ecx, 0x40
-Index: 14 Unsupported Instruction: None 0xb53706e0
-Index: 15 Unsupported Instruction: cmp ecx, 0x8
-Index: 17 Unsupported Instruction: jb 0xb5370650
-Index: 20 Unsupported Instruction: call 0xb5353b55
-Index: 22 Unsupported Instruction: ret
-Index: 25 Unsupported Instruction: jmp ebx
-Index: 28 Unsupported Instruction: cmp ecx, ebx
-Index: 29 Unsupported Instruction: jnz 0xb5371170
-Index: 30 Unsupported Instruction: cmp cl, bl
-Index: 31 Unsupported Instruction: jnz 0xb5371186
-Index: 34 Unsupported Instruction: None 0xb5371190
-Index: 35 Unsupported Instruction: ret
-Index: 37 Unsupported Instruction: test eax, eax
-Index: 38 Unsupported Instruction: jz 0xb5463e70
-Index: 40 Unsupported Instruction: cmp esi, ebp
-size: 0
 Index: 12 Unsupported Instruction: pxor xmm0, xmm0
 size: 0

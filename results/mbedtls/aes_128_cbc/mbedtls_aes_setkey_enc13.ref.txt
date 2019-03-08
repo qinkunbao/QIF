@@ -1,9 +1,3 @@
-Index: 74 Unsupported Instruction: cmp dword ptr [ebp-0x10], 0x9
-size: 4
-Formula index: 0 Length: 39 Formula: xor(xor(xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71),SYM_ID79),SYM_ID18)
-Formula index: 1 Length: 33 Formula: xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10))))
-Formula index: 2 Length: 35 Formula: xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71)
-Formula index: 3 Length: 37 Formula: xor(xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71),SYM_ID79)
 size: 4
 Formula index: 0 Length: 39 Formula: xor(xor(xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71),SYM_ID79),SYM_ID18)
 Formula index: 1 Length: 33 Formula: xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10))))
