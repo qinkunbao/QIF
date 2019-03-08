@@ -1,5 +1,2 @@
-Index: 6 Unsupported Instruction: jnz 0x8048853
-size: 1
-Formula index: 0 Length: 7 Formula: add(add(SYM_ID4,and(SYM_ID10,Con(0xff))),SYM_ID9)
 size: 1
 Formula index: 0 Length: 7 Formula: add(add(SYM_ID4,and(SYM_ID10,Con(0xff))),SYM_ID9)

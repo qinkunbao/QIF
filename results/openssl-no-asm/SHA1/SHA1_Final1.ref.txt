@@ -1,3 +1,1 @@
-Index: 3 Unsupported Instruction: cmp eax, edx
-size: 0
 size: 0

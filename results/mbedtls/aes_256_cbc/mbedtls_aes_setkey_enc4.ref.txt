@@ -1,8 +1,2 @@
-Index: 8 Unsupported Instruction: test eax, eax
-Index: 9 Unsupported Instruction: jz 0x8048b3d
-Index: 11 Unsupported Instruction: jmp 0x8048b42
-Index: 16 Unsupported Instruction: cmp dword ptr [ebp-0x81c], 0x9
-size: 1
-Formula index: 0 Length: 7 Formula: and(xor(Con(0x1b),add(SYM_ID9,SYM_ID9)),Con(0xff))
 size: 1
 Formula index: 0 Length: 7 Formula: and(xor(Con(0x1b),add(SYM_ID9,SYM_ID9)),Con(0xff))

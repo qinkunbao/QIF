@@ -1,17 +1,3 @@
-Index: 4 Unsupported Instruction: cmp dword ptr [ebp-0x58], 0xf
-Index: 5 Unsupported Instruction: jle 0x804879f
-Index: 8 Unsupported Instruction: call 0x804855b
-Index: 17 Unsupported Instruction: ret
-Index: 24 Unsupported Instruction: call 0x80485b8
-Index: 28 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x0
-Index: 29 Unsupported Instruction: js 0x80485ca
-Index: 30 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x4f
-Index: 31 Unsupported Instruction: jle 0x80485e0
-Index: 32 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x13
-Index: 33 Unsupported Instruction: None 0x80485fa
-Index: 40 Unsupported Instruction: jmp 0x804862f
-Index: 41 Unsupported Instruction: leave
-Index: 42 Unsupported Instruction: ret
 Index: 41 Unsupported Instruction: leave
 size: 2
 Formula index: 0 Length: 17 Formula: add(SYM_ID38,add(add(add(rol(SYM_ID13,Con(0x5)),or(and(SYM_ID19,SYM_ID17),and(SYM_ID19,SYM_ID18))),SYM_ID28),SYM_ID30))

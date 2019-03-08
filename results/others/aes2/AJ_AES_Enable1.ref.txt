@@ -1,11 +1,3 @@
-Index: 11 Unsupported Instruction: call 0x804854f
-Index: 39 Unsupported Instruction: ret
-Index: 79 Unsupported Instruction: cmp dword ptr [ebp-0x10], 0xa
-size: 4
-Formula index: 0 Length: 39 Formula: xor(xor(xor(xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10)))))),SYM_ID68),SYM_ID76),SYM_ID15)
-Formula index: 1 Length: 33 Formula: xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10))))))
-Formula index: 2 Length: 35 Formula: xor(xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10)))))),SYM_ID68)
-Formula index: 3 Length: 37 Formula: xor(xor(xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10)))))),SYM_ID68),SYM_ID76)
 size: 4
 Formula index: 0 Length: 39 Formula: xor(xor(xor(xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10)))))),SYM_ID68),SYM_ID76),SYM_ID15)
 Formula index: 1 Length: 33 Formula: xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10))))))

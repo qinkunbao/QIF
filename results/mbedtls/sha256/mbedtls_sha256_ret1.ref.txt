@@ -1,3 +1,1 @@
-Index: 7 Unsupported Instruction: cmp dword ptr [ebp-0x138], 0x7
-size: 0
 size: 0

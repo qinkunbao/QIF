@@ -2,7 +2,3 @@ size: 3
 Formula index: 0 Length: 7 Formula: add(SYM_ID28,add(shl(SYM_ID23,Con(0x3)),Con(0x5)))
 Formula index: 1 Length: 9 Formula: or(SYM_ID19,shl(and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)))
 Formula index: 2 Length: 10 Formula: or(shld(Con(0x0),and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)),SYM_ID20)
-size: 3
-Formula index: 0 Length: 7 Formula: add(SYM_ID28,add(shl(SYM_ID23,Con(0x3)),Con(0x5)))
-Formula index: 1 Length: 9 Formula: or(SYM_ID19,shl(and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)))
-Formula index: 2 Length: 10 Formula: or(shld(Con(0x0),and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)),SYM_ID20)

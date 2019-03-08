@@ -1,5 +1,1 @@
-Index: 2 Unsupported Instruction: cmp al, byte ptr [edx]
-Index: 3 Unsupported Instruction: jnz 0xb7ef5e47
-Index: 6 Unsupported Instruction: test al, al
-size: 0
 size: 0

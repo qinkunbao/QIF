@@ -1,8 +1,3 @@
-Index: 10 Unsupported Instruction: test eax, eax
-Index: 11 Unsupported Instruction: jz 0x8048ce0
-Index: 13 Unsupported Instruction: jmp 0x8048ce5
-Index: 57 Unsupported Instruction: cmp dword ptr [ebp-0x818], 0x0
-Index: 58 Unsupported Instruction: jz 0x8048e02
 size: 10
 Formula index: 0 Length: 13 Formula: xor(xor(xor(SYM_ID63,shl(SYM_ID77,Con(0x8))),shl(SYM_ID94,Con(0x10))),shl(SYM_ID111,Con(0x18)))
 Formula index: 1 Length: 19 Formula: rol(rol(rol(xor(xor(xor(SYM_ID63,shl(SYM_ID77,Con(0x8))),shl(SYM_ID94,Con(0x10))),shl(SYM_ID111,Con(0x18))),Con(0x8)),Con(0x8)),Con(0x8))

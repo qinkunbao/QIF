@@ -24,5 +24,5 @@ if __name__ == '__main__':
     file_list = get_all_files("results")
 
     for each_file in file_list:
-        cmd = "./SE " + each_file + ">> " + each_file + ".txt"
+        cmd = "./SE " + each_file + "> " + each_file + ".txt"
         os.system(cmd) 

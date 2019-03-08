@@ -1,13 +1,1 @@
-Index: 2 Unsupported Instruction: test ecx, ecx
-Index: 3 Unsupported Instruction: jnz 0xb7f99aa5
-Index: 7 Unsupported Instruction: test edx, edx
-Index: 8 Unsupported Instruction: jnz 0xb7f99b6e
-Index: 12 Unsupported Instruction: cmp dword ptr [ebp-0x38], eax
-Index: 13 Unsupported Instruction: jnz 0xb7f99a18
-Index: 18 Unsupported Instruction: test al, 0x8
-Index: 19 Unsupported Instruction: jz 0xb7f99aa5
-Index: 23 Unsupported Instruction: test eax, eax
-Index: 24 Unsupported Instruction: jz 0xb7f99b10
-Index: 26 Unsupported Instruction: test eax, eax
-size: 0
 size: 0
