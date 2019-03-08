@@ -17,3 +17,8 @@ Index: 69 Unsupported Instruction: cmp dword ptr [ebp+0x8], 0x3b
 Index: 70 Unsupported Instruction: None 0x8048626
 Index: 74 Unsupported Instruction: leave
 Index: 75 Unsupported Instruction: ret
+Index: 74 Unsupported Instruction: leave
+size: 3
+Formula index: 0 Length: 23 Formula: add(SYM_ID59,add(add(add(rol(SYM_ID36,Con(0x5)),xor(xor(SYM_ID42,SYM_ID41),SYM_ID40)),SYM_ID50),rol(xor(SYM_ID29,xor(xor(SYM_ID16,SYM_ID21),SYM_ID27)),Con(0x1))))
+Formula index: 1 Length: 21 Formula: add(add(add(rol(SYM_ID36,Con(0x5)),xor(xor(SYM_ID42,SYM_ID41),SYM_ID40)),SYM_ID50),rol(xor(SYM_ID29,xor(xor(SYM_ID16,SYM_ID21),SYM_ID27)),Con(0x1)))
+Formula index: 2 Length: 9 Formula: rol(xor(SYM_ID29,xor(xor(SYM_ID16,SYM_ID21),SYM_ID27)),Con(0x1))

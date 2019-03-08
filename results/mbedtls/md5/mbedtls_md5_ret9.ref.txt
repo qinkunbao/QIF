@@ -42,3 +42,4 @@ Index: 109 Unsupported Instruction: jnz 0xb7fa67f1
 Index: 110 Unsupported Instruction: nop
 Index: 113 Unsupported Instruction: cmp dword ptr [esp], esi
 size: 0
+size: 0

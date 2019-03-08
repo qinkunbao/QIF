@@ -19,3 +19,5 @@ Index: 65 Unsupported Instruction: test byte ptr [esp+0x1c], 0x20
 Index: 66 Unsupported Instruction: jz 0x8050749
 size: 1
 Formula index: 0 Length: 9 Formula: sub(add(SYM_ID2,Con(0x8)),and(and(SYM_ID23,Con(0xff)),Con(0xff)))
+size: 1
+Formula index: 0 Length: 9 Formula: sub(add(SYM_ID2,Con(0x8)),and(and(SYM_ID23,Con(0xff)),Con(0xff)))

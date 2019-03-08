@@ -10,3 +10,4 @@ Index: 21 Unsupported Instruction: test edx, edx
 Index: 22 Unsupported Instruction: jnz 0xb7f99b6e
 Index: 26 Unsupported Instruction: cmp dword ptr [ebp-0x38], eax
 size: 0
+size: 0

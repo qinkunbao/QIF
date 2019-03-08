@@ -1,2 +1,3 @@
 Index: 3 Unsupported Instruction: test ecx, 0xfffffffc
 size: 0
+size: 0

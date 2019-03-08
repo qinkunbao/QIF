@@ -7,3 +7,8 @@ Formula index: 0 Length: 11 Formula: or(shr(and(SYM_ID11,Con(0xfffffff)),Con(0x1
 Formula index: 1 Length: 11 Formula: or(shr(and(SYM_ID4,Con(0xfffffff)),Con(0x1)),shl(and(SYM_ID4,Con(0xfffffff)),Con(0x1b)))
 Formula index: 2 Length: 21 Formula: ror(or(and(or(or(or(SYM_ID34,SYM_ID35),SYM_ID37),SYM_ID57),Con(0xffff)),shl(or(or(or(SYM_ID63,SYM_ID66),SYM_ID75),SYM_ID86),Con(0x10))),Con(0x1e))
 Formula index: 3 Length: 27 Formula: ror(or(xor(or(or(or(SYM_ID63,SYM_ID66),SYM_ID75),SYM_ID86),or(or(or(SYM_ID63,SYM_ID66),SYM_ID75),SYM_ID86)),shr(or(or(or(SYM_ID34,SYM_ID35),SYM_ID37),SYM_ID57),Con(0x10))),Con(0x1a))
+size: 4
+Formula index: 0 Length: 11 Formula: or(shr(and(SYM_ID11,Con(0xfffffff)),Con(0x1)),shl(and(SYM_ID11,Con(0xfffffff)),Con(0x1b)))
+Formula index: 1 Length: 11 Formula: or(shr(and(SYM_ID4,Con(0xfffffff)),Con(0x1)),shl(and(SYM_ID4,Con(0xfffffff)),Con(0x1b)))
+Formula index: 2 Length: 21 Formula: ror(or(and(or(or(or(SYM_ID34,SYM_ID35),SYM_ID37),SYM_ID57),Con(0xffff)),shl(or(or(or(SYM_ID63,SYM_ID66),SYM_ID75),SYM_ID86),Con(0x10))),Con(0x1e))
+Formula index: 3 Length: 27 Formula: ror(or(xor(or(or(or(SYM_ID63,SYM_ID66),SYM_ID75),SYM_ID86),or(or(or(SYM_ID63,SYM_ID66),SYM_ID75),SYM_ID86)),shr(or(or(or(SYM_ID34,SYM_ID35),SYM_ID37),SYM_ID57),Con(0x10))),Con(0x1a))

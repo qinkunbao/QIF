@@ -25,3 +25,8 @@ size: 3
 Formula index: 0 Length: 7 Formula: and(add(shl(Con(0x1),Con(0x3)),SYM_ID16),Con(0x1f8))
 Formula index: 1 Length: 11 Formula: add(add(SYM_ID13,add(and(shr(SYM_ID16,Con(0x3)),Con(0x3f)),Con(0x10))),Con(0xc))
 Formula index: 2 Length: 7 Formula: add(and(shr(SYM_ID16,Con(0x3)),Con(0x3f)),Con(0x10))
+Index: 83 Unsupported Instruction: leave
+size: 3
+Formula index: 0 Length: 7 Formula: and(add(shl(Con(0x1),Con(0x3)),SYM_ID16),Con(0x1f8))
+Formula index: 1 Length: 11 Formula: add(add(SYM_ID13,add(and(shr(SYM_ID16,Con(0x3)),Con(0x3f)),Con(0x10))),Con(0xc))
+Formula index: 2 Length: 7 Formula: add(and(shr(SYM_ID16,Con(0x3)),Con(0x3f)),Con(0x10))

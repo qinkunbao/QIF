@@ -3,3 +3,6 @@ Index: 3 Unsupported Instruction: jbe 0xf56b292b
 size: 2
 Formula index: 0 Length: 7 Formula: add(shl(add(SYM_ID10,Con(0x1)),Con(0x2)),Con(0x3))
 Formula index: 1 Length: 29 Formula: or(or(or(shl(and(and(SYM_ID16,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID28,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID41,Con(0xff)),Con(0xff)),Con(0x8))),and(and(SYM_ID54,Con(0xff)),Con(0xff)))
+size: 2
+Formula index: 0 Length: 7 Formula: add(shl(add(SYM_ID10,Con(0x1)),Con(0x2)),Con(0x3))
+Formula index: 1 Length: 29 Formula: or(or(or(shl(and(and(SYM_ID16,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID28,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID41,Con(0xff)),Con(0xff)),Con(0x8))),and(and(SYM_ID54,Con(0xff)),Con(0xff)))

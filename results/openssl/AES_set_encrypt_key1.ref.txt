@@ -4,3 +4,8 @@ Formula index: 0 Length: 31 Formula: xor(xor(xor(xor(xor(xor(xor(xor(SYM_ID9,shl
 Formula index: 1 Length: 25 Formula: xor(xor(xor(xor(xor(SYM_ID9,shl(and(SYM_ID13,Con(0xff)),Con(0x18))),and(SYM_ID23,Con(0xff))),shl(and(SYM_ID31,Con(0xff)),Con(0x8))),shl(and(SYM_ID41,Con(0xff)),Con(0x10))),SYM_ID47)
 Formula index: 2 Length: 27 Formula: xor(xor(xor(xor(xor(xor(SYM_ID9,shl(and(SYM_ID13,Con(0xff)),Con(0x18))),and(SYM_ID23,Con(0xff))),shl(and(SYM_ID31,Con(0xff)),Con(0x8))),shl(and(SYM_ID41,Con(0xff)),Con(0x10))),SYM_ID47),SYM_ID49)
 Formula index: 3 Length: 29 Formula: xor(xor(xor(xor(xor(xor(xor(SYM_ID9,shl(and(SYM_ID13,Con(0xff)),Con(0x18))),and(SYM_ID23,Con(0xff))),shl(and(SYM_ID31,Con(0xff)),Con(0x8))),shl(and(SYM_ID41,Con(0xff)),Con(0x10))),SYM_ID47),SYM_ID49),SYM_ID51)
+size: 4
+Formula index: 0 Length: 31 Formula: xor(xor(xor(xor(xor(xor(xor(xor(SYM_ID9,shl(and(SYM_ID13,Con(0xff)),Con(0x18))),and(SYM_ID23,Con(0xff))),shl(and(SYM_ID31,Con(0xff)),Con(0x8))),shl(and(SYM_ID41,Con(0xff)),Con(0x10))),SYM_ID47),SYM_ID49),SYM_ID51),SYM_ID10)
+Formula index: 1 Length: 25 Formula: xor(xor(xor(xor(xor(SYM_ID9,shl(and(SYM_ID13,Con(0xff)),Con(0x18))),and(SYM_ID23,Con(0xff))),shl(and(SYM_ID31,Con(0xff)),Con(0x8))),shl(and(SYM_ID41,Con(0xff)),Con(0x10))),SYM_ID47)
+Formula index: 2 Length: 27 Formula: xor(xor(xor(xor(xor(xor(SYM_ID9,shl(and(SYM_ID13,Con(0xff)),Con(0x18))),and(SYM_ID23,Con(0xff))),shl(and(SYM_ID31,Con(0xff)),Con(0x8))),shl(and(SYM_ID41,Con(0xff)),Con(0x10))),SYM_ID47),SYM_ID49)
+Formula index: 3 Length: 29 Formula: xor(xor(xor(xor(xor(xor(xor(SYM_ID9,shl(and(SYM_ID13,Con(0xff)),Con(0x18))),and(SYM_ID23,Con(0xff))),shl(and(SYM_ID31,Con(0xff)),Con(0x8))),shl(and(SYM_ID41,Con(0xff)),Con(0x10))),SYM_ID47),SYM_ID49),SYM_ID51)

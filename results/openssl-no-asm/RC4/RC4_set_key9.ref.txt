@@ -21,3 +21,6 @@ Index: 71 Unsupported Instruction: jb 0xb7f9972a
 size: 2
 Formula index: 0 Length: 9 Formula: and(add(sub(SYM_ID9,SYM_ID6),sub(SYM_ID9,SYM_ID6)),Con(0x3))
 Formula index: 1 Length: 7 Formula: add(sub(SYM_ID9,SYM_ID6),sub(SYM_ID9,SYM_ID6))
+size: 2
+Formula index: 0 Length: 9 Formula: and(add(sub(SYM_ID9,SYM_ID6),sub(SYM_ID9,SYM_ID6)),Con(0x3))
+Formula index: 1 Length: 7 Formula: add(sub(SYM_ID9,SYM_ID6),sub(SYM_ID9,SYM_ID6))

@@ -119,3 +119,122 @@ Index: 185 Unsupported Instruction: pxor mmx4, mmx7
 Index: 186 Unsupported Instruction: pxor mmx0, mmx2
 Index: 187 Unsupported Instruction: pxor mmx4, mmx6
 size: 0
+Index: 1 Unsupported Instruction: pshufw mmx1, mmx0, 0xc
+Index: 2 Unsupported Instruction: pshufw mmx5, mmx4, 0x9
+Index: 3 Unsupported Instruction: movd eax, mmx1
+Index: 4 Unsupported Instruction: movd ebx, mmx5
+Index: 8 Unsupported Instruction: pshufw mmx2, mmx0, 0x6
+Index: 17 Unsupported Instruction: pshufw mmx6, mmx4, 0x3
+Index: 31 Unsupported Instruction: movd eax, mmx2
+Index: 36 Unsupported Instruction: movd ebx, mmx6
+Index: 37 Unsupported Instruction: movd mmx0, ecx
+Index: 53 Unsupported Instruction: movd mmx1, edx
+Index: 59 Unsupported Instruction: punpckldq mmx0, mmx1
+Index: 74 Unsupported Instruction: movd mmx4, edx
+Index: 75 Unsupported Instruction: movd mmx5, ecx
+Index: 76 Unsupported Instruction: punpckldq mmx4, mmx5
+Index: 80 Unsupported Instruction: movq mmx3, mmx0
+Index: 81 Unsupported Instruction: movq mmx7, mmx4
+Index: 82 Unsupported Instruction: pshufw mmx2, mmx0, 0xe4
+Index: 83 Unsupported Instruction: pshufw mmx6, mmx4, 0xe4
+Index: 84 Unsupported Instruction: movq mmx1, mmx0
+Index: 85 Unsupported Instruction: movq mmx5, mmx4
+Index: 86 Unsupported Instruction: pshufw mmx0, mmx0, 0xb1
+Index: 87 Unsupported Instruction: pshufw mmx4, mmx4, 0xb1
+Index: 88 Unsupported Instruction: pslld mmx2, 0x8
+Index: 89 Unsupported Instruction: pslld mmx6, 0x8
+Index: 90 Unsupported Instruction: psrld mmx3, 0x8
+Index: 91 Unsupported Instruction: psrld mmx7, 0x8
+Index: 92 Unsupported Instruction: pxor mmx0, mmx2
+Index: 93 Unsupported Instruction: pxor mmx4, mmx6
+Index: 94 Unsupported Instruction: pxor mmx0, mmx3
+Index: 95 Unsupported Instruction: pxor mmx4, mmx7
+Index: 96 Unsupported Instruction: pslld mmx2, 0x10
+Index: 97 Unsupported Instruction: pslld mmx6, 0x10
+Index: 98 Unsupported Instruction: psrld mmx3, 0x10
+Index: 99 Unsupported Instruction: psrld mmx7, 0x10
+Index: 100 Unsupported Instruction: pxor mmx0, mmx2
+Index: 101 Unsupported Instruction: pxor mmx4, mmx6
+Index: 102 Unsupported Instruction: pxor mmx0, mmx3
+Index: 103 Unsupported Instruction: pxor mmx4, mmx7
+Index: 104 Unsupported Instruction: movq mmx3, qword ptr [esp+0x8]
+Index: 105 Unsupported Instruction: pxor mmx2, mmx2
+Index: 106 Unsupported Instruction: pxor mmx6, mmx6
+Index: 107 Unsupported Instruction: pcmpgtb mmx2, mmx1
+Index: 108 Unsupported Instruction: pcmpgtb mmx6, mmx5
+Index: 109 Unsupported Instruction: pand mmx2, mmx3
+Index: 110 Unsupported Instruction: pand mmx6, mmx3
+Index: 111 Unsupported Instruction: paddb mmx1, mmx1
+Index: 112 Unsupported Instruction: paddb mmx5, mmx5
+Index: 113 Unsupported Instruction: pxor mmx1, mmx2
+Index: 114 Unsupported Instruction: pxor mmx5, mmx6
+Index: 115 Unsupported Instruction: movq mmx3, mmx1
+Index: 116 Unsupported Instruction: movq mmx7, mmx5
+Index: 117 Unsupported Instruction: movq mmx2, mmx1
+Index: 118 Unsupported Instruction: movq mmx6, mmx5
+Index: 119 Unsupported Instruction: pxor mmx0, mmx1
+Index: 120 Unsupported Instruction: pxor mmx4, mmx5
+Index: 121 Unsupported Instruction: pslld mmx3, 0x18
+Index: 122 Unsupported Instruction: pslld mmx7, 0x18
+Index: 123 Unsupported Instruction: psrld mmx2, 0x8
+Index: 124 Unsupported Instruction: psrld mmx6, 0x8
+Index: 125 Unsupported Instruction: pxor mmx0, mmx3
+Index: 126 Unsupported Instruction: pxor mmx4, mmx7
+Index: 127 Unsupported Instruction: pxor mmx0, mmx2
+Index: 128 Unsupported Instruction: pxor mmx4, mmx6
+Index: 129 Unsupported Instruction: movq mmx2, qword ptr [esp+0x8]
+Index: 130 Unsupported Instruction: pxor mmx3, mmx3
+Index: 131 Unsupported Instruction: pxor mmx7, mmx7
+Index: 132 Unsupported Instruction: pcmpgtb mmx3, mmx1
+Index: 133 Unsupported Instruction: pcmpgtb mmx7, mmx5
+Index: 134 Unsupported Instruction: pand mmx3, mmx2
+Index: 135 Unsupported Instruction: pand mmx7, mmx2
+Index: 136 Unsupported Instruction: paddb mmx1, mmx1
+Index: 137 Unsupported Instruction: paddb mmx5, mmx5
+Index: 138 Unsupported Instruction: pxor mmx1, mmx3
+Index: 139 Unsupported Instruction: pxor mmx5, mmx7
+Index: 140 Unsupported Instruction: pshufw mmx3, mmx1, 0xb1
+Index: 141 Unsupported Instruction: pshufw mmx7, mmx5, 0xb1
+Index: 142 Unsupported Instruction: pxor mmx0, mmx1
+Index: 143 Unsupported Instruction: pxor mmx4, mmx5
+Index: 144 Unsupported Instruction: pxor mmx0, mmx3
+Index: 145 Unsupported Instruction: pxor mmx4, mmx7
+Index: 146 Unsupported Instruction: pxor mmx3, mmx3
+Index: 147 Unsupported Instruction: pxor mmx7, mmx7
+Index: 148 Unsupported Instruction: pcmpgtb mmx3, mmx1
+Index: 149 Unsupported Instruction: pcmpgtb mmx7, mmx5
+Index: 150 Unsupported Instruction: pand mmx3, mmx2
+Index: 151 Unsupported Instruction: pand mmx7, mmx2
+Index: 152 Unsupported Instruction: paddb mmx1, mmx1
+Index: 153 Unsupported Instruction: paddb mmx5, mmx5
+Index: 154 Unsupported Instruction: pxor mmx1, mmx3
+Index: 155 Unsupported Instruction: pxor mmx5, mmx7
+Index: 156 Unsupported Instruction: pxor mmx0, mmx1
+Index: 157 Unsupported Instruction: pxor mmx4, mmx5
+Index: 158 Unsupported Instruction: movq mmx3, mmx1
+Index: 159 Unsupported Instruction: movq mmx7, mmx5
+Index: 160 Unsupported Instruction: pshufw mmx2, mmx1, 0xb1
+Index: 161 Unsupported Instruction: pshufw mmx6, mmx5, 0xb1
+Index: 162 Unsupported Instruction: pxor mmx0, mmx2
+Index: 163 Unsupported Instruction: pxor mmx4, mmx6
+Index: 164 Unsupported Instruction: pslld mmx1, 0x8
+Index: 165 Unsupported Instruction: pslld mmx5, 0x8
+Index: 166 Unsupported Instruction: psrld mmx3, 0x8
+Index: 167 Unsupported Instruction: psrld mmx7, 0x8
+Index: 168 Unsupported Instruction: movq mmx2, qword ptr [edi]
+Index: 169 Unsupported Instruction: movq mmx6, qword ptr [edi+0x8]
+Index: 170 Unsupported Instruction: pxor mmx0, mmx1
+Index: 171 Unsupported Instruction: pxor mmx4, mmx5
+Index: 172 Unsupported Instruction: pxor mmx0, mmx3
+Index: 173 Unsupported Instruction: pxor mmx4, mmx7
+Index: 175 Unsupported Instruction: pslld mmx1, 0x10
+Index: 176 Unsupported Instruction: pslld mmx5, 0x10
+Index: 178 Unsupported Instruction: psrld mmx3, 0x10
+Index: 179 Unsupported Instruction: psrld mmx7, 0x10
+Index: 181 Unsupported Instruction: pxor mmx0, mmx1
+Index: 182 Unsupported Instruction: pxor mmx4, mmx5
+Index: 184 Unsupported Instruction: pxor mmx0, mmx3
+Index: 185 Unsupported Instruction: pxor mmx4, mmx7
+Index: 186 Unsupported Instruction: pxor mmx0, mmx2
+Index: 187 Unsupported Instruction: pxor mmx4, mmx6
+size: 0

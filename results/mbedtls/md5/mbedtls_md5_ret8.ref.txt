@@ -15,3 +15,4 @@ Index: 46 Unsupported Instruction: test edx, edx
 Index: 47 Unsupported Instruction: jz 0xb7fa6108
 Index: 49 Unsupported Instruction: cmp dword ptr [esp], esi
 size: 0
+size: 0

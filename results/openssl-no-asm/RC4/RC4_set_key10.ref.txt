@@ -17,3 +17,9 @@ Index: 53 Unsupported Instruction: cmp dword ptr [ebp-0x1c], eax
 size: 2
 Formula index: 0 Length: 7 Formula: and(add(SYM_ID10,imul(SYM_ID6,Con(0x2))),Con(0x3))
 Formula index: 1 Length: 7 Formula: add(sub(SYM_ID9,SYM_ID6),sub(SYM_ID9,SYM_ID6))
+Index: 24 Unsupported Instruction: jp 0xb7fa350e
+Index: 25 Unsupported Instruction: stosb byte ptr [edi]
+Index: 28 Unsupported Instruction: stosb byte ptr [edi]
+size: 2
+Formula index: 0 Length: 7 Formula: and(add(SYM_ID10,imul(SYM_ID6,Con(0x2))),Con(0x3))
+Formula index: 1 Length: 7 Formula: add(sub(SYM_ID9,SYM_ID6),sub(SYM_ID9,SYM_ID6))

@@ -1,3 +1,5 @@
 Index: 39 Unsupported Instruction: cmp dword ptr [ebp-0x13c], 0xf
 size: 1
 Formula index: 0 Length: 29 Formula: or(or(or(shl(and(and(SYM_ID14,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID26,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID39,Con(0xff)),Con(0xff)),Con(0x8))),and(and(SYM_ID52,Con(0xff)),Con(0xff)))
+size: 1
+Formula index: 0 Length: 29 Formula: or(or(or(shl(and(and(SYM_ID14,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID26,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID39,Con(0xff)),Con(0xff)),Con(0x8))),and(and(SYM_ID52,Con(0xff)),Con(0xff)))

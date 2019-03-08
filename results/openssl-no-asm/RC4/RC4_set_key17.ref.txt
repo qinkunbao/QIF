@@ -10,3 +10,4 @@ Index: 15 Unsupported Instruction: test edx, edx
 Index: 16 Unsupported Instruction: jle 0xb5560ad0
 Index: 18 Unsupported Instruction: cmp dword ptr [ebx+0x14], eax
 size: 0
+size: 0

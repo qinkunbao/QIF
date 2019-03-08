@@ -10,3 +10,4 @@ Index: 15 Unsupported Instruction: cmp eax, ebp
 Index: 16 Unsupported Instruction: jnz 0xb5560960
 Index: 18 Unsupported Instruction: test ebx, ebx
 size: 0
+size: 0

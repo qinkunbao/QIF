@@ -1,3 +1,5 @@
 Index: 106 Unsupported Instruction: cmp dword ptr [ebp-0xc], 0x7
 size: 1
 Formula index: 0 Length: 7 Formula: add(SYM_ID9,add(shl(SYM_ID10,Con(0x3)),Con(0x7)))
+size: 1
+Formula index: 0 Length: 7 Formula: add(SYM_ID9,add(shl(SYM_ID10,Con(0x3)),Con(0x7)))

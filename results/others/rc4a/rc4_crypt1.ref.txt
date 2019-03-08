@@ -4,3 +4,8 @@ Formula index: 0 Length: 19 Formula: and(add(and(and(and(and(SYM_ID22,Con(0xff))
 Formula index: 1 Length: 7 Formula: xor(and(SYM_ID69,Con(0xff)),and(SYM_ID65,Con(0xff)))
 Formula index: 2 Length: 21 Formula: sub(and(add(add(SYM_ID9,Con(0x1)),shr(sar(add(SYM_ID9,Con(0x1)),Con(0x1f)),Con(0x18))),Con(0xff)),shr(sar(add(SYM_ID9,Con(0x1)),Con(0x1f)),Con(0x18)))
 Formula index: 3 Length: 33 Formula: sub(and(add(add(and(and(SYM_ID22,Con(0xff)),Con(0xff)),SYM_ID27),shr(sar(add(and(and(SYM_ID22,Con(0xff)),Con(0xff)),SYM_ID27),Con(0x1f)),Con(0x18))),Con(0xff)),shr(sar(add(and(and(SYM_ID22,Con(0xff)),Con(0xff)),SYM_ID27),Con(0x1f)),Con(0x18)))
+size: 4
+Formula index: 0 Length: 19 Formula: and(add(and(and(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0xff)),Con(0xff)),and(and(and(SYM_ID42,Con(0xff)),Con(0xff)),Con(0xff))),Con(0xff))
+Formula index: 1 Length: 7 Formula: xor(and(SYM_ID69,Con(0xff)),and(SYM_ID65,Con(0xff)))
+Formula index: 2 Length: 21 Formula: sub(and(add(add(SYM_ID9,Con(0x1)),shr(sar(add(SYM_ID9,Con(0x1)),Con(0x1f)),Con(0x18))),Con(0xff)),shr(sar(add(SYM_ID9,Con(0x1)),Con(0x1f)),Con(0x18)))
+Formula index: 3 Length: 33 Formula: sub(and(add(add(and(and(SYM_ID22,Con(0xff)),Con(0xff)),SYM_ID27),shr(sar(add(and(and(SYM_ID22,Con(0xff)),Con(0xff)),SYM_ID27),Con(0x1f)),Con(0x18))),Con(0xff)),shr(sar(add(and(and(SYM_ID22,Con(0xff)),Con(0xff)),SYM_ID27),Con(0x1f)),Con(0x18)))

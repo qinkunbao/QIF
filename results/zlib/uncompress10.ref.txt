@@ -29,3 +29,13 @@ Formula index: 5 Length: 7 Formula: add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con
 Formula index: 6 Length: 11 Formula: add(sub(sub(add(SYM_ID11,SYM_ID9),Con(0x101)),add(SYM_ID11,Con(0x1))),Con(0x101))
 Formula index: 7 Length: 13 Formula: sub(add(SYM_ID6,Con(0x2)),shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)))
 Formula index: 8 Length: 21 Formula: add(sub(sub(add(SYM_ID6,SYM_ID8),Con(0x5)),sub(add(SYM_ID6,Con(0x2)),shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)))),Con(0x5))
+size: 9
+Formula index: 0 Length: 19 Formula: sub(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),shl(shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)),Con(0x3)))
+Formula index: 1 Length: 43 Formula: and(sub(shl(Con(0x1),sub(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),shl(shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)),Con(0x3)))),Con(0x1)),shr(add(SYM_ID5,add(shl(and(SYM_ID65,Con(0xff)),add(SYM_ID2,Con(0x8))),shl(and(SYM_ID68,Con(0xff)),SYM_ID2))),and(SYM_ID89,Con(0xff))))
+Formula index: 2 Length: 11 Formula: add(SYM_ID29,shl(add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2)))
+Formula index: 3 Length: 11 Formula: sub(SYM_ID32,shl(add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2)))
+Formula index: 4 Length: 9 Formula: shl(add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con(0x1)),Con(0x2))
+Formula index: 5 Length: 7 Formula: add(shr(sub(SYM_ID32,Con(0x4)),Con(0x2)),Con(0x1))
+Formula index: 6 Length: 11 Formula: add(sub(sub(add(SYM_ID11,SYM_ID9),Con(0x101)),add(SYM_ID11,Con(0x1))),Con(0x101))
+Formula index: 7 Length: 13 Formula: sub(add(SYM_ID6,Con(0x2)),shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)))
+Formula index: 8 Length: 21 Formula: add(sub(sub(add(SYM_ID6,SYM_ID8),Con(0x5)),sub(add(SYM_ID6,Con(0x2)),shr(sub(add(SYM_ID2,Con(0x10)),and(SYM_ID89,Con(0xff))),Con(0x3)))),Con(0x5))
