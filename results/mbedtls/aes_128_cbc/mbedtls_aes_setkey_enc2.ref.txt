@@ -4,3 +4,5 @@ Index: 14 Unsupported Instruction: jmp 0xb55bbb45
 Index: 20 Unsupported Instruction: cmp dword ptr [ebp-0x81c], 0xff
 size: 1
 Formula index: 0 Length: 9 Formula: and(xor(xor(Con(0x1b),add(SYM_ID10,SYM_ID10)),SYM_ID10),Con(0xff))
+size: 1
+Formula index: 0 Length: 9 Formula: and(xor(xor(Con(0x1b),add(SYM_ID10,SYM_ID10)),SYM_ID10),Con(0xff))

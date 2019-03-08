@@ -12,3 +12,7 @@ Index: 33 Unsupported Instruction: None 0x80485fa
 Index: 40 Unsupported Instruction: jmp 0x804862f
 Index: 41 Unsupported Instruction: leave
 Index: 42 Unsupported Instruction: ret
+Index: 41 Unsupported Instruction: leave
+size: 2
+Formula index: 0 Length: 17 Formula: add(SYM_ID38,add(add(add(rol(SYM_ID13,Con(0x5)),or(and(SYM_ID19,SYM_ID17),and(SYM_ID19,SYM_ID18))),SYM_ID28),SYM_ID30))
+Formula index: 1 Length: 15 Formula: add(add(add(rol(SYM_ID13,Con(0x5)),or(and(SYM_ID19,SYM_ID17),and(SYM_ID19,SYM_ID18))),SYM_ID28),SYM_ID30)

@@ -22,3 +22,6 @@ Index: 48 Unsupported Instruction: jmp 0x804f860
 size: 2
 Formula index: 0 Length: 9 Formula: shr(add(SYM_ID5,shl(and(SYM_ID11,Con(0xff)),SYM_ID2)),Con(0x1))
 Formula index: 1 Length: 9 Formula: and(add(SYM_ID5,shl(and(SYM_ID11,Con(0xff)),SYM_ID2)),Con(0x1))
+size: 2
+Formula index: 0 Length: 9 Formula: shr(add(SYM_ID5,shl(and(SYM_ID11,Con(0xff)),SYM_ID2)),Con(0x1))
+Formula index: 1 Length: 9 Formula: and(add(SYM_ID5,shl(and(SYM_ID11,Con(0xff)),SYM_ID2)),Con(0x1))

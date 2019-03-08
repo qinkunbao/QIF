@@ -206,3 +206,36 @@ Formula index: 22 Length: 29 Formula: or(shl(and(and(SYM_ID632,Con(0xff)),Con(0x
 Formula index: 23 Length: 29 Formula: or(shl(and(and(SYM_ID669,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID649,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID642,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID659,Con(0xff)),Con(0xff)),Con(0x10))))
 Formula index: 24 Length: 7 Formula: add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c))
 Formula index: 25 Length: 9 Formula: sub(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x64))
+Unknown data operands: nop  Addr: b7fa6a8e
+Index: 1587 Unsupported Instruction: leave
+Index: 1605 Unsupported Instruction: leave
+Index: 1708 Unsupported Instruction: leave
+Index: 2097 Unsupported Instruction: div dword ptr [esp+0x18]
+Index: 2158 Unsupported Instruction: bt ebp, edi
+size: 26
+Formula index: 0 Length: 7 Formula: add(sar(shl(Con(0x1),Con(0x1e)),Con(0x1f)),Con(0x3))
+Formula index: 1 Length: 9 Formula: sar(sub(add(SYM_ID1639,imul(SYM_ID1638,Con(0x4))),SYM_ID1639),Con(0x2))
+Formula index: 2 Length: 13 Formula: add(shl(sar(sub(add(SYM_ID1639,imul(SYM_ID1638,Con(0x4))),SYM_ID1639),Con(0x2)),Con(0x4)),SYM_ID1392)
+Formula index: 3 Length: 29 Formula: add(sub(sub(sub(sub(sub(sub(add(add(add(sub(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x78)),Con(0x10)),Con(0x10)),Con(0x10)),Con(0xc)),Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x4c))
+Formula index: 4 Length: 29 Formula: add(sub(sub(sub(sub(sub(sub(add(add(add(sub(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x78)),Con(0x10)),Con(0x10)),Con(0x10)),Con(0xc)),Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x48))
+Formula index: 5 Length: 23 Formula: sub(sub(sub(sub(add(add(add(sub(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x78)),Con(0x10)),Con(0x10)),Con(0x10)),Con(0xc)),Con(0x2c)),Con(0xc)),Con(0x50))
+Formula index: 6 Length: 23 Formula: sub(sub(sub(sub(add(add(add(sub(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x78)),Con(0x10)),Con(0x10)),Con(0x10)),Con(0xc)),Con(0x2c)),Con(0xc)),Con(0x48))
+Formula index: 7 Length: 21 Formula: sub(sub(sub(add(add(add(sub(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x78)),Con(0x10)),Con(0x10)),Con(0x10)),Con(0xc)),Con(0x2c)),Con(0xc))
+Formula index: 8 Length: 7 Formula: add(shl(shr(SYM_ID1386,Con(0x8)),Con(0x4)),SYM_ID1392)
+Formula index: 9 Length: 9 Formula: add(shl(and(and(SYM_ID1397,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID1404)
+Formula index: 10 Length: 21 Formula: add(sub(sub(add(add(add(sub(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x78)),Con(0x10)),Con(0x10)),Con(0x10)),Con(0xc)),Con(0x2c)),Con(0x1c))
+Formula index: 11 Length: 29 Formula: or(shl(and(and(SYM_ID114,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID94,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID87,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID104,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 12 Length: 29 Formula: or(shl(and(and(SYM_ID188,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID168,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID161,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID178,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 13 Length: 29 Formula: or(shl(and(and(SYM_ID299,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID279,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID272,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID289,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 14 Length: 29 Formula: or(shl(and(and(SYM_ID336,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID316,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID309,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID326,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 15 Length: 29 Formula: or(shl(and(and(SYM_ID373,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID353,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID346,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID363,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 16 Length: 29 Formula: or(shl(and(and(SYM_ID410,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID390,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID383,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID400,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 17 Length: 29 Formula: or(shl(and(and(SYM_ID447,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID427,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID420,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID437,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 18 Length: 29 Formula: or(shl(and(and(SYM_ID484,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID464,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID457,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID474,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 19 Length: 29 Formula: or(shl(and(and(SYM_ID521,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID501,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID494,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID511,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 20 Length: 29 Formula: or(shl(and(and(SYM_ID558,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID538,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID531,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID548,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 21 Length: 29 Formula: or(shl(and(and(SYM_ID595,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID575,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID568,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID585,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 22 Length: 29 Formula: or(shl(and(and(SYM_ID632,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID612,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID605,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID622,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 23 Length: 29 Formula: or(shl(and(and(SYM_ID669,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID649,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID642,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID659,Con(0xff)),Con(0xff)),Con(0x10))))
+Formula index: 24 Length: 7 Formula: add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c))
+Formula index: 25 Length: 9 Formula: sub(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x64))

@@ -2,3 +2,6 @@ Index: 42 Unsupported Instruction: cmp esi, dword ptr [esp+0x1c]
 size: 2
 Formula index: 0 Length: 9 Formula: add(add(add(add(SYM_ID2,SYM_ID3),SYM_ID15),SYM_ID25),SYM_ID35)
 Formula index: 1 Length: 17 Formula: xor(ror(or(ror(or(ror(or(ror(SYM_ID16,Con(0x8)),SYM_ID26),Con(0x8)),SYM_ID36),Con(0x8)),SYM_ID47),Con(0x8)),SYM_ID51)
+size: 2
+Formula index: 0 Length: 9 Formula: add(add(add(add(SYM_ID2,SYM_ID3),SYM_ID15),SYM_ID25),SYM_ID35)
+Formula index: 1 Length: 17 Formula: xor(ror(or(ror(or(ror(or(ror(SYM_ID16,Con(0x8)),SYM_ID26),Con(0x8)),SYM_ID36),Con(0x8)),SYM_ID47),Con(0x8)),SYM_ID51)

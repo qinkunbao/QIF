@@ -1,3 +1,5 @@
 Index: 8 Unsupported Instruction: div dword ptr [ebp+0x10]
 Index: 17 Unsupported Instruction: cmp dword ptr [ebp-0x114], 0xff
 size: 0
+Index: 8 Unsupported Instruction: div dword ptr [ebp+0x10]
+size: 0

@@ -5,3 +5,5 @@ Index: 67 Unsupported Instruction: jmp 0x80486ea
 Index: 69 Unsupported Instruction: cmp eax, dword ptr [ebp+0x10]
 size: 1
 Formula index: 0 Length: 9 Formula: and(add(and(and(SYM_ID16,Con(0xff)),Con(0xff)),SYM_ID15),Con(0xff))
+size: 1
+Formula index: 0 Length: 9 Formula: and(add(and(and(SYM_ID16,Con(0xff)),Con(0xff)),SYM_ID15),Con(0xff))

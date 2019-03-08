@@ -282,3 +282,18 @@ Formula index: 6 Length: 17 Formula: sub(sub(sub(add(add(add(add(sub(SYM_ID172,C
 Formula index: 7 Length: 7 Formula: add(shl(shr(SYM_ID253,Con(0x8)),Con(0x4)),SYM_ID259)
 Formula index: 8 Length: 9 Formula: add(shl(and(and(SYM_ID265,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID272)
 Formula index: 9 Length: 17 Formula: add(sub(sub(add(add(add(add(sub(SYM_ID172,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x10)),Con(0x8)),Con(0x2c)),Con(0x1c))
+Unknown data operands: nop  Addr: b7fa6a8e
+Index: 50 Unsupported Instruction: bt ebp, edi
+Index: 363 Unsupported Instruction: leave
+Index: 801 Unsupported Instruction: div dword ptr [esp+0x18]
+size: 10
+Formula index: 0 Length: 7 Formula: sar(sub(add(SYM_ID2,Con(0x4)),SYM_ID15),Con(0x2))
+Formula index: 1 Length: 11 Formula: add(shl(sar(sub(add(SYM_ID2,Con(0x4)),SYM_ID15),Con(0x2)),Con(0x4)),SYM_ID24)
+Formula index: 2 Length: 25 Formula: add(sub(sub(sub(sub(sub(sub(add(add(add(add(sub(SYM_ID172,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x10)),Con(0x8)),Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x48))
+Formula index: 3 Length: 25 Formula: add(sub(sub(sub(sub(sub(sub(add(add(add(add(sub(SYM_ID172,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x10)),Con(0x8)),Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x4c))
+Formula index: 4 Length: 19 Formula: sub(sub(sub(sub(add(add(add(add(sub(SYM_ID172,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x10)),Con(0x8)),Con(0x2c)),Con(0xc)),Con(0x50))
+Formula index: 5 Length: 19 Formula: sub(sub(sub(sub(add(add(add(add(sub(SYM_ID172,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x10)),Con(0x8)),Con(0x2c)),Con(0xc)),Con(0x48))
+Formula index: 6 Length: 17 Formula: sub(sub(sub(add(add(add(add(sub(SYM_ID172,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x10)),Con(0x8)),Con(0x2c)),Con(0xc))
+Formula index: 7 Length: 7 Formula: add(shl(shr(SYM_ID253,Con(0x8)),Con(0x4)),SYM_ID259)
+Formula index: 8 Length: 9 Formula: add(shl(and(and(SYM_ID265,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID272)
+Formula index: 9 Length: 17 Formula: add(sub(sub(add(add(add(add(sub(SYM_ID172,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x10)),Con(0x8)),Con(0x2c)),Con(0x1c))

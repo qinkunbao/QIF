@@ -10,3 +10,4 @@ Index: 23 Unsupported Instruction: test eax, eax
 Index: 24 Unsupported Instruction: jz 0xb7f99b10
 Index: 26 Unsupported Instruction: test eax, eax
 size: 0
+size: 0

@@ -226,3 +226,28 @@ Formula index: 15 Length: 23 Formula: add(add(add(add(xor(and(add(imul(SYM_ID61,
 Formula index: 16 Length: 9 Formula: add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10))
 Formula index: 17 Length: 13 Formula: sub(sub(add(add(add(SYM_ID31,Con(0x14774)),Con(0x20)),imul(SYM_ID41,Con(0x4c))),Con(0x48)),Con(0x4c))
 Formula index: 18 Length: 9 Formula: add(add(add(add(Con(0x0),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))
+Unknown data operands: nop  Addr: b7f999ae
+Index: 372 Unsupported Instruction: jp 0xb7fa350e
+Index: 373 Unsupported Instruction: stosb byte ptr [edi]
+Index: 376 Unsupported Instruction: stosb byte ptr [edi]
+Index: 462 Unsupported Instruction: leave
+size: 19
+Formula index: 0 Length: 19 Formula: add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1))
+Formula index: 1 Length: 21 Formula: add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1))
+Formula index: 2 Length: 15 Formula: xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)))
+Formula index: 3 Length: 17 Formula: add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1))
+Formula index: 4 Length: 13 Formula: add(add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1)),Con(0x1))
+Formula index: 5 Length: 87 Formula: add(sub(sub(sub(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0xc)),Con(0x4c)),and(add(add(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))),Con(0x10)),Con(0xfffffff0))),imul(add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1)),Con(0x2)))
+Formula index: 6 Length: 71 Formula: add(sub(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1))),sub(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1))))
+Formula index: 7 Length: 21 Formula: sub(sub(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0xc)),Con(0x4c))
+Formula index: 8 Length: 45 Formula: sub(add(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),imul(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x4))),Con(0x4))
+Formula index: 9 Length: 11 Formula: imul(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x4))
+Formula index: 10 Length: 47 Formula: sub(sub(add(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),imul(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x4))),Con(0x4)),Con(0x4))
+Formula index: 11 Length: 25 Formula: sub(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))
+Formula index: 12 Length: 31 Formula: add(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),imul(add(add(xor(xor(SYM_ID61,SYM_ID61),xor(SYM_ID61,SYM_ID61)),Con(0x1)),Con(0x1)),Con(0x4)))
+Formula index: 13 Length: 17 Formula: sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)))
+Formula index: 14 Length: 73 Formula: sub(sub(sub(sub(add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0xc)),Con(0x4c)),and(add(add(add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1)),add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))),Con(0x10)),Con(0xfffffff0)))
+Formula index: 15 Length: 23 Formula: add(add(add(add(xor(and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0)),and(add(imul(SYM_ID61,Con(0x4)),Con(0x0)),Con(0xfffffff0))),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))
+Formula index: 16 Length: 9 Formula: add(sub(sub(sub(SYM_ID7,Con(0x8)),Con(0x4c)),Con(0xc)),Con(0x10))
+Formula index: 17 Length: 13 Formula: sub(sub(add(add(add(SYM_ID31,Con(0x14774)),Con(0x20)),imul(SYM_ID41,Con(0x4c))),Con(0x48)),Con(0x4c))
+Formula index: 18 Length: 9 Formula: add(add(add(add(Con(0x0),Con(0x1)),Con(0x1)),Con(0x1)),Con(0x1))

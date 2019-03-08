@@ -58,3 +58,4 @@ Index: 135 Unsupported Instruction: jnz 0xb7ef5e47
 Index: 139 Unsupported Instruction: ret
 Index: 141 Unsupported Instruction: test eax, eax
 size: 0
+size: 0

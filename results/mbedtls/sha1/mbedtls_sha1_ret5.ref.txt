@@ -274,3 +274,40 @@ Formula index: 16 Length: 9 Formula: shr(or(shl(SYM_ID451,Con(0x3)),shr(SYM_ID44
 Formula index: 17 Length: 9 Formula: shr(or(shl(SYM_ID451,Con(0x3)),shr(SYM_ID448,Con(0x1d))),Con(0x10))
 Formula index: 18 Length: 9 Formula: shr(or(shl(SYM_ID451,Con(0x3)),shr(SYM_ID448,Con(0x1d))),Con(0x8))
 Formula index: 19 Length: 9 Formula: add(add(SYM_ID448,sub(Con(0x38),and(SYM_ID448,Con(0x3f)))),Con(0x8))
+Unknown data operands: nop  Addr: b7f01a8e
+Index: 433 Unsupported Instruction: div dword ptr [esp+0x18]
+Index: 518 Unsupported Instruction: bt ebp, edi
+Index: 779 Unsupported Instruction: movdqu xmm0, xmmword ptr [eax]
+Index: 780 Unsupported Instruction: movdqu xmm1, xmmword ptr [eax+ecx*1-0x10]
+Index: 782 Unsupported Instruction: movdqu xmmword ptr [edx], xmm0
+Index: 783 Unsupported Instruction: movdqu xmmword ptr [edx+ecx*1-0x10], xmm1
+Index: 785 Unsupported Instruction: movdqu xmm0, xmmword ptr [eax+0x10]
+Index: 786 Unsupported Instruction: movdqu xmm1, xmmword ptr [eax+ecx*1-0x20]
+Index: 788 Unsupported Instruction: movdqu xmmword ptr [edx+0x10], xmm0
+Index: 789 Unsupported Instruction: movdqu xmmword ptr [edx+ecx*1-0x20], xmm1
+Index: 797 Unsupported Instruction: leave
+Index: 865 Unsupported Instruction: movq xmm0, qword ptr [eax]
+Index: 866 Unsupported Instruction: movq xmm1, qword ptr [eax+ecx*1-0x8]
+Index: 867 Unsupported Instruction: movq qword ptr [edx], xmm0
+Index: 868 Unsupported Instruction: movq qword ptr [edx+ecx*1-0x8], xmm1
+size: 20
+Formula index: 0 Length: 11 Formula: add(add(shl(and(and(SYM_ID34,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID41),Con(0x1d012))
+Formula index: 1 Length: 11 Formula: sub(Con(0x40),and(add(SYM_ID448,sub(Con(0x38),and(SYM_ID448,Con(0x3f)))),Con(0x3f)))
+Formula index: 2 Length: 13 Formula: add(and(add(SYM_ID448,sub(Con(0x38),and(SYM_ID448,Con(0x3f)))),Con(0x3f)),add(SYM_ID444,Con(0x1c)))
+Formula index: 3 Length: 11 Formula: add(add(add(add(SYM_ID341,imul(SYM_ID340,Con(0x4))),Con(0x4)),Con(0x4)),Con(0x4))
+Formula index: 4 Length: 15 Formula: sar(sub(add(add(add(add(SYM_ID341,imul(SYM_ID340,Con(0x4))),Con(0x4)),Con(0x4)),Con(0x4)),SYM_ID341),Con(0x2))
+Formula index: 5 Length: 19 Formula: add(shl(sar(sub(add(add(add(add(SYM_ID341,imul(SYM_ID340,Con(0x4))),Con(0x4)),Con(0x4)),Con(0x4)),SYM_ID341),Con(0x2)),Con(0x4)),SYM_ID28)
+Formula index: 6 Length: 13 Formula: add(sub(sub(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x4c))
+Formula index: 7 Length: 13 Formula: add(sub(sub(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x48))
+Formula index: 8 Length: 7 Formula: sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x50))
+Formula index: 9 Length: 7 Formula: sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x48))
+Formula index: 10 Length: 7 Formula: add(shl(shr(SYM_ID22,Con(0x8)),Con(0x4)),SYM_ID28)
+Formula index: 11 Length: 9 Formula: add(shl(and(and(SYM_ID34,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID41)
+Formula index: 12 Length: 9 Formula: and(add(SYM_ID448,sub(Con(0x38),and(SYM_ID448,Con(0x3f)))),Con(0x3f))
+Formula index: 13 Length: 15 Formula: sub(sub(add(add(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x34)),Con(0x4))
+Formula index: 14 Length: 17 Formula: sub(sub(sub(add(add(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x34)),Con(0x4)),Con(0x14))
+Formula index: 15 Length: 7 Formula: or(shl(SYM_ID451,Con(0x3)),shr(SYM_ID448,Con(0x1d)))
+Formula index: 16 Length: 9 Formula: shr(or(shl(SYM_ID451,Con(0x3)),shr(SYM_ID448,Con(0x1d))),Con(0x18))
+Formula index: 17 Length: 9 Formula: shr(or(shl(SYM_ID451,Con(0x3)),shr(SYM_ID448,Con(0x1d))),Con(0x10))
+Formula index: 18 Length: 9 Formula: shr(or(shl(SYM_ID451,Con(0x3)),shr(SYM_ID448,Con(0x1d))),Con(0x8))
+Formula index: 19 Length: 9 Formula: add(add(SYM_ID448,sub(Con(0x38),and(SYM_ID448,Con(0x3f)))),Con(0x8))

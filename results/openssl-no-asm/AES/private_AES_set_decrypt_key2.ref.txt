@@ -1,2 +1,3 @@
 Index: 19 Unsupported Instruction: cmp esi, edi
 size: 0
+size: 0

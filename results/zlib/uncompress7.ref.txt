@@ -42,3 +42,9 @@ Formula index: 0 Length: 23 Formula: add(and(and(shr(add(add(SYM_ID5,shl(and(SYM
 Formula index: 1 Length: 25 Formula: sub(add(and(and(shr(add(add(SYM_ID5,shl(and(SYM_ID15,Con(0xff)),SYM_ID2)),shl(and(SYM_ID28,Con(0xff)),add(SYM_ID2,Con(0x8)))),Con(0x4)),Con(0x200)),Con(0x2)),Con(0x3f3d)),Con(0x3f34))
 Formula index: 2 Length: 23 Formula: shl(Con(0x1),add(and(shr(add(add(SYM_ID5,shl(and(SYM_ID15,Con(0xff)),SYM_ID2)),shl(and(SYM_ID28,Con(0xff)),add(SYM_ID2,Con(0x8)))),Con(0x4)),Con(0xf)),Con(0x8)))
 Formula index: 3 Length: 17 Formula: shr(add(add(SYM_ID5,shl(and(SYM_ID15,Con(0xff)),SYM_ID2)),shl(and(SYM_ID28,Con(0xff)),add(SYM_ID2,Con(0x8)))),Con(0x4))
+Index: 51 Unsupported Instruction: mul edx
+size: 4
+Formula index: 0 Length: 23 Formula: add(and(and(shr(add(add(SYM_ID5,shl(and(SYM_ID15,Con(0xff)),SYM_ID2)),shl(and(SYM_ID28,Con(0xff)),add(SYM_ID2,Con(0x8)))),Con(0x4)),Con(0x200)),Con(0x2)),Con(0x3f3d))
+Formula index: 1 Length: 25 Formula: sub(add(and(and(shr(add(add(SYM_ID5,shl(and(SYM_ID15,Con(0xff)),SYM_ID2)),shl(and(SYM_ID28,Con(0xff)),add(SYM_ID2,Con(0x8)))),Con(0x4)),Con(0x200)),Con(0x2)),Con(0x3f3d)),Con(0x3f34))
+Formula index: 2 Length: 23 Formula: shl(Con(0x1),add(and(shr(add(add(SYM_ID5,shl(and(SYM_ID15,Con(0xff)),SYM_ID2)),shl(and(SYM_ID28,Con(0xff)),add(SYM_ID2,Con(0x8)))),Con(0x4)),Con(0xf)),Con(0x8)))
+Formula index: 3 Length: 17 Formula: shr(add(add(SYM_ID5,shl(and(SYM_ID15,Con(0xff)),SYM_ID2)),shl(and(SYM_ID28,Con(0xff)),add(SYM_ID2,Con(0x8)))),Con(0x4))

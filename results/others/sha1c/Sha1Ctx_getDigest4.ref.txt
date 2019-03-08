@@ -16,3 +16,8 @@ Index: 68 Unsupported Instruction: None 0x804860b
 Index: 72 Unsupported Instruction: jmp 0x804862f
 Index: 73 Unsupported Instruction: leave
 Index: 74 Unsupported Instruction: ret
+Index: 73 Unsupported Instruction: leave
+size: 3
+Formula index: 0 Length: 23 Formula: add(SYM_ID59,add(add(add(rol(SYM_ID36,Con(0x5)),xor(xor(SYM_ID42,SYM_ID41),SYM_ID40)),SYM_ID50),rol(xor(SYM_ID29,xor(xor(SYM_ID16,SYM_ID21),SYM_ID27)),Con(0x1))))
+Formula index: 1 Length: 21 Formula: add(add(add(rol(SYM_ID36,Con(0x5)),xor(xor(SYM_ID42,SYM_ID41),SYM_ID40)),SYM_ID50),rol(xor(SYM_ID29,xor(xor(SYM_ID16,SYM_ID21),SYM_ID27)),Con(0x1)))
+Formula index: 2 Length: 9 Formula: rol(xor(SYM_ID29,xor(xor(SYM_ID16,SYM_ID21),SYM_ID27)),Con(0x1))

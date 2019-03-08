@@ -215,3 +215,19 @@ Formula index: 5 Length: 7 Formula: sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con
 Formula index: 6 Length: 7 Formula: sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x48))
 Formula index: 7 Length: 7 Formula: add(shl(shr(SYM_ID22,Con(0x8)),Con(0x4)),SYM_ID28)
 Formula index: 8 Length: 9 Formula: add(shl(and(and(SYM_ID34,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID41)
+Unknown data operands: nop  Addr: b7f01a8e
+Index: 481 Unsupported Instruction: div dword ptr [esp+0x18]
+Index: 542 Unsupported Instruction: bt ebp, edi
+Index: 2915 Unsupported Instruction: leave
+Index: 2933 Unsupported Instruction: leave
+Index: 3059 Unsupported Instruction: leave
+size: 9
+Formula index: 0 Length: 13 Formula: sub(add(add(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x68))
+Formula index: 1 Length: 9 Formula: sar(sub(add(SYM_ID395,imul(SYM_ID394,Con(0x4))),SYM_ID395),Con(0x2))
+Formula index: 2 Length: 13 Formula: add(shl(sar(sub(add(SYM_ID395,imul(SYM_ID394,Con(0x4))),SYM_ID395),Con(0x2)),Con(0x4)),SYM_ID28)
+Formula index: 3 Length: 13 Formula: add(sub(sub(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x4c))
+Formula index: 4 Length: 13 Formula: add(sub(sub(sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x48))
+Formula index: 5 Length: 7 Formula: sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x50))
+Formula index: 6 Length: 7 Formula: sub(sub(sub(SYM_ID7,Con(0x2c)),Con(0xc)),Con(0x48))
+Formula index: 7 Length: 7 Formula: add(shl(shr(SYM_ID22,Con(0x8)),Con(0x4)),SYM_ID28)
+Formula index: 8 Length: 9 Formula: add(shl(and(and(SYM_ID34,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID41)

@@ -10,3 +10,13 @@ Formula index: 5 Length: 9 Formula: xor(SYM_ID35,xor(xor(xor(SYM_ID12,SYM_ID18),
 Formula index: 6 Length: 9 Formula: xor(SYM_ID58,xor(xor(xor(SYM_ID39,SYM_ID44),SYM_ID50),SYM_ID54))
 Formula index: 7 Length: 9 Formula: xor(SYM_ID81,xor(xor(xor(SYM_ID62,SYM_ID67),SYM_ID73),SYM_ID77))
 Formula index: 8 Length: 9 Formula: xor(SYM_ID104,xor(xor(xor(SYM_ID85,SYM_ID90),SYM_ID96),SYM_ID100))
+size: 9
+Formula index: 0 Length: 9 Formula: xor(SYM_ID199,xor(xor(xor(SYM_ID180,SYM_ID185),SYM_ID191),SYM_ID195))
+Formula index: 1 Length: 7 Formula: xor(xor(xor(SYM_ID180,SYM_ID185),SYM_ID191),SYM_ID195)
+Formula index: 2 Length: 9 Formula: xor(SYM_ID130,xor(xor(xor(SYM_ID113,SYM_ID118),SYM_ID124),SYM_ID128))
+Formula index: 3 Length: 9 Formula: xor(SYM_ID153,xor(xor(xor(SYM_ID134,SYM_ID139),SYM_ID145),SYM_ID149))
+Formula index: 4 Length: 9 Formula: xor(SYM_ID176,xor(xor(xor(SYM_ID157,SYM_ID162),SYM_ID168),SYM_ID172))
+Formula index: 5 Length: 9 Formula: xor(SYM_ID35,xor(xor(xor(SYM_ID12,SYM_ID18),SYM_ID25),SYM_ID30))
+Formula index: 6 Length: 9 Formula: xor(SYM_ID58,xor(xor(xor(SYM_ID39,SYM_ID44),SYM_ID50),SYM_ID54))
+Formula index: 7 Length: 9 Formula: xor(SYM_ID81,xor(xor(xor(SYM_ID62,SYM_ID67),SYM_ID73),SYM_ID77))
+Formula index: 8 Length: 9 Formula: xor(SYM_ID104,xor(xor(xor(SYM_ID85,SYM_ID90),SYM_ID96),SYM_ID100))

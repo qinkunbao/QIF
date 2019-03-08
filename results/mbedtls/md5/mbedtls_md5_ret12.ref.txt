@@ -191,3 +191,19 @@ Formula index: 8 Length: 15 Formula: sub(sub(sub(add(add(add(sub(SYM_ID32,Con(0x
 Formula index: 9 Length: 7 Formula: add(shl(shr(SYM_ID111,Con(0x8)),Con(0x4)),SYM_ID117)
 Formula index: 10 Length: 9 Formula: add(shl(and(and(SYM_ID122,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID129)
 Formula index: 11 Length: 15 Formula: add(sub(sub(add(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x4)),Con(0x2c)),Con(0x1c))
+Unknown data operands: nop  Addr: b7fa6a8e
+Index: 568 Unsupported Instruction: div dword ptr [esp+0x18]
+Index: 637 Unsupported Instruction: bt ebp, edi
+size: 12
+Formula index: 0 Length: 7 Formula: add(sar(shl(Con(0x1),Con(0x1e)),Con(0x1f)),Con(0x3))
+Formula index: 1 Length: 11 Formula: sar(sub(add(add(SYM_ID419,imul(SYM_ID418,Con(0x4))),Con(0x4)),SYM_ID419),Con(0x2))
+Formula index: 2 Length: 7 Formula: add(add(SYM_ID419,imul(SYM_ID418,Con(0x4))),Con(0x4))
+Formula index: 3 Length: 15 Formula: add(shl(sar(sub(add(add(SYM_ID419,imul(SYM_ID418,Con(0x4))),Con(0x4)),SYM_ID419),Con(0x2)),Con(0x4)),SYM_ID117)
+Formula index: 4 Length: 23 Formula: add(sub(sub(sub(sub(sub(sub(add(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x4)),Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x4c))
+Formula index: 5 Length: 23 Formula: add(sub(sub(sub(sub(sub(sub(add(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x4)),Con(0x2c)),Con(0xc)),Con(0x7c)),Con(0xc)),Con(0x5c)),Con(0x48))
+Formula index: 6 Length: 17 Formula: sub(sub(sub(sub(add(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x4)),Con(0x2c)),Con(0xc)),Con(0x50))
+Formula index: 7 Length: 17 Formula: sub(sub(sub(sub(add(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x4)),Con(0x2c)),Con(0xc)),Con(0x48))
+Formula index: 8 Length: 15 Formula: sub(sub(sub(add(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x4)),Con(0x2c)),Con(0xc))
+Formula index: 9 Length: 7 Formula: add(shl(shr(SYM_ID111,Con(0x8)),Con(0x4)),SYM_ID117)
+Formula index: 10 Length: 9 Formula: add(shl(and(and(SYM_ID122,Con(0xffff)),Con(0x7fff)),Con(0x4)),SYM_ID129)
+Formula index: 11 Length: 15 Formula: add(sub(sub(add(add(add(sub(SYM_ID32,Con(0xc)),Con(0xc)),Con(0x2c)),Con(0x10)),Con(0x4)),Con(0x2c)),Con(0x1c))

@@ -5,3 +5,7 @@ Index: 43 Unsupported Instruction: cmp dword ptr [ebp-0x2c], 0x4
 size: 2
 Formula index: 0 Length: 29 Formula: or(and(and(SYM_ID49,Con(0xff)),Con(0xff)),or(or(shl(and(and(SYM_ID20,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID29,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID39,Con(0xff)),Con(0xff)),Con(0x8))))
 Formula index: 1 Length: 7 Formula: add(SYM_ID14,imul(add(SYM_ID9,Con(0x10)),Con(0x4)))
+Index: 36 Unsupported Instruction: leave
+size: 2
+Formula index: 0 Length: 29 Formula: or(and(and(SYM_ID49,Con(0xff)),Con(0xff)),or(or(shl(and(and(SYM_ID20,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID29,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID39,Con(0xff)),Con(0xff)),Con(0x8))))
+Formula index: 1 Length: 7 Formula: add(SYM_ID14,imul(add(SYM_ID9,Con(0x10)),Con(0x4)))

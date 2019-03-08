@@ -1,3 +1,6 @@
 size: 2
 Formula index: 0 Length: 7 Formula: xor(xor(xor(SYM_ID11,SYM_ID15),SYM_ID22),SYM_ID29)
 Formula index: 1 Length: 9 Formula: xor(SYM_ID34,xor(xor(xor(SYM_ID11,SYM_ID15),SYM_ID22),SYM_ID29))
+size: 2
+Formula index: 0 Length: 7 Formula: xor(xor(xor(SYM_ID11,SYM_ID15),SYM_ID22),SYM_ID29)
+Formula index: 1 Length: 9 Formula: xor(SYM_ID34,xor(xor(xor(SYM_ID11,SYM_ID15),SYM_ID22),SYM_ID29))

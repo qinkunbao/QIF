@@ -20,3 +20,5 @@ Index: 38 Unsupported Instruction: test eax, eax
 Index: 39 Unsupported Instruction: jz 0xb5463e70
 Index: 41 Unsupported Instruction: cmp esi, ebp
 size: 0
+Index: 12 Unsupported Instruction: pxor xmm0, xmm0
+size: 0
