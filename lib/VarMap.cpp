@@ -13,7 +13,7 @@ namespace tana {
     }
 
 
-    varmap::BitValue::BitValue(std::shared_ptr<Value> v, t_type::index n) {
+    varmap::BitValue::BitValue(std::shared_ptr<BitVector> v, t_type::index n) {
         symbol = v;
         bit_index = n;
     }
@@ -146,14 +146,14 @@ namespace tana {
     }
 
 
-    std::set<std::shared_ptr<Value>>
-    varmap::getInputs(std::shared_ptr<Value> output) {
-        std::queue<std::shared_ptr<Value> > que;
+    std::set<std::shared_ptr<BitVector>>
+    varmap::getInputs(std::shared_ptr<BitVector> output) {
+        std::queue<std::shared_ptr<BitVector> > que;
         que.push(output);
-        std::set<std::shared_ptr<Value> > input_set;
+        std::set<std::shared_ptr<BitVector> > input_set;
 
         while (!que.empty()) {
-            std::shared_ptr<Value> v = que.front();
+            std::shared_ptr<BitVector> v = que.front();
             const std::unique_ptr<Operation> &op = v->opr;
             que.pop();
 
@@ -170,11 +170,11 @@ namespace tana {
     }
 
 
-    std::vector<std::shared_ptr<Value> >
-    varmap::getInputVector(std::shared_ptr<Value> formula) {
-        std::set<std::shared_ptr<Value>> input_set = varmap::getInputs(formula);
+    std::vector<std::shared_ptr<BitVector> >
+    varmap::getInputVector(std::shared_ptr<BitVector> formula) {
+        std::set<std::shared_ptr<BitVector>> input_set = varmap::getInputs(formula);
 
-        std::vector<std::shared_ptr<Value>> input_vector;
+        std::vector<std::shared_ptr<BitVector>> input_vector;
         for (auto it = input_set.begin(); it != input_set.end(); ++it) {
             input_vector.push_back(*it);
         }
@@ -183,8 +183,8 @@ namespace tana {
 
 
     bool
-    varmap::varmapAndoutputCVC(SEEngine *se1, std::shared_ptr<Value> v1,
-                               SEEngine *se2, std::shared_ptr<Value> v2) {
+    varmap::varmapAndoutputCVC(SEEngine *se1, std::shared_ptr<BitVector> v1,
+                               SEEngine *se2, std::shared_ptr<BitVector> v2) {
         auto inv1 = getInputVector(v1);
         auto inv2 = getInputVector(v2);
 
@@ -242,24 +242,24 @@ namespace tana {
 
     void
     varmap::setOutputMatrix(BitMatrix *input_m,
-                            std::shared_ptr<Value> formula,
-                            std::vector<std::shared_ptr<Value>> *input_v,
-                            std::vector<std::shared_ptr<Value>> *output_v,
+                            std::shared_ptr<BitVector> formula,
+                            std::vector<std::shared_ptr<BitVector>> *input_v,
+                            std::vector<std::shared_ptr<BitVector>> *output_v,
                             SEEngine *se, BitMatrix *output_m) {
         uint32_t row_size = input_m->getRowNum();
         for (uint32_t i = 0; i < row_size; ++i) {
             std::vector<bool> row = input_m->getRow(i);
-            std::map<std::shared_ptr<Value>, uint32_t> input = bv2var(row, input_v);
+            std::map<std::shared_ptr<BitVector>, uint32_t> input = bv2var(row, input_v);
             uint32_t output = se->conexec(formula, &input);
-            std::map<std::shared_ptr<Value>, uint32_t> outmap = {{(*output_v)[0], output}};
+            std::map<std::shared_ptr<BitVector>, uint32_t> outmap = {{(*output_v)[0], output}};
             std::vector<bool> outbv = var2bv(&outmap, output_v);
             output_m->setRow(outbv, i);
         }
     }
 
     std::vector<bool>
-    varmap::var2bv(std::map<std::shared_ptr<Value>, uint32_t> *varm,
-                   std::vector<std::shared_ptr<Value>> *vv) {
+    varmap::var2bv(std::map<std::shared_ptr<BitVector>, uint32_t> *varm,
+                   std::vector<std::shared_ptr<BitVector>> *vv) {
         auto max = vv->size();
         std::vector<bool> bv(max * REGISTER_SIZE);
 
@@ -279,9 +279,9 @@ namespace tana {
     }
 
 
-    std::map<std::shared_ptr<Value>, uint32_t>
-    varmap::bv2var(std::vector<bool> bv, std::vector<std::shared_ptr<Value>> *vv) {
-        std::map<std::shared_ptr<Value>, uint32_t> varm;
+    std::map<std::shared_ptr<BitVector>, uint32_t>
+    varmap::bv2var(std::vector<bool> bv, std::vector<std::shared_ptr<BitVector>> *vv) {
+        std::map<std::shared_ptr<BitVector>, uint32_t> varm;
         if (bv.size() != REGISTER_SIZE * vv->size()) {
             std::cout << "bv2var: bv and vv are not consistent" << std::endl;
             return varm;
@@ -292,7 +292,7 @@ namespace tana {
             for (uint32_t j = 0; j < REGISTER_SIZE; ++j) {
                 bs[j] = bv[i * REGISTER_SIZE + j];
             }
-            varm.insert(std::pair<std::shared_ptr<Value>, uint32_t>((*vv)[i], bs.to_ulong()));
+            varm.insert(std::pair<std::shared_ptr<BitVector>, uint32_t>((*vv)[i], bs.to_ulong()));
         }
 
         return varm;
@@ -511,11 +511,11 @@ namespace tana {
 
 
     void
-    varmap::bitVarmap(std::shared_ptr<Value> formula1,
-                      std::shared_ptr<Value> formula2,
+    varmap::bitVarmap(std::shared_ptr<BitVector> formula1,
+                      std::shared_ptr<BitVector> formula2,
                       SEEngine *se1, SEEngine *se2,
-                      std::vector<std::shared_ptr<Value>> *input_v1,
-                      std::vector<std::shared_ptr<Value>> *input_v2,
+                      std::vector<std::shared_ptr<BitVector>> *input_v1,
+                      std::vector<std::shared_ptr<BitVector>> *input_v2,
                       std::vector<varmap::PartMap> unmap_input,
                       std::vector<varmap::PartMap> unmap_output,
                       std::map<uint32_t, uint32_t> map_input,
@@ -547,8 +547,8 @@ namespace tana {
         BitMatrix output_m2(REGISTER_SIZE * num_input_value2,
                             REGISTER_SIZE);
 
-        std::vector<std::shared_ptr<Value> > ouput_value1 = {formula1};
-        std::vector<std::shared_ptr<Value> > ouput_value2 = {formula2};
+        std::vector<std::shared_ptr<BitVector> > ouput_value1 = {formula1};
+        std::vector<std::shared_ptr<BitVector> > ouput_value2 = {formula2};
 
         setOutputMatrix(&input_m1, formula1, input_v1, &ouput_value1, se1, &output_m1);
         setOutputMatrix(&input_m2, formula2, input_v2, &ouput_value2, se2, &output_m2);
@@ -653,23 +653,23 @@ namespace tana {
         return newVec;
     }
 
-    void inline addValue(std::map<std::shared_ptr<Value>, uint32_t> *preVal) {
+    void inline addValue(std::map<std::shared_ptr<BitVector>, uint32_t> *preVal) {
         for (auto it = preVal->begin(); it != preVal->end(); ++it) {
             (*preVal)[it->first] = it->second + 1;
         }
     }
 
-    void inline mulValue(std::map<std::shared_ptr<Value>, uint32_t> *preVal) {
+    void inline mulValue(std::map<std::shared_ptr<BitVector>, uint32_t> *preVal) {
         for (auto it = preVal->begin(); it != preVal->end(); ++it) {
             (*preVal)[it->first] = it->second * 0xf;
         }
     }
 
-    bool varmap::fuzzFormula(std::shared_ptr<Value> v1,
-                             std::shared_ptr<Value> v2,
+    bool varmap::fuzzFormula(std::shared_ptr<BitVector> v1,
+                             std::shared_ptr<BitVector> v2,
                              SEEngine *se1, SEEngine *se2) {
-        std::vector<std::shared_ptr<Value>> inv1 = getInputVector(v1);
-        std::vector<std::shared_ptr<Value>> inv2 = getInputVector(v2);
+        std::vector<std::shared_ptr<BitVector>> inv1 = getInputVector(v1);
+        std::vector<std::shared_ptr<BitVector>> inv2 = getInputVector(v2);
 
         // skip variable mapping when the inputs have different number of bits
         if (inv1.size() != inv2.size()) {
@@ -680,8 +680,8 @@ namespace tana {
 
         std::vector<uint32_t> sameInv(inputSize, 0xf);
 
-        std::map<std::shared_ptr<Value>, uint32_t> input_v1 = input2val(sameInv, &inv1);
-        std::map<std::shared_ptr<Value>, uint32_t> input_v2 = input2val(sameInv, &inv2);
+        std::map<std::shared_ptr<BitVector>, uint32_t> input_v1 = input2val(sameInv, &inv1);
+        std::map<std::shared_ptr<BitVector>, uint32_t> input_v2 = input2val(sameInv, &inv2);
 
         uint32_t output1 = se1->conexec(v1, &input_v1);
         uint32_t output2 = se2->conexec(v2, &input_v2);
@@ -822,8 +822,8 @@ namespace tana {
 
     }
 
-    bool varmap::checkFormula(std::shared_ptr<Value> v1,
-                              std::shared_ptr<Value> v2,
+    bool varmap::checkFormula(std::shared_ptr<BitVector> v1,
+                              std::shared_ptr<BitVector> v2,
                               SEEngine *se1, SEEngine *se2) {
 
         const std::unique_ptr<Operation> &opr1 = v1->opr;
@@ -841,7 +841,7 @@ namespace tana {
 
 
         if ((opr1 != nullptr) && (opr2 != nullptr)) {
-            std::shared_ptr<Value> l1 = nullptr, l2 = nullptr, l3 = nullptr, r1 = nullptr, r2 = nullptr, r3 = nullptr;
+            std::shared_ptr<BitVector> l1 = nullptr, l2 = nullptr, l3 = nullptr, r1 = nullptr, r2 = nullptr, r3 = nullptr;
             uint32_t num_l = 0;
             uint32_t num_r = 0;
             if (opr1->opty != opr2->opty)
@@ -886,32 +886,32 @@ namespace tana {
 
     }
 
-    std::map<std::shared_ptr<Value>, uint32_t> varmap::input2val(std::vector<uint32_t> input,
-                                                                 std::vector<std::shared_ptr<Value>> *vv) {
-        std::map<std::shared_ptr<Value>, uint32_t> input_v;
+    std::map<std::shared_ptr<BitVector>, uint32_t> varmap::input2val(std::vector<uint32_t> input,
+                                                                 std::vector<std::shared_ptr<BitVector>> *vv) {
+        std::map<std::shared_ptr<BitVector>, uint32_t> input_v;
         assert(input.size() == vv->size());
 
         for (uint32_t i = 0; i < input.size(); ++i) {
-            input_v.insert(std::pair<std::shared_ptr<Value>, uint32_t>((*vv)[i], input[i]));
+            input_v.insert(std::pair<std::shared_ptr<BitVector>, uint32_t>((*vv)[i], input[i]));
         }
 
         return input_v;
     }
 
     std::map<int, int> varmap::matchFunction(SEEngine *se1, SEEngine *se2,
-                                             std::vector<std::shared_ptr<Value>> v1s,
-                                             std::vector<std::shared_ptr<Value>> v2s) {
+                                             std::vector<std::shared_ptr<BitVector>> v1s,
+                                             std::vector<std::shared_ptr<BitVector>> v2s) {
 
         std::map<int, int> result;
 
         for (uint32_t i = 0; i < v1s.size(); ++i) {
-            std::shared_ptr<Value> v1 = v1s[i];
+            std::shared_ptr<BitVector> v1 = v1s[i];
             auto size_v1 = getInputVector(v1).size();
             if (size_v1 < MIN_NUM_INPUT) { // We think one crypto formula must have two inputs symbols
                 continue;
             }
             for (uint32_t j = 0; j < v2s.size(); ++j) {
-                std::shared_ptr<Value> v2 = v2s[j];
+                std::shared_ptr<BitVector> v2 = v2s[j];
                 auto size_v2 = getInputVector(v1).size();
                 if ((size_v2 < MIN_NUM_INPUT) || (size_v1 != size_v2)) {
                     continue;
@@ -930,24 +930,17 @@ namespace tana {
         return result;
     }
 
-    void varmap::printV(std::shared_ptr<Value> v, std::stringstream &ss) {
+    void varmap::printV(std::shared_ptr<BitVector> v, std::stringstream &ss) {
         uint32_t num = 0;
         printV(v, ss, num);
     }
 
-    void varmap::printV(std::shared_ptr<Value> v, std::stringstream &ss, uint32_t &length) {
+    void varmap::printV(std::shared_ptr<BitVector> v, std::stringstream &ss, uint32_t &length) {
         const std::unique_ptr<Operation> &op = v->opr;
         ++length;
         if (op == nullptr) {
-            if (v->valty == CONCRETE) {
-                //std::cout << "Con(" << std::hex << stoul(v->conval, 0, 16) << std::dec << ")";
-                ss << "Con(" << v->conval << ")";
-                return;
-            } else {
-                //std::cout << "SYM_ID" << v->id;
-                ss << "SYM_ID" << v->id;
-                return;
-            }
+            ss << v->print();
+            return;
         }
         int num_opr = 0;
         if (op->val[0] != nullptr) ++num_opr;

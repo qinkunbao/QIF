@@ -11,9 +11,7 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 
 include_directories(lib)
 include_directories(TaintTrace)
-include_directories(CryptoHunt)
 include_directories(SymbolicExecution)
-include_directories(DetectMagicNumber)
 include_directories(LoopDetection)
 include_directories(test)
 include_directories(BitTaint)
@@ -21,6 +19,8 @@ include_directories(StaticSE)
 
 
 add_library(TraceLib
+        lib/BitVector.h
+        lib/BitVector.cpp
         lib/error.h
         lib/error.cpp
         lib/x86.cpp
@@ -53,8 +53,12 @@ add_executable(taintTrace
 add_executable(SymbolicExecution
         SymbolicExecution/SymbolicExecution.cpp)
 
+
 add_executable(LoopDetection
         LoopDetection/LoopDetection.cpp)
+
+add_executable(TestBitVector
+        test/test_bitvector.cpp)
 
 add_executable(TestX86
         test/test_x86.cpp)
@@ -74,5 +78,6 @@ target_link_libraries(taintTrace TraceLib)
 target_link_libraries(SymbolicExecution TraceLib)
 target_link_libraries(LoopDetection TraceLib)
 target_link_libraries(TestX86 TraceLib)
+target_link_libraries(TestBitVector TraceLib)
 target_link_libraries(BitTaint TraceLib)
 target_link_libraries(StaticSE TraceLib)

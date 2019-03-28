@@ -19,12 +19,12 @@ namespace tana {
         typedef std::pair<std::map<uint32_t, uint32_t>, std::map<uint32_t, uint32_t>> FullMap;
 
         struct BitValue {
-            std::shared_ptr<Value> symbol;
+            std::shared_ptr<BitVector> symbol;
             t_type::index bit_index;
 
             BitValue();
 
-            BitValue(std::shared_ptr<Value> v, t_type::index n);
+            BitValue(std::shared_ptr<BitVector> v, t_type::index n);
         };
 
         class BitMatrix {
@@ -66,49 +66,49 @@ namespace tana {
 
         void setIdentityMatrix(BitMatrix *input_m1, BitMatrix *input_m2, std::map<uint32_t, uint32_t> *mappedvar);
 
-        std::vector<std::shared_ptr<Value> > getInputVector(std::shared_ptr<Value> formula);
+        std::vector<std::shared_ptr<BitVector> > getInputVector(std::shared_ptr<BitVector> formula);
 
-        std::set<std::shared_ptr<Value> > getInputs(std::shared_ptr<Value> output);
+        std::set<std::shared_ptr<BitVector> > getInputs(std::shared_ptr<BitVector> output);
 
-        bool varmapAndoutputCVC(SEEngine *se1, std::shared_ptr<Value> v1, SEEngine *se2, std::shared_ptr<Value> v2);
+        bool varmapAndoutputCVC(SEEngine *se1, std::shared_ptr<BitVector> v1, SEEngine *se2, std::shared_ptr<BitVector> v2);
 
-        void setOutputMatrix(BitMatrix *inmput_m, std::shared_ptr<Value> formula,
-        		             std::vector<std::shared_ptr<Value> > *input_v,
-                             std::vector<std::shared_ptr<Value> > *output_v,
+        void setOutputMatrix(BitMatrix *inmput_m, std::shared_ptr<BitVector> formula,
+        		             std::vector<std::shared_ptr<BitVector> > *input_v,
+                             std::vector<std::shared_ptr<BitVector> > *output_v,
                              SEEngine *se, BitMatrix *output_m);
 
-        std::vector<bool> var2bv(std::map<std::shared_ptr<Value>, uint32_t> *varm,
-        		                 std::vector<std::shared_ptr<Value>> *vv);
+        std::vector<bool> var2bv(std::map<std::shared_ptr<BitVector>, uint32_t> *varm,
+        		                 std::vector<std::shared_ptr<BitVector>> *vv);
 
-        std::map<std::shared_ptr<Value>, uint32_t> bv2var(std::vector<bool> bv,
-        		                                          std::vector<std::shared_ptr<Value>> *vv);
+        std::map<std::shared_ptr<BitVector>, uint32_t> bv2var(std::vector<bool> bv,
+        		                                          std::vector<std::shared_ptr<BitVector>> *vv);
 
         void updateUnmap(std::vector<PartMap> *unmap, std::vector<uint32_t> *vec1, std::vector<uint32_t> *vec2,
                          std::map<uint32_t, uint32_t> *mappedvar);
 
-        void bitVarmap(std::shared_ptr<Value> formula1, std::shared_ptr<Value> formula2,
+        void bitVarmap(std::shared_ptr<BitVector> formula1, std::shared_ptr<BitVector> formula2,
         		       SEEngine *se1, SEEngine *se2,
-                       std::vector<std::shared_ptr<Value>> *input_v1,
-                       std::vector<std::shared_ptr<Value>> *input_v2,
+                       std::vector<std::shared_ptr<BitVector>> *input_v1,
+                       std::vector<std::shared_ptr<BitVector>> *input_v2,
                        std::vector<PartMap> unmap_input, std::vector<PartMap> unmap_output,
                        std::map<uint32_t, uint32_t> map_input,
                        std::map<uint32_t, uint32_t> map_output,
                        std::list<FullMap> *result);
 
-		bool fuzzFormula(std::shared_ptr<Value> v1, std::shared_ptr<Value> v2, SEEngine *se1, SEEngine *se2);
+		bool fuzzFormula(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2, SEEngine *se1, SEEngine *se2);
 
-		bool checkFormula(std::shared_ptr<Value> v1, std::shared_ptr<Value> v2, SEEngine *se1, SEEngine *se2);
+		bool checkFormula(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2, SEEngine *se1, SEEngine *se2);
 
-		std::map<std::shared_ptr<Value>, uint32_t> input2val(std::vector<uint32_t> input,
-		                                                     std::vector<std::shared_ptr<Value>> *vv);
+		std::map<std::shared_ptr<BitVector>, uint32_t> input2val(std::vector<uint32_t> input,
+		                                                     std::vector<std::shared_ptr<BitVector>> *vv);
 
         std::map<int, int> matchFunction(SEEngine *se1, SEEngine *se2,
-                                         std::vector<std::shared_ptr<Value>> v1s,
-                                         std::vector<std::shared_ptr<Value>> v2s);
+                                         std::vector<std::shared_ptr<BitVector>> v1s,
+                                         std::vector<std::shared_ptr<BitVector>> v2s);
 
-		void printV(std::shared_ptr<Value> v, std::stringstream& ss);
+		void printV(std::shared_ptr<BitVector> v, std::stringstream& ss);
 
-		void printV(std::shared_ptr<Value> v, std::stringstream& ss, uint32_t& length);
+		void printV(std::shared_ptr<BitVector> v, std::stringstream& ss, uint32_t& length);
 
     }
 

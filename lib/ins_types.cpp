@@ -28,7 +28,7 @@ namespace tana {
         std::cout << inst.str() << std::endl;
     }
 
-    vcpu_ctx::vcpu_ctx():eflags(0)
+    vcpu_ctx::vcpu_ctx():eflags(0), eflags_state(false)
     {
         for(int i = 0; i < GPR_NUM; ++i)
         {

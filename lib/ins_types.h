@@ -83,6 +83,8 @@ namespace tana {
         bool TF();
         bool DF();
         bool OF();
+
+        bool eflags_state;
     };
 
     class Operand {
@@ -111,6 +113,7 @@ namespace tana {
 
         virtual void print() const;
         uint32_t get_operand_number() const;
+        virtual ~Inst_Base() = default;
     };
 
     class Inst_Static : public  Inst_Base {
@@ -130,9 +133,15 @@ namespace tana {
 		{
 
 		    std::cout << "Index: " << id <<" Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
+		    print();
 		    return true;
 		};
-		virtual bool taint(){ return true; };
+		virtual bool taint()
+		{
+			std::cout << "Index: " << id <<" Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
+			print();
+			return true;
+		};
 
 	};
 
@@ -232,97 +241,63 @@ namespace tana {
 		bool symbolic_execution(SEEngine &se) final;
 	};
 
+    class Dyn_X86_INS_ADC : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final;
+    };
+
 	//two operands
 
     class Dyn_X86_INS_ADD : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
-
+        bool symbolic_execution(SEEngine &se) final;
     };
 
     class Dyn_X86_INS_SUB : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
-
+        bool symbolic_execution(SEEngine &se) final;
     };
 
 
     class Dyn_X86_INS_AND : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
+        bool symbolic_execution(SEEngine &se) final;
     };
 
-	class Dyn_X86_INS_ADC : public Inst_Dyn {
-	public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
-	};
 
     class Dyn_X86_INS_ROR : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
+        bool symbolic_execution(SEEngine &se) final;
     };
 
     class Dyn_X86_INS_ROL : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
+        bool symbolic_execution(SEEngine &se) final;
     };
 
     class Dyn_X86_INS_OR : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
+        bool symbolic_execution(SEEngine &se) final;
     };
 
     class Dyn_X86_INS_XOR : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
+        bool symbolic_execution(SEEngine &se) final;
     };
 
     class Dyn_X86_INS_SHL : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
+        bool symbolic_execution(SEEngine &se) final;
     };
 
     class Dyn_X86_INS_SHR : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
+        bool symbolic_execution(SEEngine &se) final;
     };
 
     class Dyn_X86_INS_SAR : public Inst_Dyn {
     public:
-        bool symbolic_execution(SEEngine &se) final
-        {
-            return inst_dyn_details::two_operand(se, this);
-        }
+        bool symbolic_execution(SEEngine &se) final;
     };
 
     class Inst_Dyn_Factory
