@@ -417,6 +417,7 @@ namespace tana {
             getline(strbuf, temp, ',');
             if (!temp.empty()) {
                 ins->vcpu.set_eflags(std::stoul(temp, 0, 16));
+                ins->vcpu.eflags_state = true;
             }
 
             ins->parseOperand();
