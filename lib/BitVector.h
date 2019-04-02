@@ -21,8 +21,8 @@ namespace tana {
         std::unique_ptr<Operation> opr = nullptr;
         std::string conval;             // concrete value
         int id;                 // a unique id for each value
-        int low_bit = 0;
-        int high_bit = REGISTER_SIZE;
+        uint32_t low_bit= 1;
+        uint32_t high_bit = REGISTER_SIZE;
         static int idseed;
 
         explicit BitVector(ValueTy vty);
@@ -45,9 +45,15 @@ namespace tana {
 
         static uint32_t extract(uint32_t op1, uint32_t high, uint32_t low);
 
-        static uint32_t concat(uint32_t op1, uint32_t op2);
+        static uint32_t concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size);
+
+        static uint32_t zeroext(uint32_t op1);
+
+        static uint32_t signext(uint32_t op1, uint32_t origin_size, uint32_t new_size);
 
         bool isSymbol();
+
+        uint32_t size();
 
         bool operator==(const BitVector &v1);
 

@@ -203,6 +203,12 @@ namespace tana {
         if(id == x86::x86_insn::X86_INS_SAR)
             return std::make_unique<Dyn_X86_INS_SAR>();
 
+        if(id == x86::x86_insn::X86_INS_CALL)
+            return std::make_unique<Dyn_X86_INS_CALL>();
+
+        if(id == x86::x86_insn::X86_INS_RET)
+            return std::make_unique<Dyn_X86_INS_RET>();
+
         return std::make_unique<Inst_Dyn>();
     }
 

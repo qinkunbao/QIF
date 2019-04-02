@@ -48,7 +48,7 @@ int printFormulas(char* filename)
 	se->initAllRegSymol(inst_list.begin(), inst_list.end());
 	se->run();
 
-	std::vector<std::shared_ptr<Value>> output_se = se->getAllOutput();
+	std::vector<std::shared_ptr<BitVector>> output_se = se->getAllOutput();
 	output_se = se->reduceValues(output_se);
 	std::cout << "size: " << output_se.size() << std::endl;
 	// Print all formulas in output_se

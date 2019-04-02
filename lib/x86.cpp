@@ -39,7 +39,7 @@ namespace tana {
         }
 
         std::string reg_id2string(x86_reg id) {
-            std::string x86_reg = "None";
+            std::string x86_reg;
             for (const auto &reg_map : reg_name_maps) {
                 if (reg_map.id == id) {
                     x86_reg = reg_map.name;
@@ -57,7 +57,7 @@ namespace tana {
 
         bool SymbolicExecutionNoEffect(x86::x86_insn insn) {
             using namespace x86;
-            std::set<x86::x86_insn> no_effect_inst{X86_INS_TEST, X86_INS_JMP, X86_INS_CMP, X86_INS_CALL, X86_INS_RET,
+            std::set<x86::x86_insn> no_effect_inst{X86_INS_TEST, X86_INS_JMP, X86_INS_CMP,
                                                    X86_INS_NOP, X86_INS_INT, X86_INS_JA, X86_INS_JAE, X86_INS_JAE,
                                                    X86_INS_JB, X86_INS_JBE, X86_INS_JCXZ, X86_INS_JE, X86_INS_JECXZ,
                                                    X86_INS_JG, X86_INS_JGE, X86_INS_JS, X86_INS_JNE, X86_INS_JNO,
