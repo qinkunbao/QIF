@@ -665,8 +665,8 @@ namespace tana {
         }
     }
 
-    bool varmap::fuzzFormula(std::shared_ptr<BitVector> v1,
-                             std::shared_ptr<BitVector> v2,
+    bool varmap::fuzzFormula(const std::shared_ptr<BitVector> &v1,
+                             const std::shared_ptr<BitVector> &v2,
                              SEEngine *se1, SEEngine *se2) {
         std::vector<std::shared_ptr<BitVector>> inv1 = getInputVector(v1);
         std::vector<std::shared_ptr<BitVector>> inv2 = getInputVector(v2);
@@ -822,8 +822,8 @@ namespace tana {
 
     }
 
-    bool varmap::checkFormula(std::shared_ptr<BitVector> v1,
-                              std::shared_ptr<BitVector> v2,
+    bool varmap::checkFormula(const std::shared_ptr<BitVector> &v1,
+                              const std::shared_ptr<BitVector> &v2,
                               SEEngine *se1, SEEngine *se2) {
 
         const std::unique_ptr<Operation> &opr1 = v1->opr;
@@ -917,14 +917,17 @@ namespace tana {
                     continue;
                 }
 
+
                 if (varmap::checkFormula(v1, v2, se1, se2)) {
                     result[i] = j;
                     break;
                 }
+
                 if (varmap::fuzzFormula(v1, v2, se1, se2)) {
                     result[i] = j;
                     break;
                 }
+
             }
         }
         return result;
@@ -947,13 +950,18 @@ namespace tana {
         if (op->val[1] != nullptr) ++num_opr;
         if (op->val[2] != nullptr) ++num_opr;
 
+
         if (num_opr == 1) {
             //std::cout << op->opty;
             ss << op->opty;
             //std::cout << "(";
             ss << "(";
             printV(op->val[0], ss, length);
-            //std::cout << ")";
+            if(op->opty == "bvextract")
+            {
+                ss << ", " << v->low_bit << ", " << v->high_bit;
+
+            }
             ss << ")";
 
         }

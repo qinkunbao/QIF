@@ -4,6 +4,9 @@
 #include "BitVector.h"
 
 
+
+
+
 namespace tana {
     Operation::Operation(std::string opt, std::shared_ptr<BitVector> v1) {
         opty = opt;
@@ -32,12 +35,14 @@ namespace tana {
     BitVector::BitVector(ValueTy vty) : opr(nullptr) {
         id = ++idseed;
         valty = vty;
+
     }
 
     BitVector::BitVector(ValueTy vty, std::string con) : opr(nullptr) {
         id = ++idseed;
         valty = vty;
         conval = con;
+
     }
 
     BitVector::BitVector(ValueTy vty, uint32_t con, bool Imm2SymState) : opr(nullptr) {
@@ -53,6 +58,7 @@ namespace tana {
             ss << "0x" << std::hex << con << std::dec;
             conval = ss.str();
         }
+
     }
 
     BitVector::BitVector(ValueTy vty, uint32_t con) : opr(nullptr) {
@@ -61,6 +67,7 @@ namespace tana {
         valty = vty;
         ss << "0x" << std::hex << con << std::dec;
         conval = ss.str();
+
 
     }
 
@@ -128,45 +135,44 @@ namespace tana {
 
     }
 
-    uint32_t BitVector::concat(uint32_t op1, uint32_t op2)
+    uint32_t BitVector::concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size)
     {
         std::bitset<REGISTER_SIZE> bit1(op1);
         std::bitset<REGISTER_SIZE> bit2(op2);
         std::string res;
-        bool flag = false;
-        for(int index = REGISTER_SIZE - 1; index >= 0; --index)
-        {
-            if(!bit1[index])
-            {
-                if(flag)
-                {
-                   res += "0";
-                }
-            }
-            if(bit1[index])
-            {
-                flag = true;
-                res += "1";
-            }
 
-        }
-        flag = false;
-        for(int index = REGISTER_SIZE - 1; index >= 0; --index)
-        {
-            if(!bit2[index])
-            {
-                if(flag)
-                {
-                    res += "0";
-                }
-            }
-            if(bit2[index])
-            {
-                flag = true;
-                res += "1";
-            }
+        std::string bit1_str = bit1.to_string();
+        std::string bit2_str = bit2.to_string();
 
-        }
+        auto bit1_str_size = bit1_str.size();
+        auto bit2_str_size = bit2_str.size();
+
+        std::string bit1_sub = bit1_str.substr(bit1_str_size - op1_size, bit1_str_size);
+        std::string bit2_sub = bit2_str.substr(bit2_str_size - op2_size, bit2_str_size);
+
+        res = bit1_sub + bit2_sub;
+
+        std::bitset<REGISTER_SIZE> res_bit(res);
+        auto res_u = static_cast<uint32_t > (res_bit.to_ulong());
+        return res_u;
+
+
+    }
+
+    uint32_t BitVector::zeroext(uint32_t op1)
+    {
+        return op1;
+    }
+
+    uint32_t BitVector::signext(uint32_t op1, uint32_t origin_size, uint32_t new_size)
+    {
+        std::bitset<REGISTER_SIZE> bit1(op1);
+        std::string res;
+        std::string bit1_str = bit1.to_string();
+        auto bit1_str_size = bit1_str.size();
+        auto sign_flag = bit1_str[bit1_str_size - origin_size];
+        std::string str_ext(new_size - origin_size, sign_flag);
+        res = str_ext + bit1_str.substr(bit1_str_size - origin_size, bit1_str_size);
         std::bitset<REGISTER_SIZE> res_bit(res);
         auto res_u = static_cast<uint32_t > (res_bit.to_ulong());
         return res_u;
@@ -192,6 +198,11 @@ namespace tana {
             ss << "Con(" << conval << ")";
         }
         return ss.str();
+    }
+
+    uint32_t BitVector::size()
+    {
+        return high_bit - low_bit + 1;
     }
 
 
@@ -258,6 +269,8 @@ namespace tana {
         else {
             result = std::make_shared<BitVector>(CONCRETE, std::move(oper));
         }
+        result->high_bit = v1->high_bit;
+        result->low_bit = v1->low_bit;
         return result;
     }
 
@@ -265,12 +278,13 @@ namespace tana {
     buildop2(std::string opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2) {
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(opty, v1, v2);
         std::shared_ptr<BitVector> result;
-
+        //assert(v1->size() == v2->size()|| !v2->isSymbol() || !v1->isSymbol());
         if (v1->isSymbol() || v2->isSymbol())
             result = std::make_shared<BitVector>(SYMBOL, std::move(oper));
         else
             result = std::make_shared<BitVector>(CONCRETE, std::move(oper));
-
+        result->low_bit = v1->low_bit;
+        result->high_bit = v1->high_bit;
         return result;
     }
 

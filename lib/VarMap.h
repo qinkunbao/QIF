@@ -95,9 +95,11 @@ namespace tana {
                        std::map<uint32_t, uint32_t> map_output,
                        std::list<FullMap> *result);
 
-		bool fuzzFormula(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2, SEEngine *se1, SEEngine *se2);
+		bool fuzzFormula(const std::shared_ptr<BitVector> &v1, const std::shared_ptr<BitVector> &v2,
+		                 SEEngine *se1, SEEngine *se2);
 
-		bool checkFormula(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2, SEEngine *se1, SEEngine *se2);
+		bool checkFormula(const std::shared_ptr<BitVector> &v1, const std::shared_ptr<BitVector> &v2,
+		                 SEEngine *se1, SEEngine *se2);
 
 		std::map<std::shared_ptr<BitVector>, uint32_t> input2val(std::vector<uint32_t> input,
 		                                                     std::vector<std::shared_ptr<BitVector>> *vv);
