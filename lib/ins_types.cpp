@@ -209,6 +209,12 @@ namespace tana {
         if(id == x86::x86_insn::X86_INS_RET)
             return std::make_unique<Dyn_X86_INS_RET>();
 
+        if(id == x86::x86_insn::X86_INS_LEAVE)
+            return std::make_unique<Dyn_X86_INS_LEAVE>();
+
+        if(id == x86::x86_insn::X86_INS_ENTER)
+            return std::make_unique<Dyn_X86_INS_ENTER>();
+
         return std::make_unique<Inst_Dyn>();
     }
 

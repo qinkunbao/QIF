@@ -1299,5 +1299,24 @@ namespace tana {
         return true;
     }
 
+    bool Dyn_X86_INS_LEAVE::symbolic_execution(tana::SEEngine &se)
+    {
+
+        // EBP = ESP
+        auto v_ebp = se.readReg("ebp");
+        se.writeReg("esp", v_ebp);
+
+        // POP EBP
+        auto v0 = se.readMem(this->memory_address, REGISTER_SIZE);
+        se.writeReg("ebp", v0);
+
+        return true;
+    }
+
+    bool Dyn_X86_INS_ENTER::symbolic_execution(tana::SEEngine &se)
+    {
+        return true;
+    }
+
 
 }
