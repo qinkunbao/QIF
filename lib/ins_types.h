@@ -310,6 +310,17 @@ namespace tana {
         bool symbolic_execution(SEEngine &se) final;
     };
 
+    class Dyn_X86_INS_LEAVE : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final;
+    };
+
+
+    class Dyn_X86_INS_ENTER : public Inst_Dyn {
+    public:
+        bool symbolic_execution(SEEngine &se) final;
+    };
+
     class Inst_Dyn_Factory
     {
     public:

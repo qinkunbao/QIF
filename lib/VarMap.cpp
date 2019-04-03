@@ -324,7 +324,7 @@ namespace tana {
         }
 
         while (unmapped_var1.size() > 0) {
-            assert(unmapped_var1.size() == unmapped_var2.size());
+            //assert(unmapped_var1.size() == unmapped_var2.size());
             uint32_t unmapped_head = unmapped_var1.front();
             std::set<uint32_t> s1 = {unmapped_head}, s2;
 
@@ -918,6 +918,7 @@ namespace tana {
                 }
 
 
+
                 if (varmap::checkFormula(v1, v2, se1, se2)) {
                     result[i] = j;
                     break;
@@ -927,6 +928,7 @@ namespace tana {
                     result[i] = j;
                     break;
                 }
+
 
             }
         }
