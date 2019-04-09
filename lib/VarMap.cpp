@@ -158,7 +158,7 @@ namespace tana {
             que.pop();
 
             if (op == nullptr) {
-                if (v->valty == SYMBOL)
+                if (v->val_type == SYMBOL)
                     input_set.insert(v);
             } else {
                 for (int i = 0; i < 3; ++i) {
@@ -828,15 +828,15 @@ namespace tana {
 
         const std::unique_ptr<Operation> &opr1 = v1->opr;
         const std::unique_ptr<Operation> &opr2 = v2->opr;
-        ValueTy type1 = v1->valty;
-        ValueTy type2 = v2->valty;
+        ValueType type1 = v1->val_type;
+        ValueType type2 = v2->val_type;
         if ((opr1 == nullptr) && (opr2 == nullptr)) {
             if (type1 != type2)
                 return false;
             if (type1 == SYMBOL)
                 return true;
             if (type1 == CONCRETE)
-                return (v1->conval) == (v2->conval);
+                return (v1->concrete_value) == (v2->concrete_value);
         }
 
 
@@ -917,8 +917,6 @@ namespace tana {
                     continue;
                 }
 
-
-
                 if (varmap::checkFormula(v1, v2, se1, se2)) {
                     result[i] = j;
                     break;
@@ -933,67 +931,6 @@ namespace tana {
             }
         }
         return result;
-    }
-
-    void varmap::printV(std::shared_ptr<BitVector> v, std::stringstream &ss) {
-        uint32_t num = 0;
-        printV(v, ss, num);
-    }
-
-    void varmap::printV(std::shared_ptr<BitVector> v, std::stringstream &ss, uint32_t &length) {
-        const std::unique_ptr<Operation> &op = v->opr;
-        ++length;
-        if (op == nullptr) {
-            ss << v->print();
-            return;
-        }
-        int num_opr = 0;
-        if (op->val[0] != nullptr) ++num_opr;
-        if (op->val[1] != nullptr) ++num_opr;
-        if (op->val[2] != nullptr) ++num_opr;
-
-
-        if (num_opr == 1) {
-            //std::cout << op->opty;
-            ss << op->opty;
-            //std::cout << "(";
-            ss << "(";
-            printV(op->val[0], ss, length);
-            if(op->opty == "bvextract")
-            {
-                ss << ", " << v->low_bit << ", " << v->high_bit;
-
-            }
-            ss << ")";
-
-        }
-        if (num_opr == 2) {
-            //std::cout << op->opty;
-            ss << op->opty;
-            //std::cout << "(";
-            ss << "(";
-            printV(op->val[0], ss, length);
-            //std::cout << ",";
-            ss << ",";
-            printV(op->val[1], ss, length);
-            //std::cout << ")";
-            ss << ")";
-        }
-        if (num_opr == 3) {
-            //std::cout << op->opty;
-            ss << op->opty;
-            //std::cout << "(";
-            ss << "(";
-            printV(op->val[0], ss, length);
-            //std::cout << ",";
-            ss << ",";
-            printV(op->val[1], ss, length);
-            //std::cout << ",";
-            ss << ",";
-            printV(op->val[2], ss, length);
-            //std::cout << ")";
-            ss << ")";
-        }
     }
 
 }

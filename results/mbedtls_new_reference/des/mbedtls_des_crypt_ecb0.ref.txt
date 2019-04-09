@@ -1,3 +1,31 @@
-size: 2
-Formula index: 0 Length: 7 Formula: xor(SYM_ID63,xor(xor(SYM_ID46,SYM_ID51),SYM_ID57))
-Formula index: 1 Length: 17 Formula: xor(xor(SYM_ID36,xor(SYM_ID34,xor(xor(SYM_ID17,SYM_ID22),SYM_ID28))),xor(SYM_ID63,xor(xor(SYM_ID46,SYM_ID51),SYM_ID57)))
+size: 5
+Formula index: 0 Length: 5 Input Number: 3
+Formula: bvxor(bvxor((SYM_ID46, Mem:f56caa5c),(SYM_ID51, Mem:f56ca7e0)),(SYM_ID57, Mem:f56ca5e0))
+After simlify
+Formula index: 0 Length: 5 Input Number: 3
+Formula: bvxor(bvxor((SYM_ID46, Mem:f56caa5c),(SYM_ID51, Mem:f56ca7e0)),(SYM_ID57, Mem:f56ca5e0))
+
+Formula index: 1 Length: 7 Input Number: 4
+Formula: bvxor((SYM_ID63, Mem:f56ca460),bvxor(bvxor((SYM_ID46, Mem:f56caa5c),(SYM_ID51, Mem:f56ca7e0)),(SYM_ID57, Mem:f56ca5e0)))
+After simlify
+Formula index: 1 Length: 7 Input Number: 4
+Formula: bvxor((SYM_ID63, Mem:f56ca460),bvxor(bvxor((SYM_ID46, Mem:f56caa5c),(SYM_ID51, Mem:f56ca7e0)),(SYM_ID57, Mem:f56ca5e0)))
+
+Formula index: 2 Length: 17 Input Number: 9
+Formula: bvxor(bvxor((SYM_ID36, Mem:ffddce58),bvxor((SYM_ID34, Mem:f56ca4e0),bvxor(bvxor((SYM_ID17, Mem:f56cabd8),(SYM_ID22, Mem:f56ca8e4)),(SYM_ID28, Mem:f56ca6e0)))),bvxor((SYM_ID63, Mem:f56ca460),bvxor(bvxor((SYM_ID46, Mem:f56caa5c),(SYM_ID51, Mem:f56ca7e0)),(SYM_ID57, Mem:f56ca5e0))))
+After simlify
+Formula index: 2 Length: 17 Input Number: 9
+Formula: bvxor(bvxor((SYM_ID36, Mem:ffddce58),bvxor((SYM_ID34, Mem:f56ca4e0),bvxor(bvxor((SYM_ID17, Mem:f56cabd8),(SYM_ID22, Mem:f56ca8e4)),(SYM_ID28, Mem:f56ca6e0)))),bvxor((SYM_ID63, Mem:f56ca460),bvxor(bvxor((SYM_ID46, Mem:f56caa5c),(SYM_ID51, Mem:f56ca7e0)),(SYM_ID57, Mem:f56ca5e0))))
+
+Formula index: 3 Length: 5 Input Number: 1
+Formula: bvadd(bvadd((SYM_ID9, Mem:ffddce60),0x4),0x4)
+After simlify
+Formula index: 3 Length: 5 Input Number: 1
+Formula: bvadd(bvadd((SYM_ID9, Mem:ffddce60),0x4),0x4)
+
+Formula index: 4 Length: 5 Input Number: 2
+Formula: bvxor((SYM_ID40, Mem:ffddce88),bvror((SYM_ID13, Mem:ffddce5c),0x4))
+After simlify
+Formula index: 4 Length: 5 Input Number: 2
+Formula: bvxor((SYM_ID40, Mem:ffddce88),bvror((SYM_ID13, Mem:ffddce5c),0x4))
+

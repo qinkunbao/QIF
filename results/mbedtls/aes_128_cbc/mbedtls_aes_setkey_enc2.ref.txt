@@ -1,2 +1,25 @@
-size: 1
-Formula index: 0 Length: 9 Formula: and(xor(xor(Con(0x1b),add(SYM_ID10,SYM_ID10)),SYM_ID10),Con(0xff))
+size: 4
+Formula index: 0 Length: 9 Input Number: 1
+Formula: bvand(bvxor(bvxor(0x1b,bvadd((SYM_ID10, Mem:bfef1ad0),(SYM_ID10, Mem:bfef1ad0))),(SYM_ID10, Mem:bfef1ad0)),0xff)
+After simlify
+Formula index: 0 Length: 9 Input Number: 1
+Formula: bvand(bvxor(bvxor(0x1b,bvadd((SYM_ID10, Mem:bfef1ad0),(SYM_ID10, Mem:bfef1ad0))),(SYM_ID10, Mem:bfef1ad0)),0xff)
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID10, Mem:bfef1ad0),(SYM_ID10, Mem:bfef1ad0))
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID10, Mem:bfef1ad0),(SYM_ID10, Mem:bfef1ad0))
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bfef1acc),0x1)
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bfef1acc),0x1)
+
+Formula index: 3 Length: 9 Input Number: 1
+Formula: bvand(bvxor(bvxor(0x1b,bvadd((SYM_ID10, Mem:bfef1ad0),(SYM_ID10, Mem:bfef1ad0))),(SYM_ID10, Mem:bfef1ad0)),0xff)
+After simlify
+Formula index: 3 Length: 9 Input Number: 1
+Formula: bvand(bvxor(bvxor(0x1b,bvadd((SYM_ID10, Mem:bfef1ad0),(SYM_ID10, Mem:bfef1ad0))),(SYM_ID10, Mem:bfef1ad0)),0xff)
+

@@ -1,3 +1,19 @@
-size: 2
-Formula index: 0 Length: 23 Formula: or(or(shl(and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID19,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID29,Con(0xff)),Con(0xff)),Con(0x8)))
-Formula index: 1 Length: 29 Formula: or(and(and(SYM_ID39,Con(0xff)),Con(0xff)),or(or(shl(and(and(SYM_ID9,Con(0xff)),Con(0xff)),Con(0x18)),shl(and(and(SYM_ID19,Con(0xff)),Con(0xff)),Con(0x10))),shl(and(and(SYM_ID29,Con(0xff)),Con(0xff)),Con(0x8))))
+size: 3
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID16, Mem:ff8ebd08),0x4)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID16, Mem:ff8ebd08),0x4)
+
+Formula index: 1 Length: 23 Input Number: 3
+Formula: bvor(bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID9, Mem:ff8ebe4c))))),0x18),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID19, Mem:ff8ebe4d))))),0x10)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID29, Mem:ff8ebe4e))))),0x8))
+After simlify
+Formula index: 1 Length: 23 Input Number: 3
+Formula: bvor(bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID9, Mem:ff8ebe4c))))),0x18),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID19, Mem:ff8ebe4d))))),0x10)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID29, Mem:ff8ebe4e))))),0x8))
+
+Formula index: 2 Length: 29 Input Number: 4
+Formula: bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID39, Mem:ff8ebe4f))))),bvor(bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID9, Mem:ff8ebe4c))))),0x18),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID19, Mem:ff8ebe4d))))),0x10)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID29, Mem:ff8ebe4e))))),0x8)))
+After simlify
+Formula index: 2 Length: 29 Input Number: 4
+Formula: bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID39, Mem:ff8ebe4f))))),bvor(bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID9, Mem:ff8ebe4c))))),0x18),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID19, Mem:ff8ebe4d))))),0x10)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID29, Mem:ff8ebe4e))))),0x8)))
+

@@ -1,6 +1,49 @@
-size: 5
-Formula index: 0 Length: 9 Formula: and(or(shr(SYM_ID4,Con(0x2)),shl(SYM_ID1,Con(0x1a))),Con(0xfffffff))
-Formula index: 1 Length: 9 Formula: and(or(shr(SYM_ID3,Con(0x2)),shl(SYM_ID3,Con(0x1a))),Con(0xfffffff))
-Formula index: 2 Length: 7 Formula: or(shr(SYM_ID3,Con(0x2)),shl(SYM_ID3,Con(0x1a)))
-Formula index: 3 Length: 21 Formula: ror(or(and(or(or(or(SYM_ID43,SYM_ID44),SYM_ID46),SYM_ID66),Con(0xffff)),shl(or(or(or(SYM_ID72,SYM_ID75),SYM_ID84),SYM_ID95),Con(0x10))),Con(0x1e))
-Formula index: 4 Length: 27 Formula: ror(or(xor(or(or(or(SYM_ID72,SYM_ID75),SYM_ID84),SYM_ID95),or(or(or(SYM_ID72,SYM_ID75),SYM_ID84),SYM_ID95)),shr(or(or(or(SYM_ID43,SYM_ID44),SYM_ID46),SYM_ID66),Con(0x10))),Con(0x1a))
+size: 8
+Formula index: 0 Length: 9 Input Number: 2
+Formula: bvand(bvor(bvshr((SYM_ID4, edx),0x2),bvshl((SYM_ID1, eax),0x1a)),0xfffffff)
+After simlify
+Formula index: 0 Length: 9 Input Number: 2
+Formula: bvand(bvor(bvshr((SYM_ID4, edx),0x2),bvshl((SYM_ID1, eax),0x1a)),0xfffffff)
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID107, Mem:bfc06c38),0x4)
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID107, Mem:bfc06c38),0x4)
+
+Formula index: 2 Length: 9 Input Number: 1
+Formula: bvand(bvor(bvshr((SYM_ID3, ecx),0x2),bvshl((SYM_ID3, ecx),0x1a)),0xfffffff)
+After simlify
+Formula index: 2 Length: 9 Input Number: 1
+Formula: bvand(bvor(bvshr((SYM_ID3, ecx),0x2),bvshl((SYM_ID3, ecx),0x1a)),0xfffffff)
+
+Formula index: 3 Length: 9 Input Number: 2
+Formula: bvand(bvor(bvshr((SYM_ID4, edx),0x2),bvshl((SYM_ID1, eax),0x1a)),0xfffffff)
+After simlify
+Formula index: 3 Length: 9 Input Number: 2
+Formula: bvand(bvor(bvshr((SYM_ID4, edx),0x2),bvshl((SYM_ID1, eax),0x1a)),0xfffffff)
+
+Formula index: 4 Length: 7 Input Number: 1
+Formula: bvor(bvshr((SYM_ID3, ecx),0x2),bvshl((SYM_ID3, ecx),0x1a))
+After simlify
+Formula index: 4 Length: 7 Input Number: 1
+Formula: bvor(bvshr((SYM_ID3, ecx),0x2),bvshl((SYM_ID3, ecx),0x1a))
+
+Formula index: 5 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID107, Mem:bfc06c38),0x4)
+After simlify
+Formula index: 5 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID107, Mem:bfc06c38),0x4)
+
+Formula index: 6 Length: 21 Input Number: 8
+Formula: bvror(bvor(bvzeroext(bvextract(bvor(bvor(bvor((SYM_ID43, Mem:8059230),(SYM_ID44, Mem:8059360)),(SYM_ID46, Mem:80590fc)),(SYM_ID66, Mem:80593c0)))),bvshl(bvor(bvor(bvor((SYM_ID72, Mem:80596c0),(SYM_ID75, Mem:80594dc)),(SYM_ID84, Mem:80595c8)),(SYM_ID95, Mem:80597c0)),0x10)),0x1e)
+After simlify
+Formula index: 6 Length: 21 Input Number: 8
+Formula: bvror(bvor(bvzeroext(bvextract(bvor(bvor(bvor((SYM_ID43, Mem:8059230),(SYM_ID44, Mem:8059360)),(SYM_ID46, Mem:80590fc)),(SYM_ID66, Mem:80593c0)))),bvshl(bvor(bvor(bvor((SYM_ID72, Mem:80596c0),(SYM_ID75, Mem:80594dc)),(SYM_ID84, Mem:80595c8)),(SYM_ID95, Mem:80597c0)),0x10)),0x1e)
+
+Formula index: 7 Length: 38 Input Number: 8
+Formula: bvror(bvor(bvconcat(bvextract(bvor(bvor(bvor((SYM_ID72, Mem:80596c0),(SYM_ID75, Mem:80594dc)),(SYM_ID84, Mem:80595c8)),(SYM_ID95, Mem:80597c0))),bvxor(bvextract(bvor(bvor(bvor((SYM_ID72, Mem:80596c0),(SYM_ID75, Mem:80594dc)),(SYM_ID84, Mem:80595c8)),(SYM_ID95, Mem:80597c0))),bvextract(bvor(bvor(bvor((SYM_ID72, Mem:80596c0),(SYM_ID75, Mem:80594dc)),(SYM_ID84, Mem:80595c8)),(SYM_ID95, Mem:80597c0))))),bvshr(bvor(bvor(bvor((SYM_ID43, Mem:8059230),(SYM_ID44, Mem:8059360)),(SYM_ID46, Mem:80590fc)),(SYM_ID66, Mem:80593c0)),0x10)),0x1a)
+After simlify
+Formula index: 7 Length: 38 Input Number: 8
+Formula: bvror(bvor(bvconcat(bvextract(bvor(bvor(bvor((SYM_ID72, Mem:80596c0),(SYM_ID75, Mem:80594dc)),(SYM_ID84, Mem:80595c8)),(SYM_ID95, Mem:80597c0))),bvxor(bvextract(bvor(bvor(bvor((SYM_ID72, Mem:80596c0),(SYM_ID75, Mem:80594dc)),(SYM_ID84, Mem:80595c8)),(SYM_ID95, Mem:80597c0))),bvextract(bvor(bvor(bvor((SYM_ID72, Mem:80596c0),(SYM_ID75, Mem:80594dc)),(SYM_ID84, Mem:80595c8)),(SYM_ID95, Mem:80597c0))))),bvshr(bvor(bvor(bvor((SYM_ID43, Mem:8059230),(SYM_ID44, Mem:8059360)),(SYM_ID46, Mem:80590fc)),(SYM_ID66, Mem:80593c0)),0x10)),0x1a)
+

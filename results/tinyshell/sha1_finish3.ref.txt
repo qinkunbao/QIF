@@ -1,1 +1,19 @@
-size: 0
+size: 3
+Formula index: 0 Length: 5 Input Number: 2
+Formula: bvconcat(bvextract((SYM_ID1, eax)),bvextract((SYM_ID9, Mem:b5521418)))
+After simlify
+Formula index: 0 Length: 5 Input Number: 2
+Formula: bvconcat(bvextract((SYM_ID1, eax)),bvextract((SYM_ID9, Mem:b5521418)))
+
+Formula index: 1 Length: 2 Input Number: 1
+Formula: bvinc((SYM_ID3, ecx))
+After simlify
+Formula index: 1 Length: 2 Input Number: 1
+Formula: bvinc((SYM_ID3, ecx))
+
+Formula index: 2 Length: 2 Input Number: 1
+Formula: bvinc((SYM_ID4, edx))
+After simlify
+Formula index: 2 Length: 2 Input Number: 1
+Formula: bvinc((SYM_ID4, edx))
+

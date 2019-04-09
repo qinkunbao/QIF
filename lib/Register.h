@@ -13,7 +13,8 @@ namespace tana {
         FULL = 0,    //eax, ebx, ecx, edx, esi, edi, esp, ebp
         HALF = 1,    //ax, bx, cx, dx
         QHIGH = 2,   //ah, bh, ch, dh
-        QLOW = 3     //al, bl, cl, dl
+        QLOW = 3,     //al, bl, cl, dl
+        INVALIDREG
     };
 
     class Registers {
@@ -33,8 +34,6 @@ namespace tana {
         static RegType getRegType(x86::x86_reg reg);
 
         static RegType getRegType(std::string reg);
-
-        static uint32_t getRegMask(x86::x86_reg reg);
 
     };
 

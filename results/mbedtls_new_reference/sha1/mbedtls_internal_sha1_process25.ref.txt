@@ -1,4 +1,37 @@
-size: 3
-Formula index: 0 Length: 15 Formula: rol(add(SYM_ID18,add(add(rol(SYM_ID12,Con(0x1)),add(SYM_ID4,xor(SYM_ID1,SYM_ID9))),Con(0x6ed9eba1))),Con(0x5))
-Formula index: 1 Length: 13 Formula: add(SYM_ID18,add(add(rol(SYM_ID12,Con(0x1)),add(SYM_ID4,xor(SYM_ID1,SYM_ID9))),Con(0x6ed9eba1)))
-Formula index: 2 Length: 7 Formula: xor(SYM_ID28,xor(xor(SYM_ID23,SYM_ID24),SYM_ID26))
+size: 6
+Formula index: 0 Length: 5 Input Number: 2
+Formula: bvxor((SYM_ID32, Mem:ff8ebd14),bvror((SYM_ID21, Mem:ff8ebd18),0x2))
+After simlify
+Formula index: 0 Length: 5 Input Number: 2
+Formula: bvxor((SYM_ID32, Mem:ff8ebd14),bvror((SYM_ID21, Mem:ff8ebd18),0x2))
+
+Formula index: 1 Length: 15 Input Number: 5
+Formula: bvrol(bvadd((SYM_ID18, Mem:ff8ebd24),bvadd(bvadd(bvrol((SYM_ID12, Mem:ff8ebd28),0x1),bvadd((SYM_ID4, edx),bvxor((SYM_ID1, eax),(SYM_ID9, Mem:ff8ebd20)))),0x6ed9eba1)),0x5)
+After simlify
+Formula index: 1 Length: 15 Input Number: 5
+Formula: bvrol(bvadd((SYM_ID18, Mem:ff8ebd24),bvadd(bvadd(bvrol((SYM_ID12, Mem:ff8ebd28),0x1),bvadd((SYM_ID4, edx),bvxor((SYM_ID1, eax),(SYM_ID9, Mem:ff8ebd20)))),0x6ed9eba1)),0x5)
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvror((SYM_ID21, Mem:ff8ebd18),0x2)
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvror((SYM_ID21, Mem:ff8ebd18),0x2)
+
+Formula index: 3 Length: 13 Input Number: 5
+Formula: bvadd((SYM_ID18, Mem:ff8ebd24),bvadd(bvadd(bvrol((SYM_ID12, Mem:ff8ebd28),0x1),bvadd((SYM_ID4, edx),bvxor((SYM_ID1, eax),(SYM_ID9, Mem:ff8ebd20)))),0x6ed9eba1))
+After simlify
+Formula index: 3 Length: 13 Input Number: 5
+Formula: bvadd((SYM_ID18, Mem:ff8ebd24),bvadd(bvadd(bvrol((SYM_ID12, Mem:ff8ebd28),0x1),bvadd((SYM_ID4, edx),bvxor((SYM_ID1, eax),(SYM_ID9, Mem:ff8ebd20)))),0x6ed9eba1))
+
+Formula index: 4 Length: 7 Input Number: 4
+Formula: bvxor((SYM_ID28, Mem:ff8ebd40),bvxor(bvxor((SYM_ID23, Mem:ff8ebd34),(SYM_ID24, Mem:ff8ebd60)),(SYM_ID26, Mem:ff8ebd48)))
+After simlify
+Formula index: 4 Length: 7 Input Number: 4
+Formula: bvxor((SYM_ID28, Mem:ff8ebd40),bvxor(bvxor((SYM_ID23, Mem:ff8ebd34),(SYM_ID24, Mem:ff8ebd60)),(SYM_ID26, Mem:ff8ebd48)))
+
+Formula index: 5 Length: 3 Input Number: 1
+Formula: bvrol((SYM_ID12, Mem:ff8ebd28),0x1)
+After simlify
+Formula index: 5 Length: 3 Input Number: 1
+Formula: bvrol((SYM_ID12, Mem:ff8ebd28),0x1)
+

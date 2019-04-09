@@ -1,1 +1,7 @@
-size: 0
+size: 1
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvand((SYM_ID11, Mem:bf8dc414),0x2)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvand((SYM_ID11, Mem:bf8dc414),0x2)
+

@@ -1,2 +1,37 @@
-size: 1
-Formula index: 0 Length: 8 Formula: shld(Con(0x0),and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10))
+size: 6
+Formula index: 0 Length: 5 Input Number: 1
+Formula: bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:ffdafead)))))
+After simlify
+Formula index: 0 Length: 5 Input Number: 1
+Formula: bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:ffdafead)))))
+
+Formula index: 1 Length: 5 Input Number: 1
+Formula: bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:ffdafead)))))
+After simlify
+Formula index: 1 Length: 5 Input Number: 1
+Formula: bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:ffdafead)))))
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvzeroext(bvextract((SYM_ID22, Mem:ffdafead)))
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvzeroext(bvextract((SYM_ID22, Mem:ffdafead)))
+
+Formula index: 3 Length: 8 Input Number: 1
+Formula: bvshld(0x0,bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:ffdafead))))),0x10)
+After simlify
+Formula index: 3 Length: 8 Input Number: 1
+Formula: bvshld(0x0,bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:ffdafead))))),0x10)
+
+Formula index: 4 Length: 5 Input Number: 2
+Formula: bvor((SYM_ID11, Mem:ffdafa40),bvshl((SYM_ID1, eax),0x18))
+After simlify
+Formula index: 4 Length: 5 Input Number: 2
+Formula: bvor((SYM_ID11, Mem:ffdafa40),bvshl((SYM_ID1, eax),0x18))
+
+Formula index: 5 Length: 3 Input Number: 2
+Formula: bvor((SYM_ID4, edx),(SYM_ID12, Mem:ffdafa44))
+After simlify
+Formula index: 5 Length: 3 Input Number: 2
+Formula: bvor((SYM_ID4, edx),(SYM_ID12, Mem:ffdafa44))
+

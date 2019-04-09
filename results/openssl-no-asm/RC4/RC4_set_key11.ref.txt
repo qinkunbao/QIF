@@ -1,2 +1,31 @@
-Index: 37 Unsupported Instruction: leave
-size: 0
+size: 5
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID10, Mem:bfd2bebc),0x1)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID10, Mem:bfd2bebc),0x1)
+
+Formula index: 1 Length: 4 Input Number: 1
+Formula: bvconcat(bvextract((SYM_ID35, Mem:804a01c)),0x1)
+After simlify
+Formula index: 1 Length: 4 Input Number: 1
+Formula: bvconcat(bvextract((SYM_ID35, Mem:804a01c)),0x1)
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID57, Mem:b7faeaa8),0x1)
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID57, Mem:b7faeaa8),0x1)
+
+Formula index: 3 Length: 9 Input Number: 1
+Formula: bvconcat(bvextract((SYM_ID12, Mem:b7faeaac)),bvextract(bvand(bvzeroext(bvextract((SYM_ID12, Mem:b7faeaac))),0xfffffff7)))
+After simlify
+Formula index: 3 Length: 9 Input Number: 1
+Formula: bvconcat(bvextract((SYM_ID12, Mem:b7faeaac)),bvextract(bvand(bvzeroext(bvextract((SYM_ID12, Mem:b7faeaac))),0xfffffff7)))
+
+Formula index: 4 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID10, Mem:bfd2bebc),0x1)
+After simlify
+Formula index: 4 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID10, Mem:bfd2bebc),0x1)
+

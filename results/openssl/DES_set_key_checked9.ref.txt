@@ -1,2 +1,15 @@
 Index: 12 Unsupported Instruction: pxor xmm0, xmm0
-size: 0
+b5370625   pxor xmm0, xmm0 
+size: 2
+Formula index: 0 Length: 2 Input Number: 0
+Formula: bvneg(0x1)
+After simlify
+Formula index: 0 Length: 1 Input Number: 0
+Formula: 0xffffffff
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID6, edi),0x8)
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID6, edi),0x8)
+
