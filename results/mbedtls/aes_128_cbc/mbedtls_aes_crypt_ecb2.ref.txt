@@ -1,2 +1,25 @@
-size: 1
-Formula index: 0 Length: 7 Formula: add(add(SYM_ID2,shl(SYM_ID2,Con(0x5))),SYM_ID1)
+size: 4
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvzeroext(bvextract((SYM_ID15, Mem:b562a077)))
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvzeroext(bvextract((SYM_ID15, Mem:b562a077)))
+
+Formula index: 1 Length: 7 Input Number: 2
+Formula: bvadd(bvadd((SYM_ID2, ebx),bvshl((SYM_ID2, ebx),0x5)),(SYM_ID1, eax))
+After simlify
+Formula index: 1 Length: 7 Input Number: 2
+Formula: bvadd(bvadd((SYM_ID2, ebx),bvshl((SYM_ID2, ebx),0x5)),(SYM_ID1, eax))
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvshl((SYM_ID2, ebx),0x5)
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvshl((SYM_ID2, ebx),0x5)
+
+Formula index: 3 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID4, edx),0x1)
+After simlify
+Formula index: 3 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID4, edx),0x1)
+

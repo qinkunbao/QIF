@@ -31,14 +31,12 @@ namespace tana {
 
     }
 
-    bool SEEngine::isRegSame(Inst_Dyn &instruction1, Inst_Dyn &instruction2) {
-        vcpu_ctx inst1 = instruction1.vcpu;
-        vcpu_ctx inst2 = instruction2.vcpu;
-        for (uint32_t i = 0; i < GPR_NUM; ++i) {
-            if (inst1.gpr[i] != inst2.gpr[i])
-                return false;
-        }
-        return true;
+    bool SEEngine::memory_find(uint32_t addr) {
+        auto ii = memory.find(addr);
+        if (ii == memory.end())
+            return false;
+        else
+            return true;
     }
 
     SEEngine::SEEngine(bool state_type) {
@@ -177,7 +175,9 @@ namespace tana {
         if (memory_find(memory_address)) {
             v0 = memory[memory_address];
         } else {
-            v0 = std::make_shared<BitVector>(SYMBOL);
+            std::stringstream ss;
+            ss << "Mem:" << std::hex << memory_address << std::dec;
+            v0 = std::make_shared<BitVector>(SYMBOL, ss.str());
             memory[memory_address] = v0;
         }
         if (size == T_BYTE_SIZE * T_DWORD)
@@ -211,7 +211,9 @@ namespace tana {
         if (memory_find(memory_address)) {
             v0 = memory[memory_address];
         } else {
-            v0 = std::make_shared<BitVector>(SYMBOL);
+            std::stringstream ss;
+            ss << "Mem:" << std::hex << memory_address << std::dec;
+            v0 = std::make_shared<BitVector>(SYMBOL, ss.str());
             memory[memory_address] = v0;
         }
 
@@ -246,7 +248,6 @@ namespace tana {
     SEEngine::Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2) {
         std::shared_ptr<BitVector> low = nullptr, high = nullptr, res = nullptr;
         uint32_t size_res = v1->size() + v2->size();
-        assert(size_res <= REGISTER_SIZE);
         high = v1;
         low = v2;
 
@@ -370,14 +371,14 @@ namespace tana {
     void
     SEEngine::initAllRegSymol(std::vector<std::unique_ptr<Inst_Dyn>>::iterator it1,
                               std::vector<std::unique_ptr<Inst_Dyn>>::iterator it2) {
-        ctx["eax"] = std::make_shared<BitVector>(SYMBOL);
-        ctx["ebx"] = std::make_shared<BitVector>(SYMBOL);
-        ctx["ecx"] = std::make_shared<BitVector>(SYMBOL);
-        ctx["edx"] = std::make_shared<BitVector>(SYMBOL);
-        ctx["esi"] = std::make_shared<BitVector>(SYMBOL);
-        ctx["edi"] = std::make_shared<BitVector>(SYMBOL);
-        ctx["esp"] = std::make_shared<BitVector>(SYMBOL);
-        ctx["ebp"] = std::make_shared<BitVector>(SYMBOL);
+        ctx["eax"] = std::make_shared<BitVector>(SYMBOL, "eax");
+        ctx["ebx"] = std::make_shared<BitVector>(SYMBOL, "ebx");
+        ctx["ecx"] = std::make_shared<BitVector>(SYMBOL, "ecx");
+        ctx["edx"] = std::make_shared<BitVector>(SYMBOL, "edx");
+        ctx["esi"] = std::make_shared<BitVector>(SYMBOL, "esi");
+        ctx["edi"] = std::make_shared<BitVector>(SYMBOL, "edi");
+        ctx["esp"] = std::make_shared<BitVector>(SYMBOL, "esp");
+        ctx["ebp"] = std::make_shared<BitVector>(SYMBOL, "ebp");
 
         this->start = it1;
         this->end = it2;
@@ -429,10 +430,6 @@ namespace tana {
             std::shared_ptr<BitVector> v = list_que.front();
             list_que.pop_front();
             ++count;
-            //auto result = std::find(list_que.begin(), list_que.end(), v);
-            //if (result != list_que.end()) {
-            //	return false;
-            //}
             const std::unique_ptr<Operation> &op = v->opr;
             if (op != nullptr) {
                 if (op->val[0] != nullptr) list_que.push_back(op->val[0]);
@@ -475,9 +472,6 @@ namespace tana {
             if ((v->opr != nullptr) && (isTree(v)))
                 outputs.push_back(v);
         }
-        //Erase Duplicates in a vector
-        //std::sort(outputs.begin(), outputs.end());
-        //outputs.erase(std::unique(outputs.begin(), outputs.end()), outputs.end());
         return outputs;
     }
 
@@ -547,8 +541,8 @@ namespace tana {
     SEEngine::eval(const std::shared_ptr<BitVector> &v, std::map<std::shared_ptr<BitVector>, uint32_t> *inmap) {
         const std::unique_ptr<Operation> &op = v->opr;
         if (op == nullptr) {
-            if (v->valty == CONCRETE)
-                return stoul(v->conval, nullptr, 16);
+            if (v->val_type == CONCRETE)
+                return v->concrete_value;
             else
                 return (*inmap)[v];
         } else {
@@ -601,6 +595,10 @@ namespace tana {
                 return BitVector::rol32(op0, op1);
             } else if (op->opty == "bvror") {
                 return BitVector::ror32(op0, op1);
+            } else if (op->opty == "bvquo"){
+                return op0 / op1;
+            } else if (op->opty == "bvrem"){
+                return op0 % op1;
             } else {
                 std::cout << "Instruction: [" << op->opty << "] is not interpreted!" << std::endl;
                 if ((op->val[0] != nullptr) && ((op->val[1] != nullptr))) return op0 + op1;
@@ -609,6 +607,30 @@ namespace tana {
             }
         }
     }
+
+    std::shared_ptr<BitVector> SEEngine::formula_simplfy(std::shared_ptr<tana::BitVector> v)
+    {
+        const std::unique_ptr<Operation> &op = v->opr;
+        if (op == nullptr)
+        {
+            return v;
+        }
+        uint32_t input_num = v->symbol_num();
+        if(input_num == 0)
+        {
+            uint32_t res = eval(v);
+            auto res_v = std::make_shared<BitVector>(CONCRETE, res);
+            return res_v;
+        }
+
+        if (op->val[0] != nullptr) op->val[0] = formula_simplfy(op->val[0]);
+        if (op->val[1] != nullptr) op->val[1] = formula_simplfy(op->val[1]);
+        if (op->val[2] != nullptr) op->val[2] = formula_simplfy(op->val[2]);
+
+        return v;
+
+    }
+
 
     bool inst_dyn_details::two_operand(SEEngine &se, Inst_Dyn *inst)
     {
@@ -619,7 +641,7 @@ namespace tana {
         auto opcstr = "bv" + x86::insn_id2string(opcode_id);
 
         if (op1->type == Operand::ImmValue) {
-            uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
             v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se.isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se.readReg(op1->field[0]);
@@ -794,7 +816,6 @@ namespace tana {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
-        auto opcode_id = this->instruction_id;
 
         if (op1->type == Operand::Reg) {
             auto reg = Registers::convert2RegID(op1->field[0]);
@@ -818,7 +839,6 @@ namespace tana {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
-        auto opcode_id = this->instruction_id;
 
         if (op1->type == Operand::Reg) {
             auto reg = Registers::convert2RegID(op1->field[0]);
@@ -846,8 +866,49 @@ namespace tana {
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
         auto opcode_id = this->instruction_id;
-        //TODO
-        return true;
+
+        if(!(this->vcpu.eflags_state))
+            ERROR("CMOVB doesn't have eflags information");
+
+        auto CF = this->vcpu.CF();
+        if(!CF)
+            return true;
+
+        if (op0->type == Operand::Reg)
+        {
+            if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
+                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+                v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se.isImmSym(temp_concrete));
+                se.writeReg(op0->field[0], v1);
+                return true;
+            }
+            if (op1->type == Operand::Reg) { // mov reg, reg
+                v1 = se.readReg(op1->field[0]);
+                se.writeReg(op0->field[0], v1);
+                return true;
+            }
+            if (op1->type == Operand::Mem) { // mov reg, dword ptr [ebp+0x1]
+                v1 = se.readMem(this->memory_address, op1->bit);
+                se.writeReg(op0->field[0], v1);
+                return true;
+            }
+
+            ERROR("op1 is not ImmValue, Reg or Mem");
+            return false;
+        }
+        if (op0->type == Operand::Mem) {
+            if (op1->type == Operand::ImmValue) { // mov dword ptr [ebp+0x1], 0x1111
+                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+                se.writeMem(this->memory_address, op0->bit, std::make_shared<BitVector>(CONCRETE, temp_concrete, se.isImmSym(temp_concrete)));
+                return true;
+            } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
+                v1 = se.readReg(op1->field[0]);
+                se.writeMem(this->memory_address, op1->bit, v1);
+                return true;
+            }
+        }
+        ERROR("Error: The first operand in MOV is not Reg or Mem!");
+        return false;
 
     }
 
@@ -906,8 +967,6 @@ namespace tana {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
-        auto opcode_id = this->instruction_id;
-
         /* lea reg, ptr [edx+eax*1]
            interpret lea instruction based on different address type
            1. op0 must be reg
@@ -1316,6 +1375,65 @@ namespace tana {
     bool Dyn_X86_INS_ENTER::symbolic_execution(tana::SEEngine &se)
     {
         return true;
+    }
+
+    bool Dyn_X86_INS_DIV::symbolic_execution(tana::SEEngine &se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        auto operand_size = op0->bit;
+        assert(operand_size == 8 || operand_size == 16 || operand_size == 32);
+        std::shared_ptr<BitVector> dividend, divisor, quotient, remainder;
+        if(operand_size == 8)
+        {
+            dividend = se.readReg("ax");
+        }
+        if(operand_size == 16)
+        {
+            auto temp1 = se.readReg("ax");
+            auto temp2 = se.readReg("dx");
+            dividend = se.Concat(temp2, temp1);
+        }
+        if(operand_size == 32)
+        {
+            auto temp1 = se.readReg("eax");
+            auto temp2 = se.readReg("edx");
+            dividend = se.Concat(temp2, temp1);
+        }
+
+
+        if(op0->type == Operand::Mem)
+        {
+           divisor = se.readMem(memory_address, op0->bit);
+        }
+
+        if(op0->type == Operand::Reg)
+        {
+           divisor = se.readReg(op0->field[0]);
+        }
+
+        quotient = buildop2("bvquo", dividend, divisor);
+        remainder = buildop2("bvrem", dividend, divisor);
+
+        if(operand_size == 8)
+        {
+            se.writeReg("al", quotient);
+            se.writeReg("ah", remainder);
+        }
+
+        if(operand_size == 16)
+        {
+            se.writeReg("ax", quotient);
+            se.writeReg("dx", remainder);
+        }
+
+        if(operand_size == 32)
+        {
+            se.writeReg("eax", quotient);
+            se.writeReg("edx", remainder);
+        }
+
+        return true;
+
     }
 
 

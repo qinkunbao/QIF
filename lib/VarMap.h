@@ -108,9 +108,7 @@ namespace tana {
                                          std::vector<std::shared_ptr<BitVector>> v1s,
                                          std::vector<std::shared_ptr<BitVector>> v2s);
 
-		void printV(std::shared_ptr<BitVector> v, std::stringstream& ss);
 
-		void printV(std::shared_ptr<BitVector> v, std::stringstream& ss, uint32_t& length);
 
     }
 

@@ -1,6 +1,8 @@
 #include <sstream>
 #include <bitset>
 #include <string>
+#include <climits>
+#include <set>
 #include "BitVector.h"
 
 
@@ -32,49 +34,25 @@ namespace tana {
 
     int BitVector::idseed = 0;
 
-    BitVector::BitVector(ValueTy vty) : opr(nullptr) {
-        id = ++idseed;
-        valty = vty;
-
-    }
-
-    BitVector::BitVector(ValueTy vty, std::string con) : opr(nullptr) {
-        id = ++idseed;
-        valty = vty;
-        conval = con;
-
-    }
-
-    BitVector::BitVector(ValueTy vty, uint32_t con, bool Imm2SymState) : opr(nullptr) {
-        std::stringstream ss;
-        if (Imm2SymState) {
-            id = ++idseed;
-            valty = SYMBOL;
-            ss << "0x" << std::hex << con << std::dec;
-            conval = ss.str();
-        } else {
-            id = ++idseed;
-            valty = vty;
-            ss << "0x" << std::hex << con << std::dec;
-            conval = ss.str();
-        }
-
-    }
-
-    BitVector::BitVector(ValueTy vty, uint32_t con) : opr(nullptr) {
-        std::stringstream ss;
-        id = ++idseed;
-        valty = vty;
-        ss << "0x" << std::hex << con << std::dec;
-        conval = ss.str();
-
-
-    }
-
-    BitVector::BitVector(ValueTy vty, std::unique_ptr<Operation> oper)
+    BitVector::BitVector(ValueType vty, std::string s_info) : opr(nullptr), val_type(vty), info(s_info)
     {
         id = ++idseed;
-        valty = vty;
+    }
+
+    BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState) : opr(nullptr), concrete_value(con)
+    {
+        id = ++idseed;
+        val_type = Imm2SymState ? SYMBOL : CONCRETE;
+    }
+
+    BitVector::BitVector(ValueType vty, uint32_t con) : opr(nullptr), val_type(vty), concrete_value(con)
+    {
+        id = ++idseed;
+    }
+
+    BitVector::BitVector(ValueType vty, std::unique_ptr<Operation> oper) :concrete_value(0), val_type(vty)
+    {
+        id = ++idseed;
         opr = std::move(oper);
     }
 
@@ -180,22 +158,25 @@ namespace tana {
     }
 
     bool BitVector::isSymbol() {
-        if (valty == SYMBOL)
-            return true;
-        else
-            return false;
+        return (val_type == SYMBOL) ? true : false;
+
     }
 
     std::string BitVector::print()
     {
         std::stringstream ss;
-        if(valty == SYMBOL)
+        if(val_type == SYMBOL)
         {
-            ss << "SYM_ID" << id;
+            if(!info.empty()) {
+                ss << "(SYM_ID" << id;
+                ss << ", " << info << ")";
+            } else{
+                ss << "SYM_ID" << id;
+            }
         }
-        if(valty == CONCRETE)
+        if(val_type == CONCRETE)
         {
-            ss << "Con(" << conval << ")";
+            ss << "0x" << std::hex << concrete_value <<  std::dec;
         }
         return ss.str();
     }
@@ -210,12 +191,12 @@ namespace tana {
         const std::unique_ptr<Operation> &opr1 = opr;
         const std::unique_ptr<Operation> &opr2 = v1.opr;
         if ((opr == nullptr) && (v1.opr == nullptr)) {
-            if (valty != v1.valty)
+            if (val_type != v1.val_type)
                 return false;
-            if (valty == SYMBOL)
+            if (val_type == SYMBOL)
                 return (id == v1.id);
-            if (valty == CONCRETE)
-                return (conval) == (v1.conval);
+            if (val_type == CONCRETE)
+                return (concrete_value) == (v1.concrete_value);
         }
         if ((opr1 != nullptr) && (opr2 != nullptr)) {
             std::shared_ptr<BitVector> l1 = nullptr, l2 = nullptr, l3 = nullptr, r1 = nullptr, r2 = nullptr, r3 = nullptr;
@@ -257,6 +238,87 @@ namespace tana {
                 return ((*l1) == (*r1)) && ((*l2) == (*r2)) && ((*l3) == (*r3));
         }
         return false;
+    }
+
+    uint32_t BitVector::printV(std::stringstream &ss){
+        uint32_t num = 0;
+        printV(ss, num);
+        return num;
+    }
+
+    void BitVector::printV(std::stringstream &ss, uint32_t &length){
+        const std::unique_ptr<Operation> &op = this->opr;
+        ++length;
+        if (op == nullptr) {
+            ss << this->print();
+            return;
+        }
+        int num_opr = 0;
+        if (op->val[0] != nullptr) ++num_opr;
+        if (op->val[1] != nullptr) ++num_opr;
+        if (op->val[2] != nullptr) ++num_opr;
+
+
+        if (num_opr == 1) {
+            ss << op->opty;
+            ss << "(";
+            (op->val[0])->printV(ss, length);
+            ss << ")";
+
+        }
+        if (num_opr == 2) {
+            ss << op->opty;
+            ss << "(";
+            (op->val[0])->printV(ss, length);
+            ss << ",";
+            (op->val[1])->printV(ss, length);
+            ss << ")";
+        }
+        if (num_opr == 3) {
+            ss << op->opty;
+            ss << "(";
+            (op->val[0])->printV(ss, length);
+            ss << ",";
+            (op->val[1])->printV(ss, length);
+            ss << ",";
+            (op->val[2])->printV(ss, length);
+            ss << ")";
+        }
+    }
+
+    void BitVector::symbol_num_internal(const std::shared_ptr<BitVector> &v, std::set<int> &input) const
+    {
+        const std::unique_ptr<Operation> &op = v->opr;
+        if (op == nullptr) {
+            if (v->val_type == CONCRETE)
+                return;
+            else
+            {
+                input.insert(v->id);
+                return;
+            }
+        }
+
+        if (op->val[0] != nullptr) symbol_num_internal(op->val[0], input);
+        if (op->val[1] != nullptr) symbol_num_internal(op->val[1], input);
+        if (op->val[2] != nullptr) symbol_num_internal(op->val[2], input);
+
+    }
+
+    uint32_t BitVector::symbol_num() const
+    {
+        std::set<int> input_num;
+        const std::unique_ptr<Operation> &op = this->opr;
+
+        if (op == nullptr) {
+            if (this->val_type == SYMBOL)
+                input_num.insert(this->id);
+            return input_num.size();
+        }
+        if (op->val[0] != nullptr) symbol_num_internal(op->val[0], input_num);
+        if (op->val[1] != nullptr) symbol_num_internal(op->val[1], input_num);
+        if (op->val[2] != nullptr) symbol_num_internal(op->val[2], input_num);
+        return input_num.size();
     }
 
 

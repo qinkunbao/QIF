@@ -39,49 +39,49 @@ namespace tana {
     bool vcpu_ctx::CF()
     {
         assert(eflags>0);
-        return static_cast<bool>(eflags & 0x1);
+        return static_cast<bool>(eflags & 0x1u);
     }
 
     bool vcpu_ctx::PF()
     {
         assert(eflags>0);
-        return static_cast<bool>(eflags & 0x4);
+        return static_cast<bool>(eflags & 0x4u);
     }
 
     bool vcpu_ctx::AF()
     {
         assert(eflags>0);
-        return static_cast<bool>(eflags & 0x10);
+        return static_cast<bool>(eflags & 0x10u);
     }
 
     bool vcpu_ctx::ZF()
     {
         assert(eflags>0);
-        return static_cast<bool>(eflags & 0x40);
+        return static_cast<bool>(eflags & 0x40u);
     }
 
     bool vcpu_ctx::SF()
     {
         assert(eflags>0);
-        return static_cast<bool>(eflags & 0x80);
+        return static_cast<bool>(eflags & 0x80u);
     }
 
     bool vcpu_ctx::TF()
     {
         assert(eflags>0);
-        return static_cast<bool>(eflags & 0x100);
+        return static_cast<bool>(eflags & 0x100u);
     }
 
     bool vcpu_ctx::DF()
     {
         assert(eflags>0);
-        return static_cast<bool>(eflags & 0x400);
+        return static_cast<bool>(eflags & 0x400u);
     }
 
     bool vcpu_ctx::OF()
     {
         assert(eflags>0);
-        return static_cast<bool>(eflags & 0x800);
+        return static_cast<bool>(eflags & 0x800u);
     }
 
     Inst_Dyn::Inst_Dyn(): memory_address(0)
@@ -214,6 +214,9 @@ namespace tana {
 
         if(id == x86::x86_insn::X86_INS_ENTER)
             return std::make_unique<Dyn_X86_INS_ENTER>();
+
+        if(id == x86::x86_insn::X86_INS_DIV)
+            return std::make_unique<Dyn_X86_INS_DIV>();
 
         return std::make_unique<Inst_Dyn>();
     }

@@ -1,5 +1,55 @@
-size: 4
-Formula index: 0 Length: 11 Formula: or(shr(and(SYM_ID11,Con(0xfffffff)),Con(0x1)),shl(and(SYM_ID11,Con(0xfffffff)),Con(0x1b)))
-Formula index: 1 Length: 11 Formula: or(shr(and(SYM_ID4,Con(0xfffffff)),Con(0x1)),shl(and(SYM_ID4,Con(0xfffffff)),Con(0x1b)))
-Formula index: 2 Length: 21 Formula: ror(or(and(or(or(or(SYM_ID34,SYM_ID35),SYM_ID37),SYM_ID57),Con(0xffff)),shl(or(or(or(SYM_ID63,SYM_ID66),SYM_ID73),SYM_ID84),Con(0x10))),Con(0x1e))
-Formula index: 3 Length: 27 Formula: ror(or(shr(or(or(or(SYM_ID34,SYM_ID35),SYM_ID37),SYM_ID57),Con(0x10)),xor(or(or(or(SYM_ID63,SYM_ID66),SYM_ID73),SYM_ID84),or(or(or(SYM_ID63,SYM_ID66),SYM_ID73),SYM_ID84))),Con(0x1a))
+size: 9
+Formula index: 0 Length: 11 Input Number: 1
+Formula: bvor(bvshr(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1),bvshl(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1b))
+After simlify
+Formula index: 0 Length: 11 Input Number: 1
+Formula: bvor(bvshr(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1),bvshl(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1b))
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID107, Mem:bfb7fd64),0x4)
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID107, Mem:bfb7fd64),0x4)
+
+Formula index: 2 Length: 5 Input Number: 1
+Formula: bvshl(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1b)
+After simlify
+Formula index: 2 Length: 5 Input Number: 1
+Formula: bvshl(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1b)
+
+Formula index: 3 Length: 11 Input Number: 1
+Formula: bvor(bvshr(bvand((SYM_ID4, edx),0xfffffff),0x1),bvshl(bvand((SYM_ID4, edx),0xfffffff),0x1b))
+After simlify
+Formula index: 3 Length: 11 Input Number: 1
+Formula: bvor(bvshr(bvand((SYM_ID4, edx),0xfffffff),0x1),bvshl(bvand((SYM_ID4, edx),0xfffffff),0x1b))
+
+Formula index: 4 Length: 11 Input Number: 1
+Formula: bvor(bvshr(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1),bvshl(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1b))
+After simlify
+Formula index: 4 Length: 11 Input Number: 1
+Formula: bvor(bvshr(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1),bvshl(bvand((SYM_ID11, Mem:bfb7fd5c),0xfffffff),0x1b))
+
+Formula index: 5 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID100, Mem:bfb7fd60),0x8)
+After simlify
+Formula index: 5 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID100, Mem:bfb7fd60),0x8)
+
+Formula index: 6 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID107, Mem:bfb7fd64),0x4)
+After simlify
+Formula index: 6 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID107, Mem:bfb7fd64),0x4)
+
+Formula index: 7 Length: 21 Input Number: 8
+Formula: bvror(bvor(bvzeroext(bvextract(bvor(bvor(bvor((SYM_ID34, Mem:b554f3ac),(SYM_ID35, Mem:b554f490)),(SYM_ID37, Mem:b554f250)),(SYM_ID57, Mem:b554f508)))),bvshl(bvor(bvor(bvor((SYM_ID63, Mem:b554f84c),(SYM_ID66, Mem:b554f6b8)),(SYM_ID73, Mem:b554f790)),(SYM_ID84, Mem:b554f998)),0x10)),0x1e)
+After simlify
+Formula index: 7 Length: 21 Input Number: 8
+Formula: bvror(bvor(bvzeroext(bvextract(bvor(bvor(bvor((SYM_ID34, Mem:b554f3ac),(SYM_ID35, Mem:b554f490)),(SYM_ID37, Mem:b554f250)),(SYM_ID57, Mem:b554f508)))),bvshl(bvor(bvor(bvor((SYM_ID63, Mem:b554f84c),(SYM_ID66, Mem:b554f6b8)),(SYM_ID73, Mem:b554f790)),(SYM_ID84, Mem:b554f998)),0x10)),0x1e)
+
+Formula index: 8 Length: 38 Input Number: 8
+Formula: bvror(bvor(bvshr(bvor(bvor(bvor((SYM_ID34, Mem:b554f3ac),(SYM_ID35, Mem:b554f490)),(SYM_ID37, Mem:b554f250)),(SYM_ID57, Mem:b554f508)),0x10),bvconcat(bvextract(bvor(bvor(bvor((SYM_ID63, Mem:b554f84c),(SYM_ID66, Mem:b554f6b8)),(SYM_ID73, Mem:b554f790)),(SYM_ID84, Mem:b554f998))),bvxor(bvextract(bvor(bvor(bvor((SYM_ID63, Mem:b554f84c),(SYM_ID66, Mem:b554f6b8)),(SYM_ID73, Mem:b554f790)),(SYM_ID84, Mem:b554f998))),bvextract(bvor(bvor(bvor((SYM_ID63, Mem:b554f84c),(SYM_ID66, Mem:b554f6b8)),(SYM_ID73, Mem:b554f790)),(SYM_ID84, Mem:b554f998)))))),0x1a)
+After simlify
+Formula index: 8 Length: 38 Input Number: 8
+Formula: bvror(bvor(bvshr(bvor(bvor(bvor((SYM_ID34, Mem:b554f3ac),(SYM_ID35, Mem:b554f490)),(SYM_ID37, Mem:b554f250)),(SYM_ID57, Mem:b554f508)),0x10),bvconcat(bvextract(bvor(bvor(bvor((SYM_ID63, Mem:b554f84c),(SYM_ID66, Mem:b554f6b8)),(SYM_ID73, Mem:b554f790)),(SYM_ID84, Mem:b554f998))),bvxor(bvextract(bvor(bvor(bvor((SYM_ID63, Mem:b554f84c),(SYM_ID66, Mem:b554f6b8)),(SYM_ID73, Mem:b554f790)),(SYM_ID84, Mem:b554f998))),bvextract(bvor(bvor(bvor((SYM_ID63, Mem:b554f84c),(SYM_ID66, Mem:b554f6b8)),(SYM_ID73, Mem:b554f790)),(SYM_ID84, Mem:b554f998)))))),0x1a)
+

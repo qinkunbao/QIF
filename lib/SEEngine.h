@@ -21,29 +21,7 @@ namespace tana {
         std::vector<std::unique_ptr<Inst_Dyn>>::iterator start;
         std::vector<std::unique_ptr<Inst_Dyn>>::iterator end;
         std::map<t_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
-
-
-        static inline bool isRegSame(Inst_Dyn &instruction1, Inst_Dyn &instruction2);
-
-        bool memory_find(uint32_t addr) {
-            auto ii = memory.find(addr);
-            if (ii == memory.end())
-                return false;
-            else
-                return true;
-        }
-
-
-
-        std::shared_ptr<BitVector> Extract(std::shared_ptr<BitVector> v, int low, int high);
-
-        std::shared_ptr<BitVector> Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2);
-
-        std::shared_ptr<BitVector> Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
-                                          std::shared_ptr<BitVector> v3);
-
-
-
+        bool memory_find(uint32_t addr);
 
 
     public:
@@ -53,6 +31,11 @@ namespace tana {
 
         std::shared_ptr<BitVector> SignExt(std::shared_ptr<BitVector> v, t_type::T_SIZE orgin_size,
                                            t_type::T_SIZE new_size);
+
+        std::shared_ptr<BitVector> Extract(std::shared_ptr<BitVector> v, int low, int high);
+        std::shared_ptr<BitVector> Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2);
+        std::shared_ptr<BitVector> Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
+                                          std::shared_ptr<BitVector> v3);
 
         static void getFormulaLength(const std::shared_ptr<BitVector> &v, uint32_t &len);
 
@@ -94,6 +77,8 @@ namespace tana {
         std::shared_ptr<BitVector> readMem(t_type::T_ADDRESS memory_address, t_type::T_SIZE size);
 
         bool writeMem(t_type::T_ADDRESS memory_address, t_type::T_SIZE size, std::shared_ptr<BitVector> v);
+
+        std::shared_ptr<BitVector> formula_simplfy(std::shared_ptr<BitVector> v);
 
     };
 

@@ -1,9 +1,73 @@
-size: 8
-Formula index: 0 Length: 37 Formula: xor(xor(xor(xor(shl(and(and(SYM_ID138,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID95,and(and(SYM_ID100,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID112,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID126,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID150),SYM_ID158),SYM_ID18)
-Formula index: 1 Length: 33 Formula: xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10))))
-Formula index: 2 Length: 35 Formula: xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71)
-Formula index: 3 Length: 37 Formula: xor(xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71),SYM_ID79)
-Formula index: 4 Length: 39 Formula: xor(xor(xor(xor(shl(and(and(SYM_ID59,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(xor(SYM_ID12,SYM_ID14),and(and(SYM_ID23,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID35,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID47,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID71),SYM_ID79),SYM_ID87)
-Formula index: 5 Length: 31 Formula: xor(shl(and(and(SYM_ID138,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID95,and(and(SYM_ID100,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID112,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID126,Con(0xff)),Con(0xff)),Con(0x10))))
-Formula index: 6 Length: 33 Formula: xor(xor(shl(and(and(SYM_ID138,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID95,and(and(SYM_ID100,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID112,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID126,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID150)
-Formula index: 7 Length: 35 Formula: xor(xor(xor(shl(and(and(SYM_ID138,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID95,and(and(SYM_ID100,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID112,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID126,Con(0xff)),Con(0xff)),Con(0x10)))),SYM_ID150),SYM_ID158)
+size: 12
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bf8e098c),0x3c)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bf8e098c),0x3c)
+
+Formula index: 1 Length: 37 Input Number: 8
+Formula: bvxor(bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10))),(SYM_ID150, Mem:bf8e09d0)),(SYM_ID158, Mem:bf8e09d4)),(SYM_ID18, Mem:bf8e09d8))
+After simlify
+Formula index: 1 Length: 37 Input Number: 8
+Formula: bvxor(bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10))),(SYM_ID150, Mem:bf8e09d0)),(SYM_ID158, Mem:bf8e09d4)),(SYM_ID18, Mem:bf8e09d8))
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID13, Mem:bf8e0988),0x1)
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID13, Mem:bf8e0988),0x1)
+
+Formula index: 3 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bf8e098c),0x20)
+After simlify
+Formula index: 3 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bf8e098c),0x20)
+
+Formula index: 4 Length: 33 Input Number: 6
+Formula: bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID59, Mem:80eefac))))),0x18),bvxor(bvxor(bvxor(bvxor((SYM_ID12, Mem:bf8e09bc),(SYM_ID14, Mem:80f11a0)),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID23, Mem:80eefad)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID35, Mem:80eefae))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID47, Mem:80eefaf))))),0x10)))
+After simlify
+Formula index: 4 Length: 33 Input Number: 6
+Formula: bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID59, Mem:80eefac))))),0x18),bvxor(bvxor(bvxor(bvxor((SYM_ID12, Mem:bf8e09bc),(SYM_ID14, Mem:80f11a0)),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID23, Mem:80eefad)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID35, Mem:80eefae))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID47, Mem:80eefaf))))),0x10)))
+
+Formula index: 5 Length: 35 Input Number: 7
+Formula: bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID59, Mem:80eefac))))),0x18),bvxor(bvxor(bvxor(bvxor((SYM_ID12, Mem:bf8e09bc),(SYM_ID14, Mem:80f11a0)),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID23, Mem:80eefad)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID35, Mem:80eefae))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID47, Mem:80eefaf))))),0x10))),(SYM_ID71, Mem:bf8e09c0))
+After simlify
+Formula index: 5 Length: 35 Input Number: 7
+Formula: bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID59, Mem:80eefac))))),0x18),bvxor(bvxor(bvxor(bvxor((SYM_ID12, Mem:bf8e09bc),(SYM_ID14, Mem:80f11a0)),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID23, Mem:80eefad)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID35, Mem:80eefae))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID47, Mem:80eefaf))))),0x10))),(SYM_ID71, Mem:bf8e09c0))
+
+Formula index: 6 Length: 37 Input Number: 8
+Formula: bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID59, Mem:80eefac))))),0x18),bvxor(bvxor(bvxor(bvxor((SYM_ID12, Mem:bf8e09bc),(SYM_ID14, Mem:80f11a0)),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID23, Mem:80eefad)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID35, Mem:80eefae))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID47, Mem:80eefaf))))),0x10))),(SYM_ID71, Mem:bf8e09c0)),(SYM_ID79, Mem:bf8e09c4))
+After simlify
+Formula index: 6 Length: 37 Input Number: 8
+Formula: bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID59, Mem:80eefac))))),0x18),bvxor(bvxor(bvxor(bvxor((SYM_ID12, Mem:bf8e09bc),(SYM_ID14, Mem:80f11a0)),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID23, Mem:80eefad)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID35, Mem:80eefae))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID47, Mem:80eefaf))))),0x10))),(SYM_ID71, Mem:bf8e09c0)),(SYM_ID79, Mem:bf8e09c4))
+
+Formula index: 7 Length: 39 Input Number: 9
+Formula: bvxor(bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID59, Mem:80eefac))))),0x18),bvxor(bvxor(bvxor(bvxor((SYM_ID12, Mem:bf8e09bc),(SYM_ID14, Mem:80f11a0)),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID23, Mem:80eefad)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID35, Mem:80eefae))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID47, Mem:80eefaf))))),0x10))),(SYM_ID71, Mem:bf8e09c0)),(SYM_ID79, Mem:bf8e09c4)),(SYM_ID87, Mem:bf8e09c8))
+After simlify
+Formula index: 7 Length: 39 Input Number: 9
+Formula: bvxor(bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID59, Mem:80eefac))))),0x18),bvxor(bvxor(bvxor(bvxor((SYM_ID12, Mem:bf8e09bc),(SYM_ID14, Mem:80f11a0)),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID23, Mem:80eefad)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID35, Mem:80eefae))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID47, Mem:80eefaf))))),0x10))),(SYM_ID71, Mem:bf8e09c0)),(SYM_ID79, Mem:bf8e09c4)),(SYM_ID87, Mem:bf8e09c8))
+
+Formula index: 8 Length: 31 Input Number: 5
+Formula: bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10)))
+After simlify
+Formula index: 8 Length: 31 Input Number: 5
+Formula: bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10)))
+
+Formula index: 9 Length: 33 Input Number: 6
+Formula: bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10))),(SYM_ID150, Mem:bf8e09d0))
+After simlify
+Formula index: 9 Length: 33 Input Number: 6
+Formula: bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10))),(SYM_ID150, Mem:bf8e09d0))
+
+Formula index: 10 Length: 35 Input Number: 7
+Formula: bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10))),(SYM_ID150, Mem:bf8e09d0)),(SYM_ID158, Mem:bf8e09d4))
+After simlify
+Formula index: 10 Length: 35 Input Number: 7
+Formula: bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10))),(SYM_ID150, Mem:bf8e09d0)),(SYM_ID158, Mem:bf8e09d4))
+
+Formula index: 11 Length: 37 Input Number: 8
+Formula: bvxor(bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10))),(SYM_ID150, Mem:bf8e09d0)),(SYM_ID158, Mem:bf8e09d4)),(SYM_ID18, Mem:bf8e09d8))
+After simlify
+Formula index: 11 Length: 37 Input Number: 8
+Formula: bvxor(bvxor(bvxor(bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID138, Mem:80ef09e))))),0x18),bvxor(bvxor(bvxor((SYM_ID95, Mem:bf8e09cc),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID100, Mem:80ef076)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID112, Mem:80ef04b))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID126, Mem:80ef016))))),0x10))),(SYM_ID150, Mem:bf8e09d0)),(SYM_ID158, Mem:bf8e09d4)),(SYM_ID18, Mem:bf8e09d8))
+

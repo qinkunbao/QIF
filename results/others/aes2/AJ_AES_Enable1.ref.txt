@@ -1,5 +1,61 @@
-size: 4
-Formula index: 0 Length: 39 Formula: xor(xor(xor(xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10)))))),SYM_ID68),SYM_ID76),SYM_ID15)
-Formula index: 1 Length: 33 Formula: xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10))))))
-Formula index: 2 Length: 35 Formula: xor(xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10)))))),SYM_ID68)
-Formula index: 3 Length: 37 Formula: xor(xor(xor(SYM_ID62,xor(SYM_ID12,or(shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x18)),or(or(and(and(SYM_ID22,Con(0xff)),Con(0xff)),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID22,Con(0xff)),Con(0xff)),Con(0x10)))))),SYM_ID68),SYM_ID76)
+size: 10
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bff1d81c),0x1c)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bff1d81c),0x1c)
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bff1d81c),0x10)
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bff1d81c),0x10)
+
+Formula index: 2 Length: 39 Input Number: 6
+Formula: bvxor(bvxor(bvxor(bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10))))),(SYM_ID68, Mem:804b064)),(SYM_ID76, Mem:804b068)),(SYM_ID15, Mem:804b06c))
+After simlify
+Formula index: 2 Length: 39 Input Number: 6
+Formula: bvxor(bvxor(bvxor(bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10))))),(SYM_ID68, Mem:804b064)),(SYM_ID76, Mem:804b068)),(SYM_ID15, Mem:804b06c))
+
+Formula index: 3 Length: 33 Input Number: 3
+Formula: bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10)))))
+After simlify
+Formula index: 3 Length: 33 Input Number: 3
+Formula: bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10)))))
+
+Formula index: 4 Length: 35 Input Number: 4
+Formula: bvxor(bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10))))),(SYM_ID68, Mem:804b064))
+After simlify
+Formula index: 4 Length: 35 Input Number: 4
+Formula: bvxor(bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10))))),(SYM_ID68, Mem:804b064))
+
+Formula index: 5 Length: 37 Input Number: 5
+Formula: bvxor(bvxor(bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10))))),(SYM_ID68, Mem:804b064)),(SYM_ID76, Mem:804b068))
+After simlify
+Formula index: 5 Length: 37 Input Number: 5
+Formula: bvxor(bvxor(bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10))))),(SYM_ID68, Mem:804b064)),(SYM_ID76, Mem:804b068))
+
+Formula index: 6 Length: 39 Input Number: 6
+Formula: bvxor(bvxor(bvxor(bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10))))),(SYM_ID68, Mem:804b064)),(SYM_ID76, Mem:804b068)),(SYM_ID15, Mem:804b06c))
+After simlify
+Formula index: 6 Length: 39 Input Number: 6
+Formula: bvxor(bvxor(bvxor(bvxor((SYM_ID62, Mem:8049640),bvxor((SYM_ID12, Mem:804b060),bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x18),bvor(bvor(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID22, Mem:8049141))))),0x10))))),(SYM_ID68, Mem:804b064)),(SYM_ID76, Mem:804b068)),(SYM_ID15, Mem:804b06c))
+
+Formula index: 7 Length: 3 Input Number: 1
+Formula: bvror((SYM_ID15, Mem:804b06c),0x8)
+After simlify
+Formula index: 7 Length: 3 Input Number: 1
+Formula: bvror((SYM_ID15, Mem:804b06c),0x8)
+
+Formula index: 8 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID61, Mem:bff1d818),0x1)
+After simlify
+Formula index: 8 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID61, Mem:bff1d818),0x1)
+
+Formula index: 9 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bff1d81c),0x10)
+After simlify
+Formula index: 9 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:bff1d81c),0x10)
+

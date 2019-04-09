@@ -42,16 +42,17 @@ void static getctx(ADDRINT addr, CONTEXT *fromctx, ADDRINT memaddr)
     if(start_trace == false)
         return;
 
-    fprintf(ref, "%x;%s;%x,%x,%x,%x,%x,%x,%x,%x,%x,\n", addr, opcmap[addr].c_str(),
-        PIN_GetContextReg(fromctx, REG_EAX),
-        PIN_GetContextReg(fromctx, REG_EBX),
-        PIN_GetContextReg(fromctx, REG_ECX),
-        PIN_GetContextReg(fromctx, REG_EDX),
-        PIN_GetContextReg(fromctx, REG_ESI),
-        PIN_GetContextReg(fromctx, REG_EDI),
-        PIN_GetContextReg(fromctx, REG_ESP),
-        PIN_GetContextReg(fromctx, REG_EBP),
-        memaddr);
+    fprintf(fp, "%x;%s;%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,\n", addr, opcmap[addr].c_str(),
+            PIN_GetContextReg(fromctx, REG_EAX),
+            PIN_GetContextReg(fromctx, REG_EBX),
+            PIN_GetContextReg(fromctx, REG_ECX),
+            PIN_GetContextReg(fromctx, REG_EDX),
+            PIN_GetContextReg(fromctx, REG_ESI),
+            PIN_GetContextReg(fromctx, REG_EDI),
+            PIN_GetContextReg(fromctx, REG_ESP),
+            PIN_GetContextReg(fromctx, REG_EBP),
+            memaddr,
+            PIN_GetContextReg(fromctx, REG_EFLAGS));
 }
 
 

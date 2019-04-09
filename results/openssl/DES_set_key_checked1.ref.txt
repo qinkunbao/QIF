@@ -1,1 +1,13 @@
-size: 0
+size: 2
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID1, eax),0x1)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID1, eax),0x1)
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvzeroext(bvextract((SYM_ID9, Mem:bfb7fe44)))
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvzeroext(bvextract((SYM_ID9, Mem:bfb7fe44)))
+

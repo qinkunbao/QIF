@@ -1,3 +1,19 @@
-size: 2
-Formula index: 0 Length: 21 Formula: or(or(shl(and(and(SYM_ID17,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID9,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID27,Con(0xff)),Con(0xff)),Con(0x10)))
-Formula index: 1 Length: 29 Formula: or(shl(and(and(SYM_ID37,Con(0xff)),Con(0xff)),Con(0x18)),or(or(shl(and(and(SYM_ID17,Con(0xff)),Con(0xff)),Con(0x8)),and(and(SYM_ID9,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID27,Con(0xff)),Con(0xff)),Con(0x10))))
+size: 3
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID14, Mem:ffc9fb28),0x4)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID14, Mem:ffc9fb28),0x4)
+
+Formula index: 1 Length: 21 Input Number: 3
+Formula: bvor(bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID17, Mem:ffc9fc5d))))),0x8),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID9, Mem:ffc9fc5c)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID27, Mem:ffc9fc5e))))),0x10))
+After simlify
+Formula index: 1 Length: 21 Input Number: 3
+Formula: bvor(bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID17, Mem:ffc9fc5d))))),0x8),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID9, Mem:ffc9fc5c)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID27, Mem:ffc9fc5e))))),0x10))
+
+Formula index: 2 Length: 29 Input Number: 4
+Formula: bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID37, Mem:ffc9fc5f))))),0x18),bvor(bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID17, Mem:ffc9fc5d))))),0x8),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID9, Mem:ffc9fc5c)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID27, Mem:ffc9fc5e))))),0x10)))
+After simlify
+Formula index: 2 Length: 29 Input Number: 4
+Formula: bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID37, Mem:ffc9fc5f))))),0x18),bvor(bvor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID17, Mem:ffc9fc5d))))),0x8),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID9, Mem:ffc9fc5c)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID27, Mem:ffc9fc5e))))),0x10)))
+

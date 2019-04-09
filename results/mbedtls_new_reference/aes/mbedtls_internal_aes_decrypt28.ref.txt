@@ -1,3 +1,19 @@
-size: 2
-Formula index: 0 Length: 23 Formula: xor(xor(xor(SYM_ID12,and(and(SYM_ID16,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID26,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID39,Con(0xff)),Con(0xff)),Con(0x10)))
-Formula index: 1 Length: 31 Formula: xor(shl(and(and(SYM_ID50,Con(0xff)),Con(0xff)),Con(0x18)),xor(xor(xor(SYM_ID12,and(and(SYM_ID16,Con(0xff)),Con(0xff))),shl(and(and(SYM_ID26,Con(0xff)),Con(0xff)),Con(0x8))),shl(and(and(SYM_ID39,Con(0xff)),Con(0xff)),Con(0x10))))
+size: 3
+Formula index: 0 Length: 23 Input Number: 4
+Formula: bvxor(bvxor(bvxor((SYM_ID12, Mem:ffacc77c),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID16, Mem:f55f296f)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID26, Mem:f55f29f0))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID39, Mem:f55f2936))))),0x10))
+After simlify
+Formula index: 0 Length: 23 Input Number: 4
+Formula: bvxor(bvxor(bvxor((SYM_ID12, Mem:ffacc77c),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID16, Mem:f55f296f)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID26, Mem:f55f29f0))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID39, Mem:f55f2936))))),0x10))
+
+Formula index: 1 Length: 31 Input Number: 5
+Formula: bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID50, Mem:f55f2996))))),0x18),bvxor(bvxor(bvxor((SYM_ID12, Mem:ffacc77c),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID16, Mem:f55f296f)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID26, Mem:f55f29f0))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID39, Mem:f55f2936))))),0x10)))
+After simlify
+Formula index: 1 Length: 31 Input Number: 5
+Formula: bvxor(bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID50, Mem:f55f2996))))),0x18),bvxor(bvxor(bvxor((SYM_ID12, Mem:ffacc77c),bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID16, Mem:f55f296f)))))),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID26, Mem:f55f29f0))))),0x8)),bvshl(bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID39, Mem:f55f2936))))),0x10)))
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:ffacc604),0x4)
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID9, Mem:ffacc604),0x4)
+

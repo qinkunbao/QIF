@@ -1,1 +1,19 @@
-size: 0
+size: 3
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID17, Mem:b57d3340),0x1)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID17, Mem:b57d3340),0x1)
+
+Formula index: 1 Length: 9 Input Number: 1
+Formula: bvconcat(bvextract((SYM_ID21, Mem:b7fae6d0)),bvextract(bvand(bvzeroext(bvextract((SYM_ID21, Mem:b7fae6d0))),0xfffffff7)))
+After simlify
+Formula index: 1 Length: 9 Input Number: 1
+Formula: bvconcat(bvextract((SYM_ID21, Mem:b7fae6d0)),bvextract(bvand(bvzeroext(bvextract((SYM_ID21, Mem:b7fae6d0))),0xfffffff7)))
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID14, Mem:bfd2bebc),0x1)
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID14, Mem:bfd2bebc),0x1)
+

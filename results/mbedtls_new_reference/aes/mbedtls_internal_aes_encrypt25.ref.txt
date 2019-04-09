@@ -1,1 +1,19 @@
-size: 0
+size: 3
+Formula index: 0 Length: 5 Input Number: 3
+Formula: bvxor(bvxor((SYM_ID24, Mem:ffaa52f4),(SYM_ID28, Mem:f5615a48)),(SYM_ID34, Mem:f5615f10))
+After simlify
+Formula index: 0 Length: 5 Input Number: 3
+Formula: bvxor(bvxor((SYM_ID24, Mem:ffaa52f4),(SYM_ID28, Mem:f5615a48)),(SYM_ID34, Mem:f5615f10))
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID21, Mem:ffaa5194),0x4)
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID21, Mem:ffaa5194),0x4)
+
+Formula index: 2 Length: 5 Input Number: 3
+Formula: bvxor((SYM_ID19, Mem:f5616510),bvxor((SYM_ID3, ecx),(SYM_ID14, Mem:f5616394)))
+After simlify
+Formula index: 2 Length: 5 Input Number: 3
+Formula: bvxor((SYM_ID19, Mem:f5616510),bvxor((SYM_ID3, ecx),(SYM_ID14, Mem:f5616394)))
+

@@ -1,119 +1,237 @@
 Index: 1 Unsupported Instruction: pshufw mmx1, mmx0, 0xc
+b55009f0   pshufw mmx1, mmx0, 0xc 
 Index: 2 Unsupported Instruction: pshufw mmx5, mmx4, 0x9
+b55009f4   pshufw mmx5, mmx4, 0x9 
 Index: 3 Unsupported Instruction: movd eax, mmx1
+b55009f8   movd eax, mmx1 
 Index: 4 Unsupported Instruction: movd ebx, mmx5
+b55009fb   movd ebx, mmx5 
 Index: 8 Unsupported Instruction: pshufw mmx2, mmx0, 0x6
+b5500a08   pshufw mmx2, mmx0, 0x6 
 Index: 17 Unsupported Instruction: pshufw mmx6, mmx4, 0x3
+b5500a2a   pshufw mmx6, mmx4, 0x3 
 Index: 31 Unsupported Instruction: movd eax, mmx2
+b5500a58   movd eax, mmx2 
 Index: 36 Unsupported Instruction: movd ebx, mmx6
+b5500a68   movd ebx, mmx6 
 Index: 37 Unsupported Instruction: movd mmx0, ecx
+b5500a6b   movd mmx0, ecx 
 Index: 53 Unsupported Instruction: movd mmx1, edx
+b5500aa0   movd mmx1, edx 
 Index: 59 Unsupported Instruction: punpckldq mmx0, mmx1
+b5500ab6   punpckldq mmx0, mmx1 
 Index: 74 Unsupported Instruction: movd mmx4, edx
+b5500ae8   movd mmx4, edx 
 Index: 75 Unsupported Instruction: movd mmx5, ecx
+b5500aeb   movd mmx5, ecx 
 Index: 76 Unsupported Instruction: punpckldq mmx4, mmx5
+b5500aee   punpckldq mmx4, mmx5 
 Index: 80 Unsupported Instruction: movq mmx3, mmx0
+b5500afe   movq mmx3, mmx0 
 Index: 81 Unsupported Instruction: movq mmx7, mmx4
+b5500b01   movq mmx7, mmx4 
 Index: 82 Unsupported Instruction: pshufw mmx2, mmx0, 0xe4
+b5500b04   pshufw mmx2, mmx0, 0xe4 
 Index: 83 Unsupported Instruction: pshufw mmx6, mmx4, 0xe4
+b5500b08   pshufw mmx6, mmx4, 0xe4 
 Index: 84 Unsupported Instruction: movq mmx1, mmx0
+b5500b0c   movq mmx1, mmx0 
 Index: 85 Unsupported Instruction: movq mmx5, mmx4
+b5500b0f   movq mmx5, mmx4 
 Index: 86 Unsupported Instruction: pshufw mmx0, mmx0, 0xb1
+b5500b12   pshufw mmx0, mmx0, 0xb1 
 Index: 87 Unsupported Instruction: pshufw mmx4, mmx4, 0xb1
+b5500b16   pshufw mmx4, mmx4, 0xb1 
 Index: 88 Unsupported Instruction: pslld mmx2, 0x8
+b5500b1a   pslld mmx2, 0x8 
 Index: 89 Unsupported Instruction: pslld mmx6, 0x8
+b5500b1e   pslld mmx6, 0x8 
 Index: 90 Unsupported Instruction: psrld mmx3, 0x8
+b5500b22   psrld mmx3, 0x8 
 Index: 91 Unsupported Instruction: psrld mmx7, 0x8
+b5500b26   psrld mmx7, 0x8 
 Index: 92 Unsupported Instruction: pxor mmx0, mmx2
+b5500b2a   pxor mmx0, mmx2 
 Index: 93 Unsupported Instruction: pxor mmx4, mmx6
+b5500b2d   pxor mmx4, mmx6 
 Index: 94 Unsupported Instruction: pxor mmx0, mmx3
+b5500b30   pxor mmx0, mmx3 
 Index: 95 Unsupported Instruction: pxor mmx4, mmx7
+b5500b33   pxor mmx4, mmx7 
 Index: 96 Unsupported Instruction: pslld mmx2, 0x10
+b5500b36   pslld mmx2, 0x10 
 Index: 97 Unsupported Instruction: pslld mmx6, 0x10
+b5500b3a   pslld mmx6, 0x10 
 Index: 98 Unsupported Instruction: psrld mmx3, 0x10
+b5500b3e   psrld mmx3, 0x10 
 Index: 99 Unsupported Instruction: psrld mmx7, 0x10
+b5500b42   psrld mmx7, 0x10 
 Index: 100 Unsupported Instruction: pxor mmx0, mmx2
+b5500b46   pxor mmx0, mmx2 
 Index: 101 Unsupported Instruction: pxor mmx4, mmx6
+b5500b49   pxor mmx4, mmx6 
 Index: 102 Unsupported Instruction: pxor mmx0, mmx3
+b5500b4c   pxor mmx0, mmx3 
 Index: 103 Unsupported Instruction: pxor mmx4, mmx7
+b5500b4f   pxor mmx4, mmx7 
 Index: 104 Unsupported Instruction: movq mmx3, qword ptr [esp+0x8]
+b5500b52   movq mmx3, qword ptr [esp+0x8] 
 Index: 105 Unsupported Instruction: pxor mmx2, mmx2
+b5500b57   pxor mmx2, mmx2 
 Index: 106 Unsupported Instruction: pxor mmx6, mmx6
+b5500b5a   pxor mmx6, mmx6 
 Index: 107 Unsupported Instruction: pcmpgtb mmx2, mmx1
+b5500b5d   pcmpgtb mmx2, mmx1 
 Index: 108 Unsupported Instruction: pcmpgtb mmx6, mmx5
+b5500b60   pcmpgtb mmx6, mmx5 
 Index: 109 Unsupported Instruction: pand mmx2, mmx3
+b5500b63   pand mmx2, mmx3 
 Index: 110 Unsupported Instruction: pand mmx6, mmx3
+b5500b66   pand mmx6, mmx3 
 Index: 111 Unsupported Instruction: paddb mmx1, mmx1
+b5500b69   paddb mmx1, mmx1 
 Index: 112 Unsupported Instruction: paddb mmx5, mmx5
+b5500b6c   paddb mmx5, mmx5 
 Index: 113 Unsupported Instruction: pxor mmx1, mmx2
+b5500b6f   pxor mmx1, mmx2 
 Index: 114 Unsupported Instruction: pxor mmx5, mmx6
+b5500b72   pxor mmx5, mmx6 
 Index: 115 Unsupported Instruction: movq mmx3, mmx1
+b5500b75   movq mmx3, mmx1 
 Index: 116 Unsupported Instruction: movq mmx7, mmx5
+b5500b78   movq mmx7, mmx5 
 Index: 117 Unsupported Instruction: movq mmx2, mmx1
+b5500b7b   movq mmx2, mmx1 
 Index: 118 Unsupported Instruction: movq mmx6, mmx5
+b5500b7e   movq mmx6, mmx5 
 Index: 119 Unsupported Instruction: pxor mmx0, mmx1
+b5500b81   pxor mmx0, mmx1 
 Index: 120 Unsupported Instruction: pxor mmx4, mmx5
+b5500b84   pxor mmx4, mmx5 
 Index: 121 Unsupported Instruction: pslld mmx3, 0x18
+b5500b87   pslld mmx3, 0x18 
 Index: 122 Unsupported Instruction: pslld mmx7, 0x18
+b5500b8b   pslld mmx7, 0x18 
 Index: 123 Unsupported Instruction: psrld mmx2, 0x8
+b5500b8f   psrld mmx2, 0x8 
 Index: 124 Unsupported Instruction: psrld mmx6, 0x8
+b5500b93   psrld mmx6, 0x8 
 Index: 125 Unsupported Instruction: pxor mmx0, mmx3
+b5500b97   pxor mmx0, mmx3 
 Index: 126 Unsupported Instruction: pxor mmx4, mmx7
+b5500b9a   pxor mmx4, mmx7 
 Index: 127 Unsupported Instruction: pxor mmx0, mmx2
+b5500b9d   pxor mmx0, mmx2 
 Index: 128 Unsupported Instruction: pxor mmx4, mmx6
+b5500ba0   pxor mmx4, mmx6 
 Index: 129 Unsupported Instruction: movq mmx2, qword ptr [esp+0x8]
+b5500ba3   movq mmx2, qword ptr [esp+0x8] 
 Index: 130 Unsupported Instruction: pxor mmx3, mmx3
+b5500ba8   pxor mmx3, mmx3 
 Index: 131 Unsupported Instruction: pxor mmx7, mmx7
+b5500bab   pxor mmx7, mmx7 
 Index: 132 Unsupported Instruction: pcmpgtb mmx3, mmx1
+b5500bae   pcmpgtb mmx3, mmx1 
 Index: 133 Unsupported Instruction: pcmpgtb mmx7, mmx5
+b5500bb1   pcmpgtb mmx7, mmx5 
 Index: 134 Unsupported Instruction: pand mmx3, mmx2
+b5500bb4   pand mmx3, mmx2 
 Index: 135 Unsupported Instruction: pand mmx7, mmx2
+b5500bb7   pand mmx7, mmx2 
 Index: 136 Unsupported Instruction: paddb mmx1, mmx1
+b5500bba   paddb mmx1, mmx1 
 Index: 137 Unsupported Instruction: paddb mmx5, mmx5
+b5500bbd   paddb mmx5, mmx5 
 Index: 138 Unsupported Instruction: pxor mmx1, mmx3
+b5500bc0   pxor mmx1, mmx3 
 Index: 139 Unsupported Instruction: pxor mmx5, mmx7
+b5500bc3   pxor mmx5, mmx7 
 Index: 140 Unsupported Instruction: pshufw mmx3, mmx1, 0xb1
+b5500bc6   pshufw mmx3, mmx1, 0xb1 
 Index: 141 Unsupported Instruction: pshufw mmx7, mmx5, 0xb1
+b5500bca   pshufw mmx7, mmx5, 0xb1 
 Index: 142 Unsupported Instruction: pxor mmx0, mmx1
+b5500bce   pxor mmx0, mmx1 
 Index: 143 Unsupported Instruction: pxor mmx4, mmx5
+b5500bd1   pxor mmx4, mmx5 
 Index: 144 Unsupported Instruction: pxor mmx0, mmx3
+b5500bd4   pxor mmx0, mmx3 
 Index: 145 Unsupported Instruction: pxor mmx4, mmx7
+b5500bd7   pxor mmx4, mmx7 
 Index: 146 Unsupported Instruction: pxor mmx3, mmx3
+b5500bda   pxor mmx3, mmx3 
 Index: 147 Unsupported Instruction: pxor mmx7, mmx7
+b5500bdd   pxor mmx7, mmx7 
 Index: 148 Unsupported Instruction: pcmpgtb mmx3, mmx1
+b5500be0   pcmpgtb mmx3, mmx1 
 Index: 149 Unsupported Instruction: pcmpgtb mmx7, mmx5
+b5500be3   pcmpgtb mmx7, mmx5 
 Index: 150 Unsupported Instruction: pand mmx3, mmx2
+b5500be6   pand mmx3, mmx2 
 Index: 151 Unsupported Instruction: pand mmx7, mmx2
+b5500be9   pand mmx7, mmx2 
 Index: 152 Unsupported Instruction: paddb mmx1, mmx1
+b5500bec   paddb mmx1, mmx1 
 Index: 153 Unsupported Instruction: paddb mmx5, mmx5
+b5500bef   paddb mmx5, mmx5 
 Index: 154 Unsupported Instruction: pxor mmx1, mmx3
+b5500bf2   pxor mmx1, mmx3 
 Index: 155 Unsupported Instruction: pxor mmx5, mmx7
+b5500bf5   pxor mmx5, mmx7 
 Index: 156 Unsupported Instruction: pxor mmx0, mmx1
+b5500bf8   pxor mmx0, mmx1 
 Index: 157 Unsupported Instruction: pxor mmx4, mmx5
+b5500bfb   pxor mmx4, mmx5 
 Index: 158 Unsupported Instruction: movq mmx3, mmx1
+b5500bfe   movq mmx3, mmx1 
 Index: 159 Unsupported Instruction: movq mmx7, mmx5
+b5500c01   movq mmx7, mmx5 
 Index: 160 Unsupported Instruction: pshufw mmx2, mmx1, 0xb1
+b5500c04   pshufw mmx2, mmx1, 0xb1 
 Index: 161 Unsupported Instruction: pshufw mmx6, mmx5, 0xb1
+b5500c08   pshufw mmx6, mmx5, 0xb1 
 Index: 162 Unsupported Instruction: pxor mmx0, mmx2
+b5500c0c   pxor mmx0, mmx2 
 Index: 163 Unsupported Instruction: pxor mmx4, mmx6
+b5500c0f   pxor mmx4, mmx6 
 Index: 164 Unsupported Instruction: pslld mmx1, 0x8
+b5500c12   pslld mmx1, 0x8 
 Index: 165 Unsupported Instruction: pslld mmx5, 0x8
+b5500c16   pslld mmx5, 0x8 
 Index: 166 Unsupported Instruction: psrld mmx3, 0x8
+b5500c1a   psrld mmx3, 0x8 
 Index: 167 Unsupported Instruction: psrld mmx7, 0x8
+b5500c1e   psrld mmx7, 0x8 
 Index: 168 Unsupported Instruction: movq mmx2, qword ptr [edi]
+b5500c22   movq mmx2, qword ptr [edi] 
 Index: 169 Unsupported Instruction: movq mmx6, qword ptr [edi+0x8]
+b5500c25   movq mmx6, qword ptr [edi+0x8] 
 Index: 170 Unsupported Instruction: pxor mmx0, mmx1
+b5500c29   pxor mmx0, mmx1 
 Index: 171 Unsupported Instruction: pxor mmx4, mmx5
+b5500c2c   pxor mmx4, mmx5 
 Index: 172 Unsupported Instruction: pxor mmx0, mmx3
+b5500c2f   pxor mmx0, mmx3 
 Index: 173 Unsupported Instruction: pxor mmx4, mmx7
+b5500c32   pxor mmx4, mmx7 
 Index: 175 Unsupported Instruction: pslld mmx1, 0x10
+b5500c38   pslld mmx1, 0x10 
 Index: 176 Unsupported Instruction: pslld mmx5, 0x10
+b5500c3c   pslld mmx5, 0x10 
 Index: 178 Unsupported Instruction: psrld mmx3, 0x10
+b5500c43   psrld mmx3, 0x10 
 Index: 179 Unsupported Instruction: psrld mmx7, 0x10
+b5500c47   psrld mmx7, 0x10 
 Index: 181 Unsupported Instruction: pxor mmx0, mmx1
+b5500c4e   pxor mmx0, mmx1 
 Index: 182 Unsupported Instruction: pxor mmx4, mmx5
+b5500c51   pxor mmx4, mmx5 
 Index: 184 Unsupported Instruction: pxor mmx0, mmx3
+b5500c57   pxor mmx0, mmx3 
 Index: 185 Unsupported Instruction: pxor mmx4, mmx7
+b5500c5a   pxor mmx4, mmx7 
 Index: 186 Unsupported Instruction: pxor mmx0, mmx2
+b5500c5d   pxor mmx0, mmx2 
 Index: 187 Unsupported Instruction: pxor mmx4, mmx6
+b5500c60   pxor mmx4, mmx6 
 size: 0

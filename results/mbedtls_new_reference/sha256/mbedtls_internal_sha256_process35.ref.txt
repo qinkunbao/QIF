@@ -1,1 +1,31 @@
-size: 0
+size: 5
+Formula index: 0 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID16, Mem:ffd2e80c),(SYM_ID17, Mem:ffd2e610))
+After simlify
+Formula index: 0 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID16, Mem:ffd2e80c),(SYM_ID17, Mem:ffd2e610))
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID10, Mem:ffd2e600),0x1)
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID10, Mem:ffd2e600),0x1)
+
+Formula index: 2 Length: 5 Input Number: 1
+Formula: bvadd(bvadd((SYM_ID10, Mem:ffd2e600),0x1),0x1)
+After simlify
+Formula index: 2 Length: 5 Input Number: 1
+Formula: bvadd(bvadd((SYM_ID10, Mem:ffd2e600),0x1),0x1)
+
+Formula index: 3 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID11, Mem:ffd2e808),(SYM_ID12, Mem:ffd2e60c))
+After simlify
+Formula index: 3 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID11, Mem:ffd2e808),(SYM_ID12, Mem:ffd2e60c))
+
+Formula index: 4 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID16, Mem:ffd2e80c),(SYM_ID17, Mem:ffd2e610))
+After simlify
+Formula index: 4 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID16, Mem:ffd2e80c),(SYM_ID17, Mem:ffd2e610))
+

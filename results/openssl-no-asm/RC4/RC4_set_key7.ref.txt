@@ -1,1 +1,19 @@
-size: 0
+size: 3
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID14, Mem:bfd2be10),0x1)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID14, Mem:bfd2be10),0x1)
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID9, Mem:bfd2be0c),0x4)
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID9, Mem:bfd2be0c),0x4)
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID14, Mem:bfd2be10),0x1)
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID14, Mem:bfd2be10),0x1)
+

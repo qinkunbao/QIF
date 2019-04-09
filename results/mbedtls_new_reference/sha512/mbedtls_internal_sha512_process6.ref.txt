@@ -1,2 +1,37 @@
-size: 1
-Formula index: 0 Length: 6 Formula: or(shld(SYM_ID5,SYM_ID1,Con(0x18)),SYM_ID14)
+size: 6
+Formula index: 0 Length: 5 Input Number: 1
+Formula: bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID24, Mem:ffdafea5)))))
+After simlify
+Formula index: 0 Length: 5 Input Number: 1
+Formula: bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID24, Mem:ffdafea5)))))
+
+Formula index: 1 Length: 5 Input Number: 1
+Formula: bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID24, Mem:ffdafea5)))))
+After simlify
+Formula index: 1 Length: 5 Input Number: 1
+Formula: bvzeroext(bvextract(bvzeroext(bvextract((SYM_ID24, Mem:ffdafea5)))))
+
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvzeroext(bvextract((SYM_ID24, Mem:ffdafea5)))
+After simlify
+Formula index: 2 Length: 3 Input Number: 1
+Formula: bvzeroext(bvextract((SYM_ID24, Mem:ffdafea5)))
+
+Formula index: 3 Length: 5 Input Number: 1
+Formula: bvadd(bvshl((SYM_ID17, Mem:ffdafa64),0x3),0x5)
+After simlify
+Formula index: 3 Length: 5 Input Number: 1
+Formula: bvadd(bvshl((SYM_ID17, Mem:ffdafa64),0x3),0x5)
+
+Formula index: 4 Length: 5 Input Number: 2
+Formula: bvor((SYM_ID13, Mem:ffdafa40),bvshl((SYM_ID1, eax),0x18))
+After simlify
+Formula index: 4 Length: 5 Input Number: 2
+Formula: bvor((SYM_ID13, Mem:ffdafa40),bvshl((SYM_ID1, eax),0x18))
+
+Formula index: 5 Length: 6 Input Number: 3
+Formula: bvor(bvshld((SYM_ID5, esi),(SYM_ID1, eax),0x18),(SYM_ID14, Mem:ffdafa44))
+After simlify
+Formula index: 5 Length: 6 Input Number: 3
+Formula: bvor(bvshld((SYM_ID5, esi),(SYM_ID1, eax),0x18),(SYM_ID14, Mem:ffdafa44))
+

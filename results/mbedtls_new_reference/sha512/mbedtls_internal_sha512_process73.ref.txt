@@ -1,1 +1,31 @@
-size: 0
+size: 5
+Formula index: 0 Length: 3 Input Number: 2
+Formula: bvadc((SYM_ID16, Mem:ffdafa84),(SYM_ID14, Mem:ffdafe64))
+After simlify
+Formula index: 0 Length: 3 Input Number: 2
+Formula: bvadc((SYM_ID16, Mem:ffdafa84),(SYM_ID14, Mem:ffdafe64))
+
+Formula index: 1 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID1, eax),(SYM_ID3, ecx))
+After simlify
+Formula index: 1 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID1, eax),(SYM_ID3, ecx))
+
+Formula index: 2 Length: 3 Input Number: 2
+Formula: bvadc((SYM_ID9, Mem:ffdafa7c),(SYM_ID2, ebx))
+After simlify
+Formula index: 2 Length: 3 Input Number: 2
+Formula: bvadc((SYM_ID9, Mem:ffdafa7c),(SYM_ID2, ebx))
+
+Formula index: 3 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID15, Mem:ffdafa80),(SYM_ID13, Mem:ffdafe60))
+After simlify
+Formula index: 3 Length: 3 Input Number: 2
+Formula: bvadd((SYM_ID15, Mem:ffdafa80),(SYM_ID13, Mem:ffdafe60))
+
+Formula index: 4 Length: 3 Input Number: 2
+Formula: bvadc((SYM_ID16, Mem:ffdafa84),(SYM_ID14, Mem:ffdafe64))
+After simlify
+Formula index: 4 Length: 3 Input Number: 2
+Formula: bvadc((SYM_ID16, Mem:ffdafa84),(SYM_ID14, Mem:ffdafe64))
+

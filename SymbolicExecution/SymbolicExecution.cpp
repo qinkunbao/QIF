@@ -49,16 +49,25 @@ int printFormulas(char* filename)
 	se->run();
 
 	std::vector<std::shared_ptr<BitVector>> output_se = se->getAllOutput();
-	output_se = se->reduceValues(output_se);
+	//output_se = se->reduceValues(output_se);
 	std::cout << "size: " << output_se.size() << std::endl;
 	// Print all formulas in output_se
 	stringstream ss;
 	uint32_t length = 0;
 	for(size_t i = 0; i < output_se.size(); i++) {
-		varmap::printV(output_se[i], ss, length);
-		cout << "Formula index: " << i << " Length: " << length << " Formula: " << ss.str() << "\n";
+		length = output_se[i]->printV(ss);
+		cout << "Formula index: " << i << " Length: " << length <<  " Input Number: "<< (output_se[i])->symbol_num()\
+		     <<  "\nFormula: " << ss.str() << "\n";
 		ss.str("");
-		length = 0;
+
+        (output_se[i]) = se->formula_simplfy(output_se[i]);
+
+        cout<< "After simlify\n";
+        length = output_se[i]->printV(ss);
+        cout << "Formula index: " << i << " Length: " << length <<  " Input Number: "<< (output_se[i])->symbol_num()\
+		     <<  "\nFormula: " << ss.str() << "\n";
+        ss.str("");
+        cout << "\n";
 	}
 	delete se;
 
@@ -153,11 +162,11 @@ int main(int argc, char **argv) {
 			result_file << "Reference Index: " << it->first << "\n";
 			result_file << "Target Index: " << it->second << "\n";
 
-			varmap::printV(output_se1[it->first], ss);
+            (output_se1[it->first])->printV(ss);
 			result_file << "Reference Formula: " << ss.str() << "\n";
 			ss.str("");
 
-			varmap::printV(output_se2[it->second], ss);
+            (output_se2[it->second])->printV(ss);
 			result_file << "Target Formula: " << ss.str() << "\n";
 			ss.str("");
 

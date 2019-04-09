@@ -1,1 +1,13 @@
-size: 0
+size: 2
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID3, ecx),0x4)
+After simlify
+Formula index: 0 Length: 3 Input Number: 1
+Formula: bvsub((SYM_ID3, ecx),0x4)
+
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID4, edx),0x4)
+After simlify
+Formula index: 1 Length: 3 Input Number: 1
+Formula: bvadd((SYM_ID4, edx),0x4)
+

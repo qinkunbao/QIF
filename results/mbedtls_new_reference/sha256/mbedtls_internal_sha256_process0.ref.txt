@@ -1,2 +1,13 @@
-size: 1
-Formula index: 0 Length: 7 Formula: add(add(add(SYM_ID10,Con(0x1)),Con(0x1)),Con(0x1))
+size: 2
+Formula index: 0 Length: 5 Input Number: 1
+Formula: bvadd(bvadd((SYM_ID10, Mem:ffd2e600),0x1),0x1)
+After simlify
+Formula index: 0 Length: 5 Input Number: 1
+Formula: bvadd(bvadd((SYM_ID10, Mem:ffd2e600),0x1),0x1)
+
+Formula index: 1 Length: 7 Input Number: 1
+Formula: bvadd(bvadd(bvadd((SYM_ID10, Mem:ffd2e600),0x1),0x1),0x1)
+After simlify
+Formula index: 1 Length: 7 Input Number: 1
+Formula: bvadd(bvadd(bvadd((SYM_ID10, Mem:ffd2e600),0x1),0x1),0x1)
+
