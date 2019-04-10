@@ -31,7 +31,7 @@ static void startRTN(char* rtn_name)
 static void endRTN(char* rtn_name)
 {
     fprintf(fp, "Leaving %s\n", rtn_name);
-    if(start_trace == true) {
+    if(start_trace) {
         output_count++;
     }
     start_trace = false;
@@ -39,7 +39,7 @@ static void endRTN(char* rtn_name)
 
 void static getctx(ADDRINT addr, CONTEXT *fromctx, ADDRINT memaddr)
 {
-    if(start_trace == false)
+    if(!start_trace)
         return;
 
     fprintf(fp, "%x;%s;%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,\n", addr, opcmap[addr].c_str(),

@@ -1,5 +1,9 @@
 # dynamic_bit_taint
 
+## Paper Draft
+Google Document: \
+https://docs.google.com/document/d/1c0Ahiz9vz4jomn_zgYAkRgElKiWANoOlg_HD-i66af4/edit?usp=sharing
+
 ## Prerequisites:
 - Ensure that you have one of the following systems  
     * Windows 10
