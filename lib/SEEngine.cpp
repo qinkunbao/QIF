@@ -390,8 +390,7 @@ namespace tana {
         for (auto inst = start; inst != end; ++inst)
         {
             auto it = inst->get();
-            if (x86::SymbolicExecutionNoEffect(it->instruction_id))
-                continue;
+
             bool status = it->symbolic_execution(*this);
 
             if (!status)

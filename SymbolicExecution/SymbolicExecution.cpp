@@ -55,14 +55,9 @@ int printFormulas(char* filename)
 	stringstream ss;
 	uint32_t length = 0;
 	for(size_t i = 0; i < output_se.size(); i++) {
-		length = output_se[i]->printV(ss);
-		cout << "Formula index: " << i << " Length: " << length <<  " Input Number: "<< (output_se[i])->symbol_num()\
-		     <<  "\nFormula: " << ss.str() << "\n";
-		ss.str("");
 
         (output_se[i]) = se->formula_simplfy(output_se[i]);
 
-        cout<< "After simlify\n";
         length = output_se[i]->printV(ss);
         cout << "Formula index: " << i << " Length: " << length <<  " Input Number: "<< (output_se[i])->symbol_num()\
 		     <<  "\nFormula: " << ss.str() << "\n";
