@@ -35,8 +35,8 @@ int main(int argc, char **argv) {
 
     std::vector<std::unique_ptr<Inst_Dyn>> inst_list;
 
-    t_type::T_ADDRESS m_addr;
-    t_type::T_SIZE  m_size;
+    tana_type::T_ADDRESS m_addr;
+    tana_type::T_SIZE  m_size;
 
     parse_trace(&infile, m_addr, m_size, inst_list);
     infile.close();

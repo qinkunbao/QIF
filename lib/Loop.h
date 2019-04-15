@@ -40,7 +40,7 @@ namespace tana {
 
         class InstructionMap {
         private:
-            std::unordered_map<t_type::index, std::vector<t_type::index>> instMap;
+            std::unordered_map<tana_type::index, std::vector<tana_type::index>> instMap;
 
         public:
 

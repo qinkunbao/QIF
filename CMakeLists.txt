@@ -42,7 +42,9 @@ add_library(TraceLib
         lib/Loop.cpp
         lib/Loop.h
         lib/Function.cpp
-        lib/Function.h)
+        lib/Function.h
+        lib/Blocks.cpp
+        lib/Blocks.h)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 
