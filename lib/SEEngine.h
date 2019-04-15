@@ -20,17 +20,17 @@ namespace tana {
         std::map<std::string, std::shared_ptr<BitVector>> ctx;
         std::vector<std::unique_ptr<Inst_Dyn>>::iterator start;
         std::vector<std::unique_ptr<Inst_Dyn>>::iterator end;
-        std::map<t_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
+        std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
         bool memory_find(uint32_t addr);
 
 
     public:
         explicit SEEngine(bool type);
 
-        std::shared_ptr<BitVector> ZeroExt(std::shared_ptr<BitVector> v, t_type::T_SIZE);
+        std::shared_ptr<BitVector> ZeroExt(std::shared_ptr<BitVector> v, tana_type::T_SIZE);
 
-        std::shared_ptr<BitVector> SignExt(std::shared_ptr<BitVector> v, t_type::T_SIZE orgin_size,
-                                           t_type::T_SIZE new_size);
+        std::shared_ptr<BitVector> SignExt(std::shared_ptr<BitVector> v, tana_type::T_SIZE orgin_size,
+                                           tana_type::T_SIZE new_size);
 
         std::shared_ptr<BitVector> Extract(std::shared_ptr<BitVector> v, int low, int high);
         std::shared_ptr<BitVector> Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2);
@@ -74,9 +74,9 @@ namespace tana {
 
         bool writeReg(std::string reg, std::shared_ptr<BitVector> v);
 
-        std::shared_ptr<BitVector> readMem(t_type::T_ADDRESS memory_address, t_type::T_SIZE size);
+        std::shared_ptr<BitVector> readMem(tana_type::T_ADDRESS memory_address, tana_type::T_SIZE size);
 
-        bool writeMem(t_type::T_ADDRESS memory_address, t_type::T_SIZE size, std::shared_ptr<BitVector> v);
+        bool writeMem(tana_type::T_ADDRESS memory_address, tana_type::T_SIZE size, std::shared_ptr<BitVector> v);
 
         std::shared_ptr<BitVector> formula_simplfy(std::shared_ptr<BitVector> v);
 

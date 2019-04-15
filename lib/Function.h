@@ -19,7 +19,7 @@ namespace tana {
 	public:
 		Function(std::ifstream *function_file);
 
-		std::string findTaintedRTN(tana::t_type::T_ADDRESS addr);
+		std::string findTaintedRTN(tana::tana_type::T_ADDRESS addr);
 
 		~Function();
 	};

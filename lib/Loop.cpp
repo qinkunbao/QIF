@@ -10,10 +10,10 @@
 namespace tana {
 
     namespace loop {
-        std::shared_ptr<std::map<std::string, t_type::index>> inst_enum(new std::map<std::string, t_type::index>);
+        std::shared_ptr<std::map<std::string, tana_type::index>> inst_enum(new std::map<std::string, tana_type::index>);
 
-        t_type::index
-        getOpcIndex(std::string& opc_name, std::shared_ptr<std::map<std::string, t_type::index>>& name_map) {
+        tana_type::index
+        getOpcIndex(std::string& opc_name, std::shared_ptr<std::map<std::string, tana_type::index>>& name_map) {
             auto it = name_map->find(opc_name);
             if (it != name_map->end())
                 return it->second;

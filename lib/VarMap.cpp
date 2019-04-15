@@ -13,7 +13,7 @@ namespace tana {
     }
 
 
-    varmap::BitValue::BitValue(std::shared_ptr<BitVector> v, t_type::index n) {
+    varmap::BitValue::BitValue(std::shared_ptr<BitVector> v, tana_type::index n) {
         symbol = v;
         bit_index = n;
     }

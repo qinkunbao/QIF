@@ -9,9 +9,44 @@
 using namespace tana;
 using namespace std;
 
+int printFormulas(char* filename)
+{
+    std::string file_name(filename);
+    std::string blocks_file_name = file_name.substr(0, file_name.size() - 4) + "_blocks.json";
+    stringstream ss;
+
+    std::ifstream infile1(file_name), infile2(blocks_file_name);
+
+    if (!infile1.is_open() || !infile2.is_open())
+    {
+        fprintf(stderr, "Open file error!, one of '%s' or '%s' failed to open\n", file_name.c_str(), blocks_file_name.c_str());
+        return 1;
+    }
+
+    std::vector<Block> block_list;
+    parse_static_trace(infile1, infile2, block_list);
+
+
+    for(auto const &b : block_list)
+    {
+        b.print();
+    }
+
+    return 0;
+}
+
+
 
 int main(int argc, char **argv)
 {
+
+    if(argc == 2)
+    {
+        printFormulas(argv[1]);
+
+        return 1;
+    }
+
     if(argc != 3)
     {
         std::cout << "Usage:" << std::endl;
@@ -23,29 +58,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    stringstream ss;
 
-    std::ifstream infile1(argv[1]), infile2(argv[2]);
-
-    if (!infile1.is_open() || !infile2.is_open())
-    {
-        fprintf(stderr, "Open file error!, one of '%s' or '%s' failed to open\n", argv[1], argv[2]);
-        return 1;
-    }
-
-    std::vector<std::vector<Inst_Static>> inst_list;
-    parse_static_trace(infile1, infile2, inst_list);
-
-
-    for(auto const &b : inst_list)
-    {
-        std::cout << "Block:  " << std::endl;
-        for(auto const &inst : b)
-        {
-            inst.print();
-        }
-
-    }
 
     return 0;
 }

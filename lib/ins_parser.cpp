@@ -325,8 +325,8 @@ namespace tana {
     }
 
 
-    bool parse_trace(std::ifstream *trace_file, t_type::T_ADDRESS &addr_taint, \
-                     t_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Dyn>> &L) {
+    bool parse_trace(std::ifstream *trace_file, tana_type::T_ADDRESS &addr_taint, \
+                     tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Dyn>> &L) {
         uint32_t batch_size = 1000;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, 1, addr_taint, size_taint, id);
@@ -341,13 +341,13 @@ namespace tana {
 
 
     bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Dyn>> &L, uint32_t max_instructions, uint32_t num) {
-        t_type::T_ADDRESS addr_taint = 0;
-        t_type::T_SIZE size_taint = 0;
+        tana_type::T_ADDRESS addr_taint = 0;
+        tana_type::T_SIZE size_taint = 0;
         return parse_trace(trace_file, L, max_instructions, addr_taint, size_taint, num);
     }
 
     bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Dyn>> &L, uint32_t max_instructions,
-                     t_type::T_ADDRESS &addr_taint, t_type::T_SIZE &size_taint, uint32_t num) {
+                     tana_type::T_ADDRESS &addr_taint, tana_type::T_SIZE &size_taint, uint32_t num) {
         std::string line;
         uint32_t id_count = 1;
         while (trace_file->good() && (id_count <= max_instructions)) {
@@ -431,50 +431,9 @@ namespace tana {
             return true;
     }
 
-    bool get_inst_for_each_block(std::vector<Block> blocks, std::vector<std::vector<Inst_Static>> &L, std::vector<Inst_Static> &fun_inst)
+
+    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, std::vector<Block> &blocks)
     {
-        bool copy_flag = false;
-        for(auto const &b : blocks)
-        {
-            auto start_addr = b.addr;
-            auto end_addr = b.end_addr;
-
-            std::vector<Inst_Static> blocks_inst;
-
-            for (auto const &ins : fun_inst)
-            {
-                if (ins.addrn == start_addr)
-                {
-                    copy_flag = true;
-                }
-
-                if (!copy_flag)
-                {
-                    continue;
-                }
-
-                Inst_Static ins_t = ins;
-                blocks_inst.push_back(ins_t);
-
-                if (ins.addrn == end_addr)
-                {
-                    copy_flag = false;
-                    blocks_inst.pop_back();
-                }
-
-
-            }
-
-            L.push_back(blocks_inst);
-        }
-        return true;
-    }
-
-    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, std::vector<std::vector<Inst_Static>> &L)
-    {
-
-        std::vector<Block> blocks;
-
         nlohmann::json blocks_json = nlohmann::json::array();
         json_file >> blocks_json;
         uint32_t ins_id = 0;
@@ -483,31 +442,27 @@ namespace tana {
 
         for(auto &element: blocks_json)
         {
-            Block block;
             std::string str_addr, str_end_addr, str_inputs, str_jump, str_ninstr, str_outputs, str_size, str_traced;
             str_addr = element["addr"];
-            block.addr = std::stoul(str_addr, 0 ,16);
-
             str_end_addr = element["end_addr"];
-            block.end_addr = std::stoul(str_end_addr, 0 ,16);
-
             str_inputs = element["inputs"];
-            block.inputs = std::stoul(str_inputs, 0 ,16);
-
-            str_jump = element["jump"];
-            block.jump = std::stoul(str_jump, 0 ,16);
-
+            //str_jump = element["jump"];
             str_ninstr = element["ninstr"];
-            block.ninstr = std::stoul(str_ninstr, 0 ,16);
-
             str_outputs = element["outputs"];
-            block.outputs = std::stoul(str_outputs, 0 ,16);
-
             str_size = element["size"];
-            block.size = std::stoul(str_size, 0 ,16);
-
             str_traced = element["traced"];
-            block.traced = std::stoul(str_traced, 0 ,16);
+
+            uint32_t block_addr = std::stoul(str_addr, nullptr, 16);
+            uint32_t block_end_addr = std::stoul(str_end_addr, nullptr, 16);
+            uint32_t block_inputs = std::stoul(str_inputs, nullptr, 16);
+            //uint32_t block_jump = std::stoul(str_jump, nullptr, 16);
+            uint32_t block_ninstr = std::stoul(str_ninstr, nullptr, 16);
+            uint32_t block_outputs = std::stoul(str_outputs, nullptr, 16);
+            uint32_t block_size = std::stoul(str_size, nullptr, 16);
+            uint32_t block_traced = std::stoul(str_traced, nullptr, 16);
+
+            Block block(block_addr, block_end_addr, block_inputs, block_ninstr, \
+                        block_outputs, block_size, block_traced);
 
             blocks.push_back(block);
         }
@@ -574,12 +529,17 @@ namespace tana {
             fun_inst.push_back(inst);
         }
 
-        get_inst_for_each_block(blocks, L, fun_inst);
+        for(auto &block : blocks)
+        {
+            bool res = block.init(fun_inst);
+            if(!res)
+            {
+                std::cout << "Block Parse Error" << std::endl;
+                return false;
+            }
+        }
 
-        if (trace_file.good())
-            return false;
-        else
-            return true;
+        return true;
 
     }
 }

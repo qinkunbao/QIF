@@ -20,11 +20,11 @@ namespace tana {
 
         struct BitValue {
             std::shared_ptr<BitVector> symbol;
-            t_type::index bit_index;
+            tana_type::index bit_index;
 
             BitValue();
 
-            BitValue(std::shared_ptr<BitVector> v, t_type::index n);
+            BitValue(std::shared_ptr<BitVector> v, tana_type::index n);
         };
 
         class BitMatrix {

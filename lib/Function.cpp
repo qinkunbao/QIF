@@ -49,7 +49,7 @@ namespace tana {
         rtn_libraries.pop_back();
     }
 
-    std::string Function::findTaintedRTN(t_type::T_ADDRESS addr) {
+    std::string Function::findTaintedRTN(tana_type::T_ADDRESS addr) {
         for (auto iter = rtn_libraries.begin(); iter != rtn_libraries.end(); iter++) {
             if ((addr >= (iter->start_addr)) && (addr <= (iter->end_addr))) {
                 return iter->rtn_name + " Module Name: " + iter->module_name;

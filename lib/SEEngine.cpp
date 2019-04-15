@@ -169,7 +169,7 @@ namespace tana {
     }
 
 
-    std::shared_ptr<BitVector> SEEngine::readMem(t_type::T_ADDRESS memory_address, t_type::T_SIZE size)
+    std::shared_ptr<BitVector> SEEngine::readMem(tana_type::T_ADDRESS memory_address, tana_type::T_SIZE size)
     {
         std::shared_ptr<BitVector> v0;
         if (memory_find(memory_address)) {
@@ -196,7 +196,7 @@ namespace tana {
     }
 
 
-    bool SEEngine::writeMem(tana::t_type::T_ADDRESS memory_address, tana::t_type::T_SIZE addr_size,
+    bool SEEngine::writeMem(tana::tana_type::T_ADDRESS memory_address, tana::tana_type::T_SIZE addr_size,
                             std::shared_ptr<tana::BitVector> v)
     {
         assert(v->size() == addr_size || !v->isSymbol());
@@ -296,7 +296,7 @@ namespace tana {
     }
 
     std::shared_ptr<BitVector>
-    SEEngine::ZeroExt(std::shared_ptr<tana::BitVector> v, tana::t_type::T_SIZE size_new)
+    SEEngine::ZeroExt(std::shared_ptr<tana::BitVector> v, tana::tana_type::T_SIZE size_new)
     {
         assert(size_new >= v->size());
         std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvzeroext", v);
@@ -317,8 +317,8 @@ namespace tana {
     }
 
     std::shared_ptr<BitVector>
-    SEEngine::SignExt(std::shared_ptr<tana::BitVector> v, tana::t_type::T_SIZE orgin_size,
-                      tana::t_type::T_SIZE new_size){
+    SEEngine::SignExt(std::shared_ptr<tana::BitVector> v, tana::tana_type::T_SIZE orgin_size,
+                      tana::tana_type::T_SIZE new_size){
 
         assert(orgin_size < new_size);
         std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvsignext", v);
@@ -390,7 +390,8 @@ namespace tana {
         for (auto inst = start; inst != end; ++inst)
         {
             auto it = inst->get();
-
+            if (x86::SymbolicExecutionNoEffect(it->instruction_id))
+                continue;
             bool status = it->symbolic_execution(*this);
 
             if (!status)
@@ -686,8 +687,6 @@ namespace tana {
             return true;
         }
         if (op0->type == Operand::Mem) {
-            // The memaddr in the trace is the read address
-            // We need to compute the write address
             auto reg = Registers::convert2RegID("esp");
             uint32_t esp_index = Registers::getRegIndex(reg);
             uint32_t esp_value = this->vcpu.gpr[esp_index];

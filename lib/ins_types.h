@@ -37,7 +37,7 @@ namespace tana {
 
 	const static uint32_t MAX_IMM_NUMBER = 0xff;
 
-    namespace t_type {
+    namespace tana_type {
 
         typedef uint32_t T_ADDRESS;
         typedef uint32_t T_SIZE;
@@ -45,13 +45,6 @@ namespace tana {
         typedef uint32_t RegPart;
         typedef uint32_t index;
     }
-
-	namespace reg_mask {
-		const static uint32_t EIGHT_L = 0x000000ff; //AL, BL, CL, DL
-		const static uint32_t EIGHT_H = 0x0000ff00; //AH, BH, CH, DH
-		const static uint32_t HALF = 0x0000ffff; //AX, BX, CX, DX
-		const static uint32_t FULL = 0xffffffff;
-	}
 
     class vcpu_ctx{
         /*
@@ -103,8 +96,8 @@ namespace tana {
 
     class Inst_Base {
     public:
-        t_type::index id;  //instruction ID
-        t_type::T_ADDRESS addrn; //Instruction address
+        tana_type::index id;  //instruction ID
+        tana_type::T_ADDRESS addrn; //Instruction address
         x86::x86_insn instruction_id;
         std::vector<std::string> oprs;
         std::shared_ptr<Operand> oprd[3];
@@ -113,6 +106,8 @@ namespace tana {
 
         virtual void print() const;
         uint32_t get_operand_number() const;
+
+        virtual tana_type::T_ADDRESS get_memory_address() = 0;
         virtual ~Inst_Base() = default;
     };
 
@@ -120,15 +115,24 @@ namespace tana {
     public:
         Inst_Static();
         void parseOperand();
+        virtual tana_type::T_ADDRESS get_memory_address() override
+        {
+            return 0;
+        }
 
     };
 
     class Inst_Dyn : public Inst_Base {
     public:
         vcpu_ctx vcpu;
-        t_type::T_ADDRESS memory_address;
+        tana_type::T_ADDRESS memory_address;
         Inst_Dyn();
         void parseOperand();
+        virtual tana_type::T_ADDRESS get_memory_address()
+        {
+            return memory_address;
+        }
+
 		virtual bool symbolic_execution(SEEngine &se)
 		{
 
@@ -147,8 +151,8 @@ namespace tana {
 
     class Routine {
     public:
-        t_type::T_ADDRESS start_addr; // start address of the function
-        t_type::T_ADDRESS end_addr;   // end address of the function
+        tana_type::T_ADDRESS start_addr; // start address of the function
+        tana_type::T_ADDRESS end_addr;   // end address of the function
         std::string rtn_name;
         std::string module_name;
         Routine(): start_addr(0), end_addr(0), rtn_name(), module_name() {}

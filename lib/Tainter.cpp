@@ -4,12 +4,12 @@
 
 namespace tana {
 
-	std::list <t_type::T_ADDRESS>
+	std::list <tana_type::T_ADDRESS>
     Tainter::getTaintedAddress() {
 		return taintedAdress;
 	}
 
-	Tainter::Tainter(t_type::T_ADDRESS addr, t_type::T_SIZE m_size) {
+	Tainter::Tainter(tana_type::T_ADDRESS addr, tana_type::T_SIZE m_size) {
 		taintedAdress.empty();
 		for (int i = 0; i < GPR_NUM; ++i) {
 			for (int j = 0; j < REGISTER_SIZE; ++j)
@@ -19,7 +19,7 @@ namespace tana {
 	}
 
 	bool
-    Tainter::isTainted(t_type::T_ADDRESS addr) {
+    Tainter::isTainted(tana_type::T_ADDRESS addr) {
 		auto found = std::find(taintedAdress.begin(), taintedAdress.end(), addr);
 
 		return !(found == taintedAdress.end());
@@ -27,7 +27,7 @@ namespace tana {
 
 	bool
     Tainter::isTainted(x86::x86_reg reg) {
-		t_type::RegPart reg_size = Registers::getRegSize(reg);
+		tana_type::RegPart reg_size = Registers::getRegSize(reg);
 		uint32_t reg_index = Registers::getRegIndex(reg);
 		for (uint32_t i = 0; i < reg_size; ++i) {
 			if (taintedRegisters[reg_index][i]) {
@@ -38,14 +38,14 @@ namespace tana {
 	}
 
 	void
-    Tainter::taint(t_type::T_ADDRESS addr) {
+    Tainter::taint(tana_type::T_ADDRESS addr) {
 		if (!isTainted(addr))
 			taintedAdress.push_back(addr);
 	}
 
 	void
     Tainter::taint(x86::x86_reg reg) {
-		t_type::RegPart reg_size = Registers::getRegSize(reg);
+		tana_type::RegPart reg_size = Registers::getRegSize(reg);
 		uint32_t reg_index = Registers::getRegIndex(reg);
 		for (uint32_t i = 0; i < reg_size; ++i) {
 			taintedRegisters[reg_index][i] = true;
@@ -53,20 +53,20 @@ namespace tana {
 	}
 
 	void
-    Tainter::taint(t_type::T_ADDRESS addr, t_type::T_SIZE size) {
-		for (t_type::T_ADDRESS i = 0; i < size; ++i)
+    Tainter::taint(tana_type::T_ADDRESS addr, tana_type::T_SIZE size) {
+		for (tana_type::T_ADDRESS i = 0; i < size; ++i)
 			taint(addr + i);
 	}
 
 	void
-    Tainter::untaint(t_type::T_ADDRESS addr) {
+    Tainter::untaint(tana_type::T_ADDRESS addr) {
 		if (isTainted(addr))
 			taintedAdress.remove(addr);
 	}
 
 	void
     Tainter::untaint(x86::x86_reg reg) {
-		t_type::RegPart reg_size = Registers::getRegSize(reg);
+		tana_type::RegPart reg_size = Registers::getRegSize(reg);
 		uint32_t reg_index = Registers::getRegIndex(reg);
 		for (uint32_t i = 0; i < reg_size; ++i) {
 			taintedRegisters[reg_index][i] = false;
@@ -74,16 +74,16 @@ namespace tana {
 	}
 
 	void
-    Tainter::untaint(t_type::T_ADDRESS addr, t_type::T_SIZE size) {
-		for (t_type::T_ADDRESS i = addr; i < size; ++i)
+    Tainter::untaint(tana_type::T_ADDRESS addr, tana_type::T_SIZE size) {
+		for (tana_type::T_ADDRESS i = addr; i < size; ++i)
 			taintedAdress.remove(addr + i);
 	}
 
 
 //Immediate to Memory
 	void
-    Tainter::spreadTaintImediate2Memory(t_type::T_ADDRESS addr, t_type::T_SIZE m_size) {
-		for (t_type::T_ADDRESS i = addr; i < addr + m_size; ++i)
+    Tainter::spreadTaintImediate2Memory(tana_type::T_ADDRESS addr, tana_type::T_SIZE m_size) {
+		for (tana_type::T_ADDRESS i = addr; i < addr + m_size; ++i)
 			untaint(i);
 	}
 
@@ -96,8 +96,8 @@ namespace tana {
 //Register to Register
 	void
     Tainter::spreadTaintRegister2Register(x86::x86_reg dest, x86::x86_reg src) {
-		t_type::RegPart src_size = Registers::getRegSize(src);
-		t_type::RegPart dest_size = Registers::getRegSize(dest);
+		tana_type::RegPart src_size = Registers::getRegSize(src);
+		tana_type::RegPart dest_size = Registers::getRegSize(dest);
 		uint32_t src_index = Registers::getRegIndex(src);
 		uint32_t dest_index = Registers::getRegIndex(dest);
 		for (uint32_t i = 0; (i < src_size) && (i < dest_size); ++i) {
@@ -107,41 +107,41 @@ namespace tana {
 
 //Memory to memory
 	void
-    Tainter::spreadTaintMemory2Memory(t_type::T_ADDRESS ip_addr, t_type::T_ADDRESS src, t_type::T_ADDRESS dest,
-										   t_type::T_SIZE m_size) {
+    Tainter::spreadTaintMemory2Memory(tana_type::T_ADDRESS ip_addr, tana_type::T_ADDRESS src, tana_type::T_ADDRESS dest,
+										   tana_type::T_SIZE m_size) {
 		for (uint32_t i = 0; i < m_size; ++i) {
-			if (isTainted(t_type::T_ADDRESS(src + i))) {
-				taint(t_type::T_ADDRESS(dest + i));
+			if (isTainted(tana_type::T_ADDRESS(src + i))) {
+				taint(tana_type::T_ADDRESS(dest + i));
 				taint(ip_addr);
 			} else {
-				untaint(t_type::T_ADDRESS(src + i));
+				untaint(tana_type::T_ADDRESS(src + i));
 			}
 		}
 	}
 
 //Register to memory
 	void
-    Tainter::spreadTaintRegister2Memory(t_type::T_ADDRESS ip_addr, x86::x86_reg reg, t_type::T_ADDRESS addr) {
-		t_type::RegPart reg_size = Registers::getRegSize(reg);
+    Tainter::spreadTaintRegister2Memory(tana_type::T_ADDRESS ip_addr, x86::x86_reg reg, tana_type::T_ADDRESS addr) {
+		tana_type::RegPart reg_size = Registers::getRegSize(reg);
 		uint32_t reg_index = Registers::getRegIndex(reg);
 		for (uint32_t i = 0; i < reg_size; ++i) {
 			if (taintedRegisters[reg_index][i]) {
 
 				//cout << "reg index: " << reg_index << " i: " << i << endl;
-				taint((t_type::T_ADDRESS) (addr + i / T_BYTE_SIZE));
+				taint((tana_type::T_ADDRESS) (addr + i / T_BYTE_SIZE));
 				taint(ip_addr);
 			} else {
-				untaint((t_type::T_ADDRESS) (i / T_BYTE_SIZE + addr));
+				untaint((tana_type::T_ADDRESS) (i / T_BYTE_SIZE + addr));
 			}
 		}
 	}
 
 //Memory to register
 	void
-    Tainter::spreadTaintMemory2Register(t_type::T_ADDRESS ip_addr, t_type::T_ADDRESS addr, x86::x86_reg reg) {
-		t_type::RegPart reg_size = Registers::getRegSize(reg);
+    Tainter::spreadTaintMemory2Register(tana_type::T_ADDRESS ip_addr, tana_type::T_ADDRESS addr, x86::x86_reg reg) {
+		tana_type::RegPart reg_size = Registers::getRegSize(reg);
 		uint32_t mem_size = reg_size / T_BYTE_SIZE;
-		for (t_type::T_SIZE i = 0; i < mem_size; ++i) {
+		for (tana_type::T_SIZE i = 0; i < mem_size; ++i) {
 			if (isTainted(addr + i)) {
 				taint(reg);
 				taint(ip_addr);
@@ -285,8 +285,8 @@ namespace tana {
 				if ((oprnum == 1) && ((ins.oprd[0])->type == Operand::ImmValue)) {
 					auto reg = Registers::convert2RegID("esp");
 					uint32_t esp_index = Registers::getRegIndex(reg);
-					t_type::T_ADDRESS esp_value = ins.vcpu.gpr[esp_index];
-					t_type::T_ADDRESS write_addr = esp_value - 4; // 32 bits = 4 bytes
+					tana_type::T_ADDRESS esp_value = ins.vcpu.gpr[esp_index];
+					tana_type::T_ADDRESS write_addr = esp_value - 4; // 32 bits = 4 bytes
 					spreadTaintMemory2Memory(ins.addrn, ins.memory_address, write_addr, 4);
 					break;
 				}

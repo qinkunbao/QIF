@@ -591,18 +591,6 @@ namespace tana {
                 ERROR("DO_X86_INS_ADD");
             }
 
-            if (op0->type == tana::Operand::Reg) {
-                auto reg_id = tana::x86::reg_string2id(op1->field[0]);
-                dest = reg.read_register(reg_id);
-            } else if (op1->type == tana::Operand::Mem) {
-                uint32_t mem_addr = it.memory_address;
-                uint32_t mem_size = op0->bit / BYTESIZE;
-                check_memory_access(mem_addr, mem_size);
-                dest = mem.read_data(mem_addr, mem_size);
-            } else {
-                ERROR("DO_X86_INS_ADD");
-            }
-
             dest = bvadd(dest, src);
 
             if (op0->type == tana::Operand::Reg) {

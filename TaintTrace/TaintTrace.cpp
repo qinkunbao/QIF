@@ -28,8 +28,8 @@ int main(int argc, char* argv[]) {
 	tana::Function func(&library_file);
 
 	vector<std::unique_ptr<Inst_Dyn>> inst_list;
-	t_type::T_ADDRESS start_addr = 0;
-	t_type::T_SIZE m_size = 0;
+	tana_type::T_ADDRESS start_addr = 0;
+	tana_type::T_SIZE m_size = 0;
 
 	uint32_t id = 1;
 	uint32_t batch_size = 1000;
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 	}
 	 */
 
-	list<t_type::T_ADDRESS> taintedAddr;
+	list<tana_type::T_ADDRESS> taintedAddr;
 	taintedAddr = taint.getTaintedAddress();
 	for (auto addr : taintedAddr) {
 		string fun_name = func.findTaintedRTN(addr);
