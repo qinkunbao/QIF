@@ -313,7 +313,7 @@ namespace tana {
 
 
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Dyn>> &L) {
+    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Base>> &L) {
         uint32_t batch_size = 1;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, batch_size, id);
@@ -326,7 +326,7 @@ namespace tana {
 
 
     bool parse_trace(std::ifstream *trace_file, tana_type::T_ADDRESS &addr_taint, \
-                     tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Dyn>> &L) {
+                     tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L) {
         uint32_t batch_size = 1000;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, 1, addr_taint, size_taint, id);
@@ -340,13 +340,13 @@ namespace tana {
     }
 
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Dyn>> &L, uint32_t max_instructions, uint32_t num) {
+    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Base>> &L, uint32_t max_instructions, uint32_t num) {
         tana_type::T_ADDRESS addr_taint = 0;
         tana_type::T_SIZE size_taint = 0;
         return parse_trace(trace_file, L, max_instructions, addr_taint, size_taint, num);
     }
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Dyn>> &L, uint32_t max_instructions,
+    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Base>> &L, uint32_t max_instructions,
                      tana_type::T_ADDRESS &addr_taint, tana_type::T_SIZE &size_taint, uint32_t num) {
         std::string line;
         uint32_t id_count = 1;
@@ -392,7 +392,7 @@ namespace tana {
             //ins->opcstr = opcstr;
             auto ins_id = x86::insn_string2id(opcstr);
 
-            std::unique_ptr<Inst_Dyn> ins = Inst_Dyn_Factory::makeInst(ins_id);
+            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(ins_id, false);
 
             ins->id = ins_index;
             ins->addrn = ins_addrn;
@@ -436,9 +436,9 @@ namespace tana {
     {
         nlohmann::json blocks_json = nlohmann::json::array();
         json_file >> blocks_json;
-        uint32_t ins_id = 0;
+        uint32_t ins_index = 0;
 
-        std::vector<Inst_Static> fun_inst;
+        std::vector<std::unique_ptr<Inst_Base>> fun_inst;
 
         for(auto &element: blocks_json)
         {
@@ -464,7 +464,7 @@ namespace tana {
             Block block(block_addr, block_end_addr, block_inputs, block_ninstr, \
                         block_outputs, block_size, block_traced);
 
-            blocks.push_back(block);
+            blocks.push_back(std::move(block));
         }
 
 
@@ -472,7 +472,6 @@ namespace tana {
         while (trace_file.good())
         {
 
-            Inst_Static inst;
             getline(trace_file, line);
 
             if(line.find(";") != std::string::npos)
@@ -501,10 +500,6 @@ namespace tana {
 
             line.erase(0, pos + delimiter.length());
 
-            inst.id = ++ins_id;
-            inst.addrn = std::stoul(str_addr, 0, 16);
-
-
             auto str_start = line.find_first_not_of(' ');
             auto str_end = line.find_last_not_of(' ');
 
@@ -512,21 +507,27 @@ namespace tana {
 
             std::istringstream disasbuf(line);
 
-
             std::string opcstr, temp;
             getline(disasbuf, opcstr, ' ');
 
-            inst.instruction_id = x86::insn_string2id(opcstr);
+            auto inst_instruction_id = x86::insn_string2id(opcstr);
+            auto inst_id = ++ins_index;
+            auto inst_addrn = std::stoul(str_addr, 0, 16);
+
+            std::unique_ptr<Inst_Base> inst = Inst_Dyn_Factory::makeInst(inst_instruction_id, true);
+            inst->id = inst_id;
+            inst->instruction_id = inst_instruction_id;
+            inst->addrn = inst_addrn;
 
             while (disasbuf.good()) {
                 getline(disasbuf, temp, ',');
                 if (temp.find_first_not_of(' ') != std::string::npos)
-                    inst.oprs.push_back(temp);
+                    inst->oprs.push_back(temp);
             }
 
-            inst.parseOperand();
+            inst->parseOperand();
 
-            fun_inst.push_back(inst);
+            fun_inst.push_back(std::move(inst));
         }
 
         for(auto &block : blocks)
@@ -535,7 +536,6 @@ namespace tana {
             if(!res)
             {
                 std::cout << "Block Parse Error" << std::endl;
-                return false;
             }
         }
 

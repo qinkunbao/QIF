@@ -11,12 +11,13 @@ namespace tana {
                                                                        size(n_size), traced(n_trace)
     {}
 
-    bool Block::init(std::vector<tana::Inst_Static> &fun_inst)
+    bool Block::init(std::vector<std::unique_ptr<Inst_Base>> &fun_inst)
     {
         bool copy_flag = false;
-        for (auto const &ins : fun_inst)
+        for (auto &ins : fun_inst)
         {
-            if(ins.addrn == addr)
+            auto inst_addr = ins->addrn;
+            if(inst_addr == addr)
             {
                 copy_flag = true;
             }
@@ -26,13 +27,25 @@ namespace tana {
                 continue;
             }
 
-            Inst_Static ins_t = ins;
-            inst_list.push_back(ins);
-
-            if(ins.addrn == end_addr)
+            if(inst_addr >= end_addr)
             {
-                return true;
+
+                break;
             }
+
+            inst_list.push_back(std::move(ins));
+
+
+        }
+        auto start_pos = fun_inst.begin();
+        while (start_pos != fun_inst.end())
+        {
+            if(*start_pos == nullptr)
+            {
+                fun_inst.erase(start_pos);
+            }
+            else
+            ++start_pos;
         }
 
         return false;
@@ -42,9 +55,12 @@ namespace tana {
     {
         std::cout << "Block: \n";
         std::cout << "Start Address: " << std::hex << addr << " End Address: " << end_addr <<std::dec << "\n";
-        std::cout << "Size: " << size << std::endl;
+        std::cout << "Block Size: " << size << std::endl;
         for(auto const &inst : inst_list) {
-            inst.print();
+            inst->print();
         }
     }
+
+
+
 }

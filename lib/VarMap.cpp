@@ -241,14 +241,14 @@ namespace tana {
     }
 
     void
-    varmap::setOutputMatrix(BitMatrix *input_m,
+    varmap::setOutputMatrix(BitMatrix *inmput_m,
                             std::shared_ptr<BitVector> formula,
                             std::vector<std::shared_ptr<BitVector>> *input_v,
                             std::vector<std::shared_ptr<BitVector>> *output_v,
                             SEEngine *se, BitMatrix *output_m) {
-        uint32_t row_size = input_m->getRowNum();
+        uint32_t row_size = inmput_m->getRowNum();
         for (uint32_t i = 0; i < row_size; ++i) {
-            std::vector<bool> row = input_m->getRow(i);
+            std::vector<bool> row = inmput_m->getRow(i);
             std::map<std::shared_ptr<BitVector>, uint32_t> input = bv2var(row, input_v);
             uint32_t output = se->conexec(formula, &input);
             std::map<std::shared_ptr<BitVector>, uint32_t> outmap = {{(*output_v)[0], output}};
