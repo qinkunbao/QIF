@@ -67,7 +67,7 @@ namespace tana {
             return (loop.loopSize < loopSize);
         }
 
-        Loop::Loop(std::vector<Inst_Dyn>::const_iterator begin, std::vector<Inst_Dyn>::const_iterator end) {
+        Loop::Loop(std::vector<Inst_Base>::const_iterator begin, std::vector<Inst_Base>::const_iterator end) {
             loop_begin = begin;
             loop_end = end;
             loopSize = static_cast<size_t >(std::distance(loop_begin, loop_end));
@@ -79,15 +79,15 @@ namespace tana {
             return(next(loop_current, 1) == loop_end);
         }
 
-        bool Loop::checkLoopCurrent(std::vector<Inst_Dyn>::const_iterator inst_current) {
+        bool Loop::checkLoopCurrent(std::vector<Inst_Base>::const_iterator inst_current) {
             ++loop_current;
             if(inst_current->instruction_id == loop_current->instruction_id)
                 return true;
             return false;
         }
 
-        std::list<Loop> findPotentialLoop(std::vector<Inst_Dyn>::const_iterator current,
-                                          std::vector<Inst_Dyn>::const_iterator instruction_end,
+        std::list<Loop> findPotentialLoop(std::vector<Inst_Base>::const_iterator current,
+                                          std::vector<Inst_Base>::const_iterator instruction_end,
                                           uint32_t history_length,
                                           uint32_t min_loop_length) {
             std::list<Loop> loop_candidate;
@@ -124,7 +124,7 @@ namespace tana {
             return std::move(loop_candidate);
         }
 
-        std::vector<Loop> loopDetectionFast(std::vector<Inst_Dyn> *L, uint32_t id)
+        std::vector<Loop> loopDetectionFast(std::vector<Inst_Base> *L, uint32_t id)
         {
             std::vector<Loop> confirmLoop;
             std::list<Loop> potential_loops;
@@ -187,17 +187,17 @@ namespace tana {
         }
 
 
-        std::vector<Loop> loopDetection(const std::vector<std::unique_ptr<Inst_Dyn>> &Lptr, uint32_t id)
+        std::vector<Loop> loopDetection(const std::vector<std::unique_ptr<Inst_Base>> &Lptr, uint32_t id)
         {
             std::vector<Loop> confirmLoop;
 			std::list<Loop> potential_loops;
-            std::vector<Inst_Dyn> Inst;
+            std::vector<Inst_Base> Inst;
             for(const auto &ins: Lptr)
             {
                 Inst.push_back(*ins);
             }
 
-            std::vector<Inst_Dyn> *L = &Inst;
+            std::vector<Inst_Base> *L = &Inst;
 
             Loop current_loop = Loop(L->cend(), L->cend());
             std::cout << id << " instructions in total\n";
@@ -291,8 +291,8 @@ namespace tana {
 
 
         std::list<Loop>
-        InstructionMap::findPotentialLoops(std::vector<Inst_Dyn>::const_iterator current,
-                                           std::vector<Inst_Dyn>::const_iterator instruction_end)
+        InstructionMap::findPotentialLoops(std::vector<Inst_Base>::const_iterator current,
+                                           std::vector<Inst_Base>::const_iterator instruction_end)
         {
             std::list<Loop> potential_loops;
             auto current_inst_id = current->id;
@@ -342,7 +342,7 @@ namespace tana {
         }
 
         void
-        InstructionMap::updateMap(std::vector<Inst_Dyn>::const_iterator current)
+        InstructionMap::updateMap(std::vector<Inst_Base>::const_iterator current)
         {
             auto current_inst_id = current->id;
             auto current_inst = current->instruction_id;

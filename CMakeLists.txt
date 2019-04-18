@@ -19,8 +19,6 @@ include_directories(StaticSE)
 
 
 add_library(TraceLib
-        lib/BitVector.h
-        lib/BitVector.cpp
         lib/error.h
         lib/error.cpp
         lib/x86.cpp
@@ -29,12 +27,14 @@ add_library(TraceLib
         lib/ins_parser.h
         lib/ins_types.h
         lib/ins_types.cpp
+        lib/ins_semantics.h
+        lib/ins_semantics.cpp
         lib/Engine.h
         lib/Engine.cpp
         lib/Register.cpp
         lib/Register.h
-        lib/SEEngine.cpp
-        lib/SEEngine.h
+        lib/DynSEEngine.cpp
+        lib/DynSEEngine.h
         lib/VarMap.h
         lib/VarMap.cpp
         lib/Tainter.cpp
@@ -44,7 +44,11 @@ add_library(TraceLib
         lib/Function.cpp
         lib/Function.h
         lib/Blocks.cpp
-        lib/Blocks.h)
+        lib/Blocks.h
+        lib/BitVector.h
+        lib/BitVector.cpp
+        lib/StaticSEEngine.cpp
+        lib/StaticSEEngine.h)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 

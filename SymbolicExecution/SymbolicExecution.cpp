@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include "ins_parser.h"
-#include "SEEngine.h"
+#include "DynSEEngine.h"
 #include "VarMap.h"
 
 using namespace tana;
@@ -39,12 +39,12 @@ int printFormulas(char* filename)
 		return 1;
 	}
 
-	std::vector<unique_ptr<Inst_Dyn>> inst_list;
+	std::vector<unique_ptr<Inst_Base>> inst_list;
 	parse_trace(&infile, inst_list);
 	infile.close();
 
 	// Bit symbolic execution
-	SEEngine *se = new SEEngine(Imm2SymState);
+	auto *se = new DynSEEngine(Imm2SymState);
 	se->initAllRegSymol(inst_list.begin(), inst_list.end());
 	se->run();
 
@@ -55,7 +55,6 @@ int printFormulas(char* filename)
 	stringstream ss;
 	uint32_t length = 0;
 	for(size_t i = 0; i < output_se.size(); i++) {
-
         (output_se[i]) = se->formula_simplfy(output_se[i]);
 
         length = output_se[i]->printV(ss);
@@ -98,7 +97,7 @@ int main(int argc, char **argv) {
 	}
 
 
-	std::vector<unique_ptr<Inst_Dyn>> inst_list1, inst_list2;
+	std::vector<unique_ptr<Inst_Base>> inst_list1, inst_list2;
 
 	parse_trace(&infile1, inst_list1);
 	parse_trace(&infile2, inst_list2);
@@ -108,11 +107,11 @@ int main(int argc, char **argv) {
 
 
 	// Symbolic execution
-	SEEngine *se1 = new SEEngine(Imm2SymState);
+	DynSEEngine *se1 = new DynSEEngine(Imm2SymState);
 	se1->initAllRegSymol(inst_list1.begin(), inst_list1.end());
 	se1->run();
 
-	SEEngine *se2 = new SEEngine(Imm2SymState);
+	DynSEEngine *se2 = new DynSEEngine(Imm2SymState);
 	se2->initAllRegSymol(inst_list2.begin(), inst_list2.end());
 	se2->run();
 

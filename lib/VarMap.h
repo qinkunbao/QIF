@@ -9,7 +9,7 @@
 #include <memory>
 #include <iterator>
 #include "ins_types.h"
-#include "SEEngine.h"
+#include "DynSEEngine.h"
 
 
 namespace tana {
@@ -73,7 +73,7 @@ namespace tana {
         bool varmapAndoutputCVC(SEEngine *se1, std::shared_ptr<BitVector> v1, SEEngine *se2, std::shared_ptr<BitVector> v2);
 
         void setOutputMatrix(BitMatrix *inmput_m, std::shared_ptr<BitVector> formula,
-        		             std::vector<std::shared_ptr<BitVector> > *input_v,
+                             std::vector<std::shared_ptr<BitVector> > *input_v,
                              std::vector<std::shared_ptr<BitVector> > *output_v,
                              SEEngine *se, BitMatrix *output_m);
 
@@ -87,7 +87,7 @@ namespace tana {
                          std::map<uint32_t, uint32_t> *mappedvar);
 
         void bitVarmap(std::shared_ptr<BitVector> formula1, std::shared_ptr<BitVector> formula2,
-        		       SEEngine *se1, SEEngine *se2,
+                       SEEngine *se1, SEEngine *se2,
                        std::vector<std::shared_ptr<BitVector>> *input_v1,
                        std::vector<std::shared_ptr<BitVector>> *input_v2,
                        std::vector<PartMap> unmap_input, std::vector<PartMap> unmap_output,
@@ -96,10 +96,10 @@ namespace tana {
                        std::list<FullMap> *result);
 
 		bool fuzzFormula(const std::shared_ptr<BitVector> &v1, const std::shared_ptr<BitVector> &v2,
-		                 SEEngine *se1, SEEngine *se2);
+                         SEEngine *se1, SEEngine *se2);
 
 		bool checkFormula(const std::shared_ptr<BitVector> &v1, const std::shared_ptr<BitVector> &v2,
-		                 SEEngine *se1, SEEngine *se2);
+                          SEEngine *se1, SEEngine *se2);
 
 		std::map<std::shared_ptr<BitVector>, uint32_t> input2val(std::vector<uint32_t> input,
 		                                                     std::vector<std::shared_ptr<BitVector>> *vv);

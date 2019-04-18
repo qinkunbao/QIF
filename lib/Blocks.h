@@ -2,14 +2,14 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "ins_types.h"
 
 namespace tana {
 
     class Block {
-    private:
-        std::vector<Inst_Static> inst_list;
     public:
+        std::vector<std::unique_ptr<Inst_Base>> inst_list;
         uint32_t addr;
         uint32_t end_addr;
         uint32_t inputs;
@@ -19,9 +19,10 @@ namespace tana {
         bool traced;
         Block(uint32_t n_addr, uint32_t n_end_addr, uint32_t n_inputs, uint32_t n_ninstr, \
               uint32_t n_outputs, uint32_t n_size, uint32_t trace);
-        bool init(std::vector<Inst_Static> &fun_inst);
+        bool init(std::vector<std::unique_ptr<Inst_Base>> &fun_inst);
 
         void print() const;
+
     };
 
 }
