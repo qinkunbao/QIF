@@ -1,137 +1,70 @@
-/*************************************************************************
-	> File Name: StaticSEEngine.cpp
-	> Author: 
-	> Mail: 
-	> Created Time: Tue Apr 16 20:25:55 2019
- ************************************************************************/
-
-
 #include <cassert>
 #include <algorithm>
 #include <limits.h>
 #include <sstream>
 #include "ins_types.h"
+#include "QIFSEEngine.h"
 #include "VarMap.h"
 #include "error.h"
-#include "StaticSEEngine.h"
-
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
 
 namespace tana {
+    QIFSEEngine::QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi,
+                             uint32_t esp, uint32_t ebp) : SEEngine(false) {
 
-    bool StaticSEEngine::memory_find(std::string addr) {
-        auto ii = memory.find(addr);
-        if (ii == memory.end())
-            return false;
-        else
-            return true;
+        ctx["eax"] = std::make_shared<BitVector>(CONCRETE, eax);
+        ctx["ebx"] = std::make_shared<BitVector>(CONCRETE, ebx);
+        ctx["ecx"] = std::make_shared<BitVector>(CONCRETE, ecx);
+        ctx["edx"] = std::make_shared<BitVector>(CONCRETE, edx);
+        ctx["esi"] = std::make_shared<BitVector>(CONCRETE, esi);
+        ctx["edi"] = std::make_shared<BitVector>(CONCRETE, edi);
+        ctx["esp"] = std::make_shared<BitVector>(CONCRETE, esp);
+        ctx["ebp"] = std::make_shared<BitVector>(CONCRETE, ebp);
+
     }
 
-
-    bool isTree(std::shared_ptr<BitVector> v) {
-
-        std::list<std::shared_ptr<BitVector>> list_que;
-        list_que.push_back(v);
-        uint32_t count = 0;
-        while (!list_que.empty()) {
-            std::shared_ptr<BitVector> v = list_que.front();
-            list_que.pop_front();
-            ++count;
-            const std::unique_ptr<Operation> &op = v->opr;
-            if (op != nullptr) {
-                if (op->val[0] != nullptr) list_que.push_back(op->val[0]);
-                if (op->val[1] != nullptr) list_que.push_back(op->val[1]);
-                if (op->val[2] != nullptr) list_que.push_back(op->val[2]);
-            }
-            if ((list_que.size() > FORMULA_MAX_LENGTH) || (count > FORMULA_MAX_LENGTH))
-                return false;
-        }
-        return true;
-    }
-
-    StaticSEEngine::StaticSEEngine() : SEEngine(false) {
-        ctx = {{"eax", nullptr},
-               {"ebx", nullptr},
-               {"ecx", nullptr},
-               {"edx", nullptr},
-               {"esi", nullptr},
-               {"edi", nullptr},
-               {"esp", nullptr},
-               {"ebp", nullptr}
-        };
-    }
-
-    void
-    StaticSEEngine::initAllRegSymol(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
-                                 std::vector<std::unique_ptr<Inst_Base>>::iterator it2)
+    void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
+              std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
+              tana_type::T_ADDRESS address, tana_type::T_SIZE m_size)
     {
-        ctx["eax"] = std::make_shared<BitVector>(SYMBOL, "eax");
-        ctx["ebx"] = std::make_shared<BitVector>(SYMBOL, "ebx");
-        ctx["ecx"] = std::make_shared<BitVector>(SYMBOL, "ecx");
-        ctx["edx"] = std::make_shared<BitVector>(SYMBOL, "edx");
-        ctx["esi"] = std::make_shared<BitVector>(SYMBOL, "esi");
-        ctx["edi"] = std::make_shared<BitVector>(SYMBOL, "edi");
-        ctx["esp"] = std::make_shared<BitVector>(SYMBOL, "esp");
-        ctx["ebp"] = std::make_shared<BitVector>(SYMBOL, "ebp");
-
         this->start = it1;
         this->end = it2;
-    }
-
-    void
-    StaticSEEngine::reset()
-    {
-        this->memory.clear();
-    }
-
-    void
-    StaticSEEngine::initFromBlock(tana::Block &b)
-    {
-
-       this->initAllRegSymol(b.inst_list.begin(), b.inst_list.end());
-    }
-
-    std::vector<std::shared_ptr<BitVector>>
-    StaticSEEngine::getAllOutput() {
-        std::vector<std::shared_ptr<BitVector>> outputs;
-        std::shared_ptr<BitVector> v;
-
-        // symbols in registers
-        v = ctx["eax"];
-        if ((v->opr != nullptr) && (isTree(v)))
-            outputs.push_back(v);
-        v = ctx["ebx"];
-        if ((v->opr != nullptr) && (isTree(v)))
-            outputs.push_back(v);
-        v = ctx["ecx"];
-        if ((v->opr != nullptr) && (isTree(v)))
-            outputs.push_back(v);
-        v = ctx["edx"];
-        if ((v->opr != nullptr) && (isTree(v)))
-            outputs.push_back(v);
-
-        // symbols in memory
-        for (auto const &x : memory) {
-
-            v = x.second;
-            if (v == nullptr) {
-                continue;
-            }
-            if ((v->opr != nullptr) && (isTree(v)))
-                outputs.push_back(v);
+        auto reminder = m_size % 4;
+        if(reminder)
+        {
+            m_size = m_size + (4 - reminder);
         }
+        assert(m_size % 4 == 0);
+
+        std::shared_ptr<BitVector> v0;
+        std::stringstream ss;
+
+        for(auto offset = 0; offset <= m_size; offset = offset + 4)
+        {
+            ss << "Key" << offset / 4;
+            v0 = std::make_shared<BitVector>(SYMBOL, ss.str());
+            memory[address + offset] = v0;
+        }
+
+    }
+
+    std::vector<std::shared_ptr<BitVector>> QIFSEEngine::getAllOutput()
+    {
+        std::vector<std::shared_ptr<BitVector>> outputs;
+        auto v = std::make_shared<BitVector>(CONCRETE, 0);
+        outputs.push_back(v);
         return outputs;
     }
 
-    std::shared_ptr<BitVector> StaticSEEngine::readReg(const std::string reg)
+    std::shared_ptr<BitVector> QIFSEEngine::readReg(const std::string reg)
     {
         x86::x86_reg reg_id = x86::reg_string2id(reg);
         return readReg(reg_id);
     }
 
-    std::shared_ptr<BitVector> StaticSEEngine::readReg(const x86::x86_reg reg)
+    std::shared_ptr<BitVector> QIFSEEngine::readReg(const x86::x86_reg reg)
     {
         RegType type = Registers::getRegType(reg);
         if(type == FULL)
@@ -173,7 +106,7 @@ namespace tana {
 
     }
 
-    bool StaticSEEngine::writeReg(const x86::x86_reg reg, std::shared_ptr<tana::BitVector> v)
+    bool QIFSEEngine::writeReg(const x86::x86_reg reg, std::shared_ptr<tana::BitVector> v)
     {
         RegType type = Registers::getRegType(reg);
         uint32_t reg_index = Registers::getRegIndex(reg);
@@ -220,21 +153,31 @@ namespace tana {
 
     }
 
-    bool StaticSEEngine::writeReg(const std::string reg, std::shared_ptr<tana::BitVector> v)
+    bool QIFSEEngine::writeReg(const std::string reg, std::shared_ptr<tana::BitVector> v)
     {
         x86::x86_reg reg_id = x86::reg_string2id(reg);
         return writeReg(reg_id, v);
     }
 
-    std::shared_ptr<BitVector> StaticSEEngine::readMem(std::string memory_address, tana_type::T_SIZE size)
+    bool DynSEEngine::memory_find(uint32_t addr) {
+        auto ii = memory.find(addr);
+        if (ii == memory.end())
+            return false;
+        else
+            return true;
+    }
+
+
+    std::shared_ptr<BitVector> QIFSEEngine::readMem(std::string memory_address_str, tana_type::T_SIZE size)
     {
+        uint32_t memory_address = std::stoul(memory_address_str, nullptr, 16);
         std::shared_ptr<BitVector> v0;
         if (memory_find(memory_address)) {
             v0 = memory[memory_address];
         } else {
             std::stringstream ss;
-            ss << "Mem:" << std::hex << memory_address << std::dec;
-            v0 = std::make_shared<BitVector>(SYMBOL, ss.str());
+            ss << "Environment data" <<std::dec;
+            v0 = std::make_shared<BitVector>(CONCRETE, ss.str());
             memory[memory_address] = v0;
         }
         if (size == T_BYTE_SIZE * T_DWORD)
@@ -253,10 +196,11 @@ namespace tana {
     }
 
 
-    bool StaticSEEngine::writeMem(std::string memory_address, tana::tana_type::T_SIZE addr_size,
+    bool QIFSEEngine::writeMem(std::string memory_address_str, tana::tana_type::T_SIZE addr_size,
                                std::shared_ptr<tana::BitVector> v)
     {
         assert(v->size() == addr_size || !v->isSymbol());
+        uint32_t memory_address = std::stoul(memory_address_str, nullptr, 16);
         std::shared_ptr<BitVector> v0,  v_mem;
 
         if(addr_size == T_BYTE_SIZE * T_DWORD)
@@ -290,6 +234,7 @@ namespace tana {
         }
         return false;
     }
+
 
 
 
