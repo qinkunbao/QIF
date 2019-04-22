@@ -636,7 +636,7 @@ namespace tana {
         return newVec;
     }
 
-    std::vector<uint32_t> inline mulVector(std::vector<uint32_t> preVec) {
+    std::vector<uint32_t> mulVector(std::vector<uint32_t> preVec) {
         std::vector<uint32_t> newVec;
         for (auto it : preVec) {
             newVec.push_back(it * 0xf);
@@ -644,7 +644,7 @@ namespace tana {
         return newVec;
     }
 
-    std::vector<uint32_t> inline extendVector(std::vector<uint32_t> preVec, uint32_t new_size) {
+    std::vector<uint32_t> extendVector(std::vector<uint32_t> preVec, uint32_t new_size) {
         std::vector<uint32_t> newVec = preVec;
         //uint32_t elem = preVec.back();
         while (newVec.size() < new_size) {
@@ -653,15 +653,15 @@ namespace tana {
         return newVec;
     }
 
-    void inline addValue(std::map<std::shared_ptr<BitVector>, uint32_t> *preVal) {
-        for (auto it = preVal->begin(); it != preVal->end(); ++it) {
-            (*preVal)[it->first] = it->second + 1;
+    void inline addValue(std::map<std::shared_ptr<BitVector>, uint32_t> &preVal) {
+        for (auto it = preVal.begin(); it != preVal.end(); ++it) {
+            preVal[it->first] = it->second + 1;
         }
     }
 
-    void inline mulValue(std::map<std::shared_ptr<BitVector>, uint32_t> *preVal) {
-        for (auto it = preVal->begin(); it != preVal->end(); ++it) {
-            (*preVal)[it->first] = it->second * 0xf;
+    void inline mulValue(std::map<std::shared_ptr<BitVector>, uint32_t> &preVal) {
+        for (auto it = preVal.begin(); it != preVal.end(); ++it) {
+            preVal[it->first] = it->second * 0xf;
         }
     }
 
@@ -722,30 +722,30 @@ namespace tana {
         input_v1 = input2val(seed, &inv1);
         auto temp = input_v1;
         output1 = se1->conexec(v1, &input_v1);
-        for (auto it = input_test_set.begin(); it != input_test_set.end(); ++it) {
-            input_vector2 = extendVector(*it, inputSize);
+        for (const auto &it : input_test_set) {
+            input_vector2 = extendVector(it, inputSize);
 
             input_v2 = input2val(input_vector2, &inv2);
             output2 = se2->conexec(v2, &input_v2);
             if (output2 == output1) {
 
-                addValue(&input_v1);
-                addValue(&input_v2);
+                addValue(input_v1);
+                addValue(input_v2);
                 output1 = se1->conexec(v1, &input_v1);
                 output2 = se2->conexec(v2, &input_v2);
                 if (output1 == output2) {
                     add_flag = true;
                 }
 
-                mulValue(&input_v1);
-                mulValue(&input_v2);
+                mulValue(input_v1);
+                mulValue(input_v2);
                 output1 = se1->conexec(v1, &input_v1);
                 output2 = se2->conexec(v2, &input_v2);
                 if (output1 == output2) {
                     mul_flag = true;
                 }
 
-                if ((mul_flag == true) && (add_flag == true)) {
+                if (mul_flag && add_flag ) {
                     return true;
                 } else {
                     mul_flag = false;
@@ -917,12 +917,13 @@ namespace tana {
                     continue;
                 }
 
-                if (varmap::checkFormula(v1, v2, se1, se2)) {
+                if (varmap::fuzzFormula(v1, v2, se1, se2)) {
                     result[i] = j;
                     break;
                 }
 
-                if (varmap::fuzzFormula(v1, v2, se1, se2)) {
+                
+                if (varmap::checkFormula(v1, v2, se1, se2)) {
                     result[i] = j;
                     break;
                 }

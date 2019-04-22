@@ -14,6 +14,7 @@ namespace tana {
     bool Block::init(std::vector<std::unique_ptr<Inst_Base>> &fun_inst)
     {
         bool copy_flag = false;
+        bool finish_flag = false;
         for (auto &ins : fun_inst)
         {
             auto inst_addr = ins->addrn;
@@ -29,6 +30,10 @@ namespace tana {
 
             if(inst_addr >= end_addr)
             {
+                if(inst_addr == end_addr)
+                {
+                    finish_flag = true;
+                }
 
                 break;
             }
@@ -48,17 +53,19 @@ namespace tana {
             ++start_pos;
         }
 
-        return false;
+        return finish_flag;
     }
 
     void Block::print() const
     {
-        std::cout << "Block: \n";
+        std::cout << "Block: " << this->id << "\n";
         std::cout << "Start Address: " << std::hex << addr << " End Address: " << end_addr <<std::dec << "\n";
         std::cout << "Block Size: " << size << std::endl;
         for(auto const &inst : inst_list) {
             inst->print();
         }
+
+        std::cout << "\n";
     }
 
 

@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	}
 	tana::Function func(&library_file);
 
-	vector<std::unique_ptr<Inst_Dyn>> inst_list;
+	vector<std::unique_ptr<Inst_Base>> inst_list;
 	tana_type::T_ADDRESS start_addr = 0;
 	tana_type::T_SIZE m_size = 0;
 
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 		}
 		while (!inst_list.empty())
 		{
-			Inst_Dyn tmp = inst_list.front();
+			Inst_Base tmp = inst_list.front();
 			inst_list.clear();
 
 		}

@@ -20,8 +20,8 @@ namespace tana {
 
 
         BitTaint::BitTaint(std::string symbol_name, uint32_t m_addr, \
-                       uint32_t size, std::vector<tana::Inst_Dyn>::iterator s, \
-                       std::vector<tana::Inst_Dyn>::iterator e) : mem(m_addr, size), reg(), eip() {
+                       uint32_t size, std::vector<tana::Inst_Base>::iterator s, \
+                       std::vector<tana::Inst_Base>::iterator e) : mem(m_addr, size), reg(), eip() {
             for (uint32_t index = 0; index < size * BYTESIZE; ++index) {
                 BitDefUseChain bool_var = BitDefUseChain(symbol_name, m_addr, index);
                 DefUse.push_back(bool_var);
@@ -200,7 +200,7 @@ namespace tana {
         }
 
 
-        int BitTaint::DO_X86_INS_CALL(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_CALL(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 1);
             auto op0 = it.oprd[0];
@@ -229,7 +229,7 @@ namespace tana {
 
         }
 
-        int BitTaint::DO_X86_INS_PUSH(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_PUSH(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 1);
             auto op0 = it.oprd[0];
@@ -262,7 +262,7 @@ namespace tana {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_POP(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_POP(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 1);
             auto op0 = it.oprd[0];
@@ -279,7 +279,7 @@ namespace tana {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_NEG(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_NEG(const tana::Inst_Base &it) {
 
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 1);
@@ -301,7 +301,7 @@ namespace tana {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_NOT(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_NOT(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 1);
             auto op0 = it.oprd[0];
@@ -321,7 +321,7 @@ namespace tana {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_INC(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_INC(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 1);
             auto op0 = it.oprd[0];
@@ -341,7 +341,7 @@ namespace tana {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_DEC(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_DEC(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 1);
             auto op0 = it.oprd[0];
@@ -361,7 +361,7 @@ namespace tana {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_MOV(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_MOV(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 2);
             auto op0 = it.oprd[0];
@@ -414,23 +414,23 @@ namespace tana {
         }
 
 
-        int BitTaint::DO_X86_INS_LEA(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_LEA(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_MOVSX(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_MOVSX(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_MOVZX(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_MOVZX(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_CMOVB(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_CMOVB(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_XCHG(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_XCHG(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 2);
             auto op0 = it.oprd[0];
@@ -480,7 +480,7 @@ namespace tana {
         }
 
 
-        int BitTaint::DO_X86_INS_SUB(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_SUB(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 2);
             auto op0 = it.oprd[0];
@@ -537,36 +537,36 @@ namespace tana {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_SBB(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_SBB(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_IMUL(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_IMUL(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_MUL(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_MUL(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_SHLD(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_SHLD(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_SHL(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_SHL(const tana::Inst_Base &it) {
             return 1;
         }
 
 
-        int BitTaint::DO_X86_INS_SHR(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_SHR(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_SHRD(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_SHRD(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_ADD(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_ADD(const tana::Inst_Base &it) {
             uint32_t opr_num = it.get_operand_number();
             assert(opr_num == 2);
             auto op0 = it.oprd[0];
@@ -608,19 +608,19 @@ namespace tana {
         }
 
 
-        int BitTaint::DO_X86_INS_ADC(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_ADC(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_RET(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_RET(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_AND(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_AND(const tana::Inst_Base &it) {
             return 1;
         }
 
-        int BitTaint::DO_X86_INS_LEAVE(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_LEAVE(const tana::Inst_Base &it) {
             //ESP = EBP
             auto esp_id = Register::str2id("esp");
             auto ebp_id = Register::str2id("ebp");
@@ -634,7 +634,7 @@ namespace tana {
         }
 
 
-        int BitTaint::DO_X86_INS_XOR(const tana::Inst_Dyn &it) {
+        int BitTaint::DO_X86_INS_XOR(const tana::Inst_Base &it) {
             return 1;
         }
 
@@ -649,7 +649,7 @@ namespace tana {
             }
         }
 
-        int BitTaint::execute_insn(std::vector<tana::Inst_Dyn>::iterator it) {
+        int BitTaint::execute_insn(std::vector<tana::Inst_Base>::iterator it) {
             auto insn = it->instruction_id;
             int ret = 0;
             auto it_insn = *it;

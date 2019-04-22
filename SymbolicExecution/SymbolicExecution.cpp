@@ -107,11 +107,11 @@ int main(int argc, char **argv) {
 
 
 	// Symbolic execution
-	DynSEEngine *se1 = new DynSEEngine(Imm2SymState);
+	auto se1 = new DynSEEngine(Imm2SymState);
 	se1->initAllRegSymol(inst_list1.begin(), inst_list1.end());
 	se1->run();
 
-	DynSEEngine *se2 = new DynSEEngine(Imm2SymState);
+	auto se2 = new DynSEEngine(Imm2SymState);
 	se2->initAllRegSymol(inst_list2.begin(), inst_list2.end());
 	se2->run();
 
@@ -152,15 +152,15 @@ int main(int argc, char **argv) {
 
 		result_file << "Matching formulas:" << result.size() << "\n\n";
 
-		for (auto it = result.begin(); it != result.end(); ++it) {
-			result_file << "Reference Index: " << it->first << "\n";
-			result_file << "Target Index: " << it->second << "\n";
+		for (const auto &it : result) {
+			result_file << "Reference Index: " << it.first << "\n";
+			result_file << "Target Index: " << it.second << "\n";
 
-            (output_se1[it->first])->printV(ss);
+            (output_se1[it.first])->printV(ss);
 			result_file << "Reference Formula: " << ss.str() << "\n";
 			ss.str("");
 
-            (output_se2[it->second])->printV(ss);
+            (output_se2[it.second])->printV(ss);
 			result_file << "Target Formula: " << ss.str() << "\n";
 			ss.str("");
 
