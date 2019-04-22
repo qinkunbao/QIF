@@ -13,8 +13,6 @@
 namespace tana {
     class BitVector;
     class Operation;
-    class DynSEEngine;
-
 
     class StaticSEEngine: public SEEngine{
     private:

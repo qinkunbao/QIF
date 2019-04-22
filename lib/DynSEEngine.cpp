@@ -225,11 +225,11 @@ namespace tana {
 
         if (size == T_BYTE_SIZE * T_WORD)
         {
-            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 16);
+            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 17, 32);
             return v1;
         }
 
-        std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 8);
+        std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 25, 32);
         return v1;
     }
 
@@ -245,15 +245,6 @@ namespace tana {
         {
             memory[memory_address] = v;
             return true;
-        }
-        // Create a symbol for the mem address if not found
-        if (memory_find(memory_address)) {
-            v0 = memory[memory_address];
-        } else {
-            std::stringstream ss;
-            ss << "Mem:" << std::hex << memory_address << std::dec;
-            v0 = std::make_shared<BitVector>(SYMBOL, ss.str());
-            memory[memory_address] = v0;
         }
 
         if(addr_size == T_BYTE_SIZE * T_WORD)

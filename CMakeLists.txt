@@ -48,7 +48,9 @@ add_library(TraceLib
         lib/BitVector.h
         lib/BitVector.cpp
         lib/StaticSEEngine.cpp
-        lib/StaticSEEngine.h)
+        lib/StaticSEEngine.h
+        lib/QIFSEEngine.h
+        lib/QIFSEEngine.cpp)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 

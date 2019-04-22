@@ -34,7 +34,7 @@ namespace tana {
 
     int BitVector::idseed = 0;
 
-    BitVector::BitVector(ValueType vty, std::string s_info) : opr(nullptr), val_type(vty), info(s_info)
+    BitVector::BitVector(ValueType vty, std::string s_info) : opr(nullptr), val_type(vty), info(s_info), concrete_value(0)
     {
         id = ++idseed;
     }
@@ -42,7 +42,7 @@ namespace tana {
     BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState) : opr(nullptr), concrete_value(con)
     {
         id = ++idseed;
-        val_type = Imm2SymState ? SYMBOL : CONCRETE;
+        val_type = Imm2SymState ? SYMBOL : vty;
     }
 
     BitVector::BitVector(ValueType vty, uint32_t con) : opr(nullptr), val_type(vty), concrete_value(con)
