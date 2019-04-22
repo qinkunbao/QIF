@@ -6,6 +6,7 @@
 #include <memory>
 #include "ins_types.h"
 #include "Blocks.h"
+#include "ins_semantics.h"
 
 namespace tana {
 

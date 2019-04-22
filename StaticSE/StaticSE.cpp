@@ -9,6 +9,12 @@
 using namespace tana;
 using namespace std;
 
+
+class block_result{
+    vector<shared_ptr<BitVector>> value;
+    shared_ptr<Block> block;
+};
+
 std::string random_string(size_t length)
 {
     srand(time(NULL));
@@ -36,7 +42,7 @@ int printFormulas(char* filename)
 
     if (!infile1.is_open() || !infile2.is_open())
     {
-        fprintf(stderr, "Open file error!, one of '%s' or '%s' failed to open\n", file_name.c_str(), blocks_file_name.c_str());
+        cerr << "Open file error!, one of "<< file_name << "or" << blocks_file_name << "failed to open\n";
         return 1;
     }
 
@@ -44,8 +50,7 @@ int printFormulas(char* filename)
     parse_static_trace(infile1, infile2, block_list);
 
 
-
-    StaticSEEngine *se = new StaticSEEngine(false);
+    auto se = new StaticSEEngine(false);
 
     for(auto &b : block_list)
     {
@@ -150,54 +155,63 @@ int main(int argc, char **argv)
         se2->reset();
     }
 
-    stringstream ss;
+    stringstream ss, match_info;
 
 
-    for(auto &res1 : res1_list)
+    int match_formula = 0;
+
+    for(const auto &res1 : res1_list)
     {
-        for(auto &res2 : res2_list)
+        for(const auto &res2 : res2_list)
         {
             auto result = varmap::matchFunction(se1, se2, res1, res2);
-            if(result.size() > 0)
+            if(!result.empty())
             {
                 cout << "Found " << result.size() << " possible matches" << std::endl;
                 cout << argv[1] << endl;
                 cout << argv[2] << endl;
-                string rfile = "match_"+ std::to_string(result.size()) + "_" + random_string(10) + ".txt";
-                ofstream result_file;
-                result_file.open(rfile);
 
-                result_file << "Reference: " << argv[1] <<"\n";
-                result_file << "Target: " << argv[2] << "\n";
+                match_info << "The number of formulas in the reference: " << res1.size() << "\n";
+                match_info << "The number of formulas in the target: " << res2.size() << "\n";
 
-                result_file << "The number of formulas in the reference: " << res1.size() << "\n";
-                result_file << "The number of formulas in the target: " << res2.size() << "\n";
+                match_info << "Matching formulas:" << result.size() << "\n\n";
 
-                result_file << "Matching formulas:" << result.size() << "\n\n";
+                match_formula += result.size();
 
-                for (auto it = result.begin(); it != result.end(); ++it) {
-                    result_file << "Reference Index: " << it->first << "\n";
-                    result_file << "Target Index: " << it->second << "\n";
+                for (const auto &it : result) {
+                    match_info << "Reference Index: " << it.first << "\n";
+                    match_info << "Target Index: " << it.second << "\n";
 
-                    (res1[it->first])->printV(ss);
-                    result_file << "Reference Formula: " << ss.str() << "\n";
+                    (res1[it.first])->printV(ss);
+                    match_info << "Reference Formula: " << ss.str() << "\n";
                     ss.str("");
 
-                    (res2[it->second])->printV(ss);
-                    result_file << "Target Formula: " << ss.str() << "\n";
+                    (res2[it.second])->printV(ss);
+                    match_info << "Target Formula: " << ss.str() << "\n";
                     ss.str("");
 
-                    result_file << "\n";
+                    match_info << "\n";
                 }
-                result_file.close();
             }
 
         }
     }
 
+    string rfile = "match_"+ std::to_string(match_formula) + "_" + random_string(10) + ".txt";
+    string info = match_info.str();
+    ofstream match_file;
 
+    if(info.length() > 0) {
+        match_file.open(rfile);
+        match_file << file_name1 << "\n";
+        match_file << file_name2 << "\n";
+        match_file << info;
+        match_file.close();
 
+    }
 
+    delete se1;
+    delete se2;
 
     return 0;
 }

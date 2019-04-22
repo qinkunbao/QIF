@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    std::vector<std::unique_ptr<Inst_Dyn>> inst_list;
+    std::vector<std::unique_ptr<Inst_Base>> inst_list;
 
     tana_type::T_ADDRESS m_addr;
     tana_type::T_SIZE  m_size;

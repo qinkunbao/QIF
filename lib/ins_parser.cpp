@@ -440,6 +440,7 @@ namespace tana {
 
         std::vector<std::unique_ptr<Inst_Base>> fun_inst;
 
+        int block_id = 0;
         for(auto &element: blocks_json)
         {
             std::string str_addr, str_end_addr, str_inputs, str_jump, str_ninstr, str_outputs, str_size, str_traced;
@@ -463,6 +464,8 @@ namespace tana {
 
             Block block(block_addr, block_end_addr, block_inputs, block_ninstr, \
                         block_outputs, block_size, block_traced);
+
+            block.id = block_id++;
 
             blocks.push_back(std::move(block));
         }
