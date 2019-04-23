@@ -50,7 +50,9 @@ add_library(TraceLib
         lib/StaticSEEngine.cpp
         lib/StaticSEEngine.h
         lib/QIFSEEngine.h
-        lib/QIFSEEngine.cpp)
+        lib/QIFSEEngine.cpp
+        lib/Constrains.h
+        lib/Constrains.cpp)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 
@@ -71,6 +73,9 @@ add_executable(TestBitVector
 add_executable(TestX86
         test/test_x86.cpp)
 
+add_executable(TestConstrain
+        test/test_constrain.cpp)
+
 add_executable(BitTaint
         BitTaint/BitTaint.cpp
         BitTaint/BitTaint.h
@@ -89,3 +94,4 @@ target_link_libraries(TestX86 TraceLib)
 target_link_libraries(TestBitVector TraceLib)
 target_link_libraries(BitTaint TraceLib)
 target_link_libraries(StaticSE TraceLib)
+target_link_libraries(TestConstrain TraceLib)

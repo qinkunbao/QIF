@@ -162,7 +162,7 @@ namespace tana {
 
     }
 
-    std::string BitVector::print()
+    std::string BitVector::print() const
     {
         std::stringstream ss;
         if(val_type == SYMBOL)
@@ -240,13 +240,23 @@ namespace tana {
         return false;
     }
 
-    uint32_t BitVector::printV(std::stringstream &ss){
+    uint32_t BitVector::printV(std::stringstream &ss) const {
         uint32_t num = 0;
         printV(ss, num);
         return num;
     }
 
-    void BitVector::printV(std::stringstream &ss, uint32_t &length){
+    std::ostream& operator<<(std::ostream& os, const BitVector& dt)
+    {
+        std::stringstream ss;
+        dt.printV(ss);
+        os << ss.str();
+        return os;
+
+    }
+
+
+    void BitVector::printV(std::stringstream &ss, uint32_t &length) const{
         const std::unique_ptr<Operation> &op = this->opr;
         ++length;
         if (op == nullptr) {

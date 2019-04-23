@@ -19,8 +19,8 @@ namespace tana {
     class BitVector {
     private:
         void symbol_num_internal(const std::shared_ptr<BitVector> &v, std::set<int> &input) const;
-        std::string print();
-        void printV(std::stringstream& ss, uint32_t& length);
+        std::string print() const;
+        void printV(std::stringstream& ss, uint32_t& length) const ;
     public:
         int id;                                    // a unique id for each value
         ValueType val_type;                        // value type: SYMBOL or CONCRETE
@@ -31,6 +31,8 @@ namespace tana {
         std::string info;
         std::unique_ptr<Operation> opr = nullptr;
 
+
+        BitVector() = delete;
         explicit BitVector(ValueType vty, std::string symbol_info);
         explicit BitVector(ValueType vty, uint32_t concrete, bool Imm2SymState);    // constructor for concrete value
         explicit BitVector(ValueType vty, std::unique_ptr<Operation> oper);
@@ -61,9 +63,11 @@ namespace tana {
 
         bool operator==(const BitVector &v1);
 
-        uint32_t printV(std::stringstream& ss);
+        uint32_t printV(std::stringstream& ss) const ;
 
         uint32_t symbol_num() const;
+
+        friend std::ostream& operator<<(std::ostream& os, const BitVector& c);
 
     };
 

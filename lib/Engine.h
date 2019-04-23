@@ -2,6 +2,7 @@
 
 #include "BitVector.h"
 #include "ins_types.h"
+#include "Constrains.h"
 
 
 
@@ -13,6 +14,9 @@ namespace tana {
 
     public:
         bool imm2sym = false;
+
+        bool eflags = false;
+
         std::vector<std::unique_ptr<Inst_Base>>::iterator start;
         std::vector<std::unique_ptr<Inst_Base>>::iterator end;
 
@@ -59,13 +63,18 @@ namespace tana {
 
         virtual bool writeMem(std::string memory_address, tana_type::T_SIZE size, std::shared_ptr<BitVector> v) = 0;
 
-        int run();
+        virtual int run();
 
         virtual std::vector<std::shared_ptr<BitVector>> getAllOutput() =0;
 
 
 
         std::shared_ptr<BitVector> formula_simplfy(std::shared_ptr<BitVector> v);
+
+        virtual void updateFlags(std::string flag_name, std::shared_ptr<Constrain> cons)
+        {
+            return;
+        }
 
         virtual ~SEEngine()= default;
 
