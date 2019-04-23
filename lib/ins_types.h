@@ -36,6 +36,9 @@ namespace tana {
 
 	const static uint32_t MAX_IMM_NUMBER = 0xff;
 
+	const static uint32_t MAX_INT = 0x7fffffff;
+	const static uint32_t MAX_UNSIGNED_INT = 0xffffffff;
+
     namespace tana_type {
 
         typedef uint32_t T_ADDRESS;
@@ -92,7 +95,6 @@ namespace tana {
         std::string field[5];
         bool issegaddr = false;
         std::string segreg;
-        //Operand() : bit(0), issegaddr(false) {}
     };
 
     class Inst_Base {

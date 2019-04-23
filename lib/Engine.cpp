@@ -26,6 +26,7 @@ namespace tana {
 
     SEEngine::SEEngine(bool state_type) {
         imm2sym = state_type;
+        eflags = false;
     }
 
     int

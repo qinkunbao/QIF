@@ -8,6 +8,7 @@
 #include "Register.h"
 #include "Engine.h"
 #include "BitVector.h"
+#include "Constrains.h"
 
 namespace tana {
     class BitVector;
@@ -20,8 +21,8 @@ namespace tana {
         std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
         bool memory_find(uint32_t addr);
         std::map<std::string, std::shared_ptr<BitVector>> ctx;
-
-
+        std::shared_ptr<tana::Constrain> CF, OP, SF, ZF, AF, PF;
+        std::vector<std::shared_ptr<tana::Constrain>> constrains;
 
     public:
 
@@ -48,7 +49,12 @@ namespace tana {
 
         bool writeMem(std::string memory_address, tana_type::T_SIZE size, std::shared_ptr<BitVector> v) override ;
 
+        int run() override ;
+
+        void updateFlags(std::string, std::shared_ptr<Constrain> cons) override ;
     };
+
+
 
 
 }

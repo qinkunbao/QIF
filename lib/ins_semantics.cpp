@@ -5,10 +5,19 @@
 #include "BitVector.h"
 #include "Engine.h"
 #include "Register.h"
+#include "Constrains.h"
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
 
 namespace tana{
+
+
+    void updateZF(SEEngine *se, std::shared_ptr<BitVector> b, bool ZF)
+    {
+        Constrain::RelationType type = ZF? Constrain::equal: Constrain::nonequal;
+        auto cons = std::make_shared<Constrain>(b, type, 0);
+        se->updateFlags("ZF", cons);
+    }
 
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic)
     {
