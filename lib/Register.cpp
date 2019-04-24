@@ -10,8 +10,14 @@ namespace tana {
         return reg_id2string(reg);
     }
 
-    tana_type::RegPart Registers::getRegSize(x86_reg name) {
+    uint32_t Registers::getRegSize(x86_reg name) {
         return x86::get_reg_size(name);
+    }
+
+    uint32_t Registers::getRegSize(std::string name)
+    {
+        auto reg = convert2RegID(name);
+        return getRegSize(reg);
     }
 
     x86_reg Registers::convert2RegID(std::string reg_name) {
