@@ -21,7 +21,7 @@ namespace tana {
         std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
         bool memory_find(uint32_t addr);
         std::map<std::string, std::shared_ptr<BitVector>> ctx;
-        std::shared_ptr<tana::Constrain> CF, OP, SF, ZF, AF, PF;
+        std::shared_ptr<tana::Constrain> CF, OP, SF, ZF;
         std::vector<std::shared_ptr<tana::Constrain>> constrains;
 
     public:

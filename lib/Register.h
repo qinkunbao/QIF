@@ -23,7 +23,9 @@ namespace tana {
 
         static std::string convertRegID2RegName(uint32_t id);
 
-        static tana_type::RegPart getRegSize(x86::x86_reg name);
+        static uint32_t getRegSize(x86::x86_reg name);
+
+        static uint32_t getRegSize(std::string name);
 
         static x86::x86_reg convert2RegID(std::string reg_name);
 

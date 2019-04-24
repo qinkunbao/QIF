@@ -19,6 +19,70 @@ namespace tana{
         se->updateFlags("ZF", cons);
     }
 
+    void updateSF(SEEngine *se, std::shared_ptr<BitVector> b, uint32_t op_size, bool SF)
+    {
+
+        Constrain::RelationType  type = SF? Constrain::greater: Constrain::less;
+        uint32_t max_num_size;
+        if(op_size == 32)
+        {
+            max_num_size = 0x7fffffff;
+
+        }
+        else if (op_size == 16)
+        {
+            max_num_size = 0x7fff;
+
+        }
+        else if (op_size == 8)
+        {
+            max_num_size = 0x7f;
+        } else{
+            ERROR("Invalid operand size");
+        }
+
+        auto cons = std::make_shared<Constrain>(b, type, max_num_size);
+        se->updateFlags("SF", cons);
+    }
+
+    void updateOF();
+
+    void updateCFadd(SEEngine *se, std::shared_ptr<BitVector> b1, \
+                     uint32_t op_size, bool CF)
+    {
+        Constrain::RelationType type = CF? Constrain::greater :Constrain::less;
+        uint32_t max_num_size;
+        if(op_size == 32)
+        {
+            max_num_size = 0xffffffff;
+
+        }
+        else if (op_size == 16)
+        {
+            max_num_size = 0xffff;
+
+        }
+        else if (op_size == 8)
+        {
+            max_num_size = 0xff;
+        } else{
+            ERROR("Invalid operand size");
+        }
+
+        auto cons = std::make_shared<Constrain>(b1, type, max_num_size);
+        se->updateFlags("CF", cons);
+
+    }
+
+    void updateCFsub(SEEngine *se, std::shared_ptr<BitVector> b1, uint32_t op_size, bool CF) {
+        Constrain::RelationType type = CF ? Constrain::less : Constrain::greater;
+        auto cons = std::make_shared<Constrain>(b1, type, 0);
+        se->updateFlags("CF", cons);
+    }
+
+
+
+
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic)
     {
 
@@ -214,15 +278,46 @@ namespace tana{
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto opcode_id = this->instruction_id;
         auto opcstr = "bv" + x86::insn_id2string(opcode_id);
+        std::shared_ptr<BitVector> v0, res;
+        bool status = false;
+        uint32_t size = 0;
 
 
         if (op0->type == Operand::Reg) {
-            assert(Registers::getRegType(op0->field[0]) == FULL);
-            auto v0 = se->readReg(op0->field[0]);
-            auto res = buildop1(opcstr, v0);
+            size = Registers::getRegSize(op0->field[0]);
+            v0 = se->readReg(op0->field[0]);
+            res = buildop1(opcstr, v0);
             se->writeReg(op0->field[0], res);
-            return true;
+            status = true;
         }
+
+        if (op0->type == Operand::Mem)
+        {
+            size = op0->bit;
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop1(opcstr, v0);
+            se->writeMem(this->get_memory_address(), op0->bit, res);
+            status = true;
+        }
+
+        if(se->eflags)
+        {
+            // Update CF
+            Constrain::RelationType type = this->vcpu.CF()? Constrain::nonequal : Constrain::equal;
+            auto cons = std::make_shared<Constrain>(v0, type, 0);
+            se->updateFlags("CF", cons);
+
+            // Update SF
+            updateSF(se, res, size, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, v0, this->vcpu.ZF());
+
+        }
+
+        if(status)
+            return true;
+
         ERROR("neg error: the operand is not Reg!");
         return false;
     }
