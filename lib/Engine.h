@@ -76,6 +76,11 @@ namespace tana {
             return;
         }
 
+        virtual void clearFlags(std::string flag_name)
+        {
+            return;
+        }
+
         virtual ~SEEngine()= default;
 
     };
