@@ -81,6 +81,18 @@ namespace tana {
             return;
         }
 
+        virtual std::shared_ptr<tana::Constrain> getFlags(std::string)
+        {
+            return nullptr;
+        }
+
+        virtual void updateConstrains(std::shared_ptr<tana::Constrain> cons)
+        {
+            return;
+        }
+
+
+
         virtual ~SEEngine()= default;
 
     };

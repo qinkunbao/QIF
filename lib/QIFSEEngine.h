@@ -53,6 +53,11 @@ namespace tana {
         void updateFlags(std::string, std::shared_ptr<Constrain> cons) override ;
 
         void clearFlags(std::string) override ;
+
+        std::shared_ptr<tana::Constrain> getFlags(std::string) override;
+
+        void updateConstrains(std::shared_ptr<tana::Constrain> cons) override ;
+
     };
 
 

@@ -275,5 +275,46 @@ namespace tana {
         this->updateFlags(flag_name, con);
     }
 
+    std::shared_ptr<tana::Constrain> QIFSEEngine::getFlags(std::string flag_name)
+    {
+        if(flag_name == "CF")
+        {
+            return CF;
+        }
+
+        if(flag_name == "OP")
+        {
+            return OP;
+        }
+
+        if(flag_name == "SF")
+        {
+            return SF;
+        }
+
+        if(flag_name == "ZF")
+        {
+            return ZF;
+        }
+
+        if(flag_name == "AF")
+        {
+            return AF;
+        }
+
+        if(flag_name == "PF")
+        {
+            return PF;
+        }
+
+        ERROR("Not recognized flag_name");
+        return nullptr;
+    }
+
+    void QIFSEEngine::updateConstrains(std::shared_ptr<tana::Constrain> cons)
+    {
+        constrains.push_back(cons);
+    }
+
 
 }

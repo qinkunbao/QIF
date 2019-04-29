@@ -214,4 +214,29 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
+    class Dyn_X86_INS_TEST : public Inst_Base {
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_CMP : public Inst_Base {
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JMP : public  Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+
+    };
+
+    class Dyn_X86_INS_JE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
 }
