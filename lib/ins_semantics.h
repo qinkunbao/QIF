@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BitVector.h"
 #include "ins_types.h"
 
 
@@ -11,7 +12,7 @@ namespace tana {
     };
 
     namespace inst_dyn_details {
-        bool two_operand(SEEngine *se, Inst_Base *inst);
+        std::shared_ptr<BitVector> two_operand(SEEngine *se, Inst_Base *inst);
     }
 
 

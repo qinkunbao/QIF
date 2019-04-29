@@ -21,13 +21,12 @@ namespace tana {
         std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
         bool memory_find(uint32_t addr);
         std::map<std::string, std::shared_ptr<BitVector>> ctx;
-        std::shared_ptr<tana::Constrain> CF, OP, SF, ZF;
+        std::shared_ptr<tana::Constrain> CF, OP, SF, ZF, AF, PF;
         std::vector<std::shared_ptr<tana::Constrain>> constrains;
 
     public:
 
         using SEEngine::SEEngine;
-
         void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                   std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                   tana_type::T_ADDRESS, tana_type::T_SIZE m_size);
@@ -52,6 +51,8 @@ namespace tana {
         int run() override ;
 
         void updateFlags(std::string, std::shared_ptr<Constrain> cons) override ;
+
+        void clearFlags(std::string) override ;
     };
 
 

@@ -7,6 +7,8 @@
 #include "Register.h"
 #include "Constrains.h"
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
+#define WARN(MESSAGE) tana::default_warn_handler(__FILE__, __LINE__, MESSAGE)
+
 
 
 namespace tana{
@@ -14,7 +16,7 @@ namespace tana{
 
     void updateZF(SEEngine *se, std::shared_ptr<BitVector> b, bool ZF)
     {
-        Constrain::RelationType type = ZF? Constrain::equal: Constrain::nonequal;
+        RelationType type = ZF? RelationType ::equal: RelationType ::nonequal;
         auto cons = std::make_shared<Constrain>(b, type, 0);
         se->updateFlags("ZF", cons);
     }
@@ -22,7 +24,7 @@ namespace tana{
     void updateSF(SEEngine *se, std::shared_ptr<BitVector> b, uint32_t op_size, bool SF)
     {
 
-        Constrain::RelationType  type = SF? Constrain::greater: Constrain::less;
+        RelationType  type = SF? RelationType ::greater: RelationType ::less;
         uint32_t max_num_size;
         if(op_size == 32)
         {
@@ -45,12 +47,81 @@ namespace tana{
         se->updateFlags("SF", cons);
     }
 
-    void updateOF();
+    void updateOFadd(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2, uint32_t op_size,\
+                     bool OF)
+    {
+        std::shared_ptr<Constrain> constrain;
+        if(op_size == 32)
+        {
+            if(OF)
+            {
+                constrain->update(b1, RelationType::less, 0x7fffffff);
+                constrain->update(b2, RelationType::less, 0x7fffffff);
+                auto res = buildop2("bvadd", b1, b2);
+                constrain->update(res, RelationType::greater, 0x7fffffff);
+                return;
+            }
+            else
+            {
+                constrain->update(b1, RelationType::less, 0x7fffffff);
+                constrain->update(b2, RelationType::less, 0x7fffffff);
+                auto res = buildop2("bvadd", b1, b2);
+                constrain->update(res, RelationType::less, 0x7fffffff);
+                return;
+            }
+        }
+
+        if(op_size == 16)
+        {
+            if(OF)
+            {
+                constrain->update(b1, RelationType::less, 0x7fff);
+                constrain->update(b2, RelationType::less, 0x7fff);
+                auto res = buildop2("bvadd", b1, b2);
+                constrain->update(res, RelationType::greater, 0x7fff);
+                return;
+            }
+            else
+            {
+                constrain->update(b1, RelationType::less, 0x7fff);
+                constrain->update(b2, RelationType::less, 0x7fff);
+                auto res = buildop2("bvadd", b1, b2);
+                constrain->update(res, RelationType::less, 0x7fff);
+                return;
+            }
+        }
+
+        if(op_size == 8)
+        {
+            if(OF)
+            {
+                constrain->update(b1, RelationType::less, 0x7f);
+                constrain->update(b2, RelationType::less, 0x7f);
+                auto res = buildop2("bvadd", b1, b2);
+                constrain->update(res, RelationType::greater, 0x7f);
+                return;
+            }
+            else
+            {
+                constrain->update(b1, RelationType::less, 0x7f);
+                constrain->update(b2, RelationType::less, 0x7f);
+                auto res = buildop2("bvadd", b1, b2);
+                constrain->update(res, RelationType::less, 0x7f);
+                return;
+            }
+        }
+    }
+
+    void updateOFsub(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2, uint32_t op_size,\
+                     bool OF)
+    {
+
+    }
 
     void updateCFadd(SEEngine *se, std::shared_ptr<BitVector> b1, \
                      uint32_t op_size, bool CF)
     {
-        Constrain::RelationType type = CF? Constrain::greater :Constrain::less;
+        RelationType type = CF? RelationType ::greater :RelationType ::less;
         uint32_t max_num_size;
         if(op_size == 32)
         {
@@ -75,7 +146,7 @@ namespace tana{
     }
 
     void updateCFsub(SEEngine *se, std::shared_ptr<BitVector> b1, uint32_t op_size, bool CF) {
-        Constrain::RelationType type = CF ? Constrain::less : Constrain::greater;
+        RelationType type = CF ? RelationType ::less : RelationType ::greater;
         auto cons = std::make_shared<Constrain>(b1, type, 0);
         se->updateFlags("CF", cons);
     }
@@ -185,7 +256,7 @@ namespace tana{
         return std::make_unique<Inst_Base>(isStatic);
     }
 
-    bool inst_dyn_details::two_operand(SEEngine *se, Inst_Base *inst)
+    std::shared_ptr<BitVector> inst_dyn_details::two_operand(SEEngine *se, Inst_Base *inst)
     {
         std::shared_ptr<Operand> op0 = inst->oprd[0];
         std::shared_ptr<Operand> op1 = inst->oprd[1];
@@ -202,22 +273,20 @@ namespace tana{
             v1 = se->readMem(inst->get_memory_address(), op1->bit);
         } else {
             ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
-            return false;
         }
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
             res = buildop2(opcstr, v0, v1);
             se->writeReg(op0->field[0], res);
-            return true;
+            return res;
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(inst->get_memory_address(), op0->bit);
             res = buildop2(opcstr, v0, v1);
             se->writeMem(inst->get_memory_address(), op0->bit ,res);
-            return true;
+            return res;
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
-            return false;
         }
     }
 
@@ -303,16 +372,17 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            Constrain::RelationType type = this->vcpu.CF()? Constrain::nonequal : Constrain::equal;
-            auto cons = std::make_shared<Constrain>(v0, type, 0);
-            se->updateFlags("CF", cons);
+            updateCFsub(se, res, op0->bit, this->vcpu.CF());
 
             // Update SF
             updateSF(se, res, size, this->vcpu.SF());
 
             // Update ZF
-            updateZF(se, v0, this->vcpu.ZF());
+            updateZF(se, res, this->vcpu.ZF());
 
+            // Update OF
+            auto zero = std::make_shared<BitVector>(CONCRETE, 0);
+            updateOFsub(se, zero, v0, op0->bit, this->vcpu.OF());
         }
 
         if(status)
@@ -328,13 +398,21 @@ namespace tana{
         auto opcode_id = this->instruction_id;
         auto opcstr = "bv" + x86::insn_id2string(opcode_id);
 
+        std::shared_ptr<BitVector> v0, res;
+        bool status = false;
+
+
         if (op0->type == Operand::Reg) {
             assert(Registers::getRegType(op0->field[0]) == FULL);
-            auto v0 = se->readReg(op0->field[0]);
-            auto res = buildop1(opcstr, v0);
+            v0 = se->readReg(op0->field[0]);
+            res = buildop1(opcstr, v0);
             se->writeReg(op0->field[0], res);
-            return true;
+            status = true;
         }
+
+        if(status)
+            return true;
+
         ERROR("neg error: the operand is not Reg!");
         return false;
     }
@@ -364,6 +442,24 @@ namespace tana{
             //memory[it->memory_address] = res;
             se->writeMem(this->get_memory_address(), op0->bit, res);
         }
+
+        if(se->eflags)
+        {
+            // Update CF
+            // CF is not affected
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            auto one = std::make_shared<BitVector>(CONCRETE, 1);
+            updateOFadd(se, one, v0, op0->bit, this->vcpu.OF());
+
+        }
+
         return true;
 
     }
@@ -393,6 +489,24 @@ namespace tana{
         {
             se->writeMem(this->get_memory_address(), op0->bit, res);
         }
+
+        if(se->eflags)
+        {
+            // Update CF
+            // CF is not affected
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            auto one = std::make_shared<BitVector>(CONCRETE, 1);
+            updateOFadd(se, v0, one, op0->bit, this->vcpu.OF());
+
+        }
+
         return true;
 
     }
@@ -453,11 +567,12 @@ namespace tana{
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
         auto opcode_id = this->instruction_id;
+        bool CF = false;
 
         if(!(this->vcpu.eflags_state))
-            ERROR("CMOVB doesn't have eflags information");
+            WARN("CMOVB doesn't have eflags information");
 
-        auto CF = this->vcpu.CF();
+        CF = this->vcpu.CF();
         if(!CF)
             return true;
 
@@ -738,13 +853,82 @@ namespace tana{
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
 
-        if (op1->type == Operand::Reg) {
-
+        std::shared_ptr<BitVector> v0, v1, res;
+        bool CF = false;
+        bool flags = false;
+        if(!this->vcpu.eflags_state) {
+            WARN("SBB doesn't have eflags information");
+            return false;
         }
-        if (op1->type == Operand::Mem) {
+        CF = this->vcpu.CF();
 
+        if (op1->type == Operand::Reg)
+        {
+            v1 = se->readReg(op1->field[0]);
         }
-        return true;
+
+        if (op1->type == Operand::Mem)
+        {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        }
+
+        if (op1->type == Operand::ImmValue)
+        {
+            v1 = std::make_shared<BitVector>(CONCRETE, op1->field[0]);
+        }
+
+
+        if(op0->type == Operand::Reg)
+        {
+            v0 = se->readReg(op0->field[0]);
+            flags = true;
+        }
+
+        if(op0->type == Operand::Mem)
+        {
+            v0 = se->readMem(this->get_memory_address(), op1->bit);
+            flags = true;
+        }
+
+        if(CF)
+        {
+            auto one_bit = std::make_shared<BitVector>(CONCRETE, 1);
+            res = buildop2("bvsub", v0, v1);
+            res = buildop2("bvsub", res, one_bit);
+        }
+        else {
+            res = buildop2("bvsub", v0, v1);
+        }
+
+        if(op0->type == Operand::Reg)
+        {
+            se->writeReg(op0->field[0], res);
+        }
+
+        if(op0->type == Operand::Mem)
+        {
+            se->writeMem(this->get_memory_address(), op0->bit, res);
+        }
+
+        if(se->eflags)
+        {
+            // Update CF
+            updateCFsub(se, res, op0->bit, this->vcpu.CF());
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            updateOFsub(se, v0, v1, op0->bit, this->vcpu.OF());
+        }
+
+        if(flags)
+            return true;
+
+        return false;
     }
 
 
@@ -839,25 +1023,161 @@ namespace tana{
 
     bool Dyn_X86_INS_ADD::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else if (op1->type == Operand::Mem) {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+            res = buildop2(opcstr, v0, v1);
+            se->writeReg(op0->field[0], res);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop2(opcstr, v0, v1);
+            se->writeMem(this->get_memory_address(), op0->bit ,res);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        if(se->eflags)
+        {
+            // Update CF
+            updateCFadd(se, res, op0->bit, this->vcpu.CF());
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            updateOFadd(se, v0, v1, op0->bit, this->vcpu.OF());
+
+        }
+
+        return true;
     }
 
     bool Dyn_X86_INS_SUB::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else if (op1->type == Operand::Mem) {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+            res = buildop2(opcstr, v0, v1);
+            se->writeReg(op0->field[0], res);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop2(opcstr, v0, v1);
+            se->writeMem(this->get_memory_address(), op0->bit ,res);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        if(se->eflags)
+        {
+            // Update CF
+            updateCFsub(se, res, op0->bit, this->vcpu.CF());
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            updateOFsub(se, v0, v1, op0->bit, this->vcpu.OF());
+
+        }
+
+        return true;
     }
 
     bool Dyn_X86_INS_AND::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else if (op1->type == Operand::Mem) {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+            res = buildop2(opcstr, v0, v1);
+            se->writeReg(op0->field[0], res);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop2(opcstr, v0, v1);
+            se->writeMem(this->get_memory_address(), op0->bit ,res);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        if(se->eflags)
+        {
+            // Update OF
+            se->clearFlags("CF");
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            se->clearFlags("OF");
+        }
+
+        return true;
+
     }
 
     bool Dyn_X86_INS_ADC::symbolic_execution(SEEngine *se)
     {
-        if(!(this->vcpu.eflags_state))
-            return inst_dyn_details::two_operand(se, this);
 
-        bool CF = this->vcpu.CF();
+        bool CF = false, status = false;
+        if(this->vcpu.eflags_state)
+            CF = this->vcpu.CF();
 
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
@@ -887,7 +1207,7 @@ namespace tana{
                 res = buildop2("bvadd", res, v_one);
             }
             se->writeReg(op0->field[0], res);
-            return true;
+            status = true;
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
             res = buildop2("bvadd", v0, v1);
@@ -896,48 +1216,65 @@ namespace tana{
                 res = buildop2("bvadd", res, v_one);
             }
             se->writeMem(this->get_memory_address(), op0->bit, res);
-            return true;
+            status = true;
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
             return false;
         }
 
+        if(se->eflags)
+        {
+            // Update CF
+            updateCFadd(se, res, op0->bit, this->vcpu.CF());
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            updateOFadd(se, v0, v1, op0->bit, this->vcpu.OF());
+        }
+
+
+        return true;
 
     }
 
     bool Dyn_X86_INS_ROR::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this);
     }
 
     bool Dyn_X86_INS_ROL::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this);
     }
 
     bool Dyn_X86_INS_OR::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this);
     }
 
     bool Dyn_X86_INS_XOR::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this);
     }
 
     bool Dyn_X86_INS_SHL::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this);
     }
 
     bool Dyn_X86_INS_SHR::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this);
     }
 
     bool Dyn_X86_INS_SAR::symbolic_execution(SEEngine *se)
     {
-        return inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this);
     }
 
 

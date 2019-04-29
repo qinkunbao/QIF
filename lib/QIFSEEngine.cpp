@@ -269,5 +269,11 @@ namespace tana {
         ERROR("Not recognized flag_name");
     }
 
+    void QIFSEEngine::clearFlags(std::string flag_name)
+    {
+        std::shared_ptr<Constrain> con = nullptr;
+        this->updateFlags(flag_name, con);
+    }
+
 
 }
