@@ -253,6 +253,18 @@ namespace tana{
         if(id == x86::x86_insn::X86_INS_DIV)
             return std::make_unique<Dyn_X86_INS_DIV>(isStatic);
 
+        if(id == x86::x86_insn::X86_INS_TEST)
+            return std::make_unique<Dyn_X86_INS_TEST>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_CMP)
+            return std::make_unique<Dyn_X86_INS_CMP>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JMP)
+            return std::make_unique<Dyn_X86_INS_JMP>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JE)
+            return std::make_unique<Dyn_X86_INS_JE>(isStatic);
+
         return std::make_unique<Inst_Base>(isStatic);
     }
 
@@ -288,6 +300,8 @@ namespace tana{
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
         }
+
+        return nullptr;
     }
 
 
@@ -1155,7 +1169,7 @@ namespace tana{
 
         if(se->eflags)
         {
-            // Update OF
+            // Update CF
             se->clearFlags("CF");
 
             // Update SF
@@ -1245,38 +1259,130 @@ namespace tana{
     bool Dyn_X86_INS_ROR::symbolic_execution(SEEngine *se)
     {
         auto res = inst_dyn_details::two_operand(se, this);
+        return true;
     }
 
     bool Dyn_X86_INS_ROL::symbolic_execution(SEEngine *se)
     {
         auto res = inst_dyn_details::two_operand(se, this);
-    }
-
-    bool Dyn_X86_INS_OR::symbolic_execution(SEEngine *se)
-    {
-        auto res = inst_dyn_details::two_operand(se, this);
-    }
-
-    bool Dyn_X86_INS_XOR::symbolic_execution(SEEngine *se)
-    {
-        auto res = inst_dyn_details::two_operand(se, this);
+        return true;
     }
 
     bool Dyn_X86_INS_SHL::symbolic_execution(SEEngine *se)
     {
         auto res = inst_dyn_details::two_operand(se, this);
+        return true;
     }
 
     bool Dyn_X86_INS_SHR::symbolic_execution(SEEngine *se)
     {
         auto res = inst_dyn_details::two_operand(se, this);
+        return true;
     }
 
     bool Dyn_X86_INS_SAR::symbolic_execution(SEEngine *se)
     {
         auto res = inst_dyn_details::two_operand(se, this);
+        return true;
     }
 
+    bool Dyn_X86_INS_OR::symbolic_execution(SEEngine *se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else if (op1->type == Operand::Mem) {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+            res = buildop2(opcstr, v0, v1);
+            se->writeReg(op0->field[0], res);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop2(opcstr, v0, v1);
+            se->writeMem(this->get_memory_address(), op0->bit ,res);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        if(se->eflags)
+        {
+            // Update CF
+            se->clearFlags("CF");
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            se->clearFlags("OF");
+        }
+
+        return true;
+    }
+
+    bool Dyn_X86_INS_XOR::symbolic_execution(SEEngine *se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else if (op1->type == Operand::Mem) {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+            res = buildop2(opcstr, v0, v1);
+            se->writeReg(op0->field[0], res);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop2(opcstr, v0, v1);
+            se->writeMem(this->get_memory_address(), op0->bit ,res);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        if(se->eflags)
+        {
+            // Update CF
+            se->clearFlags("CF");
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            se->clearFlags("OF");
+        }
+
+        return true;
+    }
 
     bool Dyn_X86_INS_CALL::symbolic_execution(SEEngine *se)
     {
@@ -1362,6 +1468,113 @@ namespace tana{
             se->writeReg("edx", remainder);
         }
 
+        return true;
+
+    }
+
+    // The And instrucntion without storing the result
+    bool Dyn_X86_INS_TEST::symbolic_execution(tana::SEEngine *se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+        auto opcstr = "bvand";
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else if (op1->type == Operand::Mem) {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+            res = buildop2(opcstr, v0, v1);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop2(opcstr, v0, v1);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        if(se->eflags)
+        {
+            // Update CF
+            se->clearFlags("CF");
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            se->clearFlags("OF");
+        }
+
+        return true;
+    }
+
+    bool Dyn_X86_INS_CMP::symbolic_execution(tana::SEEngine *se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+        std::string opcstr = "bvsub";
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else if (op1->type == Operand::Mem) {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+            res = buildop2(opcstr, v0, v1);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop2(opcstr, v0, v1);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        if(se->eflags)
+        {
+            // Update CF
+            updateCFsub(se, res, op0->bit, this->vcpu.CF());
+
+            // Update SF
+            updateSF(se, res, op0->bit, this->vcpu.SF());
+
+            // Update ZF
+            updateZF(se, res, this->vcpu.ZF());
+
+            // Update OF
+            updateOFsub(se, v0, v1, op0->bit, this->vcpu.OF());
+
+        }
+
+        return true;
+    }
+
+    bool Dyn_X86_INS_JMP::symbolic_execution(tana::SEEngine *se)
+    {
+        return true;
+    }
+
+    bool Dyn_X86_INS_JE::symbolic_execution(tana::SEEngine *se)
+    {
+        std::shared_ptr<Constrain> cons = se->getFlags("ZF");
+        se->updateConstrains(cons);
         return true;
 
     }
