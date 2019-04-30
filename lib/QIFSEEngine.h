@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <tuple>
 #include "ins_types.h"
 #include "Register.h"
 #include "Engine.h"
@@ -21,8 +22,9 @@ namespace tana {
         std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
         bool memory_find(uint32_t addr);
         std::map<std::string, std::shared_ptr<BitVector>> ctx;
-        std::shared_ptr<tana::Constrain> CF, OP, SF, ZF, AF, PF;
-        std::vector<std::shared_ptr<tana::Constrain>> constrains;
+        std::shared_ptr<BitVector> CF, OP, SF, ZF, AF, PF;
+        std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> constrains;
+        uint32_t eip;
 
     public:
 
@@ -50,13 +52,13 @@ namespace tana {
 
         int run() override ;
 
-        void updateFlags(std::string, std::shared_ptr<Constrain> cons) override ;
+        void updateFlags(std::string, std::shared_ptr<BitVector>) override ;
 
         void clearFlags(std::string) override ;
 
-        std::shared_ptr<tana::Constrain> getFlags(std::string) override;
+        std::shared_ptr<tana::BitVector> getFlags(std::string) override;
 
-        void updateConstrains(std::shared_ptr<tana::Constrain> cons) override ;
+        void updateConstrains(std::shared_ptr<Constrain> cons) override ;
 
     };
 

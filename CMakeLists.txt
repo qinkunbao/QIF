@@ -76,6 +76,9 @@ add_executable(TestX86
 add_executable(TestConstrain
         test/test_constrain.cpp)
 
+add_executable(TestBit
+        test/test_bit.cpp)
+
 add_executable(BitTaint
         BitTaint/BitTaint.cpp
         BitTaint/BitTaint.h

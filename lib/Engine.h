@@ -71,7 +71,7 @@ namespace tana {
 
         std::shared_ptr<BitVector> formula_simplfy(std::shared_ptr<BitVector> v);
 
-        virtual void updateFlags(std::string flag_name, std::shared_ptr<Constrain> cons)
+        virtual void updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons)
         {
             return;
         }
@@ -81,12 +81,12 @@ namespace tana {
             return;
         }
 
-        virtual std::shared_ptr<tana::Constrain> getFlags(std::string)
+        virtual std::shared_ptr<BitVector> getFlags(std::string)
         {
             return nullptr;
         }
 
-        virtual void updateConstrains(std::shared_ptr<tana::Constrain> cons)
+        virtual void updateConstrains(std::shared_ptr<Constrain> cons)
         {
             return;
         }

@@ -12,8 +12,35 @@ namespace tana {
     class BitVector;
     class Operation;
 
-    enum ValueType {
+    enum class ValueType {
         SYMBOL, CONCRETE
+    };
+
+    enum class bvoperator
+    {
+        bvadd,
+        bvsub,
+        bvimul,
+        bvshld,
+        bvshrd,
+        bvxor,
+        bvand,
+        bvor,
+        bvshl,
+        bvshr,
+        bvsar,
+        bvneg,
+        bvnot,
+        bvrol,
+        bvror,
+        bvquo,
+        bvrem,
+        equal,
+        greater,
+        less,
+        bvzeroext,
+        bvextract,
+        bvconcat
     };
 
     class BitVector {
@@ -94,5 +121,8 @@ namespace tana {
     std::shared_ptr<BitVector>
     buildop3(std::string opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
             std::shared_ptr<BitVector> v3);
+
+
+
 
 }

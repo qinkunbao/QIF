@@ -30,16 +30,14 @@ namespace tana {
     }
 
     int
-    SEEngine::run(){
-        for (auto inst = start; inst != end; ++inst)
-        {
+    SEEngine::run() {
+        for (auto inst = start; inst != end; ++inst) {
             auto it = inst->get();
             if (x86::SymbolicExecutionNoEffect(it->instruction_id))
                 continue;
             bool status = it->symbolic_execution(this);
 
-            if (!status)
-            {
+            if (!status) {
                 ERROR("No recognized instruction");
                 return false;
             }
@@ -74,14 +72,14 @@ namespace tana {
         std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvconcat", v1, v2);
 
         if (v1->isSymbol() || v2->isSymbol())
-            res = std::make_shared<BitVector>(SYMBOL, std::move(oper));
+            res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
         else {
             uint32_t v1_value = eval(v1);
             v1_value = BitVector::extract(v1_value, v1->high_bit, v1->low_bit);
             uint32_t v2_value = eval(v2);
             v2_value = BitVector::extract(v2_value, v2->high_bit, v2->low_bit);
             uint32_t result_value = BitVector::concat(v1_value, v2_value, v1->size(), v2->size());
-            res = std::make_shared<BitVector>(CONCRETE, result_value);
+            res = std::make_shared<BitVector>(ValueType::SYMBOL, result_value);
         }
 
         res->low_bit = 1;
@@ -100,15 +98,12 @@ namespace tana {
 
         std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvextract", v);
         std::shared_ptr<BitVector> res = nullptr;
-        if(v->isSymbol())
-        {
-            res = std::make_shared<BitVector>(SYMBOL, std::move(oper));
-        }
-        else
-        {
+        if (v->isSymbol()) {
+            res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
+        } else {
             uint32_t result = eval(v);
             result = BitVector::extract(result, high, low);
-            res = std::make_shared<BitVector>(CONCRETE, result);
+            res = std::make_shared<BitVector>(ValueType::SYMBOL, result);
         }
         res->high_bit = high;
         res->low_bit = low;
@@ -116,20 +111,16 @@ namespace tana {
     }
 
     std::shared_ptr<BitVector>
-    SEEngine::ZeroExt(std::shared_ptr<tana::BitVector> v, tana::tana_type::T_SIZE size_new)
-    {
+    SEEngine::ZeroExt(std::shared_ptr<tana::BitVector> v, tana::tana_type::T_SIZE size_new) {
         assert(size_new >= v->size());
         std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvzeroext", v);
         std::shared_ptr<BitVector> res = nullptr;
-        if(v->isSymbol())
-        {
-            res = std::make_shared<BitVector>(SYMBOL, std::move(oper));
-        }
-        else
-        {
+        if (v->isSymbol()) {
+            res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
+        } else {
             uint32_t result = eval(v);
             result = BitVector::extract(result, size_new, 1);
-            res = std::make_shared<BitVector>(CONCRETE, result);
+            res = std::make_shared<BitVector>(ValueType::SYMBOL, result);
         }
         res->high_bit = size_new;
         res->low_bit = 1;
@@ -138,19 +129,16 @@ namespace tana {
 
     std::shared_ptr<BitVector>
     SEEngine::SignExt(std::shared_ptr<tana::BitVector> v, tana::tana_type::T_SIZE orgin_size,
-                         tana::tana_type::T_SIZE new_size){
+                      tana::tana_type::T_SIZE new_size) {
         assert(orgin_size < new_size);
         std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvsignext", v);
         std::shared_ptr<BitVector> res = nullptr;
-        if(v->isSymbol())
-        {
-            res = std::make_shared<BitVector>(SYMBOL, std::move(oper));
-        }
-        else
-        {
+        if (v->isSymbol()) {
+            res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
+        } else {
             uint32_t result = eval(v);
             result = BitVector::signext(result, orgin_size, new_size);
-            res = std::make_shared<BitVector>(CONCRETE, result);
+            res = std::make_shared<BitVector>(ValueType::SYMBOL, result);
         }
         res->high_bit = new_size;
         res->low_bit = 1;
@@ -161,21 +149,18 @@ namespace tana {
 
     void
     SEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
-                      std::vector<std::unique_ptr<Inst_Base>>::iterator it2) {
+                   std::vector<std::unique_ptr<Inst_Base>>::iterator it2) {
         this->start = it1;
         this->end = it2;
     }
 
     void
     SEEngine::initAllRegSymol(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
-                                 std::vector<std::unique_ptr<Inst_Base>>::iterator it2) {
+                              std::vector<std::unique_ptr<Inst_Base>>::iterator it2) {
 
         this->start = it1;
         this->end = it2;
     }
-
-
-
 
 
     uint32_t
@@ -193,8 +178,6 @@ namespace tana {
 
         return eval(f, input);
     }
-
-
 
 
     std::vector<std::shared_ptr<BitVector> >
@@ -263,7 +246,7 @@ namespace tana {
     SEEngine::eval(const std::shared_ptr<BitVector> &v, std::map<std::shared_ptr<BitVector>, uint32_t> *inmap) {
         const std::unique_ptr<Operation> &op = v->opr;
         if (op == nullptr) {
-            if (v->val_type == CONCRETE)
+            if (v->val_type == ValueType::SYMBOL)
                 return v->concrete_value;
             else
                 return (*inmap)[v];
@@ -275,74 +258,102 @@ namespace tana {
             if (op->val[1] != nullptr) op1 = eval(op->val[1], inmap);
             if (op->val[2] != nullptr) op2 = eval(op->val[2], inmap);
 
-            if(op->opty == "bvzeroext"){
+            if (op->opty == "bvzeroext")
                 return BitVector::zeroext(op0);
-            } else if (op->opty == "bvextract") {
+
+            if (op->opty == "bvextract")
                 return BitVector::extract(op0, v->high_bit, v->low_bit);
-            } else if (op->opty == "bvconcat") {
-                return BitVector::concat(op0,op1,op->val[0]->size(),op->val[1]->size());
-            }  else if (op->opty == "bvadd") {
+
+            if (op->opty == "bvconcat")
+                return BitVector::concat(op0, op1, op->val[0]->size(), op->val[1]->size());
+
+            if (op->opty == "bvadd")
                 return op0 + op1;
-            } else if (op->opty == "bvadc") {
+
+            if (op->opty == "bvadc")
                 return op0 + op1 + 1;
-            } else if (op->opty == "bvsub") {
+
+            if (op->opty == "bvsub")
                 return op0 - op1;
-            } else if (op->opty == "bvimul") {
+
+            if (op->opty == "bvimul")
                 return op0 * op1;
-            } else if (op->opty == "bvshld") {
+
+            if (op->opty == "bvshld")
                 return BitVector::shld32(op0, op1, op2);
-            } else if (op->opty == "bvshrd") {
+
+            if (op->opty == "bvshrd")
                 return BitVector::shrd32(op0, op1, op2);
-            } else if (op->opty == "bvxor") {
+
+            if (op->opty == "bvxor")
                 return op0 ^ op1;
-            } else if (op->opty == "bvand") {
+
+            if (op->opty == "bvand")
                 return op0 & op1;
-            } else if (op->opty == "bvor") {
+
+            if (op->opty == "bvor")
                 return op0 | op1;
-            } else if (op->opty == "bvshl") {
+
+            if (op->opty == "bvshl")
                 return op0 << op1;
-            } else if (op->opty == "bvshr") {
+
+            if (op->opty == "bvshr")
                 return op0 >> op1;
-            } else if (op->opty == "bvsar") {
+
+            if (op->opty == "bvsar")
                 return BitVector::arithmeticRightShift(op0, op1);
-            } else if (op->opty == "bvneg") {
+
+            if (op->opty == "bvneg")
                 return ~op0 + 1;
-            } else if (op->opty == "bvnot") {
+
+            if (op->opty == "bvnot")
                 return ~op0;
-            } else if (op->opty == "bvinc") {
+
+            if (op->opty == "bvinc")
                 return op0 + 1;
-            } else if (op->opty == "bvdec") {
+
+            if (op->opty == "bvdec")
                 return op0 - 1;
-            } else if (op->opty == "bvrol") {
+
+            if (op->opty == "bvrol")
                 return BitVector::rol32(op0, op1);
-            } else if (op->opty == "bvror") {
+
+            if (op->opty == "bvror")
                 return BitVector::ror32(op0, op1);
-            } else if (op->opty == "bvquo"){
+
+            if (op->opty == "bvquo")
                 return op0 / op1;
-            } else if (op->opty == "bvrem"){
+
+            if (op->opty == "bvrem")
                 return op0 % op1;
-            } else {
-                std::cout << "Instruction: [" << op->opty << "] is not interpreted!" << std::endl;
-                if ((op->val[0] != nullptr) && ((op->val[1] != nullptr))) return op0 + op1;
-                if (op->val[0] != nullptr) return op0;
-                return 1;
-            }
+
+            if (op->opty == "equal")
+                return op0 == op1;
+
+            if (op->opty == "greater")
+                return op0 > op1;
+
+            if (op->opty == "less")
+                return op0 < op1;
+
+            std::cout << "Instruction: [" << op->opty << "] is not interpreted!" << std::endl;
+            if ((op->val[0] != nullptr) && ((op->val[1] != nullptr))) return op0 + op1;
+            if (op->val[0] != nullptr) return op0;
+            return 1;
+
         }
     }
 
     std::shared_ptr<BitVector>
-    SEEngine::formula_simplfy(std::shared_ptr<tana::BitVector> v)
-    {
+    SEEngine::formula_simplfy(std::shared_ptr<tana::BitVector> v) {
         const std::unique_ptr<Operation> &op = v->opr;
-        if (op == nullptr)
-        {
+        if (op == nullptr) {
             return v;
         }
         uint32_t input_num = v->symbol_num();
-        if(input_num == 0)
-        {
+        if (input_num == 0) {
             uint32_t res = eval(v);
-            auto res_v = std::make_shared<BitVector>(CONCRETE, res);
+            auto res_v = std::make_shared<BitVector>(ValueType::SYMBOL, res);
             return res_v;
         }
 

@@ -15,6 +15,13 @@ namespace tana {
         std::shared_ptr<BitVector> two_operand(SEEngine *se, Inst_Base *inst);
     }
 
+    class Dyn_X86_INS_NOP : public Inst_Base {
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+
 
     class Dyn_X86_INS_PUSH : public Inst_Base {
     public:
@@ -239,4 +246,15 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
+    class Dyn_X86_INS_JB : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JG : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
 }

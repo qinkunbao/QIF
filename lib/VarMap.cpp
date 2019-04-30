@@ -158,7 +158,7 @@ namespace tana {
             que.pop();
 
             if (op == nullptr) {
-                if (v->val_type == SYMBOL)
+                if (v->val_type == ValueType ::SYMBOL)
                     input_set.insert(v);
             } else {
                 for (int i = 0; i < 3; ++i) {
@@ -833,9 +833,9 @@ namespace tana {
         if ((opr1 == nullptr) && (opr2 == nullptr)) {
             if (type1 != type2)
                 return false;
-            if (type1 == SYMBOL)
+            if (type1 == ValueType ::SYMBOL)
                 return true;
-            if (type1 == CONCRETE)
+            if (type1 == ValueType ::CONCRETE)
                 return (v1->concrete_value) == (v2->concrete_value);
         }
 
