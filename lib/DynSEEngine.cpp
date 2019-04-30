@@ -50,14 +50,14 @@ namespace tana {
     DynSEEngine::initAllRegSymol(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                                  std::vector<std::unique_ptr<Inst_Base>>::iterator it2)
             {
-                ctx["eax"] = std::make_shared<BitVector>(SYMBOL, "eax");
-                ctx["ebx"] = std::make_shared<BitVector>(SYMBOL, "ebx");
-                ctx["ecx"] = std::make_shared<BitVector>(SYMBOL, "ecx");
-                ctx["edx"] = std::make_shared<BitVector>(SYMBOL, "edx");
-                ctx["esi"] = std::make_shared<BitVector>(SYMBOL, "esi");
-                ctx["edi"] = std::make_shared<BitVector>(SYMBOL, "edi");
-                ctx["esp"] = std::make_shared<BitVector>(SYMBOL, "esp");
-                ctx["ebp"] = std::make_shared<BitVector>(SYMBOL, "ebp");
+                ctx["eax"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "eax");
+                ctx["ebx"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "ebx");
+                ctx["ecx"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "ecx");
+                ctx["edx"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "edx");
+                ctx["esi"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "esi");
+                ctx["edi"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "edi");
+                ctx["esp"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "esp");
+                ctx["ebp"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "ebp");
 
                 this->start = it1;
                 this->end = it2;
@@ -215,7 +215,7 @@ namespace tana {
         } else {
             std::stringstream ss;
             ss << "Mem:" << std::hex << memory_address << std::dec;
-            v0 = std::make_shared<BitVector>(SYMBOL, ss.str());
+            v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str());
             memory[memory_address] = v0;
         }
         if (size == T_BYTE_SIZE * T_DWORD)
@@ -246,6 +246,16 @@ namespace tana {
             memory[memory_address] = v;
             return true;
         }
+
+        if (memory_find(memory_address)) {
+            v0 = memory[memory_address];
+        } else {
+            std::stringstream ss;
+            ss << "Mem:" << std::hex << memory_address << std::dec;
+            v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str());
+            memory[memory_address] = v0;
+        }
+
 
         if(addr_size == T_BYTE_SIZE * T_WORD)
         {

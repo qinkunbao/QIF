@@ -10,14 +10,14 @@
 
 namespace tana {
     Constrain::Constrain(std::shared_ptr<BitVector> bit, RelationType relation, uint32_t num) {
-        std::shared_ptr<BitVector> bit_num = std::make_shared<BitVector>(CONCRETE, num);
+        std::shared_ptr<BitVector> bit_num = std::make_shared<BitVector>(ValueType ::CONCRETE, num);
         std::shared_ptr<BitVector> res = buildop2("bvsub", bit, bit_num);
         r.push_back(std::make_tuple(res, relation));
     }
 
     void Constrain::update(std::shared_ptr<tana::BitVector> b, tana::RelationType type, uint32_t num)
     {
-        std::shared_ptr<BitVector> bit_num = std::make_shared<BitVector>(CONCRETE, num);
+        std::shared_ptr<BitVector> bit_num = std::make_shared<BitVector>(ValueType ::CONCRETE, num);
         std::shared_ptr<BitVector> res = buildop2("bvsub", b, bit_num);
         r.push_back(std::make_tuple(res, type));
     }

@@ -15,14 +15,14 @@ namespace tana {
                              uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OP(nullptr), SF(nullptr),
                                                            ZF(nullptr), AF(nullptr), PF(nullptr) {
 
-        ctx["eax"] = std::make_shared<BitVector>(CONCRETE, eax);
-        ctx["ebx"] = std::make_shared<BitVector>(CONCRETE, ebx);
-        ctx["ecx"] = std::make_shared<BitVector>(CONCRETE, ecx);
-        ctx["edx"] = std::make_shared<BitVector>(CONCRETE, edx);
-        ctx["esi"] = std::make_shared<BitVector>(CONCRETE, esi);
-        ctx["edi"] = std::make_shared<BitVector>(CONCRETE, edi);
-        ctx["esp"] = std::make_shared<BitVector>(CONCRETE, esp);
-        ctx["ebp"] = std::make_shared<BitVector>(CONCRETE, ebp);
+        ctx["eax"] = std::make_shared<BitVector>(ValueType ::CONCRETE, eax);
+        ctx["ebx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ebx);
+        ctx["ecx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ecx);
+        ctx["edx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, edx);
+        ctx["esi"] = std::make_shared<BitVector>(ValueType ::CONCRETE, esi);
+        ctx["edi"] = std::make_shared<BitVector>(ValueType ::CONCRETE, edi);
+        ctx["esp"] = std::make_shared<BitVector>(ValueType ::CONCRETE, esp);
+        ctx["ebp"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ebp);
 
         eflags = true;
 
@@ -44,7 +44,7 @@ namespace tana {
 
         for (auto offset = 0; offset <= m_size; offset = offset + 4) {
             ss << "Key" << offset / 4;
-            v0 = std::make_shared<BitVector>(SYMBOL, ss.str());
+            v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str());
             memory[address + offset] = v0;
         }
 
@@ -52,7 +52,7 @@ namespace tana {
 
     std::vector<std::shared_ptr<BitVector>> QIFSEEngine::getAllOutput() {
         std::vector<std::shared_ptr<BitVector>> outputs;
-        auto v = std::make_shared<BitVector>(CONCRETE, 0);
+        auto v = std::make_shared<BitVector>(ValueType ::CONCRETE, 0);
         outputs.push_back(v);
         return outputs;
     }
@@ -163,7 +163,7 @@ namespace tana {
         } else {
             std::stringstream ss;
             ss << "Environment data" << std::dec;
-            v0 = std::make_shared<BitVector>(CONCRETE, ss.str());
+            v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
             memory[memory_address] = v0;
         }
         if (size == T_BYTE_SIZE * T_DWORD) {
@@ -191,6 +191,16 @@ namespace tana {
             return true;
         }
 
+        if (memory_find(memory_address)) {
+            v0 = memory[memory_address];
+        } else {
+            std::stringstream ss;
+            ss << "Mem:" << std::hex << memory_address << std::dec;
+            v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str());
+            memory[memory_address] = v0;
+        }
+
+
         if (addr_size == T_BYTE_SIZE * T_WORD) {
             std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 17, 32);
             if (!v->isSymbol()) {
@@ -217,6 +227,7 @@ namespace tana {
     QIFSEEngine::run() {
         for (auto inst = start; inst != end; ++inst) {
             auto it = inst->get();
+            eip = it->addrn;
             bool status = it->symbolic_execution(this);
 
             if (!status) {
@@ -228,7 +239,7 @@ namespace tana {
         return true;
     }
 
-    void QIFSEEngine::updateFlags(std::string flag_name, std::shared_ptr<Constrain> cons)
+    void QIFSEEngine::updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons)
     {
         if(flag_name == "CF")
         {
@@ -271,11 +282,11 @@ namespace tana {
 
     void QIFSEEngine::clearFlags(std::string flag_name)
     {
-        std::shared_ptr<Constrain> con = nullptr;
+        std::shared_ptr<BitVector> con = std::make_shared<BitVector>(ValueType::SYMBOL, 0);
         this->updateFlags(flag_name, con);
     }
 
-    std::shared_ptr<tana::Constrain> QIFSEEngine::getFlags(std::string flag_name)
+    std::shared_ptr<tana::BitVector> QIFSEEngine::getFlags(std::string flag_name)
     {
         if(flag_name == "CF")
         {
@@ -311,9 +322,10 @@ namespace tana {
         return nullptr;
     }
 
-    void QIFSEEngine::updateConstrains(std::shared_ptr<tana::Constrain> cons)
+    void QIFSEEngine::updateConstrains(std::shared_ptr<Constrain> cons)
     {
-        constrains.push_back(cons);
+        auto res = std::make_tuple(this->eip, cons);
+        constrains.push_back(res);
     }
 
 

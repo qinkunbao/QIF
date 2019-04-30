@@ -14,141 +14,35 @@
 namespace tana{
 
 
-    void updateZF(SEEngine *se, std::shared_ptr<BitVector> b, bool ZF)
-    {
-        RelationType type = ZF? RelationType ::equal: RelationType ::nonequal;
-        auto cons = std::make_shared<Constrain>(b, type, 0);
-        se->updateFlags("ZF", cons);
-    }
-
-    void updateSF(SEEngine *se, std::shared_ptr<BitVector> b, uint32_t op_size, bool SF)
+    void updateZF(SEEngine *se, std::shared_ptr<BitVector> b)
     {
 
-        RelationType  type = SF? RelationType ::greater: RelationType ::less;
-        uint32_t max_num_size;
-        if(op_size == 32)
-        {
-            max_num_size = 0x7fffffff;
-
-        }
-        else if (op_size == 16)
-        {
-            max_num_size = 0x7fff;
-
-        }
-        else if (op_size == 8)
-        {
-            max_num_size = 0x7f;
-        } else{
-            ERROR("Invalid operand size");
-        }
-
-        auto cons = std::make_shared<Constrain>(b, type, max_num_size);
-        se->updateFlags("SF", cons);
     }
 
-    void updateOFadd(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2, uint32_t op_size,\
-                     bool OF)
+    void updateSF(SEEngine *se, std::shared_ptr<BitVector> b, uint32_t op_size)
     {
-        std::shared_ptr<Constrain> constrain;
-        if(op_size == 32)
-        {
-            if(OF)
-            {
-                constrain->update(b1, RelationType::less, 0x7fffffff);
-                constrain->update(b2, RelationType::less, 0x7fffffff);
-                auto res = buildop2("bvadd", b1, b2);
-                constrain->update(res, RelationType::greater, 0x7fffffff);
-                return;
-            }
-            else
-            {
-                constrain->update(b1, RelationType::less, 0x7fffffff);
-                constrain->update(b2, RelationType::less, 0x7fffffff);
-                auto res = buildop2("bvadd", b1, b2);
-                constrain->update(res, RelationType::less, 0x7fffffff);
-                return;
-            }
-        }
 
-        if(op_size == 16)
-        {
-            if(OF)
-            {
-                constrain->update(b1, RelationType::less, 0x7fff);
-                constrain->update(b2, RelationType::less, 0x7fff);
-                auto res = buildop2("bvadd", b1, b2);
-                constrain->update(res, RelationType::greater, 0x7fff);
-                return;
-            }
-            else
-            {
-                constrain->update(b1, RelationType::less, 0x7fff);
-                constrain->update(b2, RelationType::less, 0x7fff);
-                auto res = buildop2("bvadd", b1, b2);
-                constrain->update(res, RelationType::less, 0x7fff);
-                return;
-            }
-        }
 
-        if(op_size == 8)
-        {
-            if(OF)
-            {
-                constrain->update(b1, RelationType::less, 0x7f);
-                constrain->update(b2, RelationType::less, 0x7f);
-                auto res = buildop2("bvadd", b1, b2);
-                constrain->update(res, RelationType::greater, 0x7f);
-                return;
-            }
-            else
-            {
-                constrain->update(b1, RelationType::less, 0x7f);
-                constrain->update(b2, RelationType::less, 0x7f);
-                auto res = buildop2("bvadd", b1, b2);
-                constrain->update(res, RelationType::less, 0x7f);
-                return;
-            }
-        }
     }
 
-    void updateOFsub(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2, uint32_t op_size,\
-                     bool OF)
+    void updateOFadd(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2, uint32_t op_size)
+    {
+
+    }
+
+    void updateOFsub(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2, uint32_t op_size)
     {
 
     }
 
     void updateCFadd(SEEngine *se, std::shared_ptr<BitVector> b1, \
-                     uint32_t op_size, bool CF)
+                     uint32_t op_size)
     {
-        RelationType type = CF? RelationType ::greater :RelationType ::less;
-        uint32_t max_num_size;
-        if(op_size == 32)
-        {
-            max_num_size = 0xffffffff;
-
-        }
-        else if (op_size == 16)
-        {
-            max_num_size = 0xffff;
-
-        }
-        else if (op_size == 8)
-        {
-            max_num_size = 0xff;
-        } else{
-            ERROR("Invalid operand size");
-        }
-
-        auto cons = std::make_shared<Constrain>(b1, type, max_num_size);
-        se->updateFlags("CF", cons);
 
     }
 
-    void updateCFsub(SEEngine *se, std::shared_ptr<BitVector> b1, uint32_t op_size, bool CF) {
-        RelationType type = CF ? RelationType ::less : RelationType ::greater;
-        auto cons = std::make_shared<Constrain>(b1, type, 0);
-        se->updateFlags("CF", cons);
+    void updateCFsub(SEEngine *se, std::shared_ptr<BitVector> b1, uint32_t op_size) {
+
     }
 
 
@@ -156,6 +50,9 @@ namespace tana{
 
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic)
     {
+
+        if(id == x86::x86_insn::X86_INS_NOP)
+            return std::make_unique<Dyn_X86_INS_NOP>(isStatic);
 
         if(id == x86::x86_insn::X86_INS_PUSH)
             return std::make_unique<Dyn_X86_INS_PUSH>(isStatic);
@@ -265,6 +162,15 @@ namespace tana{
         if(id == x86::x86_insn::X86_INS_JE)
             return std::make_unique<Dyn_X86_INS_JE>(isStatic);
 
+        if(id == x86::x86_insn::X86_INS_JB)
+            return std::make_unique<Dyn_X86_INS_JB>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JG)
+            return std::make_unique<Dyn_X86_INS_JG>(isStatic);
+
+
+        WARN("unrecognized instructions");
+        std::cout << x86::insn_id2string(id) << std::endl;
         return std::make_unique<Inst_Base>(isStatic);
     }
 
@@ -278,7 +184,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -304,6 +210,11 @@ namespace tana{
         return nullptr;
     }
 
+    bool Dyn_X86_INS_NOP::symbolic_execution(tana::SEEngine *se)
+    {
+        return true;
+    }
+
 
     bool Dyn_X86_INS_PUSH::symbolic_execution(SEEngine *se)
     {
@@ -312,7 +223,7 @@ namespace tana{
 
         if (op0->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op0->field[0], nullptr, 16);
-            v0 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
             se->writeMem(this->get_memory_address(), op0->bit, v0);
             return true;
         }
@@ -386,17 +297,17 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFsub(se, res, op0->bit, this->vcpu.CF());
+            updateCFsub(se, res, op0->bit);
 
             // Update SF
-            updateSF(se, res, size, this->vcpu.SF());
+            updateSF(se, res, size);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
-            auto zero = std::make_shared<BitVector>(CONCRETE, 0);
-            updateOFsub(se, zero, v0, op0->bit, this->vcpu.OF());
+            auto zero = std::make_shared<BitVector>(ValueType ::CONCRETE, 0);
+            updateOFsub(se, zero, v0, op0->bit);
         }
 
         if(status)
@@ -463,14 +374,14 @@ namespace tana{
             // CF is not affected
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
-            auto one = std::make_shared<BitVector>(CONCRETE, 1);
-            updateOFadd(se, one, v0, op0->bit, this->vcpu.OF());
+            auto one = std::make_shared<BitVector>(ValueType ::CONCRETE, 1);
+            updateOFadd(se, one, v0, op0->bit);
 
         }
 
@@ -510,14 +421,14 @@ namespace tana{
             // CF is not affected
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
-            auto one = std::make_shared<BitVector>(CONCRETE, 1);
-            updateOFadd(se, v0, one, op0->bit, this->vcpu.OF());
+            auto one = std::make_shared<BitVector>(ValueType ::CONCRETE, 1);
+            updateOFadd(se, v0, one, op0->bit);
 
         }
 
@@ -594,7 +505,7 @@ namespace tana{
         {
             if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
                 uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-                v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+                v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
                 se->writeReg(op0->field[0], v1);
                 return true;
             }
@@ -615,7 +526,7 @@ namespace tana{
         if (op0->type == Operand::Mem) {
             if (op1->type == Operand::ImmValue) { // mov dword ptr [ebp+0x1], 0x1111
                 uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-                se->writeMem(this->get_memory_address(), op0->bit, std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete)));
+                se->writeMem(this->get_memory_address(), op0->bit, std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete)));
                 return true;
             } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
                 v1 = se->readReg(op1->field[0]);
@@ -639,7 +550,7 @@ namespace tana{
         {
             if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
                 uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-                v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+                v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
                 se->writeReg(op0->field[0], v1);
                 return true;
             }
@@ -665,7 +576,7 @@ namespace tana{
         if (op0->type == Operand::Mem) {
             if (op1->type == Operand::ImmValue) { // mov dword ptr [ebp+0x1], 0x1111
                 uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-                se->writeMem(this->get_memory_address(), op0->bit, std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete)));
+                se->writeMem(this->get_memory_address(), op0->bit, std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete)));
                 return true;
             } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
                 //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
@@ -704,7 +615,7 @@ namespace tana{
                     return true;
                 }
                 uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
-                f2 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+                f2 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
                 res = buildop2("bvimul", f1, f2);
                 res = buildop2("bvadd", f0, res);
                 se->writeReg(op0->field[0], res);
@@ -719,10 +630,10 @@ namespace tana{
                 f1 = se->readReg(op1->field[1]);
 
                 uint32_t temp_concrete1 = stoul(op1->field[2], 0, 16);
-                f2 = std::make_shared<BitVector>(CONCRETE, temp_concrete1, se->isImmSym(temp_concrete1));   //2
+                f2 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete1, se->isImmSym(temp_concrete1));   //2
                 std::string sign = op1->field[3];          //+
                 uint32_t temp_concrete2 = stoul(op1->field[4], 0, 16);
-                f3 = std::make_shared<BitVector>(CONCRETE, temp_concrete2, se->isImmSym(temp_concrete2));   //0xfffff1
+                f3 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete2, se->isImmSym(temp_concrete2));   //0xfffff1
                 assert((sign == "+") || (sign == "-"));
                 if (op1->field[2] == "1") {
                     res = buildop2("bvadd", f0, f1);
@@ -745,7 +656,7 @@ namespace tana{
                 //f0 = ctx[getRegName(op1->field[0])];       //eax
                 f0 = se->readReg(op1->field[0]);
                 uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
-                f1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));   //0xfffff1
+                f1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));   //0xfffff1
                 std::string sign = op1->field[1];          //+
                 if (sign == "+")
                     res = buildop2("bvadd", f0, f1);
@@ -763,8 +674,8 @@ namespace tana{
                 uint32_t temp_concrete1 = stoul(op1->field[1]);
                 uint32_t temp_concrete2 = stoul(op1->field[3]);
 
-                f1 = std::make_shared<BitVector>(CONCRETE, temp_concrete1, se->isImmSym(temp_concrete1));
-                f2 = std::make_shared<BitVector>(CONCRETE, temp_concrete2, se->isImmSym(temp_concrete2));
+                f1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete1, se->isImmSym(temp_concrete1));
+                f2 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete2, se->isImmSym(temp_concrete2));
                 std::string sign = op1->field[2];
                 if (op1->field[1] == "1") {
                     res = f0;
@@ -784,7 +695,7 @@ namespace tana{
                 f0 = se->readReg(op1->field[0]);
 
                 uint32_t temp_concrete = stoul(op1->field[1]);
-                f1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+                f1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
                 res = buildop2("bvimul", f0, f1);
                 //ctx[getRegName(op0->field[0])] = res;
                 se->writeReg(op0->field[0], res);
@@ -800,7 +711,7 @@ namespace tana{
             case 1: {
                 std::shared_ptr<BitVector> f0;
                 uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-                f0 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+                f0 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
                 se->writeReg(op0->field[0], f0);
                 return true;
             }
@@ -888,7 +799,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue)
         {
-            v1 = std::make_shared<BitVector>(CONCRETE, op1->field[0]);
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, op1->field[0]);
         }
 
 
@@ -906,7 +817,7 @@ namespace tana{
 
         if(CF)
         {
-            auto one_bit = std::make_shared<BitVector>(CONCRETE, 1);
+            auto one_bit = std::make_shared<BitVector>(ValueType ::CONCRETE, 1);
             res = buildop2("bvsub", v0, v1);
             res = buildop2("bvsub", res, one_bit);
         }
@@ -927,16 +838,16 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFsub(se, res, op0->bit, this->vcpu.CF());
+            updateCFsub(se, res, op0->bit);
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
-            updateOFsub(se, v0, v1, op0->bit, this->vcpu.OF());
+            updateOFsub(se, v0, v1, op0->bit);
         }
 
         if(flags)
@@ -972,7 +883,7 @@ namespace tana{
             op2->type == Operand::ImmValue) { // imul reg, reg, imm
             v1 = se->readReg(op1->field[0]);
             uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
-            v2 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v2 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
             res = buildop2(opcstr, v1, v2);
             se->writeReg(op0->field[0], res);
             return true;
@@ -999,7 +910,7 @@ namespace tana{
             v1 = se->readReg(op0->field[0]);
             v2 = se->readReg(op1->field[0]);
             uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
-            v3 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v3 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
             res = buildop3(opcstr, v1, v2, v3);
             se->writeReg(op0->field[0], res);
             return true;
@@ -1025,7 +936,7 @@ namespace tana{
             v1 = se->readReg(op0->field[0]);
             v2 = se->readReg(op1->field[0]);
             uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
-            v3 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v3 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
             res = buildop3(opcstr, v1, v2, v3);
             se->writeReg(op0->field[0], res);
             return true;
@@ -1046,7 +957,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -1070,16 +981,16 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFadd(se, res, op0->bit, this->vcpu.CF());
+            updateCFadd(se, res, op0->bit);
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
-            updateOFadd(se, v0, v1, op0->bit, this->vcpu.OF());
+            updateOFadd(se, v0, v1, op0->bit);
 
         }
 
@@ -1096,7 +1007,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -1120,16 +1031,16 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFsub(se, res, op0->bit, this->vcpu.CF());
+            updateCFsub(se, res, op0->bit);
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
-            updateOFsub(se, v0, v1, op0->bit, this->vcpu.OF());
+            updateOFsub(se, v0, v1, op0->bit);
 
         }
 
@@ -1146,7 +1057,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -1173,10 +1084,10 @@ namespace tana{
             se->clearFlags("CF");
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
             se->clearFlags("OF");
@@ -1199,11 +1110,11 @@ namespace tana{
         auto opcode_id = this->instruction_id;
         auto opcstr = x86::insn_id2string(opcode_id);
 
-        std::shared_ptr<BitVector> v_one =  std::make_shared<BitVector>(CONCRETE, 1, se->isImmSym(1));
+        std::shared_ptr<BitVector> v_one =  std::make_shared<BitVector>(ValueType ::CONCRETE, 1, se->isImmSym(1));
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -1239,16 +1150,16 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFadd(se, res, op0->bit, this->vcpu.CF());
+            updateCFadd(se, res, op0->bit);
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
-            updateOFadd(se, v0, v1, op0->bit, this->vcpu.OF());
+            updateOFadd(se, v0, v1, op0->bit);
         }
 
 
@@ -1296,7 +1207,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -1323,10 +1234,10 @@ namespace tana{
             se->clearFlags("CF");
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
             se->clearFlags("OF");
@@ -1345,7 +1256,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -1372,10 +1283,10 @@ namespace tana{
             se->clearFlags("CF");
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
             se->clearFlags("OF");
@@ -1482,7 +1393,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -1507,10 +1418,10 @@ namespace tana{
             se->clearFlags("CF");
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
             se->clearFlags("OF");
@@ -1528,7 +1439,7 @@ namespace tana{
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-            v1 = std::make_shared<BitVector>(CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+            v1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
         } else if (op1->type == Operand::Mem) {
@@ -1550,16 +1461,16 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFsub(se, res, op0->bit, this->vcpu.CF());
+            updateCFsub(se, res, op0->bit);
 
             // Update SF
-            updateSF(se, res, op0->bit, this->vcpu.SF());
+            updateSF(se, res, op0->bit);
 
             // Update ZF
-            updateZF(se, res, this->vcpu.ZF());
+            updateZF(se, res);
 
             // Update OF
-            updateOFsub(se, v0, v1, op0->bit, this->vcpu.OF());
+            updateOFsub(se, v0, v1, op0->bit);
 
         }
 
@@ -1573,10 +1484,27 @@ namespace tana{
 
     bool Dyn_X86_INS_JE::symbolic_execution(tana::SEEngine *se)
     {
-        std::shared_ptr<Constrain> cons = se->getFlags("ZF");
-        se->updateConstrains(cons);
+        if(!se->eflags)
+            return true;
+        auto cons = se->getFlags("ZF");
         return true;
 
+    }
+
+    bool Dyn_X86_INS_JB::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return true;
+        auto cons = se->getFlags("CF");
+        return true;
+    }
+
+    bool Dyn_X86_INS_JG::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return true;
+        auto cons = se->getFlags("ZF");
+        return true;
     }
 
 

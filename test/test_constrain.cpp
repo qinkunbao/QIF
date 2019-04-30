@@ -13,7 +13,7 @@ using namespace std;
 using namespace tana;
 
 int main() {
-    std::shared_ptr<BitVector> bit_num = std::make_shared<BitVector>(SYMBOL, "K1");
+    std::shared_ptr<BitVector> bit_num = std::make_shared<BitVector>(ValueType ::SYMBOL, "K1");
 
     Constrain c = Constrain(bit_num, RelationType ::greater, 123);
 
