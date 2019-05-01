@@ -16,33 +16,152 @@ namespace tana{
 
     void updateZF(SEEngine *se, std::shared_ptr<BitVector> b)
     {
+        auto res = buildop2(BVOper::equal, b, 0);
+        se->updateFlags("ZF", res);
 
     }
 
     void updateSF(SEEngine *se, std::shared_ptr<BitVector> b, uint32_t op_size)
     {
+        uint32_t max_num_size = 0;
+        if(op_size == 32)
+        {
+            max_num_size = 0x7fffffff;
+
+        }
+        else if (op_size == 16)
+        {
+            max_num_size = 0x7fff;
+
+        }
+        else if (op_size == 8)
+        {
+            max_num_size = 0x7f;
+        } else{
+            ERROR("Invalid operand size");
+        }
+        auto SF = buildop2(BVOper::greater, b, max_num_size);
+        se->updateFlags("SF", SF);
 
 
     }
 
-    void updateOFadd(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2, uint32_t op_size)
+    void updateOFadd(SEEngine *se, std::shared_ptr<BitVector> A, std::shared_ptr<BitVector> B, uint32_t op_size)
     {
+        // https://www.doc.ic.ac.uk/~eedwards/compsys/arithmetic/
+        // Add Overflow occurs if
+        // Situation 1: (+A) + (+B) = -C
+        // Situation 2: (-A) + (-B) = +C
+        uint32_t max_num_size = 0;
+        if(op_size == 32)
+        {
+            max_num_size = 0x7fffffff;
+
+        }
+        else if (op_size == 16)
+        {
+            max_num_size = 0x7fff;
+
+        }
+        else if (op_size == 8)
+        {
+            max_num_size = 0x7f;
+        } else{
+            ERROR("Invalid operand size");
+        }
+        // Situation 1
+        auto con1 = buildop2(BVOper::less, A, max_num_size);
+        auto con2 = buildop2(BVOper::less, B, max_num_size);
+        auto C1 = buildop2(BVOper::bvadd, A, B);
+        auto C1_cons = buildop2(BVOper::greater, C1, max_num_size);
+        auto S1 = buildop3(BVOper::bvand, con1, con2, C1_cons);
+
+        // Situation 2
+        auto con3 = buildop2(BVOper::greater, A, max_num_size);
+        auto con4 = buildop2(BVOper::greater, B, max_num_size);
+        auto sum2 = buildop2(BVOper::bvadd, A, B);
+        auto sum2_cons = buildop2(BVOper::less, C1, max_num_size);
+        auto S2 = buildop3(BVOper::bvand, con3, con4, sum2_cons);
+
+        // S1 AND S2
+        auto OF = buildop2(BVOper::bvor, S1, S2);
+        se->updateFlags("OF", OF);
 
     }
 
-    void updateOFsub(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2, uint32_t op_size)
+    void updateOFsub(SEEngine *se, std::shared_ptr<BitVector> A, std::shared_ptr<BitVector> B, uint32_t op_size)
     {
+
+        // Sub Overflow occurs if
+        // Situation1 :(+A) − (−B) = −C
+        // Situation2: (−A) − (+B) = +C
+        uint32_t max_num_size = 0;
+        if(op_size == 32)
+        {
+            max_num_size = 0x7fffffff;
+
+        }
+        else if (op_size == 16)
+        {
+            max_num_size = 0x7fff;
+
+        }
+        else if (op_size == 8)
+        {
+            max_num_size = 0x7f;
+        } else{
+            ERROR("Invalid operand size");
+        }
+        // Situation 1
+        auto con1 = buildop2(BVOper::less, A, max_num_size);
+        auto con2 = buildop2(BVOper::greater, B, max_num_size);
+        auto C1 = buildop2(BVOper::bvsub, A, B);
+        auto C1_cons = buildop2(BVOper::greater, C1, max_num_size);
+        auto S1 = buildop3(BVOper::bvand, con1, con2, C1_cons);
+
+        // Situation 2
+        auto con3 = buildop2(BVOper::greater, A, max_num_size);
+        auto con4 = buildop2(BVOper::less, B, max_num_size);
+        auto sum2 = buildop2(BVOper::bvsub, A, B);
+        auto sum2_cons = buildop2(BVOper::less, C1, max_num_size);
+        auto S2 = buildop3(BVOper::bvand, con3, con4, sum2_cons);
+
+        // S1 AND S2
+        auto OF = buildop2(BVOper::bvor, S1, S2);
+        se->updateFlags("OF", OF);
+
+
 
     }
 
     void updateCFadd(SEEngine *se, std::shared_ptr<BitVector> b1, \
                      uint32_t op_size)
     {
+        uint32_t max_num_size;
+        if(op_size == 32)
+        {
+            max_num_size = 0xffffffff;
 
+        }
+        else if (op_size == 16)
+        {
+            max_num_size = 0xffff;
+
+        }
+        else if (op_size == 8)
+        {
+            max_num_size = 0xff;
+        } else{
+            ERROR("Invalid operand size");
+        }
+        auto res = buildop2(BVOper::greater, b1, max_num_size);
+        se->updateFlags("CF", res);
     }
 
-    void updateCFsub(SEEngine *se, std::shared_ptr<BitVector> b1, uint32_t op_size) {
-
+    void updateCFsub(SEEngine *se, std::shared_ptr<BitVector> b1, std::shared_ptr<BitVector> b2)
+    {
+        auto res = buildop2(BVOper::less, b1, b2);
+        se->updateFlags("CF", res);
     }
 
 
@@ -174,7 +293,7 @@ namespace tana{
         return std::make_unique<Inst_Base>(isStatic);
     }
 
-    std::shared_ptr<BitVector> inst_dyn_details::two_operand(SEEngine *se, Inst_Base *inst)
+    std::shared_ptr<BitVector> inst_dyn_details::two_operand(SEEngine *se, Inst_Base *inst, BVOper bvoper)
     {
         std::shared_ptr<Operand> op0 = inst->oprd[0];
         std::shared_ptr<Operand> op1 = inst->oprd[1];
@@ -195,12 +314,12 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(bvoper, v0, v1);
             se->writeReg(op0->field[0], res);
             return res;
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(inst->get_memory_address(), op0->bit);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(bvoper, v0, v1);
             se->writeMem(inst->get_memory_address(), op0->bit ,res);
             return res;
         } else {
@@ -280,7 +399,7 @@ namespace tana{
         if (op0->type == Operand::Reg) {
             size = Registers::getRegSize(op0->field[0]);
             v0 = se->readReg(op0->field[0]);
-            res = buildop1(opcstr, v0);
+            res = buildop1(BVOper::bvneg, v0);
             se->writeReg(op0->field[0], res);
             status = true;
         }
@@ -289,15 +408,16 @@ namespace tana{
         {
             size = op0->bit;
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop1(opcstr, v0);
+            res = buildop1(BVOper::bvneg, v0);
             se->writeMem(this->get_memory_address(), op0->bit, res);
             status = true;
         }
 
         if(se->eflags)
         {
+            auto zero = std::make_shared<BitVector>(ValueType ::CONCRETE, 0);
             // Update CF
-            updateCFsub(se, res, op0->bit);
+            updateCFsub(se, zero, v0);
 
             // Update SF
             updateSF(se, res, size);
@@ -306,7 +426,6 @@ namespace tana{
             updateZF(se, res);
 
             // Update OF
-            auto zero = std::make_shared<BitVector>(ValueType ::CONCRETE, 0);
             updateOFsub(se, zero, v0, op0->bit);
         }
 
@@ -320,8 +439,6 @@ namespace tana{
     bool Dyn_X86_INS_NOT::symbolic_execution(SEEngine *se)
     {
         std::shared_ptr<Operand> op0 = this->oprd[0];
-        auto opcode_id = this->instruction_id;
-        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
 
         std::shared_ptr<BitVector> v0, res;
         bool status = false;
@@ -330,7 +447,7 @@ namespace tana{
         if (op0->type == Operand::Reg) {
             assert(Registers::getRegType(op0->field[0]) == FULL);
             v0 = se->readReg(op0->field[0]);
-            res = buildop1(opcstr, v0);
+            res = buildop1(BVOper::bvnot, v0);
             se->writeReg(op0->field[0], res);
             status = true;
         }
@@ -357,7 +474,9 @@ namespace tana{
         if (op0->type == Operand::Mem) {
             v0 = se->readMem(this->get_memory_address(), op0->bit);
         }
-        res = buildop1(opcstr, v0);
+
+        auto bit_vec_one = std::make_shared<BitVector>(ValueType::CONCRETE, 1);
+        res = buildop2(BVOper::bvadd, v0, bit_vec_one);
 
         if (op0->type == Operand::Reg) {
             se->writeReg(op0->field[0], res);
@@ -403,7 +522,9 @@ namespace tana{
         if (op0->type == Operand::Mem) {
             v0 = se->readMem(this->get_memory_address(), op0->bit);
         }
-        res = buildop1(opcstr, v0);
+
+        auto bit_vec_one = std::make_shared<BitVector>(ValueType::CONCRETE, 1);
+        res = buildop2(BVOper::bvsub, v0, bit_vec_one);
 
         if (op0->type == Operand::Reg)
         {
@@ -544,7 +665,6 @@ namespace tana{
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
-        auto opcode_id = this->instruction_id;
 
         if (op0->type == Operand::Reg)
         {
@@ -609,15 +729,15 @@ namespace tana{
                 f0 = se->readReg(op1->field[0]);
                 f1 = se->readReg(op1->field[1]);
                 if (op1->field[2] == "1") {
-                    res = buildop2("bvadd", f0, f1);
+                    res = buildop2(BVOper::bvadd, f0, f1);
                     //ctx[getRegName(op0->field[0])] = res;
                     se->writeReg(op0->field[0], res);
                     return true;
                 }
                 uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
                 f2 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-                res = buildop2("bvimul", f1, f2);
-                res = buildop2("bvadd", f0, res);
+                res = buildop2(BVOper::bvimul, f1, f2);
+                res = buildop2(BVOper::bvadd, f0, res);
                 se->writeReg(op0->field[0], res);
                 return true;
             }
@@ -636,15 +756,15 @@ namespace tana{
                 f3 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete2, se->isImmSym(temp_concrete2));   //0xfffff1
                 assert((sign == "+") || (sign == "-"));
                 if (op1->field[2] == "1") {
-                    res = buildop2("bvadd", f0, f1);
+                    res = buildop2(BVOper::bvadd, f0, f1);
                 } else {
-                    res = buildop2("bvimul", f1, f2);
-                    res = buildop2("bvadd", f0, res);
+                    res = buildop2(BVOper::bvimul, f1, f2);
+                    res = buildop2(BVOper::bvadd, f0, res);
                 }
                 if (sign == "+")
-                    res = buildop2("bvadd", res, f3);
+                    res = buildop2(BVOper::bvadd, res, f3);
                 else
-                    res = buildop2("bvsub", res, f3);
+                    res = buildop2(BVOper::bvsub, res, f3);
                 //ctx[getRegName(op0->field[0])] = res;
 
                 se->writeReg(op0->field[0], res);
@@ -659,9 +779,9 @@ namespace tana{
                 f1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));   //0xfffff1
                 std::string sign = op1->field[1];          //+
                 if (sign == "+")
-                    res = buildop2("bvadd", f0, f1);
+                    res = buildop2(BVOper::bvadd, f0, f1);
                 else
-                    res = buildop2("bvsub", f0, f1);
+                    res = buildop2(BVOper::bvsub, f0, f1);
                 //ctx[getRegName(op0->field[0])] = res;
 
                 se->writeReg(op0->field[0], res);
@@ -680,12 +800,12 @@ namespace tana{
                 if (op1->field[1] == "1") {
                     res = f0;
                 } else {
-                    res = buildop2("bvimul", f0, f1);
+                    res = buildop2(BVOper::bvimul, f0, f1);
                 }
                 if (sign == "+")
-                    res = buildop2("bvadd", res, f2);
+                    res = buildop2(BVOper::bvadd, res, f2);
                 else
-                    res = buildop2("bvsub", res, f2);
+                    res = buildop2(BVOper::bvsub, res, f2);
                 se->writeReg(op0->field[0], res);
                 return true;
             }
@@ -696,7 +816,7 @@ namespace tana{
 
                 uint32_t temp_concrete = stoul(op1->field[1]);
                 f1 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-                res = buildop2("bvimul", f0, f1);
+                res = buildop2(BVOper::bvimul, f0, f1);
                 //ctx[getRegName(op0->field[0])] = res;
                 se->writeReg(op0->field[0], res);
                 return true;
@@ -779,13 +899,12 @@ namespace tana{
         std::shared_ptr<Operand> op1 = this->oprd[1];
 
         std::shared_ptr<BitVector> v0, v1, res;
-        bool CF = false;
         bool flags = false;
         if(!this->vcpu.eflags_state) {
             WARN("SBB doesn't have eflags information");
             return false;
         }
-        CF = this->vcpu.CF();
+        auto CF = this->vcpu.CF();
 
         if (op1->type == Operand::Reg)
         {
@@ -818,11 +937,11 @@ namespace tana{
         if(CF)
         {
             auto one_bit = std::make_shared<BitVector>(ValueType ::CONCRETE, 1);
-            res = buildop2("bvsub", v0, v1);
-            res = buildop2("bvsub", res, one_bit);
+            res = buildop2(BVOper::bvsub, v0, v1);
+            res = buildop2(BVOper::bvsub, res, one_bit);
         }
         else {
-            res = buildop2("bvsub", v0, v1);
+            res = buildop2(BVOper::bvsub, v0, v1);
         }
 
         if(op0->type == Operand::Reg)
@@ -838,7 +957,7 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFsub(se, res, op0->bit);
+            updateCFsub(se, v0, v1);
 
             // Update SF
             updateSF(se, res, op0->bit);
@@ -884,7 +1003,7 @@ namespace tana{
             v1 = se->readReg(op1->field[0]);
             uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
             v2 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-            res = buildop2(opcstr, v1, v2);
+            res = buildop2(BVOper::bvimul, v1, v2);
             se->writeReg(op0->field[0], res);
             return true;
         }
@@ -911,7 +1030,7 @@ namespace tana{
             v2 = se->readReg(op1->field[0]);
             uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
             v3 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-            res = buildop3(opcstr, v1, v2, v3);
+            res = buildop3(BVOper::bvshld, v1, v2, v3);
             se->writeReg(op0->field[0], res);
             return true;
         }
@@ -937,7 +1056,7 @@ namespace tana{
             v2 = se->readReg(op1->field[0]);
             uint32_t temp_concrete = stoul(op2->field[0], 0, 16);
             v3 = std::make_shared<BitVector>(ValueType ::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-            res = buildop3(opcstr, v1, v2, v3);
+            res = buildop3(BVOper::bvshrd, v1, v2, v3);
             se->writeReg(op0->field[0], res);
             return true;
         }
@@ -953,7 +1072,6 @@ namespace tana{
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
         auto opcode_id = this->instruction_id;
-        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
@@ -968,11 +1086,11 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvadd, v0, v1);
             se->writeReg(op0->field[0], res);
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvadd, v0, v1);
             se->writeMem(this->get_memory_address(), op0->bit ,res);
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
@@ -1018,11 +1136,11 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvsub, v0, v1);
             se->writeReg(op0->field[0], res);
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvsub, v0, v1);
             se->writeMem(this->get_memory_address(), op0->bit ,res);
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
@@ -1031,7 +1149,7 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFsub(se, res, op0->bit);
+            updateCFsub(se, v0, v1);
 
             // Update SF
             updateSF(se, res, op0->bit);
@@ -1068,11 +1186,11 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvand, v0, v1);
             se->writeReg(op0->field[0], res);
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvand, v0, v1);
             se->writeMem(this->get_memory_address(), op0->bit ,res);
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
@@ -1126,19 +1244,19 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2("bvadd", v0, v1);
+            res = buildop2(BVOper::bvadd, v0, v1);
             if(CF)
             {
-                res = buildop2("bvadd", res, v_one);
+                res = buildop2(BVOper::bvadd, res, v_one);
             }
             se->writeReg(op0->field[0], res);
             status = true;
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2("bvadd", v0, v1);
+            res = buildop2(BVOper::bvadd, v0, v1);
             if(CF)
             {
-                res = buildop2("bvadd", res, v_one);
+                res = buildop2(BVOper::bvadd, res, v_one);
             }
             se->writeMem(this->get_memory_address(), op0->bit, res);
             status = true;
@@ -1169,31 +1287,31 @@ namespace tana{
 
     bool Dyn_X86_INS_ROR::symbolic_execution(SEEngine *se)
     {
-        auto res = inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this, BVOper::bvror);
         return true;
     }
 
     bool Dyn_X86_INS_ROL::symbolic_execution(SEEngine *se)
     {
-        auto res = inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this, BVOper::bvrol);
         return true;
     }
 
     bool Dyn_X86_INS_SHL::symbolic_execution(SEEngine *se)
     {
-        auto res = inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this, BVOper::bvshl);
         return true;
     }
 
     bool Dyn_X86_INS_SHR::symbolic_execution(SEEngine *se)
     {
-        auto res = inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this, BVOper::bvshr);
         return true;
     }
 
     bool Dyn_X86_INS_SAR::symbolic_execution(SEEngine *se)
     {
-        auto res = inst_dyn_details::two_operand(se, this);
+        auto res = inst_dyn_details::two_operand(se, this, BVOper::bvsar);
         return true;
     }
 
@@ -1203,7 +1321,6 @@ namespace tana{
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
         auto opcode_id = this->instruction_id;
-        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
 
         if (op1->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
@@ -1218,11 +1335,11 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper ::bvor, v0, v1);
             se->writeReg(op0->field[0], res);
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvor, v0, v1);
             se->writeMem(this->get_memory_address(), op0->bit ,res);
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
@@ -1267,11 +1384,11 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvxor, v0, v1);
             se->writeReg(op0->field[0], res);
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvxor, v0, v1);
             se->writeMem(this->get_memory_address(), op0->bit ,res);
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
@@ -1358,8 +1475,8 @@ namespace tana{
             divisor = se->readReg(op0->field[0]);
         }
 
-        quotient = buildop2("bvquo", dividend, divisor);
-        remainder = buildop2("bvrem", dividend, divisor);
+        quotient = buildop2(BVOper::bvquo, dividend, divisor);
+        remainder = buildop2(BVOper::bvrem, dividend, divisor);
 
         if(operand_size == 8)
         {
@@ -1404,10 +1521,10 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvand, v0, v1);
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvand, v0, v1);
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
         }
@@ -1450,10 +1567,10 @@ namespace tana{
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvsub, v0, v1);
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2(opcstr, v0, v1);
+            res = buildop2(BVOper::bvsub, v0, v1);
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
         }
@@ -1461,7 +1578,7 @@ namespace tana{
         if(se->eflags)
         {
             // Update CF
-            updateCFsub(se, res, op0->bit);
+            updateCFsub(se, v0, v1);
 
             // Update SF
             updateSF(se, res, op0->bit);

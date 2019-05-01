@@ -69,7 +69,7 @@ namespace tana {
         high = v1;
         low = v2;
 
-        std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvconcat", v1, v2);
+        std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvconcat, v1, v2);
 
         if (v1->isSymbol() || v2->isSymbol())
             res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
@@ -96,7 +96,7 @@ namespace tana {
     SEEngine::Extract(std::shared_ptr<BitVector> v, int low, int high) {
         assert(high > low);
 
-        std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvextract", v);
+        std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvextract, v);
         std::shared_ptr<BitVector> res = nullptr;
         if (v->isSymbol()) {
             res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
@@ -113,7 +113,7 @@ namespace tana {
     std::shared_ptr<BitVector>
     SEEngine::ZeroExt(std::shared_ptr<tana::BitVector> v, tana::tana_type::T_SIZE size_new) {
         assert(size_new >= v->size());
-        std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvzeroext", v);
+        std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvzeroext, v);
         std::shared_ptr<BitVector> res = nullptr;
         if (v->isSymbol()) {
             res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
@@ -131,7 +131,7 @@ namespace tana {
     SEEngine::SignExt(std::shared_ptr<tana::BitVector> v, tana::tana_type::T_SIZE orgin_size,
                       tana::tana_type::T_SIZE new_size) {
         assert(orgin_size < new_size);
-        std::unique_ptr<Operation> oper = std::make_unique<Operation>("bvsignext", v);
+        std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvsignext, v);
         std::shared_ptr<BitVector> res = nullptr;
         if (v->isSymbol()) {
             res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
@@ -253,93 +253,84 @@ namespace tana {
         } else {
             uint32_t op0 = 0, op1 = 0;
             uint32_t op2 = 0;
+            uint32_t op_num = 0;
 
-            if (op->val[0] != nullptr) op0 = eval(op->val[0], inmap);
-            if (op->val[1] != nullptr) op1 = eval(op->val[1], inmap);
-            if (op->val[2] != nullptr) op2 = eval(op->val[2], inmap);
+            if (op->val[0] != nullptr) {
+                ++op_num;
+                op0 = eval(op->val[0], inmap);
+            }
+            if (op->val[1] != nullptr) {
+                ++op_num;
+                op1 = eval(op->val[1], inmap);
+            }
+            if (op->val[2] != nullptr) {
+                ++op_num;
+                op2 = eval(op->val[2], inmap);
+            }
 
-            if (op->opty == "bvzeroext")
-                return BitVector::zeroext(op0);
+            switch (op->opty) {
+                case BVOper::bvzeroext:
+                    return BitVector::zeroext(op0);
+                case BVOper::bvextract:
+                    return BitVector::extract(op0, v->high_bit, v->low_bit);
+                case BVOper::bvconcat:
+                    return BitVector::concat(op0, op1, op->val[0]->size(), op->val[1]->size());
+                case BVOper::bvsignext:
+                    return BitVector::signext(op0, op->val[0]->size(), v->size());
+                case BVOper::bvadd:
+                    return op0 + op1;
+                case BVOper::bvsub:
+                    return op0 - op1;
+                case BVOper::bvimul:
+                    return op0 * op1;
+                case BVOper::bvshld:
+                    return BitVector::shld32(op0, op1, op2);
+                case BVOper::bvshrd:
+                    return BitVector::shrd32(op0, op1, op2);
+                case BVOper::bvxor: {
+                    if (op_num == 2)
+                        return op0 ^ op1;
+                    if (op_num == 3)
+                        return op0 ^ op1 ^ op2;
+                }
+                case BVOper::bvand: {
+                    if (op_num == 2)
+                        return op0 & op1;
+                    if (op_num == 3)
+                        return op0 & op1 & op2;
+                }
+                case BVOper::bvor: {
+                    if (op_num == 2)
+                        return op0 | op1;
+                    if (op_num == 3)
+                        return op0 | op1 | op2;
+                }
+                case BVOper::bvshl:
+                    return op0 << op1;
+                case BVOper::bvshr:
+                    return op0 >> op1;
+                case BVOper::bvsar:
+                    return BitVector::arithmeticRightShift(op0, op1);
+                case BVOper::bvneg:
+                    return ~op0 + 1;
+                case BVOper::bvnot:
+                    return ~op0;
+                case BVOper::bvrol:
+                    return BitVector::rol32(op0, op1);
+                case BVOper::bvror:
+                    return BitVector::ror32(op0, op1);
+                case BVOper::bvquo:
+                    return op0 / op1;
+                case BVOper::bvrem:
+                    return op0 % op1;
+                case BVOper::equal:
+                    return op0 == op1;
+                case BVOper::greater:
+                    return op0 > op1;
+                case BVOper::less:
+                    return op0 < op1;
+            }
 
-            if (op->opty == "bvextract")
-                return BitVector::extract(op0, v->high_bit, v->low_bit);
-
-            if (op->opty == "bvconcat")
-                return BitVector::concat(op0, op1, op->val[0]->size(), op->val[1]->size());
-
-            if (op->opty == "bvadd")
-                return op0 + op1;
-
-            if (op->opty == "bvadc")
-                return op0 + op1 + 1;
-
-            if (op->opty == "bvsub")
-                return op0 - op1;
-
-            if (op->opty == "bvimul")
-                return op0 * op1;
-
-            if (op->opty == "bvshld")
-                return BitVector::shld32(op0, op1, op2);
-
-            if (op->opty == "bvshrd")
-                return BitVector::shrd32(op0, op1, op2);
-
-            if (op->opty == "bvxor")
-                return op0 ^ op1;
-
-            if (op->opty == "bvand")
-                return op0 & op1;
-
-            if (op->opty == "bvor")
-                return op0 | op1;
-
-            if (op->opty == "bvshl")
-                return op0 << op1;
-
-            if (op->opty == "bvshr")
-                return op0 >> op1;
-
-            if (op->opty == "bvsar")
-                return BitVector::arithmeticRightShift(op0, op1);
-
-            if (op->opty == "bvneg")
-                return ~op0 + 1;
-
-            if (op->opty == "bvnot")
-                return ~op0;
-
-            if (op->opty == "bvinc")
-                return op0 + 1;
-
-            if (op->opty == "bvdec")
-                return op0 - 1;
-
-            if (op->opty == "bvrol")
-                return BitVector::rol32(op0, op1);
-
-            if (op->opty == "bvror")
-                return BitVector::ror32(op0, op1);
-
-            if (op->opty == "bvquo")
-                return op0 / op1;
-
-            if (op->opty == "bvrem")
-                return op0 % op1;
-
-            if (op->opty == "equal")
-                return op0 == op1;
-
-            if (op->opty == "greater")
-                return op0 > op1;
-
-            if (op->opty == "less")
-                return op0 < op1;
-
-            std::cout << "Instruction: [" << op->opty << "] is not interpreted!" << std::endl;
-            if ((op->val[0] != nullptr) && ((op->val[1] != nullptr))) return op0 + op1;
-            if (op->val[0] != nullptr) return op0;
-            return 1;
 
         }
     }

@@ -12,7 +12,7 @@ namespace tana {
     };
 
     namespace inst_dyn_details {
-        std::shared_ptr<BitVector> two_operand(SEEngine *se, Inst_Base *inst);
+        std::shared_ptr<BitVector> two_operand(SEEngine *se, Inst_Base *inst, BVOper);
     }
 
     class Dyn_X86_INS_NOP : public Inst_Base {

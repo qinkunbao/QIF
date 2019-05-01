@@ -196,7 +196,7 @@ namespace tana {
         } else {
             std::stringstream ss;
             ss << "Mem:" << std::hex << memory_address << std::dec;
-            v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str());
+            v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
             memory[memory_address] = v0;
         }
 
