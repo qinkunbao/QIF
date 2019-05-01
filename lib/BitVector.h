@@ -16,7 +16,7 @@ namespace tana {
         SYMBOL, CONCRETE
     };
 
-    enum class bvoperator
+    enum class BVOper
     {
         bvadd,
         bvsub,
@@ -40,7 +40,8 @@ namespace tana {
         less,
         bvzeroext,
         bvextract,
-        bvconcat
+        bvconcat,
+        bvsignext
     };
 
     class BitVector {
@@ -101,25 +102,28 @@ namespace tana {
 // An operation taking several values to calculate a result value
     class Operation {
     public:
-        std::string opty;
+        BVOper opty;
         std::shared_ptr<BitVector> val[3] = {nullptr, nullptr, nullptr};
 
-        Operation(std::string opt, std::shared_ptr<BitVector> v1);
+        Operation(BVOper opt, std::shared_ptr<BitVector> v1);
 
-        Operation(std::string opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2);
+        Operation(BVOper opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2);
 
-        Operation(std::string opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
+        Operation(BVOper opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
                   std::shared_ptr<BitVector> v3);
     };
 
     std::shared_ptr<BitVector>
-    buildop1(std::string opty, std::shared_ptr<BitVector> v1);
+    buildop1(BVOper opty, std::shared_ptr<BitVector> v1);
 
     std::shared_ptr<BitVector>
-    buildop2(std::string opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2);
+    buildop2(BVOper opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2);
 
     std::shared_ptr<BitVector>
-    buildop3(std::string opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
+    buildop2(BVOper opty, std::shared_ptr<BitVector> v1, uint32_t v2);
+
+    std::shared_ptr<BitVector>
+    buildop3(BVOper opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
             std::shared_ptr<BitVector> v3);
 
 

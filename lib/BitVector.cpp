@@ -6,25 +6,104 @@
 #include "BitVector.h"
 
 
-
-
-
 namespace tana {
-    Operation::Operation(std::string opt, std::shared_ptr<BitVector> v1) {
+
+    std::ostream& operator << (std::ostream& os, BVOper bvop)
+    {
+        switch(bvop)
+        {
+            case BVOper::bvadd:
+                return os << "bvadd";
+
+            case BVOper::bvsub:
+                return os << "bvsub";
+
+            case BVOper::bvimul:
+                return os << "bvimul";
+
+            case BVOper::bvshld:
+                return os << "bvshld";
+
+            case BVOper::bvshrd:
+                return os << "bvshrd";
+
+            case BVOper::bvxor:
+                return os << "bvxor";
+
+            case BVOper::bvand:
+                return os << "bvand";
+
+            case BVOper::bvor:
+                return os << "bvor";
+
+            case BVOper::bvshl:
+                return os << "bvshl";
+
+            case BVOper::bvshr:
+                return os << "bvshr";
+
+            case BVOper::bvsar:
+                return os << "bvsar";
+
+            case BVOper::bvneg:
+                return os << "bvneg";
+
+            case BVOper::bvnot:
+                return os << "bvnot";
+
+            case BVOper::bvrol:
+                return os << "bvrol";
+
+            case BVOper::bvror:
+                return os << "bvror";
+
+            case BVOper::bvquo:
+                return os << "bvquo";
+
+            case BVOper::bvrem:
+                return os << "bvrem";
+
+            case BVOper::equal:
+                return os << "equal";
+
+            case BVOper::greater:
+                return os << "greater";
+
+            case BVOper::less:
+                return os << "less";
+
+            case BVOper::bvzeroext:
+                return os << "bvzeroext";
+
+            case BVOper::bvextract:
+                return os << "bvextract";
+
+            case BVOper::bvconcat:
+                return os << "bvconcat";
+
+            case BVOper::bvsignext :
+                return os << "bvsignext";
+            //omit default case to triger compiler warning for missing cases
+        };
+
+        return os << static_cast<uint32_t>(bvop);
+    }
+
+    Operation::Operation(BVOper opt, std::shared_ptr<BitVector> v1) {
         opty = opt;
         val[0] = v1;
         val[1] = nullptr;
         val[2] = nullptr;
     }
 
-    Operation::Operation(std::string opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2) {
+    Operation::Operation(BVOper opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2) {
         opty = opt;
         val[0] = v1;
         val[1] = v2;
         val[2] = nullptr;
     }
 
-    Operation::Operation(std::string opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
+    Operation::Operation(BVOper opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
                          std::shared_ptr<BitVector> v3) {
         opty = opt;
         val[0] = v1;
@@ -333,7 +412,7 @@ namespace tana {
 
 
     std::shared_ptr<BitVector>
-    buildop1(std::string opty, std::shared_ptr<BitVector> v1) {
+    buildop1(BVOper opty, std::shared_ptr<BitVector> v1) {
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(opty, v1);
         std::shared_ptr<BitVector> result;
         if (v1->isSymbol())
@@ -347,7 +426,7 @@ namespace tana {
     }
 
     std::shared_ptr<BitVector>
-    buildop2(std::string opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2) {
+    buildop2(BVOper opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2) {
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(opty, v1, v2);
         std::shared_ptr<BitVector> result;
         //assert(v1->size() == v2->size()|| !v2->isSymbol() || !v1->isSymbol());
@@ -361,7 +440,14 @@ namespace tana {
     }
 
     std::shared_ptr<BitVector>
-    buildop3(std::string opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2, std::shared_ptr<BitVector> v3) {
+    buildop2(BVOper opty, std::shared_ptr<BitVector> v1, uint32_t con) {
+        auto BV = std::make_shared<BitVector>(ValueType::CONCRETE, con);
+        return buildop2(opty, v1, BV);
+    }
+
+    std::shared_ptr<BitVector>
+    buildop3(BVOper opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,\
+             std::shared_ptr<BitVector> v3) {
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(opty, v1, v2, v3);
         std::shared_ptr<BitVector> result;
 
