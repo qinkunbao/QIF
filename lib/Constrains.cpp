@@ -9,42 +9,57 @@
 #include "Constrains.h"
 
 namespace tana {
-    Constrain::Constrain(std::shared_ptr<BitVector> bit, RelationType relation, uint32_t num) {
-        std::shared_ptr<BitVector> bit_num = std::make_shared<BitVector>(ValueType ::CONCRETE, num);
-        std::shared_ptr<BitVector> res = buildop2(BVOper::bvsub, bit, bit_num);
-        r.push_back(std::make_tuple(res, relation));
+    Constrain::Constrain(std::shared_ptr<BitVector> bit, BVOper relation, uint32_t num) {
+        r = buildop2(relation, bit, num);
     }
 
-    void Constrain::update(std::shared_ptr<tana::BitVector> b, tana::RelationType type, uint32_t num)
+    void Constrain::update(BVOper add_type, std::shared_ptr<tana::BitVector> b, BVOper type, uint32_t num)
     {
-        std::shared_ptr<BitVector> bit_num = std::make_shared<BitVector>(ValueType ::CONCRETE, num);
-        std::shared_ptr<BitVector> res = buildop2(BVOper::bvsub, b, bit_num);
-        r.push_back(std::make_tuple(res, type));
+        auto constrain = buildop2(type, b, num);
+        r = buildop2(add_type, r, constrain);
     }
 
-    Constrain::Constrain(std::shared_ptr<tana::BitVector> b1, tana::RelationType relation,
+    Constrain::Constrain(std::shared_ptr<tana::BitVector> b1, BVOper relation,
                          std::shared_ptr<tana::BitVector> b2) {
 
-        auto res = buildop2(BVOper::bvsub, b1, b2);
-        r.push_back(std::make_tuple(res, relation));
+        r = buildop2(relation, b1, b2);
+
     }
 
     std::ostream &operator<<(std::ostream &os, const Constrain &dt) {
-        for(auto &con : dt.r) {
-            std::shared_ptr<BitVector> b = std::get<0>(con);
-            RelationType relation = std::get<1>(con);
-            os << *b;
-            if (relation == RelationType::equal)
-                os << " = 0";
-            if (relation == RelationType::less)
-                os << " < 0";
-            if (relation == RelationType::greater)
-                os << " > 0";
-            if (relation == RelationType::nonequal)
-                os << " != 0";
 
-            os << "\n";
+        auto &bv = (dt.r)->opr;
+        auto con = bv->val[0];
+        auto relation = bv->opty;
+        auto num = bv->val[1];
+
+        os << *con;
+        switch (relation){
+            case BVOper ::greater:
+                os << " > ";
+                break;
+            case BVOper ::less:
+                os << " < ";
+                break;
+            case BVOper ::equal:
+                os << " == ";
+                break;
+            case BVOper ::noequal:
+                os << " != ";
+                break;
+            case BVOper ::bvand:
+                os << "and";
+                break;
+            case BVOper ::bvor:
+                os << "os";
+                break;
+            default:
+                os << "ERROR";
         }
+        os << *num;
+
+
+        os << "\n";
         return os;
     }
 

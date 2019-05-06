@@ -12,8 +12,8 @@
 
 namespace tana {
     QIFSEEngine::QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi,
-                             uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OP(nullptr), SF(nullptr),
-                                                           ZF(nullptr), AF(nullptr), PF(nullptr) {
+                             uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OF(nullptr), SF(nullptr),
+                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0) {
 
         ctx["eax"] = std::make_shared<BitVector>(ValueType ::CONCRETE, eax);
         ctx["ebx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ebx);
@@ -162,10 +162,11 @@ namespace tana {
             v0 = memory[memory_address];
         } else {
             std::stringstream ss;
-            ss << "Environment data" << std::dec;
+            ss << "Environment data: " << memory_address_str << std::dec;
             v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
             memory[memory_address] = v0;
         }
+
         if (size == T_BYTE_SIZE * T_DWORD) {
             return v0;
         }
@@ -247,9 +248,9 @@ namespace tana {
             return;
         }
 
-        if(flag_name == "OP")
+        if(flag_name == "OF")
         {
-            this->OP = cons;
+            this->OF = cons;
             return;
         }
 
@@ -293,9 +294,9 @@ namespace tana {
             return CF;
         }
 
-        if(flag_name == "OP")
+        if(flag_name == "OF")
         {
-            return OP;
+            return OF;
         }
 
         if(flag_name == "SF")
@@ -326,6 +327,18 @@ namespace tana {
     {
         auto res = std::make_tuple(this->eip, cons);
         constrains.push_back(res);
+    }
+
+    void QIFSEEngine::outputConstrains()
+    {
+        for(const auto& element : constrains)
+        {
+            auto addr = std::get<0>(element);
+            auto &con = std::get<1>(element);
+            std::cout << "Addr: "  << std:: hex << addr << std::dec;
+            std::cout << " Constrain: " << *con << std::endl;
+        }
+
     }
 
 

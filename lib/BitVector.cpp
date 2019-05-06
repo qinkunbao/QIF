@@ -66,6 +66,9 @@ namespace tana {
             case BVOper::equal:
                 return os << "equal";
 
+            case BVOper::noequal:
+                return os << "nonequal";
+
             case BVOper::greater:
                 return os << "greater";
 
@@ -255,7 +258,13 @@ namespace tana {
         }
         if(val_type == ValueType ::CONCRETE)
         {
-            ss << "0x" << std::hex << concrete_value <<  std::dec;
+            if(info.empty()) {
+                ss << "0x" << std::hex << concrete_value << std::dec;
+            }
+            else{
+                ss << "(0x" << std::hex << concrete_value << std::dec;
+                ss << ", " << info << ")";
+            }
         }
         return ss.str();
     }

@@ -240,13 +240,39 @@ namespace tana {
 
     };
 
-    class Dyn_X86_INS_JE : public Inst_Base{
+    class Dyn_X86_INS_JA : public  Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+
+    };
+
+    class Dyn_X86_INS_JAE : public  Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+
+    };
+
+    class Dyn_X86_INS_JB : public Inst_Base{
     public:
         using Inst_Base::Inst_Base;
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class Dyn_X86_INS_JB : public Inst_Base{
+    class Dyn_X86_INS_JBE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JC : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JE : public Inst_Base{
     public:
         using Inst_Base::Inst_Base;
         bool symbolic_execution(SEEngine *se) final;
@@ -257,4 +283,124 @@ namespace tana {
         using Inst_Base::Inst_Base;
         bool symbolic_execution(SEEngine *se) final;
     };
+
+
+    class Dyn_X86_INS_JGE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JL : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JLE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNA : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNAE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNB : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+
+    class Dyn_X86_INS_JNBE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNC : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNG : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNGE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNL : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNLE : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNO : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNS : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JNZ : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JO : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JS : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_JZ : public Inst_Base{
+    public:
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+
+
+
 }

@@ -15,19 +15,16 @@
 
 namespace tana {
 
-    enum class RelationType {
-        equal, greater, less, nonequal
-    };
 
     class Constrain {
     private:
-        std::vector<std::tuple<std::shared_ptr<BitVector>, RelationType>> r;
+        std::shared_ptr<BitVector> r;
     public:
         Constrain() = default;
-        Constrain(std::shared_ptr<BitVector> b, RelationType, uint32_t);
-        Constrain(std::shared_ptr<BitVector> b1, RelationType, std::shared_ptr<BitVector> b2);
+        Constrain(std::shared_ptr<BitVector> b, BVOper, uint32_t);
+        Constrain(std::shared_ptr<BitVector> b1, BVOper, std::shared_ptr<BitVector> b2);
 
-        void update(std::shared_ptr<BitVector> b, RelationType type, uint32_t num);
+        void update(BVOper add_type, std::shared_ptr<BitVector> b, BVOper type, uint32_t num);
         friend std::ostream& operator<<(std::ostream& os, const Constrain& c);
     };
 
