@@ -36,6 +36,7 @@ namespace tana {
         bvquo,
         bvrem,
         equal,
+        noequal,
         greater,
         less,
         bvzeroext,

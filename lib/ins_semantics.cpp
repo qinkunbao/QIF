@@ -278,14 +278,98 @@ namespace tana{
         if(id == x86::x86_insn::X86_INS_JMP)
             return std::make_unique<Dyn_X86_INS_JMP>(isStatic);
 
-        if(id == x86::x86_insn::X86_INS_JE)
-            return std::make_unique<Dyn_X86_INS_JE>(isStatic);
+        if(id == x86::x86_insn::X86_INS_JA)
+            return std::make_unique<Dyn_X86_INS_JA>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JAE)
+            return std::make_unique<Dyn_X86_INS_JAE>(isStatic);
 
         if(id == x86::x86_insn::X86_INS_JB)
             return std::make_unique<Dyn_X86_INS_JB>(isStatic);
 
+        if(id == x86::x86_insn::X86_INS_JBE)
+            return std::make_unique<Dyn_X86_INS_JB>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JCXZ)
+            return std::make_unique<Dyn_X86_INS_JC>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JE)
+            return std::make_unique<Dyn_X86_INS_JE>(isStatic);
+
+
+
         if(id == x86::x86_insn::X86_INS_JG)
             return std::make_unique<Dyn_X86_INS_JG>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JGE)
+            return std::make_unique<Dyn_X86_INS_JGE>(isStatic);
+
+
+        if(id == x86::x86_insn::X86_INS_JL)
+            return std::make_unique<Dyn_X86_INS_JL>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JLE)
+            return std::make_unique<Dyn_X86_INS_JLE>(isStatic);
+
+        /*
+        if(id == x86::x86_insn::X86_INS_JNA)
+            return std::make_unique<Dyn_X86_INS_JNA>(isStatic);
+
+
+
+        if(id == x86::x86_insn::X86_INS_JNAE)
+            return std::make_unique<Dyn_X86_INS_JNAE>(isStatic);
+
+
+
+        if(id == x86::x86_insn::X86_INS_JNB)
+            return std::make_unique<Dyn_X86_INS_JNB>(isStatic);
+
+
+
+        if(id == x86::x86_insn::X86_INS_JNBE)
+            return std::make_unique<Dyn_X86_INS_JNBE>(isStatic);
+
+
+        if(id == x86::x86_insn::X86_INS_JNC)
+            return std::make_unique<Dyn_X86_INS_JNC>(isStatic);
+
+         */
+
+        if(id == x86::x86_insn::X86_INS_JNE)
+            return std::make_unique<Dyn_X86_INS_JNE>(isStatic);
+
+        /*
+
+        if(id == x86::x86_insn::X86_INS_JNG)
+            return std::make_unique<Dyn_X86_INS_JNG>(isStatic);
+
+
+        if(id == x86::x86_insn::X86_INS_JNL)
+            return std::make_unique<Dyn_X86_INS_JNL>(isStatic);
+
+         */
+
+        if(id == x86::x86_insn::X86_INS_JNO)
+            return std::make_unique<Dyn_X86_INS_JNO>(isStatic);
+
+
+        if(id == x86::x86_insn::X86_INS_JNS)
+            return std::make_unique<Dyn_X86_INS_JNS>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JNZ)
+            return std::make_unique<Dyn_X86_INS_JNZ>(isStatic);
+
+
+        if(id == x86::x86_insn::X86_INS_JO)
+            return std::make_unique<Dyn_X86_INS_JO>(isStatic);
+
+        if(id == x86::x86_insn::X86_INS_JS)
+            return std::make_unique<Dyn_X86_INS_JS>(isStatic);
+
+
+        if(id == x86::x86_insn::X86_INS_JZ)
+            return std::make_unique<Dyn_X86_INS_JZ>(isStatic);
 
 
         WARN("unrecognized instructions");
@@ -1599,31 +1683,361 @@ namespace tana{
         return true;
     }
 
-    bool Dyn_X86_INS_JE::symbolic_execution(tana::SEEngine *se)
+    //JA CF = 0 and ZF = 0
+    bool Dyn_X86_INS_JA::symbolic_execution(tana::SEEngine *se)
     {
         if(!se->eflags)
-            return true;
-        auto cons = se->getFlags("ZF");
-        return true;
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
 
+        auto CF_O = buildop2(BVOper::equal, CF, 0);
+        auto ZF_O = buildop2(BVOper::equal, ZF, 0);
+
+        auto constrains = std::make_shared<Constrain>(CF_O, BVOper::bvand, ZF_O);
+        se->updateConstrains(constrains);
+        return true;
     }
 
+    //JAE CF = 0
+    bool Dyn_X86_INS_JAE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+
+        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JB CF = 1
     bool Dyn_X86_INS_JB::symbolic_execution(tana::SEEngine *se)
     {
         if(!se->eflags)
-            return true;
-        auto cons = se->getFlags("CF");
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+
+        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        se->updateConstrains(constrains);
         return true;
     }
 
+    //JBE CF = 1 or ZF = 1
+    bool Dyn_X86_INS_JBE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+
+
+        auto CF_1 = buildop2(BVOper::equal, CF, 1);
+        auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
+
+        auto constrains = std::make_shared<Constrain>(CF_1, BVOper::bvor, ZF_1);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JC CF = 1
+    bool Dyn_X86_INS_JC::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+
+
+
+        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JE ZF = 1
+    bool Dyn_X86_INS_JE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        auto constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 1);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JG ZF = 0 and SF = OF
     bool Dyn_X86_INS_JG::symbolic_execution(tana::SEEngine *se)
     {
         if(!se->eflags)
-            return true;
-        auto cons = se->getFlags("ZF");
+            return false;
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+
+
+        auto ZF_O = buildop2(BVOper::equal, ZF, 0);
+        auto SF_OF = buildop2(BVOper::equal, SF, OF);
+
+        auto constrains = std::make_shared<Constrain>(SF_OF, BVOper::bvand, ZF_O);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JGE SF = OF
+    bool Dyn_X86_INS_JGE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, OF);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JL SF != OF
+    bool Dyn_X86_INS_JL::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        auto constrains = std::make_shared<Constrain>(SF, BVOper::noequal, OF);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JLE ZF or SF != OF
+    bool Dyn_X86_INS_JLE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+
+
+        auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
+        auto SF_OF = buildop2(BVOper::noequal, SF, OF);
+
+        auto constrains = std::make_shared<Constrain>(SF_OF, BVOper::bvand, ZF_1);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNA CF or ZF
+    bool Dyn_X86_INS_JNA::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+
+        auto CF_1 = buildop2(BVOper::equal, CF, 1);
+        auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
+
+
+        auto constrains = std::make_shared<Constrain>(CF_1, BVOper::bvor, ZF_1);
+        se->updateConstrains(constrains);
+        return true;
+
+    }
+
+    //JNAE CF
+    bool Dyn_X86_INS_JNAE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+
+        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNB CF = 0
+    bool Dyn_X86_INS_JNB::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+
+        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNBE CF = 0 and ZF = 0
+    bool Dyn_X86_INS_JNBE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+
+        auto CF_0 = buildop2(BVOper::equal, CF, 0);
+        auto ZF_0 = buildop2(BVOper::equal, ZF, 0);
+        auto constrains = std::make_shared<Constrain>(CF_0, BVOper::bvand, ZF_0);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNC CF = 0
+    bool Dyn_X86_INS_JNC::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNE ZF = 0
+    bool Dyn_X86_INS_JNE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        auto constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 0);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNG ZF or SF != OF
+    bool Dyn_X86_INS_JNG::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+
+        std::shared_ptr<BitVector> ZF_1 = buildop2(BVOper::equal, ZF, 1);
+        std::shared_ptr<BitVector> SF_OF = buildop2(BVOper::noequal, SF, OF);
+
+        auto constrains = std::make_shared<Constrain>(ZF_1, BVOper ::bvor, SF_OF);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNGE SF != OF
+    bool Dyn_X86_INS_JNGE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+
+        auto constrains = std::make_shared<Constrain>(SF, BVOper::noequal, OF);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNL SF = OF
+    bool Dyn_X86_INS_JNL::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+
+        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, OF);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNLE ZF = 0 and SF = OF
+    bool Dyn_X86_INS_JNLE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+
+        std::shared_ptr<BitVector> ZF_0 = buildop2(BVOper::equal, ZF, 0);
+        std::shared_ptr<BitVector> SF_OF = buildop2(BVOper::equal, SF, OF);
+
+        auto constrains = std::make_shared<Constrain>(ZF_0, BVOper::bvand, SF_OF);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNO OF = 0
+    bool Dyn_X86_INS_JNO::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+
+        auto constrains = std::make_shared<Constrain>(OF, BVOper::equal, 0);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JNS SF = 0
+    bool Dyn_X86_INS_JNS::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+
+        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, 0);
+        se->updateConstrains(constrains);
         return true;
     }
 
 
+    //JNZ ZF = 0
+    bool Dyn_X86_INS_JNZ::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+
+        auto constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 0);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JO OF
+    bool Dyn_X86_INS_JO::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> OF = se->getFlags("OF");
+
+        auto constrains = std::make_shared<Constrain>(OF, BVOper::equal, 1);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JS SF
+    bool Dyn_X86_INS_JS::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> SF = se->getFlags("SF");
+
+        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, 1);
+        se->updateConstrains(constrains);
+        return true;
+    }
+
+    //JZ ZF
+    bool Dyn_X86_INS_JZ::symbolic_execution(tana::SEEngine *se)
+    {
+        if(!se->eflags)
+            return false;
+        std::shared_ptr<BitVector> SF = se->getFlags("ZF");
+
+        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, 1);
+        se->updateConstrains(constrains);
+        return true;
+    }
 
 }

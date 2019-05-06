@@ -89,6 +89,9 @@ add_executable(BitTaint
 add_executable(StaticSE
         StaticSE/StaticSE.cpp)
 
+add_executable(QIF
+        QIF/QIF.cpp)
+
 
 target_link_libraries(taintTrace TraceLib)
 target_link_libraries(SymbolicExecution TraceLib)
@@ -98,3 +101,4 @@ target_link_libraries(TestBitVector TraceLib)
 target_link_libraries(BitTaint TraceLib)
 target_link_libraries(StaticSE TraceLib)
 target_link_libraries(TestConstrain TraceLib)
+target_link_libraries(QIF TraceLib)

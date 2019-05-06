@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Engine.h"
 #include "error.h"
 #include "VarMap.h"
@@ -246,7 +247,7 @@ namespace tana {
     SEEngine::eval(const std::shared_ptr<BitVector> &v, std::map<std::shared_ptr<BitVector>, uint32_t> *inmap) {
         const std::unique_ptr<Operation> &op = v->opr;
         if (op == nullptr) {
-            if (v->val_type == ValueType::SYMBOL)
+            if (v->val_type == ValueType::CONCRETE)
                 return v->concrete_value;
             else
                 return (*inmap)[v];
@@ -325,6 +326,8 @@ namespace tana {
                     return op0 % op1;
                 case BVOper::equal:
                     return op0 == op1;
+                case BVOper ::noequal:
+                    return op0 != op1;
                 case BVOper::greater:
                     return op0 > op1;
                 case BVOper::less:
