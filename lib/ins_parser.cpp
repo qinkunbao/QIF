@@ -362,8 +362,8 @@ namespace tana {
                 getline(fun_buf, temp_str, ';');
                 getline(fun_buf, start_taint, ';');
                 getline(fun_buf, taint_len, ';');
-                addr_taint = stoul(start_taint, 0, 16);
-                size_taint = stoul(taint_len, 0, 10);
+                addr_taint = stoul(start_taint, nullptr, 16);
+                size_taint = stoul(taint_len, nullptr, 10);
 
                 return false;
 
@@ -381,7 +381,7 @@ namespace tana {
 
             // instruction address
             getline(strbuf, temp_addr, ';');
-            auto ins_addrn = std::stoul(temp_addr, 0, 16);
+            auto ins_addrn = std::stoul(temp_addr, nullptr, 16);
 
             // get dissassemble string
             getline(strbuf, disasstr, ';');
@@ -407,17 +407,23 @@ namespace tana {
             // get 8 register value
             for (int i = 0; i < GPR_NUM; ++i) {
                 getline(strbuf, temp, ',');
-                ins->vcpu.gpr[i] = std::stoul(temp, 0, 16);
+                ins->vcpu.gpr[i] = std::stoul(temp, nullptr, 16);
             }
 
             getline(strbuf, temp, ',');
-            ins->memory_address = std::stoul(temp, 0, 16);
+            ins->memory_address = std::stoul(temp, nullptr, 16);
 
             //Get EPFLAGS
             getline(strbuf, temp, ',');
             if (!temp.empty()) {
-                ins->vcpu.set_eflags(std::stoul(temp, 0, 16));
+                ins->vcpu.set_eflags(std::stoul(temp, nullptr, 16));
                 ins->vcpu.eflags_state = true;
+            }
+
+            //Get Mem Data
+            getline(strbuf, temp, ',');
+            if(!temp.empty()){
+                ins->set_mem_data(std::stoul(temp, nullptr, 16));
             }
 
             ins->parseOperand();

@@ -325,12 +325,12 @@ namespace tana{
         if(id == x86::x86_insn::X86_INS_JNB)
             return std::make_unique<Dyn_X86_INS_JNB>(isStatic);
 
-
+        */
 
         if(id == x86::x86_insn::X86_INS_JNBE)
             return std::make_unique<Dyn_X86_INS_JNBE>(isStatic);
 
-
+        /*
         if(id == x86::x86_insn::X86_INS_JNC)
             return std::make_unique<Dyn_X86_INS_JNC>(isStatic);
 
@@ -1691,11 +1691,19 @@ namespace tana{
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
 
-        auto CF_O = buildop2(BVOper::equal, CF, 0);
-        auto ZF_O = buildop2(BVOper::equal, ZF, 0);
-
-        auto constrains = std::make_shared<Constrain>(CF_O, BVOper::bvand, ZF_O);
-        se->updateConstrains(constrains);
+        if(this->vcpu.CF() == 0 && this->vcpu.ZF() == 0) {
+            auto CF_O = buildop2(BVOper::equal, CF, 0);
+            auto ZF_O = buildop2(BVOper::equal, ZF, 0);
+            auto constrains = std::make_shared<Constrain>(CF_O, BVOper::bvand, ZF_O);
+            se->updateConstrains(constrains);
+        }
+        else
+        {
+            auto CF_O = buildop2(BVOper::equal, CF, 1);
+            auto ZF_O = buildop2(BVOper::equal, ZF, 1);
+            auto constrains = std::make_shared<Constrain>(CF_O, BVOper::bvor, ZF_O);
+            se->updateConstrains(constrains);
+        }
         return true;
     }
 
@@ -1705,8 +1713,13 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
-
-        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        std::shared_ptr<Constrain> constrains;
+        if(vcpu.CF() == 0) {
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        }
+        else{
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1717,8 +1730,13 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        if(vcpu.CF()) {
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        } else{
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1731,12 +1749,17 @@ namespace tana{
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
 
-
-        auto CF_1 = buildop2(BVOper::equal, CF, 1);
-        auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
-
-        auto constrains = std::make_shared<Constrain>(CF_1, BVOper::bvor, ZF_1);
-        se->updateConstrains(constrains);
+        if(vcpu.CF() == 1 || vcpu.ZF() == 1) {
+            auto CF_1 = buildop2(BVOper::equal, CF, 1);
+            auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
+            auto constrains = std::make_shared<Constrain>(CF_1, BVOper::bvor, ZF_1);
+            se->updateConstrains(constrains);
+        } else{
+            auto CF_0 = buildop2(BVOper::equal, CF, 0);
+            auto ZF_0 = buildop2(BVOper::equal, ZF, 0);
+            auto constrains = std::make_shared<Constrain>(CF_0, BVOper::bvand, ZF_0);
+            se->updateConstrains(constrains);
+        }
         return true;
     }
 
@@ -1746,10 +1769,13 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
-
-
-
-        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        std::shared_ptr<Constrain> constrains;
+        if(vcpu.CF() == 1) {
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        } else
+        {
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1759,9 +1785,13 @@ namespace tana{
     {
         if(!se->eflags)
             return false;
-
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
-        auto constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 1);
+        std::shared_ptr<Constrain> constrains;
+        if(vcpu.ZF() == 1) {
+            constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 1);
+        } else{
+            constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 0);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1774,12 +1804,17 @@ namespace tana{
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        std::shared_ptr<Constrain> constrains;
 
-
-        auto ZF_O = buildop2(BVOper::equal, ZF, 0);
-        auto SF_OF = buildop2(BVOper::equal, SF, OF);
-
-        auto constrains = std::make_shared<Constrain>(SF_OF, BVOper::bvand, ZF_O);
+        if((vcpu.ZF() == 0) && (vcpu.SF() == vcpu.OF())) {
+            auto ZF_O = buildop2(BVOper::equal, ZF, 0);
+            auto SF_OF = buildop2(BVOper::equal, SF, OF);
+            constrains = std::make_shared<Constrain>(SF_OF, BVOper::bvand, ZF_O);
+        } else {
+            auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
+            auto SFnOF = buildop2(BVOper::noequal, SF, OF);
+            constrains = std::make_shared<Constrain>(SFnOF, BVOper::bvor, ZF_1);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1792,7 +1827,13 @@ namespace tana{
 
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
-        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, OF);
+        std::shared_ptr<Constrain> constrains;
+
+        if(vcpu.SF() == vcpu.OF()) {
+            constrains = std::make_shared<Constrain>(SF, BVOper::equal, OF);
+        } else{
+            constrains = std::make_shared<Constrain>(SF, BVOper::noequal, OF);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1805,7 +1846,14 @@ namespace tana{
 
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
-        auto constrains = std::make_shared<Constrain>(SF, BVOper::noequal, OF);
+        std::shared_ptr<Constrain> constrains;
+
+        if(vcpu.SF() != vcpu.OF()) {
+            constrains = std::make_shared<Constrain>(SF, BVOper::noequal, OF);
+        } else
+        {
+            constrains = std::make_shared<Constrain>(SF, BVOper::equal, OF);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1818,12 +1866,18 @@ namespace tana{
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        std::shared_ptr<Constrain> constrains;
 
-
-        auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
-        auto SF_OF = buildop2(BVOper::noequal, SF, OF);
-
-        auto constrains = std::make_shared<Constrain>(SF_OF, BVOper::bvand, ZF_1);
+        if(vcpu.ZF() || (vcpu.SF() != vcpu.OF())) {
+            auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
+            auto SF_OF = buildop2(BVOper::noequal, SF, OF);
+            constrains = std::make_shared<Constrain>(SF_OF, BVOper::bvor, ZF_1);
+        } else
+        {
+            auto ZF_0 = buildop2(BVOper::equal, ZF, 0);
+            auto SF_OF = buildop2(BVOper::equal, SF, OF);
+            constrains = std::make_shared<Constrain>(SF_OF, BVOper::bvand, ZF_0);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1835,12 +1889,17 @@ namespace tana{
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto CF_1 = buildop2(BVOper::equal, CF, 1);
-        auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
-
-
-        auto constrains = std::make_shared<Constrain>(CF_1, BVOper::bvor, ZF_1);
+        if(vcpu.CF() || vcpu.ZF()) {
+            auto CF_1 = buildop2(BVOper::equal, CF, 1);
+            auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
+            constrains = std::make_shared<Constrain>(CF_1, BVOper::bvor, ZF_1);
+        } else {
+            auto CF_0 = buildop2(BVOper::equal, CF, 0);
+            auto ZF_0 = buildop2(BVOper::equal, ZF, 0);
+            constrains = std::make_shared<Constrain>(CF_0, BVOper::bvand, ZF_0);
+        }
         se->updateConstrains(constrains);
         return true;
 
@@ -1852,8 +1911,13 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        if(vcpu.CF()) {
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        } else{
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1864,8 +1928,13 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        if(vcpu.CF() == 0) {
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        } else{
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1877,10 +1946,17 @@ namespace tana{
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto CF_0 = buildop2(BVOper::equal, CF, 0);
-        auto ZF_0 = buildop2(BVOper::equal, ZF, 0);
-        auto constrains = std::make_shared<Constrain>(CF_0, BVOper::bvand, ZF_0);
+        if((vcpu.CF() == 0) &&(vcpu.ZF() == 0)) {
+            auto CF_0 = buildop2(BVOper::equal, CF, 0);
+            auto ZF_0 = buildop2(BVOper::equal, ZF, 0);
+            constrains = std::make_shared<Constrain>(CF_0, BVOper::bvand, ZF_0);
+        } else{
+            auto CF_1 = buildop2(BVOper::equal, CF, 1);
+            auto ZF_1 = buildop2(BVOper::equal, ZF, 1);
+            constrains = std::make_shared<Constrain>(CF_1, BVOper::bvor, ZF_1);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1891,7 +1967,13 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
-        auto constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        std::shared_ptr<Constrain> constrains;
+
+        if(vcpu.CF() == 0) {
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 0);
+        } else{
+            constrains = std::make_shared<Constrain>(CF, BVOper::equal, 1);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1902,7 +1984,12 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
-        auto constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 0);
+        std::shared_ptr<Constrain> constrains;
+        if(vcpu.ZF() == 0) {
+            constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 0);
+        } else{
+            constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 1);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1915,11 +2002,18 @@ namespace tana{
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        std::shared_ptr<Constrain> constrains;
 
-        std::shared_ptr<BitVector> ZF_1 = buildop2(BVOper::equal, ZF, 1);
-        std::shared_ptr<BitVector> SF_OF = buildop2(BVOper::noequal, SF, OF);
-
-        auto constrains = std::make_shared<Constrain>(ZF_1, BVOper ::bvor, SF_OF);
+        if(vcpu.ZF() || (vcpu.ZF() != vcpu.OF())) {
+            std::shared_ptr<BitVector> ZF_1 = buildop2(BVOper::equal, ZF, 1);
+            std::shared_ptr<BitVector> SF_OF = buildop2(BVOper::noequal, SF, OF);
+            constrains = std::make_shared<Constrain>(ZF_1, BVOper::bvor, SF_OF);
+        } else
+        {
+            std::shared_ptr<BitVector> ZF_0 = buildop2(BVOper::equal, ZF, 0);
+            std::shared_ptr<BitVector> SF_OF = buildop2(BVOper::equal, SF, OF);
+            constrains = std::make_shared<Constrain>(ZF_0, BVOper::bvand, SF_OF);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1931,8 +2025,15 @@ namespace tana{
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(SF, BVOper::noequal, OF);
+        if(vcpu.SF() != vcpu.OF()) {
+            constrains = std::make_shared<Constrain>(SF, BVOper::noequal, OF);
+        } else
+        {
+            constrains = std::make_shared<Constrain>(SF, BVOper::equal, OF);
+
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1944,8 +2045,13 @@ namespace tana{
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, OF);
+        if(vcpu.SF() == vcpu.OF()) {
+            constrains = std::make_shared<Constrain>(SF, BVOper::equal, OF);
+        } else{
+            constrains = std::make_shared<Constrain>(SF, BVOper::noequal, OF);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1958,11 +2064,18 @@ namespace tana{
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        std::shared_ptr<Constrain> constrains;
 
-        std::shared_ptr<BitVector> ZF_0 = buildop2(BVOper::equal, ZF, 0);
-        std::shared_ptr<BitVector> SF_OF = buildop2(BVOper::equal, SF, OF);
-
-        auto constrains = std::make_shared<Constrain>(ZF_0, BVOper::bvand, SF_OF);
+        if((vcpu.ZF() == 0) && (vcpu.SF() == vcpu.OF())) {
+            std::shared_ptr<BitVector> ZF_0 = buildop2(BVOper::equal, ZF, 0);
+            std::shared_ptr<BitVector> SF_OF = buildop2(BVOper::equal, SF, OF);
+            constrains = std::make_shared<Constrain>(ZF_0, BVOper::bvand, SF_OF);
+        } else
+        {
+            std::shared_ptr<BitVector> ZF_1 = buildop2(BVOper::equal, ZF, 1);
+            std::shared_ptr<BitVector> SFnOF = buildop2(BVOper::noequal, SF, OF);
+            constrains = std::make_shared<Constrain>(ZF_1, BVOper::bvor, SFnOF);
+        }
         se->updateConstrains(constrains);
         return true;
     }
@@ -1973,8 +2086,9 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(OF, BVOper::equal, 0);
+        constrains = std::make_shared<Constrain>(OF, BVOper::equal, vcpu.OF());
         se->updateConstrains(constrains);
         return true;
     }
@@ -1985,8 +2099,9 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, 0);
+        constrains = std::make_shared<Constrain>(SF, BVOper::equal, vcpu.SF());
         se->updateConstrains(constrains);
         return true;
     }
@@ -1998,8 +2113,9 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(ZF, BVOper::equal, 0);
+        constrains = std::make_shared<Constrain>(ZF, BVOper::equal, vcpu.ZF());
         se->updateConstrains(constrains);
         return true;
     }
@@ -2010,8 +2126,9 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(OF, BVOper::equal, 1);
+        constrains = std::make_shared<Constrain>(OF, BVOper::equal, vcpu.OF());
         se->updateConstrains(constrains);
         return true;
     }
@@ -2022,8 +2139,9 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, 1);
+        constrains = std::make_shared<Constrain>(SF, BVOper::equal, vcpu.SF());
         se->updateConstrains(constrains);
         return true;
     }
@@ -2034,8 +2152,9 @@ namespace tana{
         if(!se->eflags)
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("ZF");
+        std::shared_ptr<Constrain> constrains;
 
-        auto constrains = std::make_shared<Constrain>(SF, BVOper::equal, 1);
+        constrains = std::make_shared<Constrain>(SF, BVOper::equal, vcpu.ZF());
         se->updateConstrains(constrains);
         return true;
     }

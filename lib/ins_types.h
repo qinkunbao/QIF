@@ -98,6 +98,9 @@ namespace tana {
     };
 
     class Inst_Base {
+    private:
+        bool mem_data_available;
+        uint32_t mem_data;
     public:
         bool is_static = false;
         tana_type::index id;  //instruction ID
@@ -117,6 +120,10 @@ namespace tana {
         std::string get_memory_address();
 
         void parseOperand();
+
+        void set_mem_data(uint32_t mem_data);
+
+        uint32_t read_mem_data();
 
         virtual bool symbolic_execution(SEEngine *se)
         {

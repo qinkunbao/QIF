@@ -48,7 +48,7 @@ void static getctx(ADDRINT addr, CONTEXT *fromctx, ADDRINT memaddr)
 	//Only collect traces and a recv function
 	if (start_ins == FALSE)
 		return;
-	fprintf(fp, "%x;%s;%x,%x,%x,%x,%x,%x,%x,%x,%x,%x\n", addr, opcmap[addr].c_str(),
+	fprintf(fp, "%x;%s;%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x\n", addr, opcmap[addr].c_str(),
 		PIN_GetContextReg(fromctx, REG_EAX),
 		PIN_GetContextReg(fromctx, REG_EBX),
 		PIN_GetContextReg(fromctx, REG_ECX),
@@ -58,8 +58,32 @@ void static getctx(ADDRINT addr, CONTEXT *fromctx, ADDRINT memaddr)
 		PIN_GetContextReg(fromctx, REG_ESP),
 		PIN_GetContextReg(fromctx, REG_EBP),
 		memaddr,
-		PIN_GetContextReg(fromctx, REG_EBP));
+		PIN_GetContextReg(fromctx, REG_EFLAGS),
+		0);
 }
+
+void static getctxRead(ADDRINT addr, CONTEXT *fromctx, ADDRINT memaddr)
+{
+	//Only collect traces and a recv function
+	if (start_ins == FALSE)
+		return;
+    uint32_t value = 0;
+    const VOID* src = (const VOID *)(memaddr); 
+	PIN_SafeCopy(&value, src, sizeof(uint32_t));
+	fprintf(fp, "%x;%s;%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x\n", addr, opcmap[addr].c_str(),
+		PIN_GetContextReg(fromctx, REG_EAX),
+		PIN_GetContextReg(fromctx, REG_EBX),
+		PIN_GetContextReg(fromctx, REG_ECX),
+		PIN_GetContextReg(fromctx, REG_EDX),
+		PIN_GetContextReg(fromctx, REG_ESI),
+		PIN_GetContextReg(fromctx, REG_EDI),
+		PIN_GetContextReg(fromctx, REG_ESP),
+		PIN_GetContextReg(fromctx, REG_EBP),
+		memaddr,
+		PIN_GetContextReg(fromctx, REG_EFLAGS),
+		value);
+}
+
 
 
 VOID Instruction(INS ins, VOID *v) {
@@ -69,7 +93,7 @@ VOID Instruction(INS ins, VOID *v) {
 	}
 
 	if (INS_IsMemoryRead(ins)) {
-		INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)getctx, IARG_INST_PTR, IARG_CONST_CONTEXT, IARG_MEMORYREAD_EA, IARG_END);
+		INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)getctxRead, IARG_INST_PTR, IARG_CONST_CONTEXT, IARG_MEMORYREAD_EA, IARG_END);
 	}
 
 

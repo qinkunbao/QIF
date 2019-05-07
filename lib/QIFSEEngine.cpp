@@ -42,7 +42,7 @@ namespace tana {
         std::shared_ptr<BitVector> v0;
         std::stringstream ss;
 
-        for (auto offset = 0; offset <= m_size; offset = offset + 4) {
+        for (auto offset = 0; offset < m_size; offset = offset + 4) {
             ss << "Key" << offset / 4;
             v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str());
             memory[address + offset] = v0;
@@ -163,7 +163,7 @@ namespace tana {
         } else {
             std::stringstream ss;
             ss << "Environment data: " << memory_address_str << std::dec;
-            v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
+            v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
             memory[memory_address] = v0;
         }
 
@@ -172,11 +172,11 @@ namespace tana {
         }
 
         if (size == T_BYTE_SIZE * T_WORD) {
-            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 17, 32);
+            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 16);
             return v1;
         }
 
-        std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 25, 32);
+        std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 8);
         return v1;
     }
 
@@ -203,7 +203,7 @@ namespace tana {
 
 
         if (addr_size == T_BYTE_SIZE * T_WORD) {
-            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 17, 32);
+            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 16);
             if (!v->isSymbol()) {
                 v = DynSEEngine::Extract(v, 1, 16);
             }
@@ -213,7 +213,7 @@ namespace tana {
         }
 
         if (addr_size == T_BYTE_SIZE * T_BYTE) {
-            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 9, 32);
+            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 8);
             if (!v->isSymbol()) {
                 v = DynSEEngine::Extract(v, 1, 8);
             }
@@ -229,6 +229,7 @@ namespace tana {
         for (auto inst = start; inst != end; ++inst) {
             auto it = inst->get();
             eip = it->addrn;
+            mem_data = it->read_mem_data();
             bool status = it->symbolic_execution(this);
 
             if (!status) {
@@ -283,7 +284,7 @@ namespace tana {
 
     void QIFSEEngine::clearFlags(std::string flag_name)
     {
-        std::shared_ptr<BitVector> con = std::make_shared<BitVector>(ValueType::SYMBOL, 0);
+        std::shared_ptr<BitVector> con = std::make_shared<BitVector>(ValueType::CONCRETE, 0);
         this->updateFlags(flag_name, con);
     }
 

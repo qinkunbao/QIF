@@ -30,7 +30,6 @@ int main(int argc, char* argv[]) {
     tana_type::T_ADDRESS start_addr = 0;
     tana_type::T_SIZE m_size = 0;
 
-    uint32_t id = 1;
     parse_trace(&trace_file, start_addr, m_size, inst_list);
 
     std::cout << "Start Address: " << std::hex << start_addr << std::dec << " Length: " << m_size << std::endl;
