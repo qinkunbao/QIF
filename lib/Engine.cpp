@@ -80,7 +80,7 @@ namespace tana {
             uint32_t v2_value = eval(v2);
             v2_value = BitVector::extract(v2_value, v2->high_bit, v2->low_bit);
             uint32_t result_value = BitVector::concat(v1_value, v2_value, v1->size(), v2->size());
-            res = std::make_shared<BitVector>(ValueType::SYMBOL, result_value);
+            res = std::make_shared<BitVector>(ValueType::CONCRETE, result_value);
         }
 
         res->low_bit = 1;
@@ -104,7 +104,7 @@ namespace tana {
         } else {
             uint32_t result = eval(v);
             result = BitVector::extract(result, high, low);
-            res = std::make_shared<BitVector>(ValueType::SYMBOL, result);
+            res = std::make_shared<BitVector>(ValueType::CONCRETE, result);
         }
         res->high_bit = high;
         res->low_bit = low;
@@ -121,7 +121,7 @@ namespace tana {
         } else {
             uint32_t result = eval(v);
             result = BitVector::extract(result, size_new, 1);
-            res = std::make_shared<BitVector>(ValueType::SYMBOL, result);
+            res = std::make_shared<BitVector>(ValueType::CONCRETE, result);
         }
         res->high_bit = size_new;
         res->low_bit = 1;
@@ -139,7 +139,7 @@ namespace tana {
         } else {
             uint32_t result = eval(v);
             result = BitVector::signext(result, orgin_size, new_size);
-            res = std::make_shared<BitVector>(ValueType::SYMBOL, result);
+            res = std::make_shared<BitVector>(ValueType::CONCRETE, result);
         }
         res->high_bit = new_size;
         res->low_bit = 1;

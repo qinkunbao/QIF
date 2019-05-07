@@ -25,6 +25,7 @@ namespace tana {
         std::shared_ptr<BitVector> CF, OF, SF, ZF, AF, PF;
         std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> constrains;
         uint32_t eip;
+        uint32_t mem_data;
 
     public:
 

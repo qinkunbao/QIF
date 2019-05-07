@@ -48,10 +48,10 @@ namespace tana {
                 os << " != ";
                 break;
             case BVOper ::bvand:
-                os << "and";
+                os << " && ";
                 break;
             case BVOper ::bvor:
-                os << "os";
+                os << " | ";
                 break;
             default:
                 os << "ERROR";
