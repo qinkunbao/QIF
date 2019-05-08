@@ -157,27 +157,77 @@ namespace tana {
 
     std::shared_ptr<BitVector> QIFSEEngine::readMem(std::string memory_address_str, tana_type::T_SIZE size) {
         uint32_t memory_address = std::stoul(memory_address_str, nullptr, 16);
-        std::shared_ptr<BitVector> v0;
-        if (memory_find(memory_address)) {
-            v0 = memory[memory_address];
-        } else {
-            std::stringstream ss;
-            ss << "Environment data: " << memory_address_str << std::dec;
-            v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
-            memory[memory_address] = v0;
-        }
-
+        std::shared_ptr<BitVector> v0, v1;
         if (size == T_BYTE_SIZE * T_DWORD) {
+            if (memory_find(memory_address)) {
+                v0 = memory[memory_address];
+            } else {
+                std::stringstream ss;
+                ss << "Environment data: " << memory_address_str << std::dec;
+                v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                memory[memory_address] = v0;
+            }
             return v0;
         }
 
         if (size == T_BYTE_SIZE * T_WORD) {
-            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 16);
+            uint32_t offset = memory_address % 2;
+            if (memory_find(memory_address - offset)) {
+                v0 = memory[memory_address - offset];
+            } else {
+                std::stringstream ss;
+                ss << "Environment data: " << memory_address_str << std::dec;
+                v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                memory[memory_address - offset] = v0;
+                v1 = DynSEEngine::Extract(v0, 1, 16);
+                return v1;
+            }
+            if(offset == 0)
+            {
+                v1 = DynSEEngine::Extract(v0, 1, 16);
+            } else{
+                v1 = DynSEEngine::Extract(v0, 17, 32);
+            }
+
             return v1;
         }
 
-        std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 8);
-        return v1;
+        if (size == T_BYTE_SIZE * T_BYTE)
+        {
+            uint32_t offset = memory_address % 4;
+            if (memory_find(memory_address - offset)) {
+                v0 = memory[memory_address - offset];
+            } else {
+                std::stringstream ss;
+                ss << "Environment data: " << memory_address_str << std::dec;
+                v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                memory[memory_address - offset] = v0;
+                v1 = DynSEEngine::Extract(v0, 1, 8);
+                return v1;
+            }
+
+
+            if(offset == 0) {
+                v1 = DynSEEngine::Extract(v0, 1, 8);
+            }
+            else if(offset == 1) {
+                v1 = DynSEEngine::Extract(v0, 9, 16);
+            } else if(offset == 2)
+            {
+                v1 = DynSEEngine::Extract(v0, 17, 24);
+
+            } else{
+                v1 = DynSEEngine::Extract(v0, 25, 32);
+
+            }
+
+            return v1;
+        }
+
+        ERROR("Invalid data size");
+
+        return v0;
+
     }
 
 
@@ -188,37 +238,52 @@ namespace tana {
         std::shared_ptr<BitVector> v0, v_mem;
 
         if (addr_size == T_BYTE_SIZE * T_DWORD) {
+            assert(memory_address % 4 == 0);
             memory[memory_address] = v;
             return true;
         }
 
-        if (memory_find(memory_address)) {
-            v0 = memory[memory_address];
-        } else {
-            std::stringstream ss;
-            ss << "Mem:" << std::hex << memory_address << std::dec;
-            v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
-            memory[memory_address] = v0;
-        }
+
 
 
         if (addr_size == T_BYTE_SIZE * T_WORD) {
+            uint32_t offset = memory_address % 2;
+            if (memory_find(memory_address - offset)) {
+                v0 = memory[memory_address - offset];
+            } else {
+                std::stringstream ss;
+                ss << "Mem:" << std::hex << memory_address << std::dec;
+                v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
+                memory[memory_address - offset] = v0;
+            }
+
+
             std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 16);
             if (!v->isSymbol()) {
                 v = DynSEEngine::Extract(v, 1, 16);
             }
             v_mem = Concat(v1, v);
-            memory[memory_address] = v_mem;
+            memory[memory_address - offset] = v_mem;
             return true;
         }
 
         if (addr_size == T_BYTE_SIZE * T_BYTE) {
+            uint32_t offset = memory_address % 4;
+            if (memory_find(memory_address - offset)) {
+                v0 = memory[memory_address - offset];
+            } else {
+                std::stringstream ss;
+                ss << "Mem:" << std::hex << memory_address << std::dec;
+                v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
+                memory[memory_address - offset] = v0;
+            }
+
             std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 8);
             if (!v->isSymbol()) {
                 v = DynSEEngine::Extract(v, 1, 8);
             }
             v_mem = Concat(v1, v);
-            memory[memory_address] = v_mem;
+            memory[memory_address - offset] = v_mem;
             return true;
         }
         return false;
