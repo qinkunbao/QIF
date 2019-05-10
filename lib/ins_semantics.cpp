@@ -389,7 +389,10 @@ namespace tana {
     bool Dyn_X86_INS_PUSH::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<BitVector> v0;
-
+        std::shared_ptr<BitVector> esp = se->readReg("esp");
+        uint32_t dec = op0->bit / T_BYTE_SIZE;
+        esp = buildop2(BVOper::bvsub, esp, dec);
+        se->writeReg("esp", esp);
         if (op0->type == Operand::ImmValue) {
             uint32_t temp_concrete = stoul(op0->field[0], nullptr, 16);
             v0 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
@@ -423,6 +426,11 @@ namespace tana {
     bool Dyn_X86_INS_POP::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
 
+        std::shared_ptr<BitVector> esp = se->readReg("esp");
+        uint32_t add_size = op0->bit / T_BYTE_SIZE;
+        esp = buildop2(BVOper::bvadd, esp, add_size);
+
+        se->writeReg("esp", esp);
         if (op0->type == Operand::Reg) {
             assert(Registers::getRegType(op0->field[0]) == FULL);
             auto v0 = se->readMem(this->get_memory_address(), op0->bit);
@@ -632,7 +640,6 @@ namespace tana {
 
         }
         if (op1->type == Operand::Mem) {
-            //TODO
             v1 = se->readMem(this->get_memory_address(), op1->bit);
             v1 = se->ZeroExt(v1, op0->bit);
             se->writeReg(op0->field[0], v1);
@@ -1416,6 +1423,10 @@ namespace tana {
     }
 
     bool Dyn_X86_INS_RET::symbolic_execution(SEEngine *se) {
+        std::shared_ptr<BitVector> esp = se->readReg("esp");
+        uint32_t add_size = 4;
+        esp = buildop2(BVOper::bvadd, esp, add_size);
+        se->writeReg("esp", esp);
         return true;
     }
 
@@ -1453,6 +1464,7 @@ namespace tana {
             auto temp1 = se->readReg("eax");
             auto temp2 = se->readReg("edx");
             dividend = se->Concat(temp2, temp1);
+
         }
 
 

@@ -76,9 +76,7 @@ namespace tana {
             res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
         else {
             uint32_t v1_value = eval(v1);
-            v1_value = BitVector::extract(v1_value, v1->high_bit, v1->low_bit);
             uint32_t v2_value = eval(v2);
-            v2_value = BitVector::extract(v2_value, v2->high_bit, v2->low_bit);
             uint32_t result_value = BitVector::concat(v1_value, v2_value, v1->size(), v2->size());
             res = std::make_shared<BitVector>(ValueType::CONCRETE, result_value);
         }

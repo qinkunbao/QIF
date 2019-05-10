@@ -154,8 +154,14 @@ namespace tana {
 
     uint32_t Inst_Base::read_mem_data()
     {
-        if(!mem_data_available)
+        if(!mem_data_available) {
+            ERROR("memory data not available");
             return 0;
+        }
+
+        if(this->instruction_id == x86::X86_INS_POP
+        || this->instruction_id == x86::X86_INS_PUSH)
+            return mem_data;
         uint32_t mem_size = 0;
         for(int i = 0; i < 3; ++i)
         {
@@ -171,11 +177,9 @@ namespace tana {
         switch (mem_size)
         {
             case 32:
-                return mem_data;
             case 16:
-                return (mem_data & 0xffffu);
             case 8:
-                return (mem_data & 0xffu);
+                return mem_data;
             default:
                 return 0;
         }

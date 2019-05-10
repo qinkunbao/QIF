@@ -158,6 +158,24 @@ namespace tana {
     std::shared_ptr<BitVector> QIFSEEngine::readMem(std::string memory_address_str, tana_type::T_SIZE size) {
         uint32_t memory_address = std::stoul(memory_address_str, nullptr, 16);
         std::shared_ptr<BitVector> v0, v1;
+        uint32_t offset = memory_address % 4;
+        //Debug
+        if(memory_find(memory_address - offset))
+        {
+            std::shared_ptr<BitVector> v_test = memory.at(memory_address - offset);
+            if(v_test->symbol_num() == 0)
+            {
+                uint32_t calculate = SEEngine::eval(v_test);
+                uint32_t con = mem_data;
+                std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex <<con << std::dec <<std::endl;
+                std::cout << std::endl << memory_address_str << std::endl;
+                if(con != calculate)
+                    ERROR("Memory Error");
+            }
+        }
+        //Debug
+
+
         if (size == T_BYTE_SIZE * T_DWORD) {
             assert(memory_address % 4 == 0);
             if (memory_find(memory_address)) {
@@ -167,12 +185,12 @@ namespace tana {
                 ss << "Environment data: " << memory_address_str << std::dec;
                 v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
                 memory[memory_address] = v0;
+                assert(v0 != nullptr);
             }
             return v0;
         }
 
         if (size == T_BYTE_SIZE * T_WORD) {
-            uint32_t offset = memory_address % 2;
             if (memory_find(memory_address - offset)) {
                 v0 = memory[memory_address - offset];
             } else {
@@ -180,6 +198,7 @@ namespace tana {
                 ss << "Environment data: " << memory_address_str << std::dec;
                 v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
                 memory[memory_address - offset] = v0;
+                assert(v0 != nullptr);
             }
             if(offset == 0)
             {
@@ -193,7 +212,6 @@ namespace tana {
 
         if (size == T_BYTE_SIZE * T_BYTE)
         {
-            uint32_t offset = memory_address % 4;
             if (memory_find(memory_address - offset)) {
                 v0 = memory[memory_address - offset];
             } else {
@@ -201,6 +219,7 @@ namespace tana {
                 ss << "Environment data: " << memory_address_str << std::dec;
                 v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
                 memory[memory_address - offset] = v0;
+                assert(v0 != nullptr);
             }
             if(offset == 0) {
                 v1 = DynSEEngine::Extract(v0, 1, 8);
@@ -231,21 +250,24 @@ namespace tana {
         assert(v->size() == addr_size || !v->isSymbol());
         uint32_t memory_address = std::stoul(memory_address_str, nullptr, 16);
         std::shared_ptr<BitVector> v_mem_origin, v_mem;
+        uint32_t offset = memory_address % 4;
+
 
         if (addr_size == T_BYTE_SIZE * T_DWORD) {
             assert(memory_address % 4 == 0);
             memory[memory_address] = v;
+            assert(v!= nullptr);
             return true;
         }
 
         if (addr_size == T_BYTE_SIZE * T_WORD) {
-            uint32_t offset = memory_address % 2;
             if (memory_find(memory_address - offset)) {
                 v_mem_origin = memory[memory_address - offset];
             } else {
                 std::stringstream ss;
                 ss << "Mem:" << std::hex << memory_address << std::dec;
-                v_mem_origin = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
+                v_mem_origin = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                assert(v_mem_origin != nullptr);
                 memory[memory_address - offset] = v_mem_origin;
             }
 
@@ -263,17 +285,18 @@ namespace tana {
                 v_mem = Concat(v, v1);
             }
             memory[memory_address - offset] = v_mem;
+            assert(v_mem != nullptr);
             return true;
         }
 
         if (addr_size == T_BYTE_SIZE * T_BYTE) {
-            uint32_t offset = memory_address % 4;
             if (memory_find(memory_address - offset)) {
                 v_mem_origin = memory[memory_address - offset];
             } else {
                 std::stringstream ss;
                 ss << "Mem:" << std::hex << memory_address << std::dec;
-                v_mem_origin = std::make_shared<BitVector>(ValueType ::CONCRETE, ss.str());
+                v_mem_origin = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                assert(v_mem_origin != nullptr);
                 memory[memory_address - offset] = v_mem_origin;
             }
 
@@ -310,6 +333,8 @@ namespace tana {
 
             assert(v_mem->size() == REGISTER_SIZE);
             memory[memory_address - offset] = v_mem;
+            std::cout << std::endl << "Debug: " << *v_mem <<std::endl;
+            assert(v_mem != nullptr);
             return true;
         }
         return false;
@@ -317,12 +342,40 @@ namespace tana {
 
     int
     QIFSEEngine::run() {
-        for (auto inst = start; inst != end; ++inst) {
+        for (auto inst = start; inst != end; ) {
             auto it = inst->get();
             eip = it->addrn;
             mem_data = it->read_mem_data();
             bool status = it->symbolic_execution(this);
+            std::vector<std::shared_ptr<BitVector>> sym_res;
+            sym_res.push_back(ctx["eax"]);
+            sym_res.push_back(ctx["ebx"]);
+            sym_res.push_back(ctx["ecx"]);
+            sym_res.push_back(ctx["edx"]);
+            sym_res.push_back(ctx["esi"]);
+            sym_res.push_back(ctx["edi"]);
+            sym_res.push_back(ctx["esp"]);
+            sym_res.push_back(ctx["ebp"]);
+            std::vector<uint32_t> con_res;
+            ++inst;
+            if(inst != end) {
+                for (uint32_t i = 0; i < 8; ++i) {
+                    con_res.push_back(inst->get()->vcpu.gpr[i]);
+                }
 
+                std::cout << it->id << ": ";
+                for (uint32_t j = 0; j < 8; ++j) {
+                    std::cout << *sym_res[j] << " = " << std::hex << con_res[j] << std::dec <<" || ";
+                    if((sym_res[j])->symbol_num() == 0) {
+                        auto res = this->eval(sym_res[j]);
+                        if (res != con_res[j]) {
+                            std::cout << std::endl << "Error: " << std::hex << it->addrn << std::dec << std::endl;
+                            ERROR("ERROR");
+                        }
+                    }
+                }
+                std::cout << std::endl;
+            }
             if (!status) {
                 ERROR("No recognized instruction");
                 return false;
