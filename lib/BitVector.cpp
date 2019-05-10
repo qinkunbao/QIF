@@ -212,7 +212,7 @@ namespace tana {
 
         res = bit1_sub + bit2_sub;
 
-        std::bitset<REGISTER_SIZE> res_bit(res);
+        std::bitset<REGISTER_SIZE + REGISTER_SIZE> res_bit(res);
         auto res_u = static_cast<uint32_t > (res_bit.to_ulong());
         return res_u;
 
@@ -359,9 +359,16 @@ namespace tana {
 
         if (num_opr == 1) {
             ss << op->opty;
-            ss << "(";
-            (op->val[0])->printV(ss, length);
-            ss << ")";
+            if(op->opty == BVOper ::bvextract)
+            {
+                ss << "(";
+                (op->val[0])->printV(ss, length);
+                ss << "," << this->low_bit << "," << this->high_bit << ")";
+            } else {
+                ss << "(";
+                (op->val[0])->printV(ss, length);
+                ss << ")";
+            }
 
         }
         if (num_opr == 2) {
