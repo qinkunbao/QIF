@@ -400,6 +400,27 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
+    class Dyn_X86_INS_REP_STOSD : public  Inst_Base{
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_CMOVZ : public  Inst_Base{
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_SETZ : public  Inst_Base{
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class Dyn_X86_INS_SETNZ : public  Inst_Base{
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+
 
 
 

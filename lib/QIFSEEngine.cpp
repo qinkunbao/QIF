@@ -167,8 +167,8 @@ namespace tana {
             {
                 uint32_t calculate = SEEngine::eval(v_test);
                 uint32_t con = mem_data;
-                std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex <<con << std::dec <<std::endl;
-                std::cout << std::endl << memory_address_str << std::endl;
+                //std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex <<con << std::dec <<std::endl;
+                //std::cout << std::endl << memory_address_str << std::endl;
                 if(con != calculate)
                     ERROR("Memory Error");
             }
@@ -333,7 +333,7 @@ namespace tana {
 
             assert(v_mem->size() == REGISTER_SIZE);
             memory[memory_address - offset] = v_mem;
-            std::cout << std::endl << "Debug: " << *v_mem <<std::endl;
+            //std::cout << std::endl << "Debug: " << *v_mem <<std::endl;
             assert(v_mem != nullptr);
             return true;
         }
@@ -363,18 +363,21 @@ namespace tana {
                     con_res.push_back(inst->get()->vcpu.gpr[i]);
                 }
 
-                std::cout << it->id << ": ";
+                //std::cout << it->id << ": ";
                 for (uint32_t j = 0; j < 8; ++j) {
-                    std::cout << *sym_res[j] << " = " << std::hex << con_res[j] << std::dec <<" || ";
+                    //std::cout << *sym_res[j] << " = " << std::hex << con_res[j] << std::dec <<" || ";
                     if((sym_res[j])->symbol_num() == 0) {
-                        auto res = this->eval(sym_res[j]);
+                        auto res = eval(sym_res[j]);
                         if (res != con_res[j]) {
                             std::cout << std::endl << "Error: " << std::hex << it->addrn << std::dec << std::endl;
+                            std::cout << "Register: " << j << std::endl;
+                            std::cout << "Symbolic: " << std::hex << res << std::dec << std::endl;
+                            std::cout << "Concrete: " << std::hex << con_res[j] << std::dec << std::endl;
                             ERROR("ERROR");
                         }
                     }
                 }
-                std::cout << std::endl;
+                //std::cout << std::endl;
             }
             if (!status) {
                 ERROR("No recognized instruction");
