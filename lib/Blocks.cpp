@@ -62,7 +62,7 @@ namespace tana {
         std::cout << "Start Address: " << std::hex << addr << " End Address: " << end_addr <<std::dec << "\n";
         std::cout << "Block Size: " << size << std::endl;
         for(auto const &inst : inst_list) {
-            inst->print();
+            std::cout << inst << "\n";
         }
 
         std::cout << "\n";
