@@ -1,5 +1,9 @@
 #include <set>
 #include "x86.h"
+#include "error.h"
+#define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
+
+
 
 namespace tana {
     namespace x86 {
@@ -10,7 +14,9 @@ namespace tana {
                     insn_id = inst_map.id;
                 }
             }
-
+            if(insn_id == X86_INS_INVALID) {
+                ERROR(insn_name.c_str());
+            }
             return insn_id;
 
         }

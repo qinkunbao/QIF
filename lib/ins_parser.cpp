@@ -392,6 +392,13 @@ namespace tana {
             //ins->opcstr = opcstr;
             auto ins_id = x86::insn_string2id(opcstr);
 
+            //Remove prefix
+            if(ins_id == x86::X86_INS_REP)
+            {
+                getline(disasbuf, opcstr, ' ');
+                ins_id = x86::insn_string2id(opcstr);
+            }
+
             std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(ins_id, false);
 
             ins->id = ins_index;
@@ -520,8 +527,14 @@ namespace tana {
             getline(disasbuf, opcstr, ' ');
 
             auto inst_instruction_id = x86::insn_string2id(opcstr);
+            if(inst_instruction_id == x86::X86_INS_REP)
+            {
+                getline(disasbuf, opcstr, ' ');
+                inst_instruction_id = x86::insn_string2id(opcstr);
+            }
+
             auto inst_id = ++ins_index;
-            auto inst_addrn = std::stoul(str_addr, 0, 16);
+            auto inst_addrn = std::stoul(str_addr, nullptr, 16);
 
             std::unique_ptr<Inst_Base> inst = Inst_Dyn_Factory::makeInst(inst_instruction_id, true);
             inst->id = inst_id;

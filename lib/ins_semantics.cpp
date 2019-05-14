@@ -290,11 +290,11 @@ namespace tana {
             return std::make_unique<Dyn_X86_INS_JNAE>(isStatic);
 
 
-
+        */
         if(id == x86::x86_insn::X86_INS_JNB)
             return std::make_unique<Dyn_X86_INS_JNB>(isStatic);
 
-        */
+
 
         if (id == x86::x86_insn::X86_INS_JNBE)
             return std::make_unique<Dyn_X86_INS_JNBE>(isStatic);
@@ -339,6 +339,18 @@ namespace tana {
 
         if (id == x86::x86_insn::X86_INS_JZ)
             return std::make_unique<Dyn_X86_INS_JZ>(isStatic);
+
+        if (id == x86::x86_insn::X86_INS_STOSD)
+            return std::make_unique<Dyn_X86_INS_REP_STOSD>(isStatic);
+
+        if (id == x86::x86_insn::X86_INS_CMOVZ)
+            return std::make_unique<Dyn_X86_INS_CMOVZ>(isStatic);
+
+        if (id == x86::x86_insn::X86_INS_SETZ)
+            return std::make_unique<Dyn_X86_INS_SETZ>(isStatic);
+
+        if (id == x86::x86_insn::X86_INS_SETNZ)
+            return std::make_unique<Dyn_X86_INS_SETNZ>(isStatic);
 
 
         WARN("unrecognized instructions");
@@ -1419,12 +1431,25 @@ namespace tana {
     }
 
     bool Dyn_X86_INS_CALL::symbolic_execution(SEEngine *se) {
+        std::shared_ptr<BitVector> esp = se->readReg("esp");
+        uint32_t sub_size = 4;
+        esp = buildop2(BVOper::bvsub, esp, sub_size);
+        se->writeReg("esp", esp);
+        uint32_t eip = this->addrn + 5; // X86 call 0xf77268ed
+        auto v_eip = std::make_shared<BitVector>(ValueType::CONCRETE, eip);
+
+        se->writeMem(this->get_memory_address(), REGISTER_SIZE, v_eip);
         return true;
     }
 
     bool Dyn_X86_INS_RET::symbolic_execution(SEEngine *se) {
         std::shared_ptr<BitVector> esp = se->readReg("esp");
         uint32_t add_size = 4;
+        if(oprd[0] != nullptr)
+        {
+            assert(oprd[0]->type == Operand::ImmValue);
+            add_size = add_size + std::stoul(oprd[0]->field[0], nullptr, 16);
+        }
         esp = buildop2(BVOper::bvadd, esp, add_size);
         se->writeReg("esp", esp);
         return true;
@@ -2032,5 +2057,42 @@ namespace tana {
         se->updateConstrains(constrains);
         return true;
     }
+
+    bool Dyn_X86_INS_REP_STOSD::symbolic_execution(tana::SEEngine *se)
+    {
+
+        // ecx = ecx - 1
+        auto v_ecx = se->readReg("ecx");
+        v_ecx = buildop2(BVOper::bvsub, v_ecx, 1);
+        se->writeReg("ecx", v_ecx);
+
+        assert(oprd[0]->type == Operand::Mem);
+        // Update register
+        auto v_reg = se->readReg(oprd[0]->field[0]);
+        v_reg = buildop2(BVOper::bvadd, v_reg, 4);
+        se->writeReg(oprd[0]->field[0], v_reg);
+
+        // Store the contents of eax into the memory
+        auto v_eax = se->readReg("eax");
+        se->writeMem(this->get_memory_address(), oprd[0]->bit, v_eax);
+
+        return true;
+    }
+
+    bool Dyn_X86_INS_CMOVZ::symbolic_execution(tana::SEEngine *se)
+    {
+        return true;
+    }
+
+    bool Dyn_X86_INS_SETZ::symbolic_execution(tana::SEEngine *se)
+    {
+        return true;
+    }
+
+    bool Dyn_X86_INS_SETNZ::symbolic_execution(tana::SEEngine *se)
+    {
+        return true;
+    }
+
 
 }
