@@ -23,13 +23,25 @@ namespace tana {
         return instruction_operand;
     }
 
-    void Inst_Base::print() const
+
+    std::ostream& operator<<(std::ostream& os, const Inst_Base& inst)
     {
-        std::stringstream inst;
-        inst << std::hex << this->addrn << std::dec;
-        inst << "   ";
-        inst << this->get_opcode_operand() << " ";
-        std::cout << inst.str() << std::endl;
+        os << inst.id << " ";
+        os << std::hex << inst.addrn << std::dec;
+        os << " ";
+        os << inst.get_opcode_operand();
+        os << " ";
+        auto &v_register = inst.vcpu.gpr;
+        os << "eax: " << std::hex << v_register[0] << std::dec << " ";
+        os << "ebx: " << std::hex << v_register[1] << std::dec << " ";
+        os << "ecx: " << std::hex << v_register[2] << std::dec << " ";
+        os << "edx: " << std::hex << v_register[3] << std::dec << " ";
+        os << "esi: " << std::hex << v_register[4] << std::dec << " ";
+        os << "edx: " << std::hex << v_register[5] << std::dec << " ";
+        os << "esp: " << std::hex << v_register[6] << std::dec << " ";
+        os << "ebp: " << std::hex << v_register[7] << std::dec << " ";
+
+        return os;
     }
 
     vcpu_ctx::vcpu_ctx():eflags(0), eflags_state(false)

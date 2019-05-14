@@ -6,6 +6,7 @@
 #include "QIFSEEngine.h"
 #include "VarMap.h"
 #include "error.h"
+#include "Register.h"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
@@ -169,8 +170,10 @@ namespace tana {
                 uint32_t con = mem_data;
                 //std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex <<con << std::dec <<std::endl;
                 //std::cout << std::endl << memory_address_str << std::endl;
-                if(con != calculate)
+                if(con != calculate) {
+
                     ERROR("Memory Error");
+                }
             }
         }
         //Debug
@@ -370,9 +373,13 @@ namespace tana {
                         auto res = eval(sym_res[j]);
                         if (res != con_res[j]) {
                             std::cout << std::endl << "Error: " << std::hex << it->addrn << std::dec << std::endl;
-                            std::cout << "Register: " << j << std::endl;
+                            std::cout << "Register: " << Registers::convertRegID2RegName(j) << std::endl;
                             std::cout << "Symbolic: " << std::hex << res << std::dec << std::endl;
                             std::cout << "Concrete: " << std::hex << con_res[j] << std::dec << std::endl;
+                            std::cout << "Previous: " << *it << std::endl;
+                            std::cout << "Present: " << *(inst->get()) << std::endl;
+                            auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
+                            writeReg(Registers::convertRegID2RegName(j), reg_v);
                             ERROR("ERROR");
                         }
                     }
@@ -483,7 +490,10 @@ namespace tana {
         {
             auto addr = std::get<0>(element);
             auto &con = std::get<1>(element);
-            std::cout << "Addr: "  << std:: hex << addr << std::dec;
+            bool Valid = con->validate();
+            std::string valid_str = Valid ? " True " : " False ";
+
+            std::cout << "Addr: "  << std:: hex << addr << std::dec << valid_str;
             std::cout << " Constrain: " << *con << std::endl;
         }
 

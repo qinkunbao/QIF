@@ -112,7 +112,6 @@ namespace tana {
         tana_type::T_ADDRESS memory_address;
 
         std::string get_opcode_operand() const ;
-        virtual void print() const;
         uint32_t get_operand_number() const;
 
 
@@ -129,18 +128,20 @@ namespace tana {
         {
 
             std::cout << "Index: " << id <<" Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
-            print();
+            std::cout << *this;
             return true;
         };
 
         virtual bool taint()
         {
             std::cout << "Index: " << id <<" Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
-            print();
+            std::cout << *this;
             return true;
         };
 
         virtual ~Inst_Base() = default;
+
+        friend std::ostream& operator<<(std::ostream &os, const Inst_Base& inst);
     };
 
     class Routine {

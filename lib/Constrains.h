@@ -26,6 +26,8 @@ namespace tana {
 
         void update(BVOper add_type, std::shared_ptr<BitVector> b, BVOper type, uint32_t num);
         friend std::ostream& operator<<(std::ostream& os, const Constrain& c);
+
+        bool validate();
     };
 
 }
