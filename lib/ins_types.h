@@ -58,7 +58,7 @@ namespace tana {
          * 2 ECX
          * 3 EDX
          * 4 ESI
-         * 5 EDX
+         * 5 EDI
          * 6 ESP
          * 7 EBP
          */
@@ -72,14 +72,14 @@ namespace tana {
         }
         vcpu_ctx();
 
-        bool CF();
-        bool PF();
-        bool AF();
-        bool ZF();
-        bool SF();
-        bool TF();
-        bool DF();
-        bool OF();
+        bool CF() const;
+        bool PF() const;
+        bool AF() const;
+        bool ZF() const;
+        bool SF() const;
+        bool TF() const;
+        bool DF() const;
+        bool OF() const;
 
         bool eflags_state;
     };
