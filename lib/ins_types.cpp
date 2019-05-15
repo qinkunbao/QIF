@@ -37,9 +37,18 @@ namespace tana {
         os << "ecx: " << std::hex << v_register[2] << std::dec << " ";
         os << "edx: " << std::hex << v_register[3] << std::dec << " ";
         os << "esi: " << std::hex << v_register[4] << std::dec << " ";
-        os << "edx: " << std::hex << v_register[5] << std::dec << " ";
+        os << "edi: " << std::hex << v_register[5] << std::dec << " ";
         os << "esp: " << std::hex << v_register[6] << std::dec << " ";
         os << "ebp: " << std::hex << v_register[7] << std::dec << " ";
+        if(inst.vcpu.eflags_state) {
+            os << "CF: " << inst.vcpu.CF() << " ";
+            os << "PF: " << inst.vcpu.PF() << " ";
+            os << "AF: " << inst.vcpu.AF() << " ";
+            os << "ZF: " << inst.vcpu.ZF() << " ";
+            os << "SF: " << inst.vcpu.SF() << " ";
+            os << "DF: " << inst.vcpu.DF() << " ";
+            os << "OF: " << inst.vcpu.OF() << " ";
+        }
 
         return os;
     }
@@ -52,49 +61,49 @@ namespace tana {
         }
     };
 
-    bool vcpu_ctx::CF()
+    bool vcpu_ctx::CF() const
     {
         assert(eflags>=0);
         return static_cast<bool>(eflags & 0x1u);
     }
 
-    bool vcpu_ctx::PF()
+    bool vcpu_ctx::PF() const
     {
         assert(eflags>=0);
         return static_cast<bool>(eflags & 0x4u);
     }
 
-    bool vcpu_ctx::AF()
+    bool vcpu_ctx::AF() const
     {
         assert(eflags>=0);
         return static_cast<bool>(eflags & 0x10u);
     }
 
-    bool vcpu_ctx::ZF()
+    bool vcpu_ctx::ZF() const
     {
         assert(eflags>=0);
         return static_cast<bool>(eflags & 0x40u);
     }
 
-    bool vcpu_ctx::SF()
+    bool vcpu_ctx::SF() const
     {
         assert(eflags>=0);
         return static_cast<bool>(eflags & 0x80u);
     }
 
-    bool vcpu_ctx::TF()
+    bool vcpu_ctx::TF() const
     {
         assert(eflags>=0);
         return static_cast<bool>(eflags & 0x100u);
     }
 
-    bool vcpu_ctx::DF()
+    bool vcpu_ctx::DF() const
     {
         assert(eflags>=0);
         return static_cast<bool>(eflags & 0x400u);
     }
 
-    bool vcpu_ctx::OF()
+    bool vcpu_ctx::OF() const
     {
         assert(eflags>=0);
         return static_cast<bool>(eflags & 0x800u);

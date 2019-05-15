@@ -343,6 +343,9 @@ namespace tana {
         if (id == x86::x86_insn::X86_INS_STOSD)
             return std::make_unique<Dyn_X86_INS_REP_STOSD>(isStatic);
 
+        if (id == x86::x86_insn::X86_INS_STOSB)
+            return std::make_unique<Dyn_X86_INS_STOSB>(isStatic);
+
         if (id == x86::x86_insn::X86_INS_CMOVZ)
             return std::make_unique<Dyn_X86_INS_CMOVZ>(isStatic);
 
@@ -777,6 +780,7 @@ namespace tana {
             ERROR("lea format error!");
             return false;
         }
+
         switch (op1->tag) {
             case 5: {
                 std::shared_ptr<BitVector> f0, f1, f2; // corresponding field[0-2] in operand
@@ -788,7 +792,7 @@ namespace tana {
                     se->writeReg(op0->field[0], res);
                     return true;
                 }
-                uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
+                uint32_t temp_concrete = stoul(op1->field[2], nullptr, 16);
                 f2 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
                 res = buildop2(BVOper::bvimul, f1, f2);
                 res = buildop2(BVOper::bvadd, f0, res);
@@ -803,11 +807,11 @@ namespace tana {
                 f0 = se->readReg(op1->field[0]);
                 f1 = se->readReg(op1->field[1]);
 
-                uint32_t temp_concrete1 = stoul(op1->field[2], 0, 16);
+                uint32_t temp_concrete1 = stoul(op1->field[2], nullptr, 16);
                 f2 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete1,
                                                  se->isImmSym(temp_concrete1));   //2
                 std::string sign = op1->field[3];          //+
-                uint32_t temp_concrete2 = stoul(op1->field[4], 0, 16);
+                uint32_t temp_concrete2 = stoul(op1->field[4], nullptr, 16);
                 f3 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete2,
                                                  se->isImmSym(temp_concrete2));   //0xfffff1
                 assert((sign == "+") || (sign == "-"));
@@ -831,7 +835,7 @@ namespace tana {
                 std::shared_ptr<BitVector> f0, f1; // addr4: eax+0xfffff1
                 //f0 = ctx[getRegName(op1->field[0])];       //eax
                 f0 = se->readReg(op1->field[0]);
-                uint32_t temp_concrete = stoul(op1->field[2], 0, 16);
+                uint32_t temp_concrete = stoul(op1->field[2], nullptr, 16);
                 f1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete,
                                                  se->isImmSym(temp_concrete));   //0xfffff1
                 std::string sign = op1->field[1];          //+
@@ -848,8 +852,8 @@ namespace tana {
                 std::shared_ptr<BitVector> f0, f1, f2; // addr6: eax*2+0xfffff1
                 //f0 = ctx[getRegName(op1->field[0])];
                 f0 = se->readReg(op1->field[0]);
-                uint32_t temp_concrete1 = stoul(op1->field[1]);
-                uint32_t temp_concrete2 = stoul(op1->field[3]);
+                uint32_t temp_concrete1 = stoul(op1->field[1], nullptr, 16);
+                uint32_t temp_concrete2 = stoul(op1->field[3], nullptr, 16);
 
                 f1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete1, se->isImmSym(temp_concrete1));
                 f2 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete2, se->isImmSym(temp_concrete2));
@@ -871,7 +875,7 @@ namespace tana {
                 //f0 = ctx[getRegName(op1->field[0])];
                 f0 = se->readReg(op1->field[0]);
 
-                uint32_t temp_concrete = stoul(op1->field[1]);
+                uint32_t temp_concrete = stoul(op1->field[1], nullptr, 16);
                 f1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
                 res = buildop2(BVOper::bvimul, f0, f1);
                 //ctx[getRegName(op0->field[0])] = res;
@@ -1459,6 +1463,7 @@ namespace tana {
 
         // EBP = ESP
         auto v_ebp = se->readReg("ebp");
+        v_ebp = buildop2(BVOper::bvadd, v_ebp, 4);
         se->writeReg("esp", v_ebp);
 
         // POP EBP
@@ -2079,6 +2084,27 @@ namespace tana {
         return true;
     }
 
+    bool Dyn_X86_INS_STOSB::symbolic_execution(tana::SEEngine *se)
+    {
+        assert(oprd[0]->type == Operand::Mem);
+        // Update register
+
+
+        auto v_reg = se->readReg(oprd[0]->field[0]);
+        if (vcpu.DF() == 0) {
+            v_reg = buildop2(BVOper::bvadd, v_reg, 1);
+        } else {
+            v_reg = buildop2(BVOper::bvsub, v_reg, 1);
+
+        }
+        se->writeReg(oprd[0]->field[0], v_reg);
+
+        // Store the contents of eax into the memory
+        auto v_al = se->readReg("al");
+        se->writeMem(this->get_memory_address(), oprd[0]->bit, v_al);
+        return true;
+    }
+
     bool Dyn_X86_INS_CMOVZ::symbolic_execution(tana::SEEngine *se)
     {
         return true;
@@ -2086,7 +2112,15 @@ namespace tana {
 
     bool Dyn_X86_INS_SETZ::symbolic_execution(tana::SEEngine *se)
     {
-        return true;
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        auto ZF = se->getFlags("ZF");
+        if(op0->type == Operand::Reg)
+        {
+            auto v = SEEngine::Extract(ZF, 1, op0->bit);
+            se->writeReg(op0->field[0], v);
+            return true;
+        }
+        return false;
     }
 
     bool Dyn_X86_INS_SETNZ::symbolic_execution(tana::SEEngine *se)

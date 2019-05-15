@@ -370,7 +370,14 @@ namespace tana {
                 for (uint32_t j = 0; j < 8; ++j) {
                     //std::cout << *sym_res[j] << " = " << std::hex << con_res[j] << std::dec <<" || ";
                     if((sym_res[j])->symbol_num() == 0) {
+
                         auto res = eval(sym_res[j]);
+                        if (res == con_res[j])
+                        {
+                            auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
+                            writeReg(Registers::convertRegID2RegName(j), reg_v);
+                        }
+
                         if (res != con_res[j]) {
                             std::cout << std::endl << "Error: " << std::hex << it->addrn << std::dec << std::endl;
                             std::cout << "Register: " << Registers::convertRegID2RegName(j) << std::endl;
@@ -486,6 +493,7 @@ namespace tana {
 
     void QIFSEEngine::outputConstrains()
     {
+        std::cout << "\n";
         for(const auto& element : constrains)
         {
             auto addr = std::get<0>(element);
@@ -493,8 +501,11 @@ namespace tana {
             bool Valid = con->validate();
             std::string valid_str = Valid ? " True " : " False ";
 
-            std::cout << "Addr: "  << std:: hex << addr << std::dec << valid_str;
-            std::cout << " Constrain: " << *con << std::endl;
+            if(!Valid) {
+
+                std::cout << "Addr: " << std::hex << addr << std::dec << valid_str;
+                std::cout << " Constrain: " << *con << std::endl;
+            }
         }
 
     }

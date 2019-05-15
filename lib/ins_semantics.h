@@ -405,6 +405,11 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
+    class Dyn_X86_INS_STOSB : public  Inst_Base{
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
     class Dyn_X86_INS_CMOVZ : public  Inst_Base{
         using Inst_Base::Inst_Base;
         bool symbolic_execution(SEEngine *se) final;
