@@ -21,3 +21,9 @@ $ cd build
 & cmake ..
 & make all
 ~~~~
+
+## Generate Traces
+./pin -t [Pintools] -- [Taeget] Start_function_name .   
+
+## Symbolic Execution
+./QIF traceffile.txt . 
