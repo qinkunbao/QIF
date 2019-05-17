@@ -244,11 +244,11 @@ namespace tana {
 
         if (size == T_BYTE_SIZE * T_WORD)
         {
-            std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 16);
+            std::shared_ptr<BitVector> v1 = SEEngine::Extract(v0, 1, 16);
             return v1;
         }
 
-        std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 8);
+        std::shared_ptr<BitVector> v1 = SEEngine::Extract(v0, 1, 8);
         return v1;
     }
 
@@ -279,7 +279,7 @@ namespace tana {
             std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 16);
             if(!v->isSymbol())
             {
-                v = DynSEEngine::Extract(v, 1, 16);
+                v = SEEngine::Extract(v, 1, 16);
             }
             v_mem = Concat(v1, v);
             memory[memory_address] = v_mem;
@@ -291,7 +291,7 @@ namespace tana {
             std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 8);
             if(!v->isSymbol())
             {
-                v = DynSEEngine::Extract(v, 1, 8);
+                v = SEEngine::Extract(v, 1, 8);
             }
             v_mem = Concat(v1, v);
             memory[memory_address] = v_mem;

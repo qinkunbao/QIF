@@ -37,6 +37,8 @@ namespace tana {
         QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx,
                     uint32_t esi, uint32_t edi, uint32_t esp, uint32_t ebp);
 
+        static std::shared_ptr<BitVector> Extract(std::shared_ptr<BitVector> v, int low, int high);
+
         std::vector<std::shared_ptr<BitVector>> getAllOutput() override ;
 
         std::shared_ptr<BitVector> readReg(x86::x86_reg reg) override ;
@@ -59,9 +61,13 @@ namespace tana {
 
         std::shared_ptr<tana::BitVector> getFlags(std::string) override;
 
-        void updateConstrains(std::shared_ptr<Constrain> cons) override ;
+        void updateConstrains(std::shared_ptr<Constrain> cons) override;
+
+        void printMemory() override ;
 
         void outputConstrains();
+
+        void reduceConstrains();
 
     };
 

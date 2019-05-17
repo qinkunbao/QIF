@@ -28,6 +28,8 @@ namespace tana {
         friend std::ostream& operator<<(std::ostream& os, const Constrain& c);
 
         bool validate();
+
+        uint32_t getNumSymbols();
     };
 
 }

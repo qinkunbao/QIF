@@ -64,9 +64,10 @@ namespace tana {
         BitVector() = delete;
         explicit BitVector(ValueType vty, std::string symbol_info);
         explicit BitVector(ValueType vty, uint32_t concrete, bool Imm2SymState);    // constructor for concrete value
+        explicit BitVector(ValueType vty, uint32_t concrete, bool Imm2SymState, uint32_t size);    // constructor for concrete value
         explicit BitVector(ValueType vty, std::unique_ptr<Operation> oper);
         explicit BitVector(ValueType vty, uint32_t con);
-
+        explicit BitVector(ValueType vty, std::string symbol_info, uint32_t size);
 
         static uint32_t arithmeticRightShift(uint32_t op1, uint32_t op2);
 
