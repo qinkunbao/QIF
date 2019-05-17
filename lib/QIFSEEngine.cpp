@@ -56,56 +56,63 @@ namespace tana {
     std::shared_ptr<BitVector>
     QIFSEEngine::Extract(std::shared_ptr<BitVector> v, int low, int high) {
         assert(high > low);
-
-        std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvextract, v);
         std::shared_ptr<BitVector> res = nullptr;
+
         if (v->isSymbol()) {
-            if(v->opr == nullptr)
+            auto &ref_opr = v->opr;
+            if(ref_opr == nullptr)
             {
                 v->low_bit = low;
                 v->high_bit = high;
                 return v;
             }
 
-            if(v->opr->opty == BVOper::bvconcat)
+            if(ref_opr->opty == BVOper::bvconcat)
             {
-                if(v->opr->val[0] != nullptr)
+                if(ref_opr->val[0] != nullptr)
                 {
-                    if((v->opr->val[0]->low_bit <= low) && (v->opr->val[0]->high_bit >= high)) {
-                        v->opr->val[0]->low_bit = low;
-                        v->opr->val[0]->high_bit = high;
-                        return v->opr->val[0];
+                    auto &v0 = ref_opr->val[0];
+                    if((v0->low_bit == low) && (v0->high_bit == high)) {
+                        v0->low_bit = low;
+                        v0->high_bit = high;
+                        return v0;
                     }
                 }
 
-                if(v->opr->val[1] != nullptr)
+                if(ref_opr->val[1] != nullptr)
                 {
-                    if((v->opr->val[1]->low_bit <= low) && (v->opr->val[1]->high_bit >= high)) {
-                        v->opr->val[0]->low_bit = low;
-                        v->opr->val[0]->high_bit = high;
-                        return v->opr->val[1];
+                    auto &v1 = ref_opr->val[1];
+                    if((v1->low_bit == low) && (v1->high_bit == high)) {
+                        v1->low_bit = low;
+                        v1->high_bit = high;
+                        return v1;
                     }
                 }
 
                 if(v->opr->val[2] != nullptr)
                 {
-                    if((v->opr->val[2]->low_bit <= low) && (v->opr->val[2]->high_bit >= high)) {
-                        v->opr->val[0]->low_bit = low;
-                        v->opr->val[0]->high_bit = high;
-                        return v->opr->val[2];
+                    auto &v2 = ref_opr->val[2];
+                    if((v2->low_bit == low) && (v2->high_bit == high)) {
+                        v2->low_bit = low;
+                        v2->high_bit = high;
+                        return v2;
                     }
                 }
             }
-
+            std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvextract, v);
             res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
+            res->high_bit = high;
+            res->low_bit = low;
+            return res;
         } else {
             uint32_t result = eval(v);
             result = BitVector::extract(result, high, low);
             res = std::make_shared<BitVector>(ValueType::CONCRETE, result);
+            res->low_bit = 1;
+            res->high_bit = high - low + 1;
+            return res;
         }
-        res->high_bit = high;
-        res->low_bit = low;
-        return res;
+
     }
 
     std::vector<std::shared_ptr<BitVector>> QIFSEEngine::getAllOutput() {
