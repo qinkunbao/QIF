@@ -31,6 +31,11 @@ namespace tana {
 
     }
 
+    uint32_t Constrain::getNumSymbols()
+    {
+        return r->symbol_num();
+    }
+
     bool Constrain::validate()
     {
         if(r->symbol_num() > 0)

@@ -93,6 +93,12 @@ namespace tana {
 
 
 
+        virtual void printMemory()
+        {
+            return;
+        }
+
+
         virtual ~SEEngine()= default;
 
     };

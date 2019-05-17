@@ -116,12 +116,21 @@ namespace tana {
 
     int BitVector::idseed = 0;
 
-    BitVector::BitVector(ValueType vty, std::string s_info) : opr(nullptr), val_type(vty), info(s_info), concrete_value(0)
+    BitVector::BitVector(ValueType vty, std::string s_info) : opr(nullptr), val_type(vty), info(s_info),
+                                                              concrete_value(0)
     {
         id = ++idseed;
     }
 
     BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState) : opr(nullptr), concrete_value(con)
+    {
+        id = ++idseed;
+        val_type = Imm2SymState ? ValueType ::SYMBOL : vty;
+    }
+
+    BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState, uint32_t size) : opr(nullptr),
+                                                                                          concrete_value(con),
+                                                                                          low_bit(1), high_bit(size)
     {
         id = ++idseed;
         val_type = Imm2SymState ? ValueType ::SYMBOL : vty;
@@ -137,6 +146,15 @@ namespace tana {
         id = ++idseed;
         opr = std::move(oper);
     }
+
+    BitVector::BitVector(ValueType vty, std::string symbol_info, uint32_t size) :concrete_value(0), val_type(vty),
+                                                                                 info(symbol_info),
+                                                                                 low_bit(1), high_bit(size)
+    {
+        id = ++idseed;
+        assert(vty == ValueType::SYMBOL);
+    }
+
 
 
 

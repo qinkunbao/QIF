@@ -725,8 +725,8 @@ namespace tana {
 
         if (op0->type == Operand::Reg) {
             if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
-                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
-                v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+                uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+                v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete), op0->bit);
                 se->writeReg(op0->field[0], v1);
                 return true;
             }
@@ -754,7 +754,7 @@ namespace tana {
                 uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
                 se->writeMem(this->get_memory_address(), op0->bit,
                              std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete,
-                                                         se->isImmSym(temp_concrete)));
+                                                         se->isImmSym(temp_concrete), op0->bit));
                 return true;
             } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
                 //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
@@ -1510,16 +1510,22 @@ namespace tana {
         remainder = buildop2(BVOper::bvrem, dividend, divisor);
 
         if (operand_size == 8) {
+            quotient = SEEngine::Extract(quotient, 1, 8);
+            remainder = SEEngine::Extract(remainder, 1, 8);
             se->writeReg("al", quotient);
             se->writeReg("ah", remainder);
         }
 
         if (operand_size == 16) {
+            quotient = SEEngine::Extract(quotient, 1, 16);
+            remainder = SEEngine::Extract(remainder, 1, 16);
             se->writeReg("ax", quotient);
             se->writeReg("dx", remainder);
         }
 
         if (operand_size == 32) {
+            quotient = SEEngine::Extract(quotient, 1, 32);
+            remainder = SEEngine::Extract(remainder, 1, 32);
             se->writeReg("eax", quotient);
             se->writeReg("edx", remainder);
         }
