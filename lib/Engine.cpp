@@ -67,8 +67,6 @@ namespace tana {
     SEEngine::Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2) {
         std::shared_ptr<BitVector> low = nullptr, high = nullptr, res = nullptr;
         uint32_t size_res = v1->size() + v2->size();
-        high = v1;
-        low = v2;
 
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvconcat, v1, v2);
 

@@ -56,62 +56,149 @@ namespace tana {
     std::shared_ptr<BitVector>
     QIFSEEngine::Extract(std::shared_ptr<BitVector> v, int low, int high) {
         assert(high > low);
+        //std::cout << "Before Extract Debug: " << *v <<  " low: "<<  low <<  " high: "<< high << std::endl;
         std::shared_ptr<BitVector> res = nullptr;
 
-        if (v->isSymbol()) {
-            auto &ref_opr = v->opr;
-            if(ref_opr == nullptr)
-            {
-                v->low_bit = low;
-                v->high_bit = high;
-                return v;
-            }
 
-            if(ref_opr->opty == BVOper::bvconcat)
-            {
-                if(ref_opr->val[0] != nullptr)
-                {
-                    auto &v0 = ref_opr->val[0];
-                    if((v0->low_bit == low) && (v0->high_bit == high)) {
-                        v0->low_bit = low;
-                        v0->high_bit = high;
-                        return v0;
-                    }
-                }
-
-                if(ref_opr->val[1] != nullptr)
-                {
-                    auto &v1 = ref_opr->val[1];
-                    if((v1->low_bit == low) && (v1->high_bit == high)) {
-                        v1->low_bit = low;
-                        v1->high_bit = high;
-                        return v1;
-                    }
-                }
-
-                if(v->opr->val[2] != nullptr)
-                {
-                    auto &v2 = ref_opr->val[2];
-                    if((v2->low_bit == low) && (v2->high_bit == high)) {
-                        v2->low_bit = low;
-                        v2->high_bit = high;
-                        return v2;
-                    }
-                }
-            }
-            std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvextract, v);
-            res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
-            res->high_bit = high;
-            res->low_bit = low;
-            return res;
-        } else {
+        if(!v->isSymbol()) {
+            // v is a concrete value
             uint32_t result = eval(v);
             result = BitVector::extract(result, high, low);
             res = std::make_shared<BitVector>(ValueType::CONCRETE, result);
             res->low_bit = 1;
             res->high_bit = high - low + 1;
+
+            //std::cout << "Before Extract Debug: "<< *v <<" low: "<< low << " high: " << high << std::endl
+            //          <<" After Extract Debug: " << *res <<  " low: "<<  res->low_bit <<" high: "<< res->high_bit
+            //          << std::endl;
             return res;
         }
+
+        std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvextract, v);
+        auto &ref_opr = v->opr;
+        bool optimized_flag = false;
+
+
+        if( low == 1 && high == 16)
+        {
+            auto v_part1 = QIFSEEngine::Extract(v, 1, 8);
+            auto v_part2 = QIFSEEngine::Extract(v, 9, 16);
+            res = QIFSEEngine::Concat(v_part2, v_part1);
+            optimized_flag = true;
+
+        }
+
+        if( low == 9 && high == 24)
+        {
+            auto v_part1 = QIFSEEngine::Extract(v, 9, 16);
+            auto v_part2 = QIFSEEngine::Extract(v, 17, 24);
+            res = QIFSEEngine::Concat(v_part2, v_part1);
+            optimized_flag = true;
+
+        }
+
+        if( low == 17 && high == 32)
+        {
+            auto v_part1 = QIFSEEngine::Extract(v, 17, 24);
+            auto v_part2 = QIFSEEngine::Extract(v, 25, 32);
+            res = QIFSEEngine::Concat(v_part2, v_part1);
+            optimized_flag = true;
+
+        }
+
+        if( low == 1 && high == 24)
+        {
+            auto v_part1 = QIFSEEngine::Extract(v, 1, 8);
+            auto v_part2 = QIFSEEngine::Extract(v, 9, 16);
+            auto v_part3 = QIFSEEngine::Extract(v, 17, 24);
+            res = QIFSEEngine::Concat(v_part3, v_part2, v_part1);
+            optimized_flag = true;
+        }
+
+        if( low == 9 && high == 32)
+        {
+            auto v_part1 = QIFSEEngine::Extract(v, 9, 16);
+            auto v_part2 = QIFSEEngine::Extract(v, 17, 24);
+            auto v_part3 = QIFSEEngine::Extract(v, 25, 32);
+            res = QIFSEEngine::Concat(v_part3, v_part2, v_part1);
+            optimized_flag = true;
+        }
+
+
+        if (v->isSymbol()) {
+            if (ref_opr == nullptr) {
+                v->low_bit = low;
+                v->high_bit = high;
+                res = v;
+            }
+
+            uint32_t v_min = 0, v_max = 0;
+            auto &v0 = ref_opr->val[0];
+            auto &v1 = ref_opr->val[1];
+            auto &v2 = ref_opr->val[2];
+            uint32_t v0_size = 0, v1_size = 0, v2_size = 0;
+
+
+            if (ref_opr->opty == BVOper::bvconcat) {
+                if (ref_opr->val[2] != nullptr)
+                {
+                    v_min = v2->low_bit;
+                    v_max = v2->size();
+                    v2_size = v2->size();
+
+                    if ((v_min == low) && (v_max == high)) {
+                        res = v2;
+                        optimized_flag = true;
+                    } else if( (v_min <= low) && ( v_max >= high) )
+                    {
+                        res = QIFSEEngine::Extract(v2, low, high);
+                        optimized_flag = true;
+                    }
+                }
+
+                if (ref_opr->val[1] != nullptr)
+                {
+                    v_min = v_max + 1;
+                    v_max = v_min + v1->size() - 1;
+                    v1_size = v1->size();
+
+                    if ((v_min == low) && (v_max == high)) {
+                        res = v1;
+                        optimized_flag = true;
+                    } else if( (v_min <= low) && ( v_max >= high) )
+                    {
+                        res = QIFSEEngine::Extract(v1, low - v2_size, high - v2_size);
+                        optimized_flag = true;
+                    }
+                }
+
+                if (v->opr->val[0] != nullptr)
+                {
+                    v_min = v_max + 1;
+                    v_max = v_min + v0->size() - 1;
+                    if ((v_min == low) && (v_max == high)) {
+                        res = v0;
+                        optimized_flag = true;
+                    } else if( (v_min <= low) && ( v_max >= high) )
+                    {
+                        res = QIFSEEngine::Extract(v0, low - v2_size - v1_size, high - v2_size - v1_size);
+                        optimized_flag = true;
+                    }
+                }
+            }
+
+            if(!optimized_flag) {
+                res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
+                res->high_bit = high;
+                res->low_bit = low;
+            }
+        }
+
+
+        //std::cout << "Before Extract Debug: "<< *v <<" low: "<< low << " high: " << high << std::endl
+        //          <<" After Extract Debug: " << *res <<  " low: "<<  res->low_bit <<" high: "<< res->high_bit
+        //          << std::endl;
+        return res;
 
     }
 
@@ -383,9 +470,6 @@ namespace tana {
                     v = QIFSEEngine::Extract(v, 1, 8);
                 }
                 v_mem = QIFSEEngine::Concat(v2, v, v1);
-                std::cout << *v2 << std::endl;
-                std::cout << *v << std::endl;
-                std::cout << *v1 << std::endl;
 
             } else if (offset == 2)
             {
