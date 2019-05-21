@@ -69,6 +69,8 @@ namespace tana {
 
         void reduceConstrains();
 
+        float getEntropy();
+
     };
 
 

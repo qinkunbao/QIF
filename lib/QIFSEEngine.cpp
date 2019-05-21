@@ -2,11 +2,13 @@
 #include <algorithm>
 #include <limits.h>
 #include <sstream>
+#include <cmath>
 #include "ins_types.h"
 #include "QIFSEEngine.h"
 #include "VarMap.h"
 #include "error.h"
 #include "Register.h"
+#include "MonteCarlo.h"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
@@ -693,6 +695,12 @@ namespace tana {
                       << std::endl ;
         }
 
+    }
+
+    float QIFSEEngine::getEntropy()
+    {
+        float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000);
+        return log(MonteCarloEResult)/log(2);
     }
 
 

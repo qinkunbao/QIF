@@ -69,23 +69,23 @@ namespace tana {
         bool varmapAndoutputCVC(SEEngine *se1, std::shared_ptr<BitVector> v1, SEEngine *se2, std::shared_ptr<BitVector> v2);
 
         void setOutputMatrix(BitMatrix *inmput_m, std::shared_ptr<BitVector> formula,
-                             std::vector<std::shared_ptr<BitVector> > *input_v,
-                             std::vector<std::shared_ptr<BitVector> > *output_v,
+                             const std::vector<int > &input_v,
+                             std::vector<std::shared_ptr<BitVector>> *output_v,
                              SEEngine *se, BitMatrix *output_m);
 
-        std::vector<bool> var2bv(std::map<std::shared_ptr<BitVector>, uint32_t> *varm,
-        		                 std::vector<std::shared_ptr<BitVector>> *vv);
+        std::vector<bool> var2bv(const std::map<int, uint32_t> &varm,
+        		                 const std::vector<int> &vv);
 
-        std::map<std::shared_ptr<BitVector>, uint32_t> bv2var(std::vector<bool> bv,
-        		                                          std::vector<std::shared_ptr<BitVector>> *vv);
+        std::map<int, uint32_t> bv2var(std::vector<bool> bv,
+                                       const std::vector<int> &vv);
 
         void updateUnmap(std::vector<PartMap> *unmap, std::vector<uint32_t> *vec1, std::vector<uint32_t> *vec2,
                          std::map<uint32_t, uint32_t> *mappedvar);
 
         void bitVarmap(std::shared_ptr<BitVector> formula1, std::shared_ptr<BitVector> formula2,
                        SEEngine *se1, SEEngine *se2,
-                       std::vector<std::shared_ptr<BitVector>> *input_v1,
-                       std::vector<std::shared_ptr<BitVector>> *input_v2,
+                       const std::vector<int> &input_v1,
+                       const std::vector<int> &input_v2,
                        std::vector<PartMap> unmap_input, std::vector<PartMap> unmap_output,
                        std::map<uint32_t, uint32_t> map_input,
                        std::map<uint32_t, uint32_t> map_output,
@@ -97,8 +97,8 @@ namespace tana {
 		bool checkFormula(const std::shared_ptr<BitVector> &v1, const std::shared_ptr<BitVector> &v2,
                           SEEngine *se1, SEEngine *se2);
 
-		std::map<std::shared_ptr<BitVector>, uint32_t> input2val(std::vector<uint32_t> input,
-		                                                     std::vector<std::shared_ptr<BitVector>> *vv);
+		std::map<int, uint32_t> input2val(std::vector<uint32_t> input,
+		                                  const std::vector<int> &vv);
 
         std::map<int, int> matchFunction(SEEngine *se1, SEEngine *se2,
                                          std::vector<std::shared_ptr<BitVector>> v1s,

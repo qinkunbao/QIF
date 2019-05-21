@@ -70,7 +70,7 @@ namespace tana {
         }
     }
 
-    bool Constrain::validate(const std::map<std::shared_ptr<tana::BitVector>, uint32_t>& input_map )
+    bool Constrain::validate(const std::map<int, uint32_t>& input_map )
     {
         if(r->symbol_num() == 0)
         {
@@ -142,7 +142,7 @@ namespace tana {
         return os;
     }
 
-    std::vector<std::shared_ptr<BitVector>> Constrain::getInputKeys()
+    std::vector<int> Constrain::getInputKeys()
     {
         return r->getInputSymbolVector();
     }

@@ -156,17 +156,16 @@ namespace tana {
         assert(vty == ValueType::SYMBOL);
     }
 
-    std::set<std::shared_ptr<BitVector>> BitVector::getInputSymbolSet()
+    std::set<int> BitVector::getInputSymbolSet()
     {
         std::queue<std::shared_ptr<BitVector> > que;
-        std::set<std::shared_ptr<BitVector> > input_set;
+        std::set<int > input_set;
 
 
         if(this->opr == nullptr){
             if (this->val_type == ValueType::SYMBOL)
             {
-                std::shared_ptr<BitVector> v(this);
-                input_set.insert(v);
+                input_set.insert(this->id);
             }
             return input_set;
         }
@@ -185,7 +184,7 @@ namespace tana {
 
             if (op == nullptr) {
                 if (v->val_type == ValueType ::SYMBOL)
-                    input_set.insert(v);
+                    input_set.insert(v->id);
             } else {
                 for (int i = 0; i < 3; ++i) {
                     if (op->val[i] != nullptr) que.push(op->val[i]);
@@ -195,11 +194,13 @@ namespace tana {
         return input_set;
     }
 
-    std::vector<std::shared_ptr<BitVector> >
-    BitVector::getInputSymbolVector() {
-        std::set<std::shared_ptr<BitVector>> input_set = this->getInputSymbolSet();
 
-        std::vector<std::shared_ptr<BitVector>> input_vector;
+    // Return the ID of each input symbol
+    std::vector<int >
+    BitVector::getInputSymbolVector() {
+        std::set<int> input_set = this->getInputSymbolSet();
+
+        std::vector<int> input_vector;
         for (auto it = input_set.begin(); it != input_set.end(); ++it) {
             input_vector.push_back(*it);
         }

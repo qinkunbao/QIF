@@ -44,12 +44,12 @@ namespace tana {
         bool isImmSym(uint32_t num);
 
         uint32_t conexec(std::shared_ptr<BitVector> f,
-                         const std::map<std::shared_ptr<BitVector>, uint32_t> &input);
+                         const std::map<int, uint32_t> &input);
 
         std::vector<std::shared_ptr<BitVector> > reduceValues(std::vector<std::shared_ptr<BitVector>> values);
 
         static uint32_t eval(const std::shared_ptr<BitVector> &v,
-                             const std::map<std::shared_ptr<BitVector>, uint32_t> &inmap);
+                             const std::map<int, uint32_t> &inmap);
 
         static uint32_t eval(const std::shared_ptr<BitVector> &v);
 

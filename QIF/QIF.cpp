@@ -47,6 +47,11 @@ int main(int argc, char* argv[]) {
     auto *se = new QIFSEEngine(eax, ebx, ecx, edx, esi, edi, esp, ebp);
     se->init(inst_list.begin(), inst_list.end(), start_addr, m_size);
     se->run();
+    se->reduceConstrains();
     se->printConstrains();
+
+    std::cout << "Start Monte Carlo:" << std::endl;
+    std::cout << se->getEntropy() << std::endl;
+
     return 1;
 }
