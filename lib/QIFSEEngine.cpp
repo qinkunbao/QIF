@@ -645,7 +645,7 @@ namespace tana {
         constrains.push_back(res);
     }
 
-    void QIFSEEngine::outputConstrains()
+    void QIFSEEngine::printConstrains()
     {
         std::cout << "\n";
         for(const auto& element : constrains)

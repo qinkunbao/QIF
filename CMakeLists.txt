@@ -52,7 +52,9 @@ add_library(TraceLib
         lib/QIFSEEngine.h
         lib/QIFSEEngine.cpp
         lib/Constrains.h
-        lib/Constrains.cpp)
+        lib/Constrains.cpp
+        lib/MonteCarlo.h
+        lib/MonteCarlo.cpp)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 
@@ -79,6 +81,15 @@ add_executable(TestConstrain
 add_executable(TestBit
         test/test_bit.cpp)
 
+add_executable(TestQIF
+        test/test_qif.cpp)
+
+add_executable(TestQIF1
+        test/test_qif1.c)
+
+add_executable(TestRandom
+        test/test_random_num.cpp)
+
 add_executable(BitTaint
         BitTaint/BitTaint.cpp
         BitTaint/BitTaint.h
@@ -102,3 +113,4 @@ target_link_libraries(BitTaint TraceLib)
 target_link_libraries(StaticSE TraceLib)
 target_link_libraries(TestConstrain TraceLib)
 target_link_libraries(QIF TraceLib)
+target_link_libraries(TestRandom TraceLib)

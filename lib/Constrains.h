@@ -10,6 +10,7 @@
 #include <tuple>
 #include <memory>
 #include <vector>
+#include <map>
 #include "BitVector.h"
 
 
@@ -29,7 +30,11 @@ namespace tana {
 
         bool validate();
 
+        bool validate(const std::map<std::shared_ptr<BitVector>, uint32_t > &);
+
         uint32_t getNumSymbols();
+
+        std::vector<std::shared_ptr<BitVector>> getInputKeys();
     };
 
 }

@@ -67,9 +67,40 @@ namespace tana {
             default:
                 ERROR("Invalid BVOper");
                 return false;
-
         }
+    }
 
+    bool Constrain::validate(const std::map<std::shared_ptr<tana::BitVector>, uint32_t>& input_map )
+    {
+        if(r->symbol_num() == 0)
+        {
+            return false;
+        }
+        auto &bv = (r)->opr;
+        std::shared_ptr<BitVector> v_left = bv->val[0];
+        auto relation = bv->opty;
+        std::shared_ptr<BitVector> v_right = bv->val[1];
+
+        uint32_t v_left_con = SEEngine::eval(v_left, input_map);
+        uint32_t v_right_con = SEEngine::eval(v_right, input_map);
+
+        switch (relation){
+            case BVOper ::greater:
+                return v_left_con > v_right_con;
+            case BVOper ::less:
+                return v_left_con < v_right_con;
+            case BVOper ::equal:
+                return v_left_con == v_right_con;
+            case BVOper ::noequal:
+                return v_left_con != v_right_con;
+            case BVOper ::bvand:
+                return v_left_con && v_right_con;
+            case BVOper ::bvor:
+                return v_left_con || v_right_con;
+            default:
+                ERROR("Invalid BVOper");
+                return false;
+        }
 
 
     }
@@ -109,6 +140,11 @@ namespace tana {
 
         os << "\n";
         return os;
+    }
+
+    std::vector<std::shared_ptr<BitVector>> Constrain::getInputKeys()
+    {
+        return r->getInputSymbolVector();
     }
 
 

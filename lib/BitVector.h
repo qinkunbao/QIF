@@ -69,6 +69,10 @@ namespace tana {
         explicit BitVector(ValueType vty, uint32_t con);
         explicit BitVector(ValueType vty, std::string symbol_info, uint32_t size);
 
+        std::vector<std::shared_ptr<BitVector>> getInputSymbolVector();
+
+        std::set<std::shared_ptr<BitVector>> getInputSymbolSet();
+
         static uint32_t arithmeticRightShift(uint32_t op1, uint32_t op2);
 
         static uint32_t rol32(uint32_t op1, uint32_t op2);

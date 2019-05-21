@@ -65,7 +65,7 @@ namespace tana {
 
         void printMemory() override ;
 
-        void outputConstrains();
+        void printConstrains();
 
         void reduceConstrains();
 
