@@ -9,15 +9,13 @@
 
 
 namespace tana {
-    std::vector<uint8_t >
-    MonteCarlo::getRandomVector(unsigned int size)
-    {
-        std::vector<uint8_t > randVector(size);
-        for(uint32_t index = 0; index < size; ++index)
-        {
+    std::vector<uint8_t>
+    MonteCarlo::getRandomVector(unsigned int size) {
+        std::vector<uint8_t> randVector(size);
+        for (uint32_t index = 0; index < size; ++index) {
             std::random_device random_device; // create object for seeding
             std::mt19937 engine{random_device()}; // create engine and seed it
-            std::uniform_int_distribution<> dist(0,255); // create distribution for integers with [1; 9] range
+            std::uniform_int_distribution<> dist(0, 255); // create distribution for integers with [1; 9] range
             auto random_number = dist(engine); // finally get a pseudo-randomrandom integer number
             randVector[index] = random_number;
         }
@@ -27,16 +25,77 @@ namespace tana {
     }
 
 
-    std::map<std::shared_ptr<BitVector>, uint32_t >
-    MonteCarlo::input2val(const std::vector<uint8_t> &input, std::vector<std::shared_ptr<BitVector>> &bv)
-    {
-        std::map<std::shared_ptr<BitVector>, uint32_t> input_v;
+    std::map<int, uint32_t>
+    MonteCarlo::input2val(const std::vector<uint8_t> &input, std::vector<int> &bv) {
+        std::map<int, uint32_t> input_v;
         assert(input.size() == bv.size());
         auto input_size = bv.size();
-        for(int i = 0; i < input_size; ++i )
-        {
-            input_v.insert(std::pair<std::shared_ptr<BitVector>, uint32_t >(bv[i], input[i]));
+        for (int i = 0; i < input_size; ++i) {
+            input_v.insert(std::pair<int, uint32_t>(bv[i], input[i]));
         }
         return input_v;
     }
+
+    std::vector<int>
+    MonteCarlo::getAllKeys(
+            const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains){
+
+        std::vector<int> input_key_vector;
+
+        for(const auto &element :constrains)
+        {
+            auto &cons = std::get<1>(element);
+            std::vector<int> input_k1 = cons->getInputKeys();
+            input_key_vector.insert(std::end(input_key_vector), std::begin(input_k1), std::end(input_k1));
+        }
+
+        sort( input_key_vector.begin(), input_key_vector.end() );
+        input_key_vector.erase( unique( input_key_vector.begin(), input_key_vector.end() ), input_key_vector.end() );
+
+        return input_key_vector;
+
+    }
+
+    bool MonteCarlo::constrainSatisify(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains,
+                           const std::map<int, uint32_t > &input_map)
+    {
+        for(const auto &element :constrains)
+        {
+            auto &cons = std::get<1>(element);
+            if(!cons->validate(input_map))
+            {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+
+    float MonteCarlo::calculateMonteCarlo(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains,
+                                  uint64_t sample_num)
+    {
+        std::vector<int > input_vector = getAllKeys(constrains);
+        auto input_vector_size = input_vector.size();
+
+        uint64_t satisfied_number = 0, total_num = sample_num;
+
+        for(uint64_t i = 0; i < sample_num; ++i)
+        {
+            auto random_vector = getRandomVector(input_vector_size);
+            auto random_vector_map = input2val(random_vector, input_vector);
+            if(constrainSatisify(constrains, random_vector_map))
+            {
+                ++satisfied_number;
+            }
+
+        }
+
+        float result = (static_cast<float>(satisfied_number)) / (static_cast<float>(total_num));
+
+        return result;
+
+    }
+
 }

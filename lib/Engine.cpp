@@ -161,9 +161,9 @@ namespace tana {
 
 
     uint32_t
-    SEEngine::conexec(std::shared_ptr<BitVector> f, const std::map<std::shared_ptr<BitVector>, uint32_t> &input) {
-        std::set<std::shared_ptr<BitVector>> inmapkeys;
-        std::set<std::shared_ptr<BitVector>> inputsym = f->getInputSymbolSet();
+    SEEngine::conexec(std::shared_ptr<BitVector> f, const std::map<int, uint32_t> &input) {
+        std::set<int> inmapkeys;
+        std::set<int> inputsym = f->getInputSymbolSet();
         for (auto it = input.begin(); it != input.end(); ++it) {
             inmapkeys.insert(it->first);
         }
@@ -234,19 +234,19 @@ namespace tana {
 
     uint32_t
     SEEngine::eval(const std::shared_ptr<BitVector> &v) { //for no input
-        std::map<std::shared_ptr<BitVector>, uint32_t> varm;
+        std::map<int, uint32_t> varm;
         assert(v->getInputSymbolSet().empty());
         return eval(v, varm);
     }
 
     uint32_t
-    SEEngine::eval(const std::shared_ptr<BitVector> &v, const std::map<std::shared_ptr<BitVector>, uint32_t> &inmap) {
+    SEEngine::eval(const std::shared_ptr<BitVector> &v, const std::map<int, uint32_t> &inmap) {
         const std::unique_ptr<Operation> &op = v->opr;
         if (op == nullptr) {
             if (v->val_type == ValueType::CONCRETE)
                 return v->concrete_value;
             else
-                return inmap.at(v);
+                return inmap.at(v->id);
         } else {
             uint32_t op0 = 0, op1 = 0;
             uint32_t op2 = 0;
