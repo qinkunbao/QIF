@@ -146,47 +146,11 @@ namespace tana {
     }
 
 
-    std::set<std::shared_ptr<BitVector>>
-    varmap::getInputs(std::shared_ptr<BitVector> output) {
-        std::queue<std::shared_ptr<BitVector> > que;
-        que.push(output);
-        std::set<std::shared_ptr<BitVector> > input_set;
-
-        while (!que.empty()) {
-            std::shared_ptr<BitVector> v = que.front();
-            const std::unique_ptr<Operation> &op = v->opr;
-            que.pop();
-
-            if (op == nullptr) {
-                if (v->val_type == ValueType ::SYMBOL)
-                    input_set.insert(v);
-            } else {
-                for (int i = 0; i < 3; ++i) {
-                    if (op->val[i] != nullptr) que.push(op->val[i]);
-                }
-            }
-        }
-        return input_set;
-    }
-
-
-    std::vector<std::shared_ptr<BitVector> >
-    varmap::getInputVector(std::shared_ptr<BitVector> formula) {
-        std::set<std::shared_ptr<BitVector>> input_set = varmap::getInputs(formula);
-
-        std::vector<std::shared_ptr<BitVector>> input_vector;
-        for (auto it = input_set.begin(); it != input_set.end(); ++it) {
-            input_vector.push_back(*it);
-        }
-        return input_vector;
-    }
-
-
     bool
     varmap::varmapAndoutputCVC(SEEngine *se1, std::shared_ptr<BitVector> v1,
                                SEEngine *se2, std::shared_ptr<BitVector> v2) {
-        auto inv1 = getInputVector(v1);
-        auto inv2 = getInputVector(v2);
+        auto inv1 = v1->getInputSymbolVector();
+        auto inv2 = v2->getInputSymbolVector();
 
         // skip variable mapping when the inputs have different number of bits
         if (inv1.size() != inv2.size()) {
@@ -250,7 +214,7 @@ namespace tana {
         for (uint32_t i = 0; i < row_size; ++i) {
             std::vector<bool> row = inmput_m->getRow(i);
             std::map<std::shared_ptr<BitVector>, uint32_t> input = bv2var(row, input_v);
-            uint32_t output = se->conexec(formula, &input);
+            uint32_t output = se->conexec(formula, input);
             std::map<std::shared_ptr<BitVector>, uint32_t> outmap = {{(*output_v)[0], output}};
             std::vector<bool> outbv = var2bv(&outmap, output_v);
             output_m->setRow(outbv, i);
@@ -459,8 +423,8 @@ namespace tana {
                     for (uint32_t i = 0, max = m->size(); i < max;) {
                         if ((*m)[i].first.size() == 1) { // second size is also 1 when first is 1
 
-                            std::set<uint32_t>::iterator it1 = (*m)[i].first.begin();
-                            std::set<uint32_t>::iterator it2 = (*m)[i].second.begin();
+                            auto it1 = (*m)[i].first.begin();
+                            auto it2 = (*m)[i].second.begin();
 
                             int mv1 = *it1;
                             int mv2 = *it2;
@@ -668,8 +632,9 @@ namespace tana {
     bool varmap::fuzzFormula(const std::shared_ptr<BitVector> &v1,
                              const std::shared_ptr<BitVector> &v2,
                              SEEngine *se1, SEEngine *se2) {
-        std::vector<std::shared_ptr<BitVector>> inv1 = getInputVector(v1);
-        std::vector<std::shared_ptr<BitVector>> inv2 = getInputVector(v2);
+        auto inv1 = v1->getInputSymbolVector();
+
+        auto inv2 = v2->getInputSymbolVector();
 
         // skip variable mapping when the inputs have different number of bits
         if (inv1.size() != inv2.size()) {
@@ -683,8 +648,8 @@ namespace tana {
         std::map<std::shared_ptr<BitVector>, uint32_t> input_v1 = input2val(sameInv, &inv1);
         std::map<std::shared_ptr<BitVector>, uint32_t> input_v2 = input2val(sameInv, &inv2);
 
-        uint32_t output1 = se1->conexec(v1, &input_v1);
-        uint32_t output2 = se2->conexec(v2, &input_v2);
+        uint32_t output1 = se1->conexec(v1, input_v1);
+        uint32_t output2 = se2->conexec(v2, input_v2);
 
         if (output1 != output2) {
             return false;
@@ -721,26 +686,26 @@ namespace tana {
         seed = extendVector(seed, inputSize);
         input_v1 = input2val(seed, &inv1);
         auto temp = input_v1;
-        output1 = se1->conexec(v1, &input_v1);
+        output1 = se1->conexec(v1, input_v1);
         for (const auto &it : input_test_set) {
             input_vector2 = extendVector(it, inputSize);
 
             input_v2 = input2val(input_vector2, &inv2);
-            output2 = se2->conexec(v2, &input_v2);
+            output2 = se2->conexec(v2, input_v2);
             if (output2 == output1) {
 
                 addValue(input_v1);
                 addValue(input_v2);
-                output1 = se1->conexec(v1, &input_v1);
-                output2 = se2->conexec(v2, &input_v2);
+                output1 = se1->conexec(v1, input_v1);
+                output2 = se2->conexec(v2, input_v2);
                 if (output1 == output2) {
                     add_flag = true;
                 }
 
                 mulValue(input_v1);
                 mulValue(input_v2);
-                output1 = se1->conexec(v1, &input_v1);
-                output2 = se2->conexec(v2, &input_v2);
+                output1 = se1->conexec(v1, input_v1);
+                output2 = se2->conexec(v2, input_v2);
                 if (output1 == output2) {
                     mul_flag = true;
                 }
@@ -906,13 +871,13 @@ namespace tana {
 
         for (uint32_t i = 0; i < v1s.size(); ++i) {
             std::shared_ptr<BitVector> v1 = v1s[i];
-            auto size_v1 = getInputVector(v1).size();
+            auto size_v1 = v1->getInputSymbolVector().size();
             if (size_v1 < MIN_NUM_INPUT) { // We think one crypto formula must have two inputs symbols
                 continue;
             }
             for (uint32_t j = 0; j < v2s.size(); ++j) {
                 std::shared_ptr<BitVector> v2 = v2s[j];
-                auto size_v2 = getInputVector(v1).size();
+                auto size_v2 = v2->getInputSymbolVector().size();
                 if ((size_v2 < MIN_NUM_INPUT) || (size_v1 != size_v2)) {
                     continue;
                 }

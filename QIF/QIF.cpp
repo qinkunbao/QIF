@@ -47,6 +47,6 @@ int main(int argc, char* argv[]) {
     auto *se = new QIFSEEngine(eax, ebx, ecx, edx, esi, edi, esp, ebp);
     se->init(inst_list.begin(), inst_list.end(), start_addr, m_size);
     se->run();
-    se->outputConstrains();
+    se->printConstrains();
     return 1;
 }

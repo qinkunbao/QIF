@@ -3,6 +3,7 @@
 #include <string>
 #include <climits>
 #include <set>
+#include <queue>
 #include "BitVector.h"
 
 
@@ -155,6 +156,55 @@ namespace tana {
         assert(vty == ValueType::SYMBOL);
     }
 
+    std::set<std::shared_ptr<BitVector>> BitVector::getInputSymbolSet()
+    {
+        std::queue<std::shared_ptr<BitVector> > que;
+        std::set<std::shared_ptr<BitVector> > input_set;
+
+
+        if(this->opr == nullptr){
+            if (this->val_type == ValueType::SYMBOL)
+            {
+                std::shared_ptr<BitVector> v(this);
+                input_set.insert(v);
+            }
+            return input_set;
+        }
+
+        for(int i = 0; i < 3; ++i)
+        {
+            const std::unique_ptr<Operation> &op = this->opr;
+            if (op->val[i] != nullptr) que.push(op->val[i]);
+
+        }
+
+        while (!que.empty()) {
+            std::shared_ptr<BitVector> v = que.front();
+            const std::unique_ptr<Operation> &op = v->opr;
+            que.pop();
+
+            if (op == nullptr) {
+                if (v->val_type == ValueType ::SYMBOL)
+                    input_set.insert(v);
+            } else {
+                for (int i = 0; i < 3; ++i) {
+                    if (op->val[i] != nullptr) que.push(op->val[i]);
+                }
+            }
+        }
+        return input_set;
+    }
+
+    std::vector<std::shared_ptr<BitVector> >
+    BitVector::getInputSymbolVector() {
+        std::set<std::shared_ptr<BitVector>> input_set = this->getInputSymbolSet();
+
+        std::vector<std::shared_ptr<BitVector>> input_vector;
+        for (auto it = input_set.begin(); it != input_set.end(); ++it) {
+            input_vector.push_back(*it);
+        }
+        return input_vector;
+    }
 
 
 

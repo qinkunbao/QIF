@@ -66,10 +66,6 @@ namespace tana {
 
         void setIdentityMatrix(BitMatrix *input_m1, BitMatrix *input_m2, std::map<uint32_t, uint32_t> *mappedvar);
 
-        std::vector<std::shared_ptr<BitVector> > getInputVector(std::shared_ptr<BitVector> formula);
-
-        std::set<std::shared_ptr<BitVector> > getInputs(std::shared_ptr<BitVector> output);
-
         bool varmapAndoutputCVC(SEEngine *se1, std::shared_ptr<BitVector> v1, SEEngine *se2, std::shared_ptr<BitVector> v2);
 
         void setOutputMatrix(BitMatrix *inmput_m, std::shared_ptr<BitVector> formula,
