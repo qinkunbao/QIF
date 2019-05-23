@@ -699,8 +699,8 @@ namespace tana {
 
     float QIFSEEngine::getEntropy()
     {
-        float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000);
-        return log(MonteCarloEResult)/log(2);
+        float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
+        return -log(MonteCarloEResult)/log(2);
     }
 
 

@@ -87,6 +87,9 @@ namespace tana {
 
             case BVOper::bvsignext :
                 return os << "bvsignext";
+
+            case BVOper::bvbit:
+                return os << "bvbit";
             //omit default case to triger compiler warning for missing cases
         };
 
@@ -286,6 +289,13 @@ namespace tana {
         return res_u;
 
 
+    }
+
+    bool BitVector::bit(uint32_t op0, uint32_t op1)
+    {
+        std::bitset<REGISTER_SIZE> bit1(op0);
+        uint32_t offset = op1 % REGISTER_SIZE;
+        return bit1[offset];
     }
 
     uint32_t BitVector::zeroext(uint32_t op1)

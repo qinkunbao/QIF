@@ -393,7 +393,7 @@ namespace tana {
             auto ins_id = x86::insn_string2id(opcstr);
 
             //Remove prefix
-            if(ins_id == x86::X86_INS_REP)
+            if(ins_id == x86::X86_INS_REP || ins_id == x86::X86_INS_DATA16)
             {
                 getline(disasbuf, opcstr, ' ');
                 ins_id = x86::insn_string2id(opcstr);
@@ -527,7 +527,7 @@ namespace tana {
             getline(disasbuf, opcstr, ' ');
 
             auto inst_instruction_id = x86::insn_string2id(opcstr);
-            if(inst_instruction_id == x86::X86_INS_REP)
+            if(inst_instruction_id == x86::X86_INS_REP || inst_instruction_id == x86::X86_INS_DATA16)
             {
                 getline(disasbuf, opcstr, ' ');
                 inst_instruction_id = x86::insn_string2id(opcstr);

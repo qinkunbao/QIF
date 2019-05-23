@@ -5,6 +5,7 @@
 	> Created Time: Mon May 20 21:06:14 2019
  ************************************************************************/
 #include <random>
+#include <algorithm>
 #include "MonteCarlo.h"
 
 
@@ -98,4 +99,14 @@ namespace tana {
 
     }
 
+
+    FastMonteCarlo::FastMonteCarlo(uint64_t sample_num, unsigned int input_demension):num_sample(sample_num)
+    {
+        satisfied_test.reserve(sample_num);
+        for(uint64_t i = 0; i < sample_num; ++i)
+        {
+            auto data = std::make_unique<std::vector<uint8_t >>(MonteCarlo::getRandomVector(input_demension));
+            satisfied_test.push_back(std::move(data));
+        }
+    }
 }

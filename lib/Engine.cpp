@@ -306,6 +306,8 @@ namespace tana {
                     return op0 << op1;
                 case BVOper::bvshr:
                     return op0 >> op1;
+                case BVOper::bvbit:
+                    return BitVector::bit(op0, op1);
                 case BVOper::bvsar:
                     return BitVector::arithmeticRightShift(op0, op1);
                 case BVOper::bvneg:
