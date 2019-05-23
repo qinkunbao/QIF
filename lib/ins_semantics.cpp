@@ -355,6 +355,9 @@ namespace tana {
         if (id == x86::x86_insn::X86_INS_SETNZ)
             return std::make_unique<Dyn_X86_INS_SETNZ>(isStatic);
 
+        if (id == x86::x86_insn::X86_INS_BT)
+            return std::make_unique<Dyn_X86_INS_BT>(isStatic);
+
 
         WARN("unrecognized instructions");
         std::cout << x86::insn_id2string(id) << std::endl;
@@ -2132,6 +2135,37 @@ namespace tana {
     bool Dyn_X86_INS_SETNZ::symbolic_execution(tana::SEEngine *se)
     {
         return true;
+    }
+
+    bool Dyn_X86_INS_BT ::symbolic_execution(tana::SEEngine *se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else{
+            ERROR("The second operand of bt should be IMM or Reg");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        res = buildop2(BVOper::bvbit, v0, v1);
+
+        se->updateFlags("CF", res);
+
+        return true;
+
     }
 
 

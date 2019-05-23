@@ -15,24 +15,38 @@
 #include "Engine.h"
 
 
-namespace tana::MonteCarlo {
+namespace tana {
+    namespace MonteCarlo {
 
-    std::vector<uint8_t > getRandomVector(unsigned int size);
+        std::vector<uint8_t> getRandomVector(unsigned int size);
 
-    std::map<int, uint32_t > input2val(const std::vector<uint8_t> &input,
-                                                             std::vector<int> &bv);
+        std::map<int, uint32_t> input2val(const std::vector<uint8_t> &input,
+                                          std::vector<int> &bv);
 
-    std::vector<int>
-    getAllKeys(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains);
+        std::vector<int>
+        getAllKeys(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains);
 
-    bool
-    constrainSatisify(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains,
-                                       const std::map<int, uint32_t > &input_map);
-
-
-    float
-    calculateMonteCarlo(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains,
-                        uint64_t sample_num);
+        bool
+        constrainSatisify(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains,
+                          const std::map<int, uint32_t> &input_map);
 
 
+        float
+        calculateMonteCarlo(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains,
+                            uint64_t sample_num);
+
+
+    }
+
+    class FastMonteCarlo{
+    private:
+        std::vector<std::unique_ptr<std::vector<uint8_t >>> satisfied_test;
+        std::vector<std::unique_ptr<std::vector<uint8_t >>> unsatisfied_test;
+        uint64_t num_sample;
+
+
+    public:
+        FastMonteCarlo(uint64_t sample_num, unsigned int input_demension);
+
+    };
 }
