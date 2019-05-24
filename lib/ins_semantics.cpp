@@ -141,163 +141,166 @@ namespace tana {
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic) {
 
         if (id == x86::x86_insn::X86_INS_NOP)
-            return std::make_unique<Dyn_X86_INS_NOP>(isStatic);
+            return std::make_unique<INST_X86_INS_NOP>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_PUSH)
-            return std::make_unique<Dyn_X86_INS_PUSH>(isStatic);
+            return std::make_unique<INST_X86_INS_PUSH>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_POP)
-            return std::make_unique<Dyn_X86_INS_POP>(isStatic);
+            return std::make_unique<INST_X86_INS_POP>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_NEG)
-            return std::make_unique<Dyn_X86_INS_NEG>(isStatic);
+            return std::make_unique<INST_X86_INS_NEG>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_NOT)
-            return std::make_unique<Dyn_X86_INS_NOT>(isStatic);
+            return std::make_unique<INST_X86_INS_NOT>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_INC)
-            return std::make_unique<Dyn_X86_INS_INC>(isStatic);
+            return std::make_unique<INST_X86_INS_INC>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_DEC)
-            return std::make_unique<Dyn_X86_INS_DEC>(isStatic);
+            return std::make_unique<INST_X86_INS_DEC>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_MOVZX)
-            return std::make_unique<Dyn_X86_INS_MOVZX>(isStatic);
+            return std::make_unique<INST_X86_INS_MOVZX>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_MOVSX)
-            return std::make_unique<Dyn_X86_INS_MOVSX>(isStatic);
+            return std::make_unique<INST_X86_INS_MOVSX>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_CMOVB)
-            return std::make_unique<Dyn_X86_INS_CMOVB>(isStatic);
+            return std::make_unique<INST_X86_INS_CMOVB>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_MOV)
-            return std::make_unique<Dyn_X86_INS_MOV>(isStatic);
+            return std::make_unique<INST_X86_INS_MOV>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_LEA)
-            return std::make_unique<Dyn_X86_INS_LEA>(isStatic);
+            return std::make_unique<INST_X86_INS_LEA>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_XCHG)
-            return std::make_unique<Dyn_X86_INS_XCHG>(isStatic);
+            return std::make_unique<INST_X86_INS_XCHG>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SBB)
-            return std::make_unique<Dyn_X86_INS_SBB>(isStatic);
+            return std::make_unique<INST_X86_INS_SBB>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_IMUL)
-            return std::make_unique<Dyn_X86_INS_IMUL>(isStatic);
+            return std::make_unique<INST_X86_INS_IMUL>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SHLD)
-            return std::make_unique<Dyn_X86_INS_SHLD>(isStatic);
+            return std::make_unique<INST_X86_INS_SHLD>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SHRD)
-            return std::make_unique<Dyn_X86_INS_SHRD>(isStatic);
+            return std::make_unique<INST_X86_INS_SHRD>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_ADD)
-            return std::make_unique<Dyn_X86_INS_ADD>(isStatic);
+            return std::make_unique<INST_X86_INS_ADD>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SUB)
-            return std::make_unique<Dyn_X86_INS_SUB>(isStatic);
+            return std::make_unique<INST_X86_INS_SUB>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_AND)
-            return std::make_unique<Dyn_X86_INS_AND>(isStatic);
+            return std::make_unique<INST_X86_INS_AND>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_ADC)
-            return std::make_unique<Dyn_X86_INS_ADC>(isStatic);
+            return std::make_unique<INST_X86_INS_ADC>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_ROR)
-            return std::make_unique<Dyn_X86_INS_ROR>(isStatic);
+            return std::make_unique<INST_X86_INS_ROR>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_ROL)
-            return std::make_unique<Dyn_X86_INS_ROL>(isStatic);
+            return std::make_unique<INST_X86_INS_ROL>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_OR)
-            return std::make_unique<Dyn_X86_INS_OR>(isStatic);
+            return std::make_unique<INST_X86_INS_OR>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_XOR)
-            return std::make_unique<Dyn_X86_INS_XOR>(isStatic);
+            return std::make_unique<INST_X86_INS_XOR>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SHL)
-            return std::make_unique<Dyn_X86_INS_SHL>(isStatic);
+            return std::make_unique<INST_X86_INS_SHL>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SHR)
-            return std::make_unique<Dyn_X86_INS_SHR>(isStatic);
+            return std::make_unique<INST_X86_INS_SHR>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SAR)
-            return std::make_unique<Dyn_X86_INS_SAR>(isStatic);
+            return std::make_unique<INST_X86_INS_SAR>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_CALL)
-            return std::make_unique<Dyn_X86_INS_CALL>(isStatic);
+            return std::make_unique<INST_X86_INS_CALL>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_RET)
-            return std::make_unique<Dyn_X86_INS_RET>(isStatic);
+            return std::make_unique<INST_X86_INS_RET>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_LEAVE)
-            return std::make_unique<Dyn_X86_INS_LEAVE>(isStatic);
+            return std::make_unique<INST_X86_INS_LEAVE>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_ENTER)
-            return std::make_unique<Dyn_X86_INS_ENTER>(isStatic);
+            return std::make_unique<INST_X86_INS_ENTER>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_DIV)
-            return std::make_unique<Dyn_X86_INS_DIV>(isStatic);
+            return std::make_unique<INST_X86_INS_DIV>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_TEST)
-            return std::make_unique<Dyn_X86_INS_TEST>(isStatic);
+            return std::make_unique<INST_X86_INS_TEST>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_CMP)
-            return std::make_unique<Dyn_X86_INS_CMP>(isStatic);
+            return std::make_unique<INST_X86_INS_CMP>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JMP)
-            return std::make_unique<Dyn_X86_INS_JMP>(isStatic);
+            return std::make_unique<INST_X86_INS_JMP>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JA)
-            return std::make_unique<Dyn_X86_INS_JA>(isStatic);
+            return std::make_unique<INST_X86_INS_JA>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JAE)
-            return std::make_unique<Dyn_X86_INS_JAE>(isStatic);
+            return std::make_unique<INST_X86_INS_JAE>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JB)
-            return std::make_unique<Dyn_X86_INS_JB>(isStatic);
+            return std::make_unique<INST_X86_INS_JB>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JBE)
-            return std::make_unique<Dyn_X86_INS_JB>(isStatic);
+            return std::make_unique<INST_X86_INS_JB>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JCXZ)
-            return std::make_unique<Dyn_X86_INS_JC>(isStatic);
+            return std::make_unique<INST_X86_INS_JC>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JE)
-            return std::make_unique<Dyn_X86_INS_JE>(isStatic);
+            return std::make_unique<INST_X86_INS_JE>(isStatic);
 
 
         if (id == x86::x86_insn::X86_INS_JG)
-            return std::make_unique<Dyn_X86_INS_JG>(isStatic);
+            return std::make_unique<INST_X86_INS_JG>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JGE)
-            return std::make_unique<Dyn_X86_INS_JGE>(isStatic);
+            return std::make_unique<INST_X86_INS_JGE>(isStatic);
 
 
         if (id == x86::x86_insn::X86_INS_JL)
-            return std::make_unique<Dyn_X86_INS_JL>(isStatic);
+            return std::make_unique<INST_X86_INS_JL>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JLE)
-            return std::make_unique<Dyn_X86_INS_JLE>(isStatic);
+            return std::make_unique<INST_X86_INS_JLE>(isStatic);
+
+        if (id == x86::x86_insn::X86_INS_JNLE)
+            return std::make_unique<INST_X86_INS_JNLE>(isStatic);
 
         /*
         if(id == x86::x86_insn::X86_INS_JNA)
-            return std::make_unique<Dyn_X86_INS_JNA>(isStatic);
+            return std::make_unique<INST_X86_INS_JNA>(isStatic);
 
 
 
         if(id == x86::x86_insn::X86_INS_JNAE)
-            return std::make_unique<Dyn_X86_INS_JNAE>(isStatic);
+            return std::make_unique<INST_X86_INS_JNAE>(isStatic);
 
 
         */
         if(id == x86::x86_insn::X86_INS_JNB)
-            return std::make_unique<Dyn_X86_INS_JNB>(isStatic);
+            return std::make_unique<INST_X86_INS_JNB>(isStatic);
 
 
 
         if (id == x86::x86_insn::X86_INS_JNBE)
-            return std::make_unique<Dyn_X86_INS_JNBE>(isStatic);
+            return std::make_unique<INST_X86_INS_JNBE>(isStatic);
 
         /*
         if(id == x86::x86_insn::X86_INS_JNC)
@@ -306,57 +309,63 @@ namespace tana {
          */
 
         if (id == x86::x86_insn::X86_INS_JNE)
-            return std::make_unique<Dyn_X86_INS_JNE>(isStatic);
+            return std::make_unique<INST_X86_INS_JNE>(isStatic);
 
         /*
 
         if(id == x86::x86_insn::X86_INS_JNG)
-            return std::make_unique<Dyn_X86_INS_JNG>(isStatic);
+            return std::make_unique<INST_X86_INS_JNG>(isStatic);
 
 
         if(id == x86::x86_insn::X86_INS_JNL)
-            return std::make_unique<Dyn_X86_INS_JNL>(isStatic);
+            return std::make_unique<INST_X86_INS_JNL>(isStatic);
 
          */
 
         if (id == x86::x86_insn::X86_INS_JNO)
-            return std::make_unique<Dyn_X86_INS_JNO>(isStatic);
+            return std::make_unique<INST_X86_INS_JNO>(isStatic);
 
 
         if (id == x86::x86_insn::X86_INS_JNS)
-            return std::make_unique<Dyn_X86_INS_JNS>(isStatic);
+            return std::make_unique<INST_X86_INS_JNS>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JNZ)
-            return std::make_unique<Dyn_X86_INS_JNZ>(isStatic);
+            return std::make_unique<INST_X86_INS_JNZ>(isStatic);
 
 
         if (id == x86::x86_insn::X86_INS_JO)
-            return std::make_unique<Dyn_X86_INS_JO>(isStatic);
+            return std::make_unique<INST_X86_INS_JO>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_JS)
-            return std::make_unique<Dyn_X86_INS_JS>(isStatic);
+            return std::make_unique<INST_X86_INS_JS>(isStatic);
 
 
         if (id == x86::x86_insn::X86_INS_JZ)
-            return std::make_unique<Dyn_X86_INS_JZ>(isStatic);
+            return std::make_unique<INST_X86_INS_JZ>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_STOSD)
-            return std::make_unique<Dyn_X86_INS_REP_STOSD>(isStatic);
+            return std::make_unique<INST_X86_INS_REP_STOSD>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_STOSB)
-            return std::make_unique<Dyn_X86_INS_STOSB>(isStatic);
+            return std::make_unique<INST_X86_INS_STOSB>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_CMOVZ)
-            return std::make_unique<Dyn_X86_INS_CMOVZ>(isStatic);
+            return std::make_unique<INST_X86_INS_CMOVZ>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SETZ)
-            return std::make_unique<Dyn_X86_INS_SETZ>(isStatic);
+            return std::make_unique<INST_X86_INS_SETZ>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_SETNZ)
-            return std::make_unique<Dyn_X86_INS_SETNZ>(isStatic);
+            return std::make_unique<INST_X86_INS_SETNZ>(isStatic);
 
         if (id == x86::x86_insn::X86_INS_BT)
-            return std::make_unique<Dyn_X86_INS_BT>(isStatic);
+            return std::make_unique<INST_X86_INS_BT>(isStatic);
+
+        if (id == x86::x86_insn::X86_INS_MOVSB)
+            return std::make_unique<INST_X86_INS_MOVSB>(isStatic);
+
+        if (id == x86::x86_insn::X86_INS_MUL)
+            return std::make_unique<INST_X86_INS_MUL>(isStatic);
 
 
         WARN("unrecognized instructions");
@@ -399,12 +408,12 @@ namespace tana {
         return nullptr;
     }
 
-    bool Dyn_X86_INS_NOP::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_NOP::symbolic_execution(tana::SEEngine *se) {
         return true;
     }
 
 
-    bool Dyn_X86_INS_PUSH::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_PUSH::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<BitVector> v0;
         std::shared_ptr<BitVector> esp = se->readReg("esp");
@@ -441,7 +450,7 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_POP::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_POP::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
 
         std::shared_ptr<BitVector> esp = se->readReg("esp");
@@ -461,7 +470,7 @@ namespace tana {
 
     }
 
-    bool Dyn_X86_INS_NEG::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_NEG::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto opcode_id = this->instruction_id;
         auto opcstr = "bv" + x86::insn_id2string(opcode_id);
@@ -508,7 +517,7 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_NOT::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_NOT::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
 
         std::shared_ptr<BitVector> v0, res;
@@ -530,7 +539,7 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_INC::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_INC::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto opcode_id = this->instruction_id;
         auto opcstr = "bv" + x86::insn_id2string(opcode_id);
@@ -576,7 +585,7 @@ namespace tana {
 
     }
 
-    bool Dyn_X86_INS_DEC::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_DEC::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto opcode_id = this->instruction_id;
         auto opcstr = "bv" + x86::insn_id2string(opcode_id);
@@ -622,7 +631,7 @@ namespace tana {
     }
 
 
-    bool Dyn_X86_INS_MOVSX::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_MOVSX::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
@@ -644,7 +653,7 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_MOVZX::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_MOVZX::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
@@ -668,7 +677,7 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_CMOVB::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_CMOVB::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
@@ -721,7 +730,7 @@ namespace tana {
 
     }
 
-    bool Dyn_X86_INS_MOV::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_MOV::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
@@ -770,7 +779,7 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_LEA::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_LEA::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
@@ -907,7 +916,7 @@ namespace tana {
     }
 
 
-    bool Dyn_X86_INS_XCHG::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_XCHG::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
@@ -953,7 +962,7 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_SBB::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_SBB::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
 
@@ -1025,7 +1034,7 @@ namespace tana {
     }
 
 
-    bool Dyn_X86_INS_IMUL::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_IMUL::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<Operand> op2 = this->oprd[2];
@@ -1060,7 +1069,7 @@ namespace tana {
     }
 
 
-    bool Dyn_X86_INS_SHLD::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_SHLD::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<Operand> op2 = this->oprd[2];
@@ -1085,7 +1094,7 @@ namespace tana {
 
     }
 
-    bool Dyn_X86_INS_SHRD::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_SHRD::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<Operand> op2 = this->oprd[2];
@@ -1109,7 +1118,7 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_ADD::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_ADD::symbolic_execution(SEEngine *se) {
 
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
@@ -1157,7 +1166,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_SUB::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_SUB::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
@@ -1205,7 +1214,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_AND::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_AND::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
@@ -1253,7 +1262,7 @@ namespace tana {
 
     }
 
-    bool Dyn_X86_INS_ADC::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_ADC::symbolic_execution(SEEngine *se) {
 
         bool CF = false, status = false;
         if (this->vcpu.eflags_state)
@@ -1319,32 +1328,32 @@ namespace tana {
 
     }
 
-    bool Dyn_X86_INS_ROR::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_ROR::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvror);
         return true;
     }
 
-    bool Dyn_X86_INS_ROL::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_ROL::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvrol);
         return true;
     }
 
-    bool Dyn_X86_INS_SHL::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_SHL::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvshl);
         return true;
     }
 
-    bool Dyn_X86_INS_SHR::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_SHR::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvshr);
         return true;
     }
 
-    bool Dyn_X86_INS_SAR::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_SAR::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvsar);
         return true;
     }
 
-    bool Dyn_X86_INS_OR::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_OR::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
@@ -1390,7 +1399,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_XOR::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_XOR::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
@@ -1437,7 +1446,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_CALL::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_CALL::symbolic_execution(SEEngine *se) {
         std::shared_ptr<BitVector> esp = se->readReg("esp");
         uint32_t sub_size = 4;
         esp = buildop2(BVOper::bvsub, esp, sub_size);
@@ -1449,7 +1458,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_RET::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_RET::symbolic_execution(SEEngine *se) {
         std::shared_ptr<BitVector> esp = se->readReg("esp");
         uint32_t add_size = 4;
         if(oprd[0] != nullptr)
@@ -1462,7 +1471,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_LEAVE::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_LEAVE::symbolic_execution(SEEngine *se) {
 
         // EBP = ESP
         auto v_ebp = se->readReg("ebp");
@@ -1476,11 +1485,11 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_ENTER::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_ENTER::symbolic_execution(SEEngine *se) {
         return true;
     }
 
-    bool Dyn_X86_INS_DIV::symbolic_execution(SEEngine *se) {
+    bool INST_X86_INS_DIV::symbolic_execution(SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto operand_size = op0->bit;
         assert(operand_size == 8 || operand_size == 16 || operand_size == 32);
@@ -1538,7 +1547,7 @@ namespace tana {
     }
 
     // The And instrucntion without storing the result
-    bool Dyn_X86_INS_TEST::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_TEST::symbolic_execution(tana::SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
@@ -1582,7 +1591,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_CMP::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_CMP::symbolic_execution(tana::SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
@@ -1627,12 +1636,12 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_JMP::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JMP::symbolic_execution(tana::SEEngine *se) {
         return true;
     }
 
     //JA CF = 0 and ZF = 0
-    bool Dyn_X86_INS_JA::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JA::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1653,7 +1662,7 @@ namespace tana {
     }
 
     //JAE CF = 0
-    bool Dyn_X86_INS_JAE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JAE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1668,7 +1677,7 @@ namespace tana {
     }
 
     //JB CF = 1
-    bool Dyn_X86_INS_JB::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JB::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1684,7 +1693,7 @@ namespace tana {
     }
 
     //JBE CF = 1 or ZF = 1
-    bool Dyn_X86_INS_JBE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JBE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1705,7 +1714,7 @@ namespace tana {
     }
 
     //JC CF = 1
-    bool Dyn_X86_INS_JC::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JC::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1720,7 +1729,7 @@ namespace tana {
     }
 
     //JE ZF = 1
-    bool Dyn_X86_INS_JE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
@@ -1735,7 +1744,7 @@ namespace tana {
     }
 
     //JG ZF = 0 and SF = OF
-    bool Dyn_X86_INS_JG::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JG::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
@@ -1757,7 +1766,7 @@ namespace tana {
     }
 
     //JGE SF = OF
-    bool Dyn_X86_INS_JGE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JGE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
 
@@ -1775,7 +1784,7 @@ namespace tana {
     }
 
     //JL SF != OF
-    bool Dyn_X86_INS_JL::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JL::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
 
@@ -1793,7 +1802,7 @@ namespace tana {
     }
 
     //JLE ZF or SF != OF
-    bool Dyn_X86_INS_JLE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JLE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
@@ -1815,7 +1824,7 @@ namespace tana {
     }
 
     //JNA CF or ZF
-    bool Dyn_X86_INS_JNA::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNA::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
@@ -1837,7 +1846,7 @@ namespace tana {
     }
 
     //JNAE CF
-    bool Dyn_X86_INS_JNAE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNAE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1853,7 +1862,7 @@ namespace tana {
     }
 
     //JNB CF = 0
-    bool Dyn_X86_INS_JNB::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNB::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1869,7 +1878,7 @@ namespace tana {
     }
 
     //JNBE CF = 0 and ZF = 0
-    bool Dyn_X86_INS_JNBE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNBE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1890,7 +1899,7 @@ namespace tana {
     }
 
     //JNC CF = 0
-    bool Dyn_X86_INS_JNC::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNC::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
@@ -1906,7 +1915,7 @@ namespace tana {
     }
 
     //JNE ZF = 0
-    bool Dyn_X86_INS_JNE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
@@ -1921,7 +1930,7 @@ namespace tana {
     }
 
     //JNG ZF or SF != OF
-    bool Dyn_X86_INS_JNG::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNG::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
@@ -1943,7 +1952,7 @@ namespace tana {
     }
 
     //JNGE SF != OF
-    bool Dyn_X86_INS_JNGE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNGE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
@@ -1961,7 +1970,7 @@ namespace tana {
     }
 
     //JNL SF = OF
-    bool Dyn_X86_INS_JNL::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNL::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
@@ -1978,7 +1987,7 @@ namespace tana {
     }
 
     //JNLE ZF = 0 and SF = OF
-    bool Dyn_X86_INS_JNLE::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNLE::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
@@ -2000,7 +2009,7 @@ namespace tana {
     }
 
     //JNO OF = 0
-    bool Dyn_X86_INS_JNO::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNO::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
@@ -2012,7 +2021,7 @@ namespace tana {
     }
 
     //JNS SF = 0
-    bool Dyn_X86_INS_JNS::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNS::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
@@ -2025,7 +2034,7 @@ namespace tana {
 
 
     //JNZ ZF = 0
-    bool Dyn_X86_INS_JNZ::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JNZ::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
@@ -2037,7 +2046,7 @@ namespace tana {
     }
 
     //JO OF
-    bool Dyn_X86_INS_JO::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JO::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> OF = se->getFlags("OF");
@@ -2049,7 +2058,7 @@ namespace tana {
     }
 
     //JS SF
-    bool Dyn_X86_INS_JS::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JS::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("SF");
@@ -2061,7 +2070,7 @@ namespace tana {
     }
 
     //JZ ZF
-    bool Dyn_X86_INS_JZ::symbolic_execution(tana::SEEngine *se) {
+    bool INST_X86_INS_JZ::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> SF = se->getFlags("ZF");
@@ -2072,7 +2081,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_REP_STOSD::symbolic_execution(tana::SEEngine *se)
+    bool INST_X86_INS_REP_STOSD::symbolic_execution(tana::SEEngine *se)
     {
 
         // ecx = ecx - 1
@@ -2093,7 +2102,7 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_STOSB::symbolic_execution(tana::SEEngine *se)
+    bool INST_X86_INS_STOSB::symbolic_execution(tana::SEEngine *se)
     {
         assert(oprd[0]->type == Operand::Mem);
         // Update register
@@ -2114,12 +2123,12 @@ namespace tana {
         return true;
     }
 
-    bool Dyn_X86_INS_CMOVZ::symbolic_execution(tana::SEEngine *se)
+    bool INST_X86_INS_CMOVZ::symbolic_execution(tana::SEEngine *se)
     {
         return true;
     }
 
-    bool Dyn_X86_INS_SETZ::symbolic_execution(tana::SEEngine *se)
+    bool INST_X86_INS_SETZ::symbolic_execution(tana::SEEngine *se)
     {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto ZF = se->getFlags("ZF");
@@ -2132,12 +2141,12 @@ namespace tana {
         return false;
     }
 
-    bool Dyn_X86_INS_SETNZ::symbolic_execution(tana::SEEngine *se)
+    bool INST_X86_INS_SETNZ::symbolic_execution(tana::SEEngine *se)
     {
         return true;
     }
 
-    bool Dyn_X86_INS_BT ::symbolic_execution(tana::SEEngine *se)
+    bool INST_X86_INS_BT ::symbolic_execution(tana::SEEngine *se)
     {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
@@ -2166,6 +2175,72 @@ namespace tana {
 
         return true;
 
+    }
+
+    bool INST_X86_INS_MOVSB ::symbolic_execution(tana::SEEngine *se)
+    {
+        if(is_static)
+        {
+            ERROR("Static model doesn't support the instruction movsb");
+            return false;
+        }
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        auto src = op1->field[0];
+        auto dest = op0->field[0];
+        assert(op0->type == Operand::Mem);
+        assert(op1->type == Operand::Mem);
+
+        auto src_reg = se->readReg(src);
+        auto dest_reg = se->readReg(dest);
+        src_reg = buildop2(BVOper::bvadd, src_reg, 1);
+        se->writeReg(src, src_reg);
+        dest_reg = buildop2(BVOper::bvadd, dest_reg, 1);
+        se->writeReg(dest, dest_reg);
+
+        auto src_mem_address = this->read_reg_data(src);
+        auto dest_mem_address = this->read_reg_data(dest);
+        std::stringstream src_ss, dest_ss;
+        src_ss << std::hex << src_mem_address << std::dec;
+        dest_ss << std::hex << dest_mem_address << std::dec;
+
+        auto src_value = se->readMem(src_ss.str(), op1->bit);
+        se->writeMem(dest_ss.str(), op0->bit, src_value);
+
+        return true;
+    }
+
+    bool INST_X86_INS_MUL ::symbolic_execution(tana::SEEngine *se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        assert(op0->type == Operand::Reg);
+
+        if(op0->bit == 32)
+        {
+            auto eax_v = se->readReg("eax");
+            std::shared_ptr<BitVector> src_v;
+            if(op0->type == Operand::Reg)
+            {
+                src_v = se->readReg(op0->field[0]);
+            }
+            if(op0->type == Operand::Mem)
+            {
+                src_v = std::make_shared<BitVector>(ValueType::CONCRETE, op0->field[0]);
+            }
+
+            auto result = buildop2(BVOper::bvimul, eax_v, src_v);
+            auto high = se->Extract(result, 33, 64);
+            auto low = se->Extract(result, 1, 32);
+            se->writeReg("edx", high);
+            se->writeReg("eax", low);
+            return true;
+
+        }
+
+
+
+        return false;
     }
 
 

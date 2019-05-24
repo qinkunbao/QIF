@@ -122,7 +122,9 @@ namespace tana {
 
         void set_mem_data(uint32_t mem_data);
 
-        uint32_t read_mem_data();
+        uint32_t read_mem_data() const;
+
+        uint32_t read_reg_data(std::string RegName) const;
 
         virtual bool symbolic_execution(SEEngine *se)
         {

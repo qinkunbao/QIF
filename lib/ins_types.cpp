@@ -2,7 +2,10 @@
 #include <memory>
 #include "ins_types.h"
 #include "ins_parser.h"
+#include "x86.h"
 #include "error.h"
+#include "Register.h"
+#include "BitVector.h"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
@@ -173,7 +176,7 @@ namespace tana {
         this->mem_data = data;
     }
 
-    uint32_t Inst_Base::read_mem_data()
+    uint32_t Inst_Base::read_mem_data() const
     {
         if(!mem_data_available) {
             ERROR("memory data not available");
@@ -205,6 +208,32 @@ namespace tana {
                 return 0;
         }
 
+    }
+
+    uint32_t Inst_Base::read_reg_data(std::string RegName) const
+    {
+        if(is_static){
+            ERROR("Regsiter data is not available");
+            return 0;
+        }
+       x86::x86_reg regid = Registers::convert2RegID(RegName);
+       RegType regType = Registers::getRegType(regid);
+       uint32_t regIndex = Registers::getRegIndex(regid);
+       uint32_t raw_reg_data = this->vcpu.gpr[regIndex];
+       switch (regType){
+           case FULL:
+               return raw_reg_data;
+           case HALF:
+               return BitVector::extract(raw_reg_data, 16, 1);
+           case QLOW:
+               return BitVector::extract(raw_reg_data, 8, 1);
+           case QHIGH:
+               return BitVector::extract(raw_reg_data, 16, 9);
+           case INVALIDREG:
+               ERROR("Invalid Register Type");
+       }
+        ERROR("Invalid Register Type");
+        return 0;
     }
 
 
