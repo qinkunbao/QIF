@@ -258,7 +258,7 @@ namespace tana {
     uint32_t BitVector::extract(uint32_t op1, uint32_t high, uint32_t low)
     {
         assert(high > low);
-        assert(high <= REGISTER_SIZE);
+        //assert(high <= REGISTER_SIZE);
         assert(low > 0);
         std::bitset<REGISTER_SIZE> bset(op1);
         uint32_t tmp = op1 << (REGISTER_SIZE - high);
