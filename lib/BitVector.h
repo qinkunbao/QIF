@@ -43,7 +43,8 @@ namespace tana {
         bvzeroext,
         bvextract,
         bvconcat,
-        bvsignext
+        bvsignext,
+        bvbitnot
     };
 
     class BitVector {

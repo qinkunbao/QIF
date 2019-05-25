@@ -90,6 +90,9 @@ namespace tana {
 
             case BVOper::bvbit:
                 return os << "bvbit";
+
+            case BVOper::bvbitnot:
+                return os << "!";
             //omit default case to triger compiler warning for missing cases
         };
 

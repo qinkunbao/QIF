@@ -330,6 +330,9 @@ namespace tana {
                     return op0 > op1;
                 case BVOper::less:
                     return op0 < op1;
+
+                case BVOper::bvbitnot:
+                    return op0? 0 : 1;
             }
 
 
