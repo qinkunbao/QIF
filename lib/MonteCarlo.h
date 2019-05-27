@@ -40,13 +40,18 @@ namespace tana {
 
     class FastMonteCarlo{
     private:
-        std::vector<std::unique_ptr<std::vector<uint8_t >>> satisfied_test;
-        std::vector<std::unique_ptr<std::vector<uint8_t >>> unsatisfied_test;
+        std::vector<std::unique_ptr<std::pair<std::vector<uint8_t>, bool>>> tests;
+        std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> constrains;
         uint64_t num_sample;
+        uint64_t num_satisfied;
+        std::vector<int> input_vector;
+        void testConstrain(const std::shared_ptr<tana::Constrain> &con);
 
 
     public:
-        FastMonteCarlo(uint64_t sample_num, unsigned int input_demension);
+        FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> constrains);
+        void run();
+        float getResult();
 
     };
 }
