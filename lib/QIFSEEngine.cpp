@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <sstream>
 #include <cmath>
+#include <chrono>
 #include "ins_types.h"
 #include "QIFSEEngine.h"
 #include "VarMap.h"
@@ -334,7 +335,7 @@ namespace tana {
 
 
         if (size == T_BYTE_SIZE * T_DWORD) {
-            assert(memory_address % 4 == 0);
+            //assert(memory_address % 4 == 0);
             if (memory_find(memory_address)) {
                 v0 = memory[memory_address];
             } else {
@@ -411,7 +412,7 @@ namespace tana {
 
 
         if (addr_size == T_BYTE_SIZE * T_DWORD) {
-            assert(memory_address % 4 == 0);
+            //assert(memory_address % 4 == 0);
             memory[memory_address] = v;
             assert(v!= nullptr);
             return true;
@@ -699,7 +700,19 @@ namespace tana {
 
     float QIFSEEngine::getEntropy()
     {
-        float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
+        using clock = std::chrono::system_clock;
+        using ms = std::chrono::milliseconds;
+        const auto before = clock::now();
+
+        //float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
+        FastMonteCarlo res(1000000, constrains);
+        res.run();
+        float MonteCarloEResult= res.getResult();
+
+        const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
+
+        std::cout << "It took " << duration.count()/1000.0 << "ms"
+        << " to finish the monte carlo sampling"<< std::endl;
         return -log(MonteCarloEResult)/log(2);
     }
 

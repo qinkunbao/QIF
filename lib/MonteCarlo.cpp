@@ -100,13 +100,53 @@ namespace tana {
     }
 
 
-    FastMonteCarlo::FastMonteCarlo(uint64_t sample_num, unsigned int input_demension):num_sample(sample_num)
+    FastMonteCarlo::FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> con)
+    :num_sample(sample_num), constrains(con), num_satisfied(0)
     {
-        satisfied_test.reserve(sample_num);
+        tests.reserve(sample_num);
+        input_vector = MonteCarlo::getAllKeys(con);
+        unsigned int input_demension = input_vector.size();
         for(uint64_t i = 0; i < sample_num; ++i)
         {
-            auto data = std::make_unique<std::vector<uint8_t >>(MonteCarlo::getRandomVector(input_demension));
-            satisfied_test.push_back(std::move(data));
+            tests.push_back(std::make_unique<std::pair<std::vector<uint8_t >, bool>>(std::make_pair(MonteCarlo::getRandomVector(input_demension), true)));
         }
+    }
+
+    void FastMonteCarlo::testConstrain(const std::shared_ptr<tana::Constrain> &con)
+    {
+        for(auto& it : tests)
+        {
+            std::pair<std::vector<uint8_t>, bool>& one_test = *it;
+            if(one_test.second) {
+                auto random_vector_map = MonteCarlo::input2val(one_test.first, input_vector);
+                bool flag = con->validate(random_vector_map);
+                one_test.second = flag;
+            }
+        }
+    }
+
+    void FastMonteCarlo::run(){
+
+        for(const auto &element :constrains)
+        {
+            auto &cons = std::get<1>(element);
+            this->testConstrain(cons);
+        }
+        for(const auto &test: tests)
+        {
+            if(test->second)
+            {
+                ++num_satisfied;
+            }
+        }
+
+
+    }
+
+    float FastMonteCarlo::getResult()
+    {
+        float result = (static_cast<float>(num_satisfied)) / (static_cast<float>(num_sample));
+        return result;
+
     }
 }
