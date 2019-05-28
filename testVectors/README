@@ -1,0 +1,25 @@
+
+
+The traces folder contains (deduplicated) loops from full traces of the sample
+programs from the `target` directory.   (These aren't in git, since they're
+large, see below). The reason to use the full traces is that we want them to be more
+like regular code, as we'll be testing our reference loops against them
+and look for false positives. 
+
+After using referenceMaker, say for MD5, suppose we get a large number of ref
+files (e.g., with md5b.c) First we can use dedup.pl to remove duplicates. 
+
+Then we want to compare these MD5 loops to other code/algorithms to see if we
+get false positives.  From the 'build' directory, run 
+    ../test_vs_traces MD5 <path to new MD5 reference> ../testVectors/traces
+This will compare the MD5 reference to multiple test programs, some containing
+MD5, some not. The output will show which comparisons passed and failed.  For
+failures, we can check the match files and see which reference loops are
+causing a match, and optionally remove them.
+
+
+Trace data
+Found here
+    https://1drv.ms/u/s!Ak5fGAAQinFJhahLdhJBQ9H5by2Wxw
+Uncompress into testVectors, it will create the traces folder. 
+

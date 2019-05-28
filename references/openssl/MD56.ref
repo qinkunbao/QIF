@@ -1,0 +1,3 @@
+b54f5639;mov dword ptr [ecx+eax*1], 0x0;0,b5698000,bfee13f0,30,94e1008,bfee13e8,bfee13a0,bfee13d0,bfee13f0,
+b54f5640;add eax, 0x4;0,b5698000,bfee13f0,30,94e1008,bfee13e8,bfee13a0,bfee13d0,0,
+b54f5643;cmp eax, edx;4,b5698000,bfee13f0,30,94e1008,bfee13e8,bfee13a0,bfee13d0,0,

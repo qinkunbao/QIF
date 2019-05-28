@@ -1,0 +1,7 @@
+b569db18;mov edx, dword ptr [ebp-0x14];bfceff94,0,4,bfcf0094,b565d000,b565d000,bfceff48,bfceff68,bfceff54,
+b569db1b;mov eax, dword ptr [ebp-0x8];bfceff94,0,4,0,b565d000,b565d000,bfceff48,bfceff68,bfceff60,
+b569db1e;add eax, edx;bfceff94,0,4,0,b565d000,b565d000,bfceff48,bfceff68,0,
+b569db20;mov edx, dword ptr [ebp-0x14];bfceff94,0,4,0,b565d000,b565d000,bfceff48,bfceff68,bfceff54,
+b569db23;mov byte ptr [eax], dl;bfceff94,0,4,0,b565d000,b565d000,bfceff48,bfceff68,bfceff94,
+b569db25;add dword ptr [ebp-0x14], 0x1;bfceff94,0,4,0,b565d000,b565d000,bfceff48,bfceff68,bfceff54,
+b569db29;cmp dword ptr [ebp-0x14], 0xff;bfceff94,0,4,0,b565d000,b565d000,bfceff48,bfceff68,bfceff54,

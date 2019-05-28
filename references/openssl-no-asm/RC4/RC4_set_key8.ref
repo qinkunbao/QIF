@@ -1,0 +1,5 @@
+b7f99740;mov edx, dword ptr [eax];b57d3448,b7faec08,b57d31b0,0,bfd2bde2,2,bfd2bde0,bfd2be48,b57d3448,
+b7f99742;test edx, edx;b57d3448,b7faec08,b57d31b0,b57d31b0,bfd2bde2,2,bfd2bde0,bfd2be48,0,
+b7f99744;jz 0xb7f997e0;b57d3448,b7faec08,b57d31b0,b57d31b0,bfd2bde2,2,bfd2bde0,bfd2be48,0,
+b7f9974a;add eax, 0x4;b57d3448,b7faec08,b57d31b0,b57d31b0,bfd2bde2,2,bfd2bde0,bfd2be48,0,
+b7f9974d;cmp ebx, edx;b57d344c,b7faec08,b57d31b0,b57d31b0,bfd2bde2,2,bfd2bde0,bfd2be48,0,
