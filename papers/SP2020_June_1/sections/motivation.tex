@@ -1,0 +1,80 @@
+\section{Motivation}
+\subsection{Information Leakage Quantification}
+Existing side-channel quantification works either define the amount of leaked information corresponds to the number of possible side-channel observations or the min-entropy. However, the definition has some limitations. Consider the following example,
+
+unsigned char key = input(); //sensitive information, 4 bits information 
+Unsigned char temp = key/2;
+if (temp == 0xb)
+//branch 0
+else
+//branch 1
+
+Suppose an attacker can observe which branch the code actually run (e.g., flush reload, controlled attack), the attacker can infer the value of key. For example, if the attacker observe the code executes the branch 0, then he will know the key equals 11*2 = 22. Because the attacker knows the key equals 22. In this case, there is no uncertainty about the key. As the key has 4 bits information in total, we think the amount of information leakage here is 4 bits. On the other hand, if the code executes the branch 2, the only thing that an attacker can know is that the key doesn’t equal 22, which leaks very little information in this case.  However, if we use the number of possible observations to quantify the amount of leakage, the code will have two different observations (branch 1 and branch 2). Therefore, the calculated information leakage here will be 1 bit. 
+
+We use the mutual information (MI) to quantify the information leakages. For a program P with sensitive information K as the input, the attacker may have some observations O during the execution. The information leakage is defined as the mutual information I(O; K) between O and K.
+
+I(O; K) = H(O) - H(O|K)
+
+I(O; K) represent how much uncertainty about K can be reduced if the attacker has the observation O.
+For a deterministic program, the program will have the same memory access behavior as long as the input is fixed. As the observation of the attacker correlate to the memory access behavior, 
+we can have the following formula.
+
+O = f(K)
+
+The function f is determined by the program P. For our project, we can calculate the function f via symbolic execution.
+
+I(O; K) = H(O) - H(f(K)|K) = H(O) = H(f(K))
+
+So the mutual information between O and S equals to the self information of O. 
+
+H(O) = Σp(Oi)log(p(Oi))
+
+For a determinist program, we can calculate the distribution of O as long as we know the distribution of input K. So we can calculate how much information is leaked.
+
+For examples, given a program P, we have the sensitive input K. The K should be a value in a memory cell or a sequential buffer (e.g., an array). We use ki to denote the sensitive information, where i is the index of the byte in the original buffer.  We can have the following equations. The t1, t2, t3, is the temporary values during the execution.
+
+t1 = f1(k1, k2, k3 ... kn)
+t2 = f2(k1, k2, k3 ... kn)
+t3 = f3(k1, k2, k3 ... kn)
+...
+tm = fm(k1, k2, k3 ... kn)
+
+The attacker can retrieve the sensitive information by observing the different patterns in control-flows and data access when the program process different sensitive information. We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
+
+\subsection{Secret-dependent Control Flow}
+Here is an example of the secret-dependent control-flows. Consider the code snippet in List 1. Here the key is the confidential data. The code will have different behaviours (time, cache access) dependenting on which branch is actually executing. By observing the behaviour, the attacker can infer which branch actually executed and know some of the sensitive information. One of the famous leakage example is the square and multiply in many RSA implementations. 
+
+For example, the attacker knows the key equals to zero if he observes the code run the branch1. Because key has 256 different possibilities. The original key has lg256 = 8 bits information. If the attacker can observe the code run branch 1. Then he will knows the key equals to zero. If the code run branch 2, the attacker can infer the key doesn’t equal to zero. 
+
+Branch 1
+temp = 0xb;
+0 =< key <= 256;
+temp = key/2;
+
+Information Leakage = -log(1/p) = -log(1/256) = 8 bits
+
+Branch 2
+temp != 0; 
+0 =< key <= 256;
+temp = key/2;
+
+Information Leakage = -log(255/256) bits
+
+\subsection{Seret-dependent Memory Access}
+
+
+T[64]; // Lookup tables with 64 entries
+index = key % 63;
+temp = T[index] // Secret-dependent memory access         
+The simple program above is an example of secret dependent memory access. Here T is a precomputed tables with sixty-four entries. Depending on the values of key, the program may access any values in the array. Those kind of code patterns may wildly exist in many crypto and media libraries. 
+
+Suppose the attackers observe the code accesses the first entry of the lookup tables. We can have the following formulas.
+
+key mod 63 ≡ 1
+0 =< key <= 256
+
+So the key can be one of the following values:
+1 64 127 190 253
+
+Information leakages = -log(5/256) =  5.6 bits
+
