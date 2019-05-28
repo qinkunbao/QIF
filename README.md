@@ -1,11 +1,18 @@
 # Trace Aanlysis
-This repo contains three useful tools for trace analysis.
+This repo contains five useful tools for trace analysis.
 - A Pin Tool
 - CryptoHunt
 - TaintTrace
+- QIF
+- Dissambler
+- CryptoHunt (Static Version)
+
+The pin tool is used to collect the execution trace. CryptoHunt, TaintTrace and QIF process the trace file and output the corresponding result. 
+
+The dissambler can analyze the ELF/PE file and output the function and the basic blocks. The CryptoHunt (Static Version) can process the result from the Dissambler and output the potential Crypto Function.
 
 ## Paper Draft
-Google Document: \
+QIF Google Document: \
 https://docs.google.com/document/d/1c0Ahiz9vz4jomn_zgYAkRgElKiWANoOlg_HD-i66af4/edit?usp=sharing
 
 
@@ -34,8 +41,6 @@ $ cd build
 & make all
 ~~~~
 
-To Build CryptoHunt and TaintTrace with Visual Studio 2017   
-Open the solution file and build
 
 ## Analysis Workflow
 1. Collect execution traces for the malware using the Pin Tool. The traces here inlcudes the following information.
