@@ -1,0 +1,3 @@
+80491f9;mov dword ptr [ecx+edx*1], 0x0;30,94be008,bffafbc0,0,bffafba0,bffafc26,bffafb70,bffafbb8,bffafbc0,
+8049200;add edx, 0x4;30,94be008,bffafbc0,0,bffafba0,bffafc26,bffafb70,bffafbb8,0,
+8049203;cmp edx, eax;30,94be008,bffafbc0,4,bffafba0,bffafc26,bffafb70,bffafbb8,0,

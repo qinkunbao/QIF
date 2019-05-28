@@ -1,0 +1,7 @@
+b7fdca90;mov ecx, ebx;6d,1505,bffafb24,80484ff,1,b7ff7000,bffafa58,bffafae0,0,
+b7fdca92;add edx, 0x1;6d,1505,1505,80484ff,1,b7ff7000,bffafa58,bffafae0,0,
+b7fdca95;shl ecx, 0x5;6d,1505,1505,8048500,1,b7ff7000,bffafa58,bffafae0,0,
+b7fdca98;add ebx, ecx;6d,1505,2a0a0,8048500,1,b7ff7000,bffafa58,bffafae0,0,
+b7fdca9a;add ebx, eax;6d,2b5a5,2a0a0,8048500,1,b7ff7000,bffafa58,bffafae0,0,
+b7fdca9c;movzx eax, byte ptr [edx];6d,2b612,2a0a0,8048500,1,b7ff7000,bffafa58,bffafae0,8048500,
+b7fdca9f;test al, al;65,2b612,2a0a0,8048500,1,b7ff7000,bffafa58,bffafae0,0,

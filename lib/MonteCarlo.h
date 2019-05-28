@@ -10,6 +10,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <random>
 #include "BitVector.h"
 #include "Constrains.h"
 #include "Engine.h"
@@ -46,7 +47,10 @@ namespace tana {
         uint64_t num_satisfied;
         std::vector<int> input_vector;
         void testConstrain(const std::shared_ptr<tana::Constrain> &con);
-
+        std::vector<uint8_t > getRandomVector(unsigned int size);
+        std::random_device rd;
+        std::uniform_int_distribution<uint8_t> dist;
+        std::minstd_rand engine{rd()};
 
     public:
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> constrains);

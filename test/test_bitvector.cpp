@@ -2,7 +2,7 @@
 #include <bitset>
 #include "BitVector.h"
 
-
+using namespace tana;
 
 void test_concat()
 {
@@ -79,6 +79,14 @@ int main()
     auto res = tana::BitVector::extract(num, 4, 2);
     auto bit_before = std::bitset<tana::REGISTER_SIZE>(num);
     auto bit_after = std::bitset<tana::REGISTER_SIZE>(res);
+
+    bool test1 = bit_before[0];
+    bool test2 = bit_before[1];
+    bool test3 = bit_before[2];
+
+    bool test4 = BitVector::bit(num, 0);
+    bool test5 = BitVector::bit(num, 1);
+    bool test6 = BitVector::bit(num, 2);
 
 
     std::cout << "Test extract" << std::endl;

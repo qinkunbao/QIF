@@ -12,6 +12,10 @@ bld/
 build/
 .idea/
 cmake-build-debug/
+cmake-build-release/
+json/
+disassembler/rc4
+disassembler/target/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/

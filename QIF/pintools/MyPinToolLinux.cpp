@@ -68,7 +68,7 @@ void static getctxRead(ADDRINT addr, CONTEXT *fromctx, ADDRINT memaddr)
 	if (start_ins == FALSE)
 		return;
     uint32_t value = 0;
-    const VOID* src = (const VOID *)(memaddr); 
+    const VOID* src = (const VOID *)(memaddr - memaddr%4);
 	PIN_SafeCopy(&value, src, sizeof(uint32_t));
 	fprintf(fp, "%x;%s;%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x\n", addr, opcmap[addr].c_str(),
 		PIN_GetContextReg(fromctx, REG_EAX),
@@ -98,7 +98,7 @@ VOID Instruction(INS ins, VOID *v) {
 
 
 	else if (INS_IsMemoryWrite(ins)) {
-		INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)getctx, IARG_INST_PTR, IARG_CONST_CONTEXT, IARG_MEMORYWRITE_EA, IARG_END);
+		INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)getctxRead, IARG_INST_PTR, IARG_CONST_CONTEXT, IARG_MEMORYWRITE_EA, IARG_END);
 	}
 
 	else {

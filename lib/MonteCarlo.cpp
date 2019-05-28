@@ -15,8 +15,8 @@ namespace tana {
         std::vector<uint8_t> randVector(size);
         for (uint32_t index = 0; index < size; ++index) {
             std::random_device random_device; // create object for seeding
-            std::mt19937 engine{random_device()}; // create engine and seed it
-            std::uniform_int_distribution<> dist(0, 255); // create distribution for integers with [1; 9] range
+            std::minstd_rand engine{random_device()}; // create engine and seed it
+            std::uniform_int_distribution<uint8_t > dist(0, 255); // create distribution for integers with [1; 9] range
             auto random_number = dist(engine); // finally get a pseudo-randomrandom integer number
             randVector[index] = random_number;
         }
@@ -101,14 +101,14 @@ namespace tana {
 
 
     FastMonteCarlo::FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> con)
-    :num_sample(sample_num), constrains(con), num_satisfied(0)
+    :num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255)
     {
         tests.reserve(sample_num);
         input_vector = MonteCarlo::getAllKeys(con);
         unsigned int input_demension = input_vector.size();
         for(uint64_t i = 0; i < sample_num; ++i)
         {
-            tests.push_back(std::make_unique<std::pair<std::vector<uint8_t >, bool>>(std::make_pair(MonteCarlo::getRandomVector(input_demension), true)));
+            tests.push_back(std::make_unique<std::pair<std::vector<uint8_t >, bool>>(std::make_pair(getRandomVector(input_demension), true)));
         }
     }
 
@@ -148,5 +148,17 @@ namespace tana {
         float result = (static_cast<float>(num_satisfied)) / (static_cast<float>(num_sample));
         return result;
 
+    }
+
+    std::vector<uint8_t > FastMonteCarlo::getRandomVector(unsigned int size)
+    {
+        std::vector<uint8_t> randVector(size);
+        for (uint32_t index = 0; index < size; ++index) {
+
+            auto random_number = dist(engine); // finally get a pseudo-randomrandom integer number
+            randVector[index] = random_number;
+        }
+
+        return randVector;
     }
 }
