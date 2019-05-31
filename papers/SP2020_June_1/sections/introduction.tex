@@ -14,15 +14,15 @@ a lot of methods have been proposed to automatically detect information leakage.
 While those tools can typically report a list of potential leakages sites, they still 
 face a couple of limitations.
 
-First, the existing tools \cite{203878} can only report a list of potential leakage sites. But 
-they fail to report how severe each potential leakage site could be. Most of leakages 
-found by those tools are typically hard to exploit or leak too little information.  
-It is worthwhile to have a tool to tell how much information is actually leaks. 
+First, the existing tools \cite{203878} \cite{217537} can discover a list of potential leakage sites. 
+But they fail to report how severe each potential leakage site could be. Most of leakages 
+found by those tools are typically hard to exploit or leak very little information (e.g., one bit of
+the length of the key).  It is worthwhile to have a tool to tell how much information is actually leaks. 
 For example, many secret dependent memory access patterns in OpenSSL have been known 
 and studied for years. But the authors still doesn’t fix them all because they think 
 they aren’t not severe. The tool based on static analysis with abstract interpretation, 
 can give leakage leakage upper bound, which is useful to justify the implementation is 
-secure enough. But they can’t indicate the leakage site is severe enough due to over 
+secure enough. But they can’t indicate the leakage site is severe enough due to the over 
 approximation. The dynamic method will take a concrete input and run the actual program. 
 Those tools are typically very precise in term of true leakage. But none of those tools 
 can actually report how many bits are actually leaked. For example, DATA reports more 
@@ -30,31 +30,54 @@ than 2000 potential leakage sites for the RSA implementation of OpenSSL. But mos
 them were dismissed by the author after some manual inspections.
 
 Second, many open source libraries may have multiple information leakage sites. 
-A side-channel attacker usually exploits multiple leakage sites at one time. The attacker
- may retrieve some information from one site and some other information from another site.
-  It is hard to model how much information is actually leaked in totoel. Adding those leakage 
-  simply can get only get an upper bound estimate of total information leakage if those 
-  leakages aren’t independent. No existing tools can practically estimate the total information 
-  leakage from multiple leakage sites in open source libraries.
+A side-channel attacker can exploit multiple leakage sites at one time. The attacker
+may retrieve some information from one site and some other information from another site.
+It is hard to model how much information is actually leaked in total. Adding those leakages 
+simply can get only an upper bound estimate of the total information leakage if those 
+leakages aren’t independent. No existing tools can practically estimate the total information 
+leakage from multiple leakage sites in open source libraries.
 
 In the paper, we presented a tool that can automatically identify sensitive information 
 leakage sites in real-world applications. Compared to existing tools, our tool can provide
 a list of information leakage sites as well as how many bits they can leak if the attacker
 can observe one site, two sites or multiple sites. We defined the amount of leaked information 
-how much uncertainty about the sensitive information the attacker could reduce after observing 
-the side-channel. It is interesting to mention that the definition here is different than the 
+as how much uncertainty about the sensitive information the attacker could reduce after launching 
+the side-channel attack. It is interesting to mention that the definition here is different than the 
 definition in several static analysis tools. We will explain the reason in the following 
 sections. After that, we run the symbolic execution on the execution trace. We model each 
-side-channel leakage as several constraints. The only symbols in those constraints are 
-sensitive input. Those constraints can unique model the side-channels. In other words, 
-if the application has an different sensitive input, the code will still leak the same 
-information about the input.  Those information leakage sites may spread the whole program 
+side-channel leakage as one logic formula. The only symbols in those constraints are 
+sensitive input. Those constraints can unique model the side-channel vulnerability. In other words, 
+if the application has a different sensitive input but still satisfy the formula, the code will still 
+leak the same information about the input.  Those information leakage sites may spread in the whole program 
 and their leakages aren’t dependent. Simply adding them up can only give the upper bound 
 estimate. In order to accurately calculate the total information leakage, we must know the 
 dependent relationships among those multiple leakages sites. Therefore, we introduce a 
-monte carlo sampling method to estimate the total information leakage from the constraints 
+monte carlo sampling method to estimate the total information leakage from the formula
 generated by previous symbolic execution. 
 
-We implemented the proposed method as a tool and applied it on a series of open source libraries. 
-First, we found that most leakages reported in the previous research actually leaked very little
- information. Second, we also discovered several sensitive vulnerabilities in the media libraries. 
+We implement the proposed method as a tool named TANA that can precisely discover and quantify the information
+leakage vulnerabilities. We apply TANA on several crypo and non-crypto libraries including OpenSSL,
+MbedTLS and libjpeg. The experiments confirm that TANA can precisely identify the pre-known vulnerabilities,
+report how much information is leaked and which byte in the original sensitive buffer is leaked. 
+The result shows that while those crypto libraries have a number of side-channels, most of them actually
+leak very little inforamtion. Also, we also use the tool to analysis the two reported side-channel attack 
+in the libjpeg library. Finally, we also present new vulnerabilities. In summary, we make the following
+contributions:
+
+\begin{itemize}
+	\item We propose a novel trace-based analysis method that can quantify fined-grained side-channel
+        information leakages. We model each information leakage vulnerability as one formula. Therefore,
+        mutiple side-channel vulnerabilities can be seen as the conjunction of those logic formula, which
+        precisely models the program semantics.
+	\item We transfer the information quantification problem into a probabilty distribution problem and use guided Monte
+        Carlo sampling method to estimate the information leakage. Some initial results indicate the 
+        the sampling method suffers from the curse of dimensionality. We therefore design a guided
+        sampling method and porvide the corresponding error esitimate.
+	\item We implement the proposed method into a practical tool and apply it to a detect several software. TANA 
+        successfully identify the address-based side-channel vulnerabilities and provide the corresponding
+        information leakge. The information lekage result provide the detailed information that help developers
+        to fix the vulnerability.
+\end{itemize}
+
+
+
