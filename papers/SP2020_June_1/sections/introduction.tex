@@ -67,10 +67,10 @@ contributions:
 \begin{itemize}
 	\item We propose a novel trace-based analysis method that can quantify fined-grained side-channel
         information leakages. We model each information leakage vulnerability as one formula. Therefore,
-        mutiple side-channel vulnerabilities can be seen as the conjunction of those logic formula, which
+        mutiple side-channel vulnerabilities can be seen as the disjunctive normal form (DNF) formula, which
         precisely models the program semantics.
-	\item We transfer the information quantification problem into a probabilty distribution problem and use guided Monte
-        Carlo sampling method to estimate the information leakage. Some initial results indicate the 
+        \item We transfer the information quantification problem into a probabilty distribution problem and 
+        use guided Monte Carlo sampling method to estimate the information leakage. Some initial results indicate the 
         the sampling method suffers from the curse of dimensionality. We therefore design a guided
         sampling method and porvide the corresponding error esitimate.
 	\item We implement the proposed method into a practical tool and apply it to a detect several software. TANA 
