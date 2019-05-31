@@ -67,3 +67,16 @@ Split the independent constraints into multiple groups
 Each constraints may have multiple symbols as the input. If each two formulas have complete different inputs, then those leakages modeled by the constraints are independent. 
 
 Multiple Stage Monte Carlo Sampling
+After the above steps, each side channel leakage vulnerability is transfered into a formula. The only symbol in the
+orginal formula is the key. An adversary who wants to infer the sensitive data based on side-channel attacks can’t observe the sensitive information directly. 
+
+The adversary, however, can observe the memory access pattern of the software. If the attacker can observe
+one leakage site, the attack is modeled as one formula. If he observe mutiple information leakage, the attack
+is modeled as DNF formula. Calculating the total information leakage can be reduced to the problem of approximating
+the number of solutions. One intution way is to use the Monte Carlo method. However, the number of satisfying 
+keys could be exponentially small. Image an attacker who can recover the one unique key after the attacks,
+in such case, the DNF formula F = (f(k)) will only have one solution.
+
+In order to estimate how much information is actually leaked from each input key.
+we have to calculate the ratio of input that satisfies those constraints. One intuition is to
+use the Monte Carlo method to approximate the number of solutions. 
