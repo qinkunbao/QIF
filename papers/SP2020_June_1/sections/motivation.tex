@@ -1,24 +1,48 @@
 \section{Motivation}
 \subsection{Information Leakage Quantification}
-Existing side-channel quantification works either define the amount of leaked information corresponds to the number of possible side-channel observations or the min-entropy. However, the definition has some limitations. Consider the following example,
 
+\subsubsection{Information Leakage Definition}
+Existing static-based side-channel quantification works either define the amount of leaked information 
+corresponds to the number of possible side-channel observations or the min-entropy. 
+However, the definition has some limitations. Consider the following examples,
 \begin{lstlisting}
-unsigned char key = input(); //sensitive information, 4 bits information 
-Unsigned char temp = key/2;
+unsigned char key = input(); 
+//4 bits sensitive information 
+unsigned char temp = key/2;
 if (temp == 0xb)
 //branch 0
 else
 //branch 1
 \end{lstlisting}
 
-Suppose an attacker can observe which branch the code actually run (e.g., flush reload, controlled attack), the attacker can infer the value of key. For example, if the attacker observe the code executes the branch 0, then he will know the key equals 11*2 = 22. Because the attacker knows the key equals 22. In this case, there is no uncertainty about the key. As the key has 4 bits information in total, we think the amount of information leakage here is 4 bits. On the other hand, if the code executes the branch 2, the only thing that an attacker can know is that the key doesn’t equal 22, which leaks very little information in this case.  However, if we use the number of possible observations to quantify the amount of leakage, the code will have two different observations (branch 1 and branch 2). Therefore, the calculated information leakage here will be 1 bit. 
+If we use the number of possible observations to quantify the amount of leakage, 
+the code will have two different observations (branch 1 and branch 2). Those observations
+can be represent by one bit number.
+Therefore, the toal information leakage here will be 1 bit. 
 
-We use the mutual information (MI) to quantify the information leakages. For a program P with sensitive information K as the input, the attacker may have some observations O during the execution. The information leakage is defined as the mutual information I(O; K) between O and K.
+The above estimation, however, are less useful in practice.
+Suppose an attacker can observe which branch the program executes (e.g., flush reload, controlled attack), 
+the above code may leak different amount of information depending on the value of input.
+For example, if the attacker knows the code executes the branch 0, 
+then he will know the key equals 11*2 = 22. 
+As the key has 4 bits information in total, we think the amount of information leakage here is 4 bits. 
+On the other hand, if the code executes the branch 2, 
+the only thing that an attacker can know is that the key doesn’t equal 22, 
+which leaks very little information in this case.  
+We want to have a way that can very precisely estimate how much information
+are leaked for each execution. Apparently,the existing method fails to achieve
+our requirement.
+
+
+We use the mutual information (MI) to quantify the information leakages. 
+For a program P with sensitive information K as the input, the attacker may have some observations O during the execution. 
+The information leakage is defined as the mutual information I(O; K) between O and K.
 
 I(O; K) = H(O) - H(O|K)
 
 I(O; K) represent how much uncertainty about K can be reduced if the attacker has the observation O.
-For a deterministic program, the program will have the same memory access behavior as long as the input is fixed. As the observation of the attacker correlate to the memory access behavior, 
+For a deterministic program, the program will have the same memory access behavior as long as the input is fixed. 
+As the observation of the attacker correlate to the memory access behavior, 
 we can have the following formula.
 
 O = f(K)
