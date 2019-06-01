@@ -1,13 +1,14 @@
 \section{Motivation}
 \subsection{Techinical Chanllenges}
-In this section, we articulate several chanllenges and existing problem
-in quantifying the side-channel leakages. 
+In this section, we articulate several chanllenges and existing problems
+in quantifying the side-channel vulnerability leakages. We describe the
+chanllenges and briefy describe the corresponding solutions.
 
 \subsubsection{Information Leakage Definition}
 Existing static-based side-channel quantification works either define the amount of leaked information 
 corresponds to the number of possible side-channel observations or the min-entropy. 
 However, the definition has some limitations. Consider the following examples,
-\begin{lstlisting}
+\begin{lstlisting}[language=C]
 unsigned char key = input(); 
 //4 bits sensitive information 
 unsigned char temp = key/2;
@@ -20,12 +21,9 @@ else
 If we use the number of possible observations to quantify the amount of leakage, 
 the code will have two different observations (branch 1 and branch 2). Those observations
 can be represent by one bit number. Therefore, the toal information leakage here will be 1 bit. 
-The above estimation, however, are less useful in practice.
-
-Sollution: We come to the original Shannon entropy definition and use the probability to
-define the information leakage.
-
-
+The above estimation, however, are less useful in practice.We want to have a way that can 
+very precisely estimate how much information are leaked for each execution. 
+Apparently,the existing method fails to achieve our requirement.
 Suppose an attacker can observe which branch the program executes (e.g., flush reload, controlled attack), 
 the above code may leak different amount of information depending on the value of input.
 For example, if the attacker knows the code executes the branch 0, 
@@ -34,9 +32,10 @@ As the key has 4 bits information in total, we think the amount of information l
 On the other hand, if the code executes the branch 2, 
 the only thing that an attacker can know is that the key doesn’t equal 22, 
 which leaks very little information in this case.  
-We want to have a way that can very precisely estimate how much information
-are leaked for each execution. Apparently,the existing method fails to achieve
-our requirement.
+
+Solution: We model each leakage as one unique formula. 
+We come to the original information content definition and use the probability to
+mark the information leakage.   
 
 \subsection{Multiple Leakage Sites}
 Real-world software usually can have multiple side-channel vulnerabilities. Those vulnerabilities 
@@ -46,11 +45,27 @@ demonstrate an attack against a popular spell checking tool, Hunspell. By observ
 of secret-dependent memory accesses sites in two functions $HashMgr::addword$ and $HashMgr::lookup$, 
 the author can recover the word that Hunspell checks.
 
-For the Hunspell example, the attacker mnually study the source code of Hunspell, figure out
-the relation of those vulnerabilities and lauch the attack. If we want to precisely quantify the
-total information leakage, it is worthwhile to know the relation of those leakage sites. 
+For the Hunspell, the attacker manually study the source code of Hunspell, figure out
+the relation of those vulnerabilities and launch the attack. In order to precisely quantify the
+total information leakage, we need to know the relation of those leakage sites. 
 
-For two side-channel vulnerabilities A and B.
+Suppose one program have two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_A$ bits
+during the exectution. The total information leakage is noted as $L_{Total}$. The relation between
+A and B has the following two cases.
+
+\subsubsection{Independent Leakages}
+If A and B are independent leakages, the total information leakage will be:
+\begin{equation}
+\label{independent leakage}
+    L_{total} = L_A + L_B
+\end{equation} 
+
+\subsubsection{Dependent Leakages}
+If A and B are dependent leakages, the total information leakage will be:
+\begin{equation}
+\label{independent leakage}
+    \max{\{L_A, L_B\}}  <= L_{total} < L_A + L_B
+\end{equation}
 
 \subsection{Scalability}
 
@@ -114,7 +129,8 @@ Information Leakage = -log(255/256) bits
 
 T[64]; // Lookup tables with 64 entries
 index = key % 63;
-temp = T[index] // Secret-dependent memory access       
+temp = T[index]; 
+// Secret-dependent memory access       
 
 \end{lstlisting}
 
