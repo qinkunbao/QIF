@@ -74,33 +74,37 @@ If A and B are dependent leakages, the total information leakage will be:
 We use the mutual information (MI) to quantify the information leakages. 
 For a program P with sensitive information K as the input, the attacker may have some observations O during the execution. 
 The information leakage is defined as the mutual information I(O; K) between O and K.
-
+\begin{equation}
 I(O; K) = H(O) - H(O|K)
+\end{equation}
 
 I(O; K) represent how much uncertainty about K can be reduced if the attacker has the observation O.
 For a deterministic program, the program will have the same memory access behavior as long as the input is fixed. 
 As the observation of the attacker correlate to the memory access behavior, 
 we can have the following formula.
-
+\begin{equation}
 O = f(K)
+\end{equation}
 
 The function f is determined by the program P. For our project, we can calculate the function f via symbolic execution.
-
+\begin{equation}
 I(O; K) = H(O) - H(f(K)|K) = H(O) = H(f(K))
+\end{equation}
 
 So the mutual information between O and S equals to the self information of O. 
-
+\begin{equation}
 H(O) = Σp(Oi)log(p(Oi))
+\end{equation}
 
 For a determinist program, we can calculate the distribution of O as long as we know the distribution of input K. So we can calculate how much information is leaked.
 
 For examples, given a program P, we have the sensitive input K. The K should be a value in a memory cell or a sequential buffer (e.g., an array). We use ki to denote the sensitive information, where i is the index of the byte in the original buffer.  We can have the following equations. The t1, t2, t3, is the temporary values during the execution.
-
-t1 = f1(k1, k2, k3 ... kn)
-t2 = f2(k1, k2, k3 ... kn)
-t3 = f3(k1, k2, k3 ... kn)
-...
+\begin{equation}
+t_1 = f1(k1, k2, k3 ... kn)
+t_2 = f2(k1, k2, k3 ... kn)
+t_3 = f3(k1, k2, k3 ... kn)
 tm = fm(k1, k2, k3 ... kn)
+\end{equation}
 
 The attacker can retrieve the sensitive information by observing the different patterns in control-flows and data access when the program process different sensitive information. We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
 
