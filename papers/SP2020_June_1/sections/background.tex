@@ -1,7 +1,8 @@
 \section{Background}
-In this section, we first present a basic introduction about the several kinds of memory-based side-channel attack.
-Those attacks are exactly what we attempt to study in the paper. Then we present existing work on side-channel 
-detection and quantification.  
+In this section, we first present a basic introduction about the 
+several kinds of memory-based side-channel attack. Those attacks 
+are exactly what we attempt to study in the paper. Then we present
+existing work on side-channel detection and quantification.  
 \subsection{Address-based Side-Channels}
 Address-based side-channels are information channels that can leak sensitive information unintended
 through the different behaviors when the program accesses different memory addrsss. Fundamentally,
@@ -15,9 +16,26 @@ side-channel attacks.
 \subsubsection{Cache-based Attack}
 In general, the cached-based side-channel attacks seek information 
 rely on the time differences between the cache miss
-and cache hit. Ge et al \cite{DBLP:journals/jce/GeYCH18} classified
-cached-based attacks into three catogories:PRIME+PROBE, FLUSH+RELOAD,
-and EVICT+TIME.
+and cache hit. Here we introduce two types of cache attacks:
+PRIME+PROBE, FLUSH+RELOAD.
+
+\textbf{PRIME+PROBE} targets a single cache set. It has two phases. During the
+"prime" phase, the attacker fills the cache set will his own data.
+In the second "probe" phase, the attacker accesses the cache set
+again. If the victim accesses the cache set and evicts part of 
+the data, the attacker will experience a slow mesurement. If not, 
+the mesurement will be fast.
+
+\textbf{FLUSH+RELOAD}, on the other hand, targets a single cache line. 
+It requires the attacker and victim share the same memory.
+It also have two phases. During the "flush" phase, the attacker 
+will flush the "monitered memory" from the cache. Then the attacker
+wait for the victim to access the memory. In the third phase, the 
+attacker reload the "monitered memory". If the time is short, which
+indicates there is a cache hit and the victim reolads the memory before. 
+On the other hand, the time will be longer since the CPU need to reolad
+the memory into the cache line.
+
 
 
 \subsubsection{Memory-based Attack}
