@@ -76,3 +76,10 @@ byte (8 bits) size, so the value in the variable can range from 0 - 255. We assu
 the \textit{a} has the uniform distribution. If at one time we observe the \textit{a}
 equals to 1, the probability will be 1/256. So the information we get is 
 $-log(1/256) = 8 bits$, which is exactly the size of the char variable.
+
+One method to quanify the prgoram is based on the channel capacity theorem. It shows
+that the max leakage of the program equals to the log of the number of possible
+distinct observations (NumOfObs) that an attacker can make.
+\begin{equation}
+    Leakageed Information <= - log(NumOfObs)
+\end{equation}
