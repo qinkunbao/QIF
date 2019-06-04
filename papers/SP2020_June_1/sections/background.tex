@@ -26,7 +26,7 @@ again. If the victim accesses the cache set and evicts part of
 the data, the attacker will experience a slow mesurement. If not, 
 the mesurement will be fast.
 
-\textbf{FLUSH+RELOAD}, on the other hand, targets a single cache line. 
+\textbf{FLUSH+RELOAD}targets a single cache line. 
 It requires the attacker and victim share the same memory.
 It also have two phases. During the "flush" phase, the attacker 
 will flush the "monitered memory" from the cache. Then the attacker
@@ -34,11 +34,35 @@ wait for the victim to access the memory. In the third phase, the
 attacker reload the "monitered memory". If the time is short, which
 indicates there is a cache hit and the victim reolads the memory before. 
 On the other hand, the time will be longer since the CPU need to reolad
-the memory into the cache line.
-
-
+the memory into the cache line. 
 
 \subsubsection{Memory-based Attack}
+Memory-based side-channel attack\cite{} exploits the different behaviors when the
+program accesses different page tables. The controlled-channel attack\cite{7163052},
+works in the kernel space can infer the sensitive data in the shielding systems by
+observing the page fault sequences by restricting some code and
+data pages. 
+
+After examing the memory-based side-channels attack. We find the fundamentally
+reason of those attacks are due to secret-dependent memory access and control
+flow transfers.
+\lstinputlisting[language=c, 
+                 numbers=right,
+                 caption={Sample code shows secret-dependent memory access and 
+                          secret-dependent control-flow transfer.},
+                 captionpos=b,
+                 label={code:background},
+                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
+                 {sample_code/background.c}
+
+For exampls, the above code~\ref{code:background} show an simpple encrypt function that
+has the two kinds of side-channels. At the line 11, dependending on the value of key,
+the code will access the different entry in the predefined table /textbf{Table}. At the
+line 13, the code will do a series of computation and determine if the code in the if
+branch is executed or not. Such vulnerabilities could leak to the memory-based 
+side-channles. We indentify and quanify the leakage of the two kinds of vulnerabilities 
+in the paper.
 
 \subsection{Information Leakage Quantification}
+
 
