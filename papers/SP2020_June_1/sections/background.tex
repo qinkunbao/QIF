@@ -77,9 +77,18 @@ the \textit{a} has the uniform distribution. If at one time we observe the \text
 equals to 1, the probability will be 1/256. So the information we get is 
 $-log(1/256) = 8 bits$, which is exactly the size of the char variable.
 
-One method to quanify the prgoram is based on the channel capacity theorem. It shows
-that the max leakage of the program equals to the log of the number of possible
-distinct observations (NumOfObs) that an attacker can make.
+Basically, there are two common methods that quantify the information leakage, 
+the channel capacity theorem and the entropy-based.
+
+A formal information theory shows on side-channels shows that the max leakage of 
+the program equals to the log of the number of possible distinct observations (NumOfObs) 
+that an attacker can make.
 \begin{equation}
     Leakageed Information <= - log(NumOfObs)
+\end{equation}
+
+The second one is based on the entropy. Suppose an event (E) with the dsicrete probability
+distribution function $p(x)$, the information leakage is defined as:
+\begin{equation}
+    
 \end{equation}
