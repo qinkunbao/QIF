@@ -1,8 +1,11 @@
 \section{Background}
 In this section, we first present a basic introduction about the 
 several kinds of memory-based side-channel attack. Those attacks 
-are exactly what we attempt to study in the paper. Then we present
-existing work on side-channel detection and quantification.  
+are exactly what we attempt to study in the paper. After that we 
+will present existing work on side-channel detection and quantification.
+We will also analyze strengths and limitations of those quantification 
+methods.
+
 \subsection{Address-based Side-Channels}
 Address-based side-channels are information channels that can leak sensitive information unintended
 through the different behaviors when the program accesses different memory addrsss. Fundamentally,
@@ -26,7 +29,7 @@ again. If the victim accesses the cache set and evicts part of
 the data, the attacker will experience a slow mesurement. If not, 
 the mesurement will be fast.
 
-\textbf{FLUSH+RELOAD}targets a single cache line. 
+\textbf{FLUSH+RELOAD} targets a single cache line. 
 It requires the attacker and victim share the same memory.
 It also have two phases. During the "flush" phase, the attacker 
 will flush the "monitered memory" from the cache. Then the attacker
@@ -55,12 +58,12 @@ flow transfers.
                  basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
                  {sample_code/background.c}
 
-For exampls, the above code~\ref{code:background} show an simpple encrypt function that
+For exampls, the above code~\ref{code:background} show an simple encryption function that
 has the two kinds of side-channels. At the line 11, dependending on the value of key,
 the code will access the different entry in the predefined table /textbf{Table}. At the
 line 13, the code will do a series of computation and determine if the code in the if
 branch is executed or not. Such vulnerabilities could leak to the memory-based 
-side-channles. We indentify and quanify the leakage of the two kinds of vulnerabilities 
+side-channles. We identify and quanify the leakage of the two kinds of vulnerabilities 
 in the paper.
 
 \subsection{Information Leakage Quantification}
@@ -90,5 +93,5 @@ that an attacker can make.
 The second one is based on the entropy. Suppose an event (E) with the dsicrete probability
 distribution function $p(x)$, the information leakage is defined as:
 \begin{equation}
-    
+    a
 \end{equation}
