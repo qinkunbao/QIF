@@ -1,27 +1,22 @@
 \section{Motivation}
 \subsection{Techinical Chanllenges}
 In this section, we articulate several chanllenges and existing problems
-in quantifying the side-channel vulnerability leakages. We describe the
-chanllenges and briefy describe the corresponding solutions.
+in quantifying the side-channel vulnerability leakages. We briefly describe the
+chanllenges and then present the corresponding solutions.
 
 \subsubsection{Information Leakage Definition}
-Existing static-based side-channel quantification works either define the amount of leaked information 
-corresponds to the number of possible side-channel observations or the min-entropy. 
-However, the definition has some limitations. Consider the following examples,
-\begin{lstlisting}[language=C]
-unsigned char key = input(); 
-//4 bits sensitive information 
-unsigned char temp = key/2;
-if (temp == 0xb)
-//branch 0
-else
-//branch 1
-\end{lstlisting}
+Existing static-based side-channel quantification works defined information leakage
+as the mutual information or the max leakage. Those definitions provide strong security guarantee
+when trying to show a program is secure if the their methods say the program leaks zero bits of
+information.
+However, the above definition is less useful when if the program has some leakages. 
+Considering the example in section ~\ref{code::entropy}, if an attacker observes the
+code runs branch A, the attacker can know the key actually equals to 128. Suppose it is 
+a dummy password checker, in which case the attacker can fully retrieve the password.
 
-If we use the number of possible observations to quantify the amount of leakage, 
-the code will have two different observations (branch 1 and branch 2). Those observations
-can be represent by one bit number. Therefore, the toal information leakage here will be 1 bit. 
-The above estimation, however, are less useful in practice.We want to have a way that can 
+The problem with the existing method is that they are static based. 
+
+We want to have a way that can 
 very precisely estimate how much information are leaked for each execution. 
 Apparently,the existing method fails to achieve our requirement.
 Suppose an attacker can observe which branch the program executes (e.g., flush reload, controlled attack), 
@@ -63,7 +58,7 @@ If A and B are independent leakages, the total information leakage will be:
 \subsubsection{Dependent Leakages}
 If A and B are dependent leakages, the total information leakage will be:
 \begin{equation}
-\label{independent leakage}
+\label{dependent leakage}
     \max{\{L_A, L_B\}}  <= L_{total} < L_A + L_B
 \end{equation}
 
