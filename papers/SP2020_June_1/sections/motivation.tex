@@ -13,8 +13,13 @@ However, the above definition is less useful when if the program has some leakag
 Considering the example in section ~\ref{code::entropy}, if an attacker observes the
 code runs branch A, the attacker can know the key actually equals to 128. Suppose it is 
 a dummy password checker, in which case the attacker can fully retrieve the password.
+However, both approaches fail to precisely tell how much information is actually leaked
+during the exectution.
 
-The problem with the existing method is that they are static based. 
+The problem with the existing method is that they are static-based and the sensitive
+input values are neglected. They assume the attacker runs the program multiple times 
+with many different sensitive information as the input. Both the mutual information 
+and the max-leakage give an "average`` estimate of the information leakage. 
 
 We want to have a way that can 
 very precisely estimate how much information are leaked for each execution. 
