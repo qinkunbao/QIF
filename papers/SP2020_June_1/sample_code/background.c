@@ -1,4 +1,4 @@
-unsigned char* sample_encrypt_setup
+void sample_encrypt_setup
                (encrypt_ctx *ctx,
                const unsigned char *key)
 {

@@ -74,3 +74,44 @@ doi={10.1109/CSF.2016.34},
 ISSN={2374-8303}, 
 month={June},
 }
+
+@InProceedings{10.1007/978-3-642-00596-1_21,
+author="Smith, Geoffrey",
+editor="de Alfaro, Luca",
+title="On the Foundations of Quantitative Information Flow",
+booktitle="Foundations of Software Science and Computational Structures",
+year="2009",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="288--302",
+abstract="There is growing interest in quantitative theories of information flow in a variety of contexts, such as secure information flow, anonymity protocols, and side-channel analysis. Such theories offer an attractive way to relax the standard noninterference properties, letting us tolerate ``small'' leaks that are necessary in practice. The emerging consensus is that quantitative information flow should be founded on the concepts of Shannon entropy and mutual information. But a useful theory of quantitative information flow must provide appropriate security guarantees: if the theory says that an attack leaks x bits of secret information, then x should be useful in calculating bounds on the resulting threat. In this paper, we focus on the threat that an attack will allow the secret to be guessed correctly in one try. With respect to this threat model, we argue that the consensus definitions actually fail to give good security guarantees---the problem is that a random variable can have arbitrarily large Shannon entropy even if it is highly vulnerable to being guessed. We then explore an alternative foundation based on a concept of vulnerability (closely related to Bayes risk) and which measures uncertainty using R{\'e}nyi's min-entropy, rather than Shannon entropy.",
+isbn="978-3-642-00596-1"
+}
+
+@InProceedings{10.1007/978-3-642-31424-7_40,
+author="Kopf, Boris
+and Mauborgne, Laurent
+and Ochoa, Martn",
+editor="Madhusudan, P.
+and Seshia, Sanjit A.",
+title="Automatic Quantification of Cache Side-Channels",
+booktitle="Computer Aided Verification",
+year="2012",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="564--580",
+abstract="The latency gap between caches and main memory has been successfully exploited for recovering sensitive input to programs, such as cryptographic keys from implementation of AES and RSA. So far, there are no practical general-purpose countermeasures against this threat. In this paper we propose a novel method for automatically deriving upper bounds on the amount of information about the input that an adversary can extract from a program by observing the CPU's cache behavior. At the heart of our approach is a novel technique for efficient counting of concretizations of abstract cache states that enables us to connect state-of-the-art techniques for static cache analysis and quantitative information-flow. We implement our counting procedure on top of the AbsInt TimingExplorer, one of the most advanced engines for static cache analysis. We use our tool to perform a case study where we derive upper bounds on the cache leakage of a 128-bit AES executable on an ARM processor. We also analyze this implementation with a commonly suggested (but until now heuristic) countermeasure applied, obtaining a formal account of the corresponding increase in security.",
+isbn="978-3-642-31424-7"
+}
+
+@inproceedings {182946,
+author = {Goran Doychev and Dominik Feld and Boris Kopf and Laurent Mauborgne and Jan Reineke},
+title = {CacheAudit: A Tool for the Static Analysis of Cache Side Channels},
+booktitle = {Presented as part of the 22nd {USENIX} Security Symposium ({USENIX} Security 13)},
+year = {2013},
+isbn = {978-1-931971-03-4},
+address = {Washington, D.C.},
+pages = {431--446},
+url = {https://www.usenix.org/conference/usenixsecurity13/technical-sessions/paper/doychev},
+publisher = {{USENIX}},
+}

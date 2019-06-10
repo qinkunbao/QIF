@@ -1,6 +1,6 @@
 \section{Background}
 In this section, we first present a basic introduction about the 
-several kinds of memory-based side-channel attack. Those attacks 
+memory-based side-channel attack. Those attacks 
 are exactly what we attempt to study in the paper. After that we 
 will present existing work on side-channel detection and quantification.
 We will also analyze strengths and limitations of those quantification 
@@ -42,7 +42,7 @@ the memory into the cache line.
 \subsubsection{Memory-based Attack}
 Memory-based side-channel attack\cite{} exploits the different behaviors when the
 program accesses different page tables. The controlled-channel attack\cite{7163052},
-works in the kernel space can infer the sensitive data in the shielding systems by
+which works in the kernel space, can infer the sensitive data in the shielding systems by
 observing the page fault sequences by restricting some code and
 data pages. 
 
@@ -63,7 +63,7 @@ has the two kinds of side-channels. At the line 11, dependending on the value of
 the code will access the different entry in the predefined table /textbf{Table}. At the
 line 13, the code will do a series of computation and determine if the code in the if
 branch is executed or not. Such vulnerabilities could leak to the memory-based 
-side-channles. We identify and quanify the leakage of the two kinds of vulnerabilities 
+side-channles. We identify and quantify the leakage of the two kinds of vulnerabilities 
 in the paper.
 
 \subsection{Information Leakage Quantification}
@@ -72,27 +72,85 @@ then we receive
 \begin{equation}
     I = - log(P(E))
 \end{equation}
-bits of information.
+bits of information by knowing the event E.
 
-The above definition is obvious. Suppose a char variable \textit{a} in C program has 
-byte (8 bits) size, so the value in the variable can range from 0 - 255. We assume
+The above definition is obvious. Suppose a char variable \textit{a} in C program has the size
+of one byte (8 bits), so the value in the variable can range from 0 - 255. We assume
 the \textit{a} has the uniform distribution. If at one time we observe the \textit{a}
 equals to 1, the probability will be 1/256. So the information we get is 
-$-log(1/256) = 8 bits$, which is exactly the size of the char variable.
+$-log(1/256) = 8 bits$, which is exactly the size of the char variable in C program.
 
-Basically, there are two common methods that quantify the information leakage, 
-the channel capacity theorem and the entropy-based.
-
-A formal information theory shows on side-channels shows that the max leakage of 
-the program equals to the log of the number of possible distinct observations (NumOfObs) 
-that an attacker can make.
+Existing works on information leakage quantification are based on mutual information or 
+min-entropy \cite{10.1007/978-3-642-00596-1_21}.
+In their frameworks, the input sensitive
+information $K$ is viewed as random variables. Let $k_i$ be one of the possible
+value of $K$. The Shannon entropy $H(K)$ is defined by
 \begin{equation}
-    Leakageed Information <= - log(NumOfObs)
+    H(K) = - \sum_{k_i {\in} K}P(k_i)log(P(k_i))
 \end{equation}
 
-The second one is based on the entropy. Suppose an event (E) which can take different 
-values with the discrete probability distribution function $p(e)$, the information 
-leakage is defined as:
+The Shannon entropy can be used to quantify the initial uncertainty about the sensitive
+information. Suppose a program (P) with the $K$ as
+the sensitive input, an adversary has some observations (O) through the side-channels.
+In this work, the observations are referred to the secret-dependent control-flows and
+secret-dependent data-accesses patterns. The conditional entropy $H(K|O)$ is
 \begin{equation}
-    Leakageed Information = -\sum_{eE}p(e)log(e)
+    H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)log(P(k_i|o_j))}}
 \end{equation}
+Intuitively, the conditional information marks the uncertainty about $K$ after the adversary
+has gained some observations (O). 
+
+Many previous works use the mutual information $I(K; O)$ to quantify the leakage which is defined 
+as follows:
+\begin{equation}
+    Leakage = I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)log(\frac{P(k_i, o_j)}{P(k_i)P(o_j)})}}
+\end{equation}
+where $P(k_i, o_i)$ is the joint discrete distribution of $K$ and $O$.
+Alternatively, the mutual information can also be computed with the following equation:
+\begin{equation}
+    Leakage = I(K;O) = H(K) - H(K|O) = H(O) - H(O|K)
+\end{equation} 
+For a deterministic program, once the input $K$ is fixed, the program will have the same
+control-flow transfers and data-access patterns. As a result, $P(k_i, o_j)$ will always
+equals to 1. So the conditional entropty $H(O|K)$ will equal to zero. Now the leakage defined
+by the mutual information can be simplified into:
+\begin{equation}
+    Leakage = I(K;O) = H(O)
+\end{equation}
+In other words, once we know the distribution of those memory-access patterns. We can 
+calculate how much information is actually leaked.
+
+Another common method is based on maximal leakage ~\cite{10.1007/978-3-642-00596-1_21,10.1007/978-3-642-31424-7_40,182946}.
+
+\begin{equation}
+    Leakage = log(C(O))
+\end{equation}
+$C(O)$ represents the number of different observations that an attacker can have.
+
+Now we provide a concrete example to show how the two types of quantification definition works.
+\lstinputlisting[language=c, 
+                 numbers=right,
+                 caption={A simple program},
+                 captionpos=b,
+                 label={code::entropy},
+                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
+                 {sample_code/entropy.c}
+
+\textbf{Maximal leakage} 
+Dependenting on the value of key, the code can run four different branches which corrosponding to 
+four different observations. Therefore, by the maximal leakage definition, the leakage equals to 
+$log4 = 2$ bits.
+
+\textbf{Mutual Information} If the key satisfies the uniform distribution, the probability of the code runs each branch
+can be computed with the following result: 
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Branch & A     & B      & C      & D       \\ \hline
+P      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
+\end{tabular}
+\caption{The distribution of observations}
+\end{table}
+Therefore, the leakage equals to 
+$\frac{1}{256}log\frac{1}{256} + \frac{1}{4}log\frac{1}{4}*2 + \frac{127}{256}log\frac{127}{256} = 1.7$ bits.
