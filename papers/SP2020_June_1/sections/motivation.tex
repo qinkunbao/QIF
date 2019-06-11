@@ -84,7 +84,7 @@ the relation of those vulnerabilities and launch the attack. In order to precise
 total information leakage, we need to know the relation of those leakage sites. 
 
 Suppose one program has two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_B$ bits
-during the exectution. The total information leakage is noted as $L_{Total}$. The relationship between
+during the execution. The total information leakage is noted as $L_{Total}$. The relation between
 A and B has the following two cases.
 
 \subsubsection{Independent Leakages}
@@ -101,8 +101,13 @@ If A and B are dependent leakages, the total information leakage will be:
     \max{\{L_A, L_B\}}  <= L_{total} < L_A + L_B
 \end{equation}
 
+For a real program, it is very hard to estimate the total information leakage.
+We run the symbolic execution on the top of the execution traces. We use symbols
+to represent each byte in the input buffer. Each temporary value is represent
+\subsection{Scalability and Performance}
 
-\subsection{Scalability}
+
+
 We use the mutual information (MI) to quantify the information leakages. 
 For a program P with sensitive information K as the input, the attacker may have some observations O during the execution. 
 The information leakage is defined as the mutual information I(O; K) between O and K.
