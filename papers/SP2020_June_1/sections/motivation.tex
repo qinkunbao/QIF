@@ -9,33 +9,45 @@ Existing static-based side-channel quantification works defined information leak
 as the mutual information or the max leakage. Those definitions provide strong security guarantee
 when trying to show a program is secure if the their methods say the program leaks zero bits of
 information.
+
 However, the above definition is less useful when if the program has some leakages. 
 Considering the example in section ~\ref{code::entropy}, if an attacker observes the
 code runs branch A, the attacker can know the key actually equals to 128. Suppose it is 
 a dummy password checker, in which case the attacker can fully retrieve the password.
-However, both approaches fail to precisely tell how much information is actually leaked
+Therefore, the total information leakage should be 8 bits, which equals to the size
+of unsigned char. 
+According to the mutual definition, however, the leakage will be 1.7 bits. The maximal information
+leakage is 2 bits. Both approaches fail to precisely tell how much information is actually leaked
 during the exectution.
 
 The problem with the existing method is that they are static-based and the sensitive
 input values are neglected. They assume the attacker runs the program multiple times 
 with many different sensitive information as the input. Both the mutual information 
-and the max-leakage give an "average`` estimate of the information leakage. 
+and the max-leakage give an ``average" estimate of the information leakage. 
+But it isn't the typical scenario for an adversary that launches the side-channel attack.
+When a side-channel attack happens, the adversary wants to retrieve the sensitive
+information. So it is very likely that the sensitive input is fixed (e.g. AES keys). 
+The adversary will run the attack over and over again and guess bit by bit. Like the 
+previous example, the existing static method doesn’t work well in the situations.
 
-We want to have a way that can 
-very precisely estimate how much information are leaked for each execution. 
-Apparently,the existing method fails to achieve our requirement.
-Suppose an attacker can observe which branch the program executes (e.g., flush reload, controlled attack), 
-the above code may leak different amount of information depending on the value of input.
-For example, if the attacker knows the code executes the branch 0, 
-then he will know the key equals 11*2 = 22. 
-As the key has 4 bits information in total, we think the amount of information leakage here is 4 bits. 
-On the other hand, if the code executes the branch 2, 
-the only thing that an attacker can know is that the key doesn’t equal 22, 
-which leaks very little information in this case.  
+In the project, we hope to give a very precise definition of information leakages. 
+Suppose an attacker run the target program mutiple times with one fixed input, we
+want to how much information he can infer by oberserving the memory access patterns.
+We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} where the information
+leaked equal:
 
-Solution: We model each leakage as one unique formula. 
-We come to the original information content definition and use the probability to
-mark the information leakage.   
+\textit{initial uncertainty - remaining uncertainty}
+
+If an adversary has zero knowledge about the input before the attack. The initial uncertainty
+equals to the size the input. As for the remaining uncertainty, we come to the original definition
+of the information content.
+\newtheorem{mydef}{Definition}
+
+\begin{mydef}
+    Given a program $P$ with the constant sensitive input $k$, an adversary has the observation
+    $o$. The leakage $L_{Pko}$ based on the oberserving is
+
+\end{mydef}
 
 \subsection{Multiple Leakage Sites}
 Real-world software usually can have multiple side-channel vulnerabilities. Those vulnerabilities 
@@ -49,7 +61,7 @@ For the Hunspell, the attacker manually study the source code of Hunspell, figur
 the relation of those vulnerabilities and launch the attack. In order to precisely quantify the
 total information leakage, we need to know the relation of those leakage sites. 
 
-Suppose one program have two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_A$ bits
+Suppose one program has two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_A$ bits
 during the exectution. The total information leakage is noted as $L_{Total}$. The relation between
 A and B has the following two cases.
 
@@ -96,7 +108,8 @@ So the mutual information between O and S equals to the self information of O.
 H(O) = Σp(Oi)log(p(Oi))
 \end{equation}
 
-For a determinist program, we can calculate the distribution of O as long as we know the distribution of input K. So we can calculate how much information is leaked.
+For a determinist program, we can calculate the distribution of O as long as we know the distribution of input K. 
+So we can calculate how much information is leaked.
 
 For examples, given a program P, we have the sensitive input K. The K should be a value in a memory cell or a sequential buffer (e.g., an array). We use ki to denote the sensitive information, where i is the index of the byte in the original buffer.  We can have the following equations. The t1, t2, t3, is the temporary values during the execution.
 \begin{equation}
