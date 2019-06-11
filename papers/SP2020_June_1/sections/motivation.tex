@@ -34,7 +34,7 @@ In the project, we hope to give a very precise definition of information leakage
 Suppose an attacker run the target program mutiple times with one fixed input, we
 want to how much information he can infer by oberserving the memory access patterns.
 We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} where the information
-leaked equal:
+leakage equals,
 
 \textit{initial uncertainty - remaining uncertainty}
 
@@ -44,16 +44,21 @@ of the information content.
 \newtheorem{mydef}{Definition}
 
 \begin{mydef}
-    Given a program $P$ with the constant sensitive input $k$, an adversary has the observation
-    $o$. The leakage $L_{Pko}$ based on the oberserving is
-
+Given a program $P$ with the input set $K$, 
+an adversary has the observation $o$ when the input $k{\in}K$. 
+We denote it as
+    $$P(k) = o$$
+The leakage $L_{Pko}$ based on the oberservation is
+    $$L_{Pko} = log_2{|K|} - log_2{|K^k|}$$
+    where
+    $$K^k = \{k^{'} | k^{'}{\in}K \ and \ P(k^{'}) = o \}$$
 \end{mydef}
 
 \subsection{Multiple Leakage Sites}
 Real-world software usually can have multiple side-channel vulnerabilities. Those vulnerabilities 
 may spread in the whole program. An adversary may exploit more than one side-channel vulnerabilities 
-to achieve the attack. For example, the controled-side channel attack \cite{7163052} \cite{191010}, the author 
-demonstrate an attack against a popular spell checking tool, Hunspell. By observing four sets 
+to achieve the attack. For example, the controlled-side channel attack~\cite{7163052, 191010}, the author 
+demonstrates an attack against a popular spell checking tool, Hunspell. By observing four sets 
 of secret-dependent memory accesses sites in two functions $HashMgr::addword$ and $HashMgr::lookup$, 
 the author can recover the word that Hunspell checks.
 
