@@ -1,4 +1,5 @@
 \section{Motivation}
+
 \subsection{Techinical Chanllenges}
 In this section, we articulate several chanllenges and existing problems
 in quantifying the side-channel vulnerability leakages. We briefly describe the
@@ -71,7 +72,7 @@ branches, the leaked information is shown in the following table.
 \end{table}
 
 \subsection{Multiple Leakage Sites}
-Real-world software usually can have multiple side-channel vulnerabilities. Those vulnerabilities 
+Real-world software can have various side-channel vulnerabilities. Those vulnerabilities 
 may spread in the whole program. An adversary may exploit more than one side-channel vulnerabilities 
 to gain more information. For example, the controlled-side channel attack~\cite{7163052, 191010}, the author 
 demonstrates an attack against a popular spell checking tool, Hunspell. By observing four sets 
@@ -99,6 +100,7 @@ If A and B are dependent leakages, the total information leakage will be:
 \label{dependent leakage}
     \max{\{L_A, L_B\}}  <= L_{total} < L_A + L_B
 \end{equation}
+
 
 \subsection{Scalability}
 We use the mutual information (MI) to quantify the information leakages. 
@@ -130,12 +132,12 @@ For a determinist program, we can calculate the distribution of O as long as we 
 So we can calculate how much information is leaked.
 
 For examples, given a program P, we have the sensitive input K. The K should be a value in a memory cell or a sequential buffer (e.g., an array). We use ki to denote the sensitive information, where i is the index of the byte in the original buffer.  We can have the following equations. The t1, t2, t3, is the temporary values during the execution.
-\begin{equation}
-t_1 = f1(k1, k2, ... kn)\\
-t_2 = f2(k1, k2, ... kn)\\
-t_3 = f3(k1, k2, ... kn)\\
-tm = fm(k1, k2, ... kn)
-\end{equation}
+
+$$t_1 = f1(k1, k2, ... kn)$$
+$$t_2 = f2(k1, k2, ... kn)$$
+$$t_3 = f3(k1, k2, ... kn)$$
+$$tm = fm(k1, k2, ... kn)$$
+
 
 The attacker can retrieve the sensitive information by observing the different patterns in control-flows and data access when the program process different sensitive information. We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
 
