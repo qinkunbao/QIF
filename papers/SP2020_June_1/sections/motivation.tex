@@ -75,7 +75,7 @@ branches, the leaked information is shown in the following table.
 \subsection{Multiple Leakage Sites}
 Real-world software can have various side-channel vulnerabilities. Those vulnerabilities 
 may spread in the whole program. An adversary may exploit more than one side-channel vulnerabilities 
-to gain more information. For example, the controlled-side channel attack~\cite{7163052, 191010}, the author 
+to gain more information~\cite{7163052, 191010}. For example, the controlled-side channel attack~\cite{7163052}, the author 
 demonstrates an attack against a popular spell checking tool, Hunspell. By observing four sets 
 of secret-dependent memory accesses sites in two functions $HashMgr::addword$ and $HashMgr::lookup$, 
 the author can recover the word that Hunspell checks.
@@ -83,6 +83,17 @@ the author can recover the word that Hunspell checks.
 For the Hunspell, the attacker manually study the source code of Hunspell, figure out
 the relation of those vulnerabilities and launch the attack. In order to precisely quantify the
 total information leakage, we need to know the relation of those leakage sites. 
+
+\lstinputlisting[language=c, 
+                 numbers=left,
+                 numbersep=5pt,                   % how far the line-numbers are from the code
+                 caption={Multiple leakages},
+                 %frame = simple,
+                 captionpos=b,
+                 label={code::multiple},
+                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
+                 {sample_code/motivation_multiple.c}
+
 
 Suppose one program has two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_B$ bits
 during the execution. The total information leakage is noted as $L_{Total}$. The relation between
@@ -106,15 +117,7 @@ If A and B are dependent leakages, the total information leakage will be:
 If A and B are mutual exclusive leakges, then only A or B can be observed for one fixed input.
 The total information leakage will be $L_A$ or $L_B$.
 
-\lstinputlisting[language=c, 
-                 numbers=left,
-                 numbersep=5pt,                   % how far the line-numbers are from the code
-                 caption={Multiple leakages},
-                 %frame = simple,
-                 captionpos=b,
-                 label={code::entropy},
-                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
-                 {sample_code/dependent.c}
+
 For a real program, it is very hard to estimate the total information leakage for the following reasons.
 First, the real-world applications have more than thousands of lines of code. Side-channel vulnerabilities
 could exist in many different functions of the source code. 
