@@ -99,14 +99,16 @@ the sensitive key. The code has six different leakage. Leakage 1, 2, 3 are the s
 data accesses and leakage 4, 5, 6 are the secret-dependent control-flow transfers. However, it is
 very hard to estimate total leakages. For example, the attacker can infer the last three digits of
 $k1$, $k2$, $k3$ from leakage 1, 2, 3. So those leakages are independent. For leakage 1, 4, 6, however,
-it is very hard to know the total leaked information. 
-For a real program, it is very hard to estimate the total information leakage for the following reasons.
+we have no idea about the total information leakage.
+
+For a real program, it is tough to estimate the total information leakage for the following reasons.
 First, the real-world applications have more than thousands of lines of code. Side-channel vulnerabilities
-could exist in many different functions of the source code. 
+could exist in many different functions of the source code. One leakage site leaks the temporary value. But
+the value contains some information about the original buffer.
 
 Suppose one program has two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_B$ bits
 during the execution. The total leaked information is noted as $L_{Total}$. The relation between
-A and B has the following three cases. 
+A and B have the following three cases. 
 
 \subsubsection{Independent Leakages}
 If A and B are independent leakages, the total information leakage will be:
