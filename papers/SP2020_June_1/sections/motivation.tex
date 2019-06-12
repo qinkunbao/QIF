@@ -94,10 +94,19 @@ total information leakage, we need to know the relation of those leakage sites.
                  basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
                  {sample_code/motivation_multiple.c}
 
+Considering the running example in ~\ref{code::multiple}, in which $k1$, $k2$ and $k3$ are
+the sensitive key. The code has six different leakage. Leakage 1, 2, 3 are the secret-dependent
+data accesses and leakage 4, 5, 6 are the secret-dependent control-flow transfers. However, it is
+very hard to estimate total leakages. For example, the attacker can infer the last three digits of
+$k1$, $k2$, $k3$ from leakage 1, 2, 3. So those leakages are independent. For leakage 1, 4, 6, however,
+it is very hard to know the total leaked information. 
+For a real program, it is very hard to estimate the total information leakage for the following reasons.
+First, the real-world applications have more than thousands of lines of code. Side-channel vulnerabilities
+could exist in many different functions of the source code. 
 
 Suppose one program has two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_B$ bits
-during the execution. The total information leakage is noted as $L_{Total}$. The relation between
-A and B has the following three cases.
+during the execution. The total leaked information is noted as $L_{Total}$. The relation between
+A and B has the following three cases. 
 
 \subsubsection{Independent Leakages}
 If A and B are independent leakages, the total information leakage will be:
@@ -118,9 +127,6 @@ If A and B are mutual exclusive leakges, then only A or B can be observed for on
 The total information leakage will be $L_A$ or $L_B$.
 
 
-For a real program, it is very hard to estimate the total information leakage for the following reasons.
-First, the real-world applications have more than thousands of lines of code. Side-channel vulnerabilities
-could exist in many different functions of the source code. 
 
 We run the symbolic execution on the top of the execution traces. We use symbols
 to represent each byte in the input buffer. 
