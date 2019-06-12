@@ -1,4 +1,5 @@
-unsigned char key = input();
+unsigned char k1, k2, k3;
+bool flag = foo();
 // key = [0 ... 255]
 if(key = 128)
     A(); // branch 1
