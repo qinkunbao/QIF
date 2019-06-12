@@ -104,7 +104,12 @@ we have no idea about the total information leakage.
 For a real program, it is tough to estimate the total information leakage for the following reasons.
 First, the real-world applications have more than thousands of lines of code. Side-channel vulnerabilities
 could exist in many different functions of the source code. One leakage site leaks the temporary value. But
-the value contains some information about the original buffer.
+the value contains some information about the original buffer. It is hard to know how the 
+the sensitive value affects the temporary value. Second, some leakages sites may be
+dependent. The occurrence of the first affects the occurrence of the second sites. We 
+can simply add them up. Third, leakage sites are in the different block of the 
+control-flow graph, which means that only one of the two leakages site may execute
+during the exectution.
 
 Suppose one program has two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_B$ bits
 during the execution. The total leaked information is noted as $L_{Total}$. The relation between
