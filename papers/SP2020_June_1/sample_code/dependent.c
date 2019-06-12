@@ -1,9 +1,10 @@
-unsigned char k[4] = input();
-if(k[0] + k[1] < 64)
-    A();
-...
-if(k[1] + k[2] > 128)
-    B();
-...
-if(k[2] < k[3])
-    C();
+unsigned char key = input();
+// key = [0 ... 255]
+if(key = 128)
+    A(); // branch 1
+else if (key < 64)
+    B(); // branch 2
+else if (key < 128)
+    C(); // branch 3
+else
+    D(); // branch 4
