@@ -42,6 +42,7 @@ leakage equals,
 If an adversary has zero knowledge about the input before the attack. The initial uncertainty
 equals to the size the input. As for the remaining uncertainty, we come to the original definition
 of the information content.
+
 \newtheorem{mydef}{Definition}
 
 \begin{mydef}
@@ -85,28 +86,42 @@ total information leakage, we need to know the relation of those leakage sites.
 
 Suppose one program has two side-channel vulnerabilities A and B, which leaks $L_A$ and $L_B$ bits
 during the execution. The total information leakage is noted as $L_{Total}$. The relation between
-A and B has the following two cases.
+A and B has the following three cases.
 
 \subsubsection{Independent Leakages}
 If A and B are independent leakages, the total information leakage will be:
 \begin{equation}
 \label{independent leakage}
-    L_{total} = L_A + L_B
+    L_{total} = L_A + L_B \nonumber
 \end{equation} 
 
 \subsubsection{Dependent Leakages}
 If A and B are dependent leakages, the total information leakage will be:
 \begin{equation}
 \label{dependent leakage}
-    \max{\{L_A, L_B\}}  <= L_{total} < L_A + L_B
+    \max{\{L_A, L_B\}}  <= L_{total} < L_A + L_B \nonumber
 \end{equation}
 
-For a real program, it is very hard to estimate the total information leakage.
+\subsubsection{Mutual Exclusive Leakages}
+If A and B are mutual exclusive leakges, then only A or B can be observed for one fixed input.
+The total information leakage will be $L_A$ or $L_B$.
+
+\lstinputlisting[language=c, 
+                 numbers=left,
+                 numbersep=5pt,                   % how far the line-numbers are from the code
+                 caption={Multiple leakages},
+                 %frame = simple,
+                 captionpos=b,
+                 label={code::entropy},
+                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
+                 {sample_code/dependent.c}
+For a real program, it is very hard to estimate the total information leakage for the following reasons.
+First, the real-world applications have more than thousands of lines of code. Side-channel vulnerabilities
+could exist in many different functions of the source code. 
+
 We run the symbolic execution on the top of the execution traces. We use symbols
-to represent each byte in the input buffer. Each temporary value is represent
+to represent each byte in the input buffer. 
 \subsection{Scalability and Performance}
-
-
 
 We use the mutual information (MI) to quantify the information leakages. 
 For a program P with sensitive information K as the input, the attacker may have some observations O during the execution. 
