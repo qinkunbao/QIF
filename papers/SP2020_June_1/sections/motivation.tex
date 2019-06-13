@@ -1,18 +1,17 @@
 \section{Motivation}
 
-\subsection{Techinical Chanllenges}
 In this section, we articulate several chanllenges and existing problems
 in quantifying the side-channel vulnerability leakages. We briefly describe the
 chanllenges and then present the corresponding solutions.
 
-\subsubsection{Information Leakage Definition}
+\subsection{Information Leakage Definition}
 Existing static-based side-channel quantification works defined information leakage
 as the mutual information or the max leakage. Those definitions provide strong security guarantee
 when trying to show a program is secure if the their methods say the program leaks zero bits of
 information.
 
 However, the above definition is less useful when if the program has some leakages. 
-Considering the example in section ~\ref{code::entropy}, if an attacker observes the
+Considering the example in section~\ref{code::entropy}, if an attacker observes the
 code runs branch A, the attacker can know the key actually equals to 128. Suppose it is 
 a dummy password checker, in which case the attacker can fully retrieve the password.
 Therefore, the total information leakage should be 8 bits, which equals to the size
@@ -25,17 +24,17 @@ The problem with the existing method is that they are static-based and the sensi
 input values are neglected. They assume the attacker runs the program multiple times 
 with many different sensitive information as the input. Both the mutual information 
 and the max-leakage give an ``average" estimate of the information leakage. 
-But it isn't the typical scenario for an adversary that launches the side-channel attack.
+But it isn't the typical scenario for an adversary to launch the side-channel attack.
 When a side-channel attack happens, the adversary wants to retrieve the sensitive
 information. So it is very likely that the sensitive input is fixed (e.g. AES keys). 
-The adversary will run the attack over and over again and guess bit by bit. Like the 
-previous example, the existing static method doesn’t work well in the situations.
+The adversary will run the attack over and over again and guesses bit by bit. Like the 
+previous example, the existing static method doesn’t work well in those situations.
 
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program mutiple times with one fixed input, we
 want to how much information he can infer by oberserving the memory access patterns.
 We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} where the information
-leakage equals,
+leakage equals:
 
 \textit{initial uncertainty - remaining uncertainty}
 
@@ -60,7 +59,7 @@ The leakage $L_{Pko}$ based on the oberservation is
 \end{mydef}
 
 With the new definition, if the attacker observes the branch 1 was executed, then the
-$K^{o^{1}} = \{128\}$. Therefore, the information leakages $L_{Pko^{1}} = log_2{256} - log_2{1} = 8$
+$K^{o^{1}} = \{128\}$. Therefore, the information leakage $L_{Pko^{1}} = log_2{256} - log_2{1} = 8$
 bits, which means the key is totally leaked. If the attacker observes the code runs other
 branches, the leaked information is shown in the following table.
 
@@ -83,7 +82,7 @@ demonstrates an attack against a popular spell checking tool, Hunspell. By obser
 of secret-dependent memory accesses sites in two functions $HashMgr::addword$ and $HashMgr::lookup$, 
 the author can recover the word that Hunspell checks.
 
-For the Hunspell, the attacker manually study the source code of Hunspell, figure out
+For the Hunspell, the attacker manually studies the source code of Hunspell, figure out
 the relation of those vulnerabilities and launch the attack. In order to precisely quantify the
 total information leakage, we need to know the relation of those leakage sites. 
 
@@ -160,7 +159,8 @@ The attacker can retrieve the sensitive information by observing the different p
 control-flows and data access when the program process different sensitive information. 
 We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
 
-\subsection{Secret-dependent Control Flow}
+
+\subsubsection{Secret-dependent Control Flow}
 Here is an example of the secret-dependent control-flows. Consider the code snippet in List 1. 
 Here the key is the confidential data. The code will have different behaviours (time, cache access) 
 dependenting on which branch is actually executing. By observing the behaviour, 
@@ -172,21 +172,25 @@ Because key has 256 different possibilities. The original key has lg256 = 8 bits
 If the attacker can observe the code run branch 1. Then he will knows the key equals to zero. 
 If the code run branch 2, the attacker can infer the key doesn’t equal to zero. 
 
+\begin{lstlisting}
 Branch 1
 temp = 0xb;
 0 =< key <= 256;
 temp = key/2;
+\end{lstlisting}
 
 Information Leakage = -log(1/p) = -log(1/256) = 8 bits
 
+\begin{lstlisting}
 Branch 2
 temp != 0; 
 0 =< key <= 256;
 temp = key/2;
+\end{lstlisting}
 
 Information Leakage = -log(255/256) bits
 
-\subsection{Seret-dependent Memory Access}
+\subsubsection{Seret-dependent Memory Access}
 
 \begin{lstlisting}
 
@@ -205,8 +209,10 @@ Those kind of code patterns may wildly exist in many crypto and media libraries.
 Suppose the attackers observe the code accesses the first entry of the lookup tables. 
 We can have the following formulas.
 
-key mod 63 ≡ 1
+\begin{lstlisting}
+key mod 63 = 1
 0 =< key <= 256
+\end{lstlisting}
 
 So the key can be one of the following values:
 1 64 127 190 253
@@ -229,12 +235,20 @@ from the two following reasons.
     \item The Naive Monte Carlo Sampling.
 \end{itemize}
 
-\subsection{Symbolic Execution}
+\subsubsection{Symbolic Execution}
 Symbolic execution interprets each instructions and update the memory cells and registers with a 
 formula that captured the sementics. Unfortunately, the number of machine instructions are huge
-and the sementics of each instruction is complex. For example, the 
+and the sementics of each instruction is complex. For example, the Intel devloper manual~\cite{intelsys}
+introduces more than 1000 different X86 instructions. It is tedious to manually implement the
+rules for every instructions.
 
-Existing binary analysis tools ~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} will typically
-translate machine instructions into intermediate languages.  
+Therefore, existing binary analysis tools ~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} 
+will translate machine instructions into intermediate languages (IR). The IR typically has fewer 
+instructions compared to the original machine instructions. The IR layer designs, which significantly
+simplify the implementations, also introduce significant overhead as well~\cite{217563}.
+
+\subsubsection{Monte Carlo Sampling}
+For an application with $n$ bits secret, there are total $2^n$ possible inputs. Of the
+$2^n$ possible secrets, 
 
 
