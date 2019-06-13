@@ -236,9 +236,9 @@ from the two following reasons.
 \end{itemize}
 
 \subsubsection{Symbolic Execution}
-Symbolic execution interprets each instructions and update the memory cells and registers with a 
-formula that captured the sementics. Unfortunately, the number of machine instructions are huge
-and the sementics of each instruction is complex. For example, the Intel devloper manual~\cite{intelsys}
+Symbolic execution interprets each instruction and update the memory cells and registers with a 
+formula that captured the sementics of the exectution. Unfortunately, the number of machine instructions 
+are huge and the sementics of each instruction is complex. For example, the Intel Developer Manual~\cite{intelsys}
 introduces more than 1000 different X86 instructions. It is tedious to manually implement the
 rules for every instructions.
 
@@ -246,6 +246,9 @@ Therefore, existing binary analysis tools ~\cite{shoshitaishvili2016state, 10.10
 will translate machine instructions into intermediate languages (IR). The IR typically has fewer 
 instructions compared to the original machine instructions. The IR layer designs, which significantly
 simplify the implementations, also introduce significant overhead as well~\cite{217563}.
+
+We adopt the similar approach from~\cite{217563} and implement the symbolic exectution directly on
+the top X86 instructions.
 
 \subsubsection{Monte Carlo Sampling}
 For an application with $m$ bytes secret, there are total $2^{8m}$ possible inputs. Of the
