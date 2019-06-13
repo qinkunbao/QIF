@@ -48,6 +48,7 @@ Solutioin: We quantify the information leakage with the following definition.
 \newtheorem{mydef}{Definition}
 
 \begin{mydef}
+\label{def}
 Given a program $P$ with the input set $K$, 
 an adversary has the observation $o$ when the input $k{\in}K$. 
 We denote it as
@@ -153,44 +154,23 @@ $$t_3 = f_3(k1, k2, ... k_n)$$
 $...$
 $$t_m = f_m(k1, k2, ... k_n)$$
 
+After that, we model each potential leakage sites as a math formulas.
 
-
-\subsection{Scalability and Performance}
-
-We use the mutual information (MI) to quantify the information leakages. 
-For a program P with sensitive information K as the input, the attacker may have some observations O during the execution. 
-The information leakage is defined as the mutual information I(O; K) between O and K.
-\begin{equation}
-I(O; K) = H(O) - H(O|K)
-\end{equation}
-
-I(O; K) represent how much uncertainty about K can be reduced if the attacker has the observation O.
-For a deterministic program, the program will have the same memory access behavior as long as the input is fixed. 
-As the observation of the attacker correlate to the memory access behavior, 
-we can have the following formula.
-\begin{equation}
-O = f(K)
-\end{equation}
-
-The function f is determined by the program P. For our project, we can calculate the function f via symbolic execution.
-\begin{equation}
-I(O; K) = H(O) - H(f(K)|K) = H(O) = H(f(K))
-\end{equation}
-
-So the mutual information between O and S equals to the self information of O. 
-\begin{equation}
-H(O) = Σp(Oi)log(p(Oi))
-\end{equation}
-
-For a determinist program, we can calculate the distribution of O as long as we know the distribution of input K. 
-So we can calculate how much information is leaked.
-
-The attacker can retrieve the sensitive information by observing the different patterns in control-flows and data access when the program process different sensitive information. We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
+The attacker can retrieve the sensitive information by observing the different patterns in 
+control-flows and data access when the program process different sensitive information. 
+We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
 
 \subsection{Secret-dependent Control Flow}
-Here is an example of the secret-dependent control-flows. Consider the code snippet in List 1. Here the key is the confidential data. The code will have different behaviours (time, cache access) dependenting on which branch is actually executing. By observing the behaviour, the attacker can infer which branch actually executed and know some of the sensitive information. One of the famous leakage example is the square and multiply in many RSA implementations. 
+Here is an example of the secret-dependent control-flows. Consider the code snippet in List 1. 
+Here the key is the confidential data. The code will have different behaviours (time, cache access) 
+dependenting on which branch is actually executing. By observing the behaviour, 
+the attacker can infer which branch actually executed and know some of the sensitive information. 
+One of the famous leakage example is the square and multiply in many RSA implementations. 
 
-For example, the attacker knows the key equals to zero if he observes the code run the branch1. Because key has 256 different possibilities. The original key has lg256 = 8 bits information. If the attacker can observe the code run branch 1. Then he will knows the key equals to zero. If the code run branch 2, the attacker can infer the key doesn’t equal to zero. 
+For example, the attacker knows the key equals to zero if he observes the code run the branch1. 
+Because key has 256 different possibilities. The original key has lg256 = 8 bits information. 
+If the attacker can observe the code run branch 1. Then he will knows the key equals to zero. 
+If the code run branch 2, the attacker can infer the key doesn’t equal to zero. 
 
 Branch 1
 temp = 0xb;
@@ -217,9 +197,13 @@ temp = T[index];
 
 \end{lstlisting}
 
-The simple program above is an example of secret dependent memory access. Here T is a precomputed tables with sixty-four entries. Depending on the values of key, the program may access any values in the array. Those kind of code patterns may wildly exist in many crypto and media libraries. 
+The simple program above is an example of secret dependent memory access. 
+Here T is a precomputed tables with sixty-four entries. 
+Depending on the values of key, the program may access any values in the array. 
+Those kind of code patterns may wildly exist in many crypto and media libraries. 
 
-Suppose the attackers observe the code accesses the first entry of the lookup tables. We can have the following formulas.
+Suppose the attackers observe the code accesses the first entry of the lookup tables. 
+We can have the following formulas.
 
 key mod 63 ≡ 1
 0 =< key <= 256
@@ -228,4 +212,20 @@ So the key can be one of the following values:
 1 64 127 190 253
 
 Information leakages = -log(5/256) =  5.6 bits
+
+
+\subsection{Scalability and Performance}
+
+After we transfer each potential leaks sites into logic formula. We can group several formulas together
+to estimate the total information leakage. One naive way is to use the Monte Carlo sampling  estimate the
+number of input keys. With the definition ~\ref{def}, we can estimate the total information leakage.
+
+However, some pre-experiments show that above qpproach suffers from the unberable cost due to the
+following reasons:
+
+\begin{itemize}
+    \item Symbolic Exectution
+    \item The Naive Monte Carlo Sampling
+\end{itemize}
+
 
