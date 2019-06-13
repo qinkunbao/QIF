@@ -220,12 +220,21 @@ After we transfer each potential leaks sites into logic formula. We can group se
 to estimate the total information leakage. One naive way is to use the Monte Carlo sampling  estimate the
 number of input keys. With the definition ~\ref{def}, we can estimate the total information leakage.
 
-However, some pre-experiments show that above qpproach suffers from the unberable cost due to the
-following reasons:
-
+However, some pre-experiments show that above approach suffers from the unberable cost, which impede its usage
+to detect and quantify side-channel leakages in real-world applications. 
+We systematically analyze the performance bottlenecks of the whole process. In general, the performance suffers
+from the two following reasons. 
 \begin{itemize}
-    \item Symbolic Exectution
-    \item The Naive Monte Carlo Sampling
+    \item Symbolic Execution. 
+    \item The Naive Monte Carlo Sampling.
 \end{itemize}
+
+\subsection{Symbolic Execution}
+Symbolic execution interprets each instructions and update the memory cells and registers with a 
+formula that captured the sementics. Unfortunately, the number of machine instructions are huge
+and the sementics of each instruction is complex. For example, the 
+
+Existing binary analysis tools ~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} will typically
+translate machine instructions into intermediate languages.  
 
 
