@@ -43,6 +43,8 @@ If an adversary has zero knowledge about the input before the attack. The initia
 equals to the size the input. As for the remaining uncertainty, we come to the original definition
 of the information content.
 
+Solutioin: We quantify the information leakage with the following definition. 
+
 \newtheorem{mydef}{Definition}
 
 \begin{mydef}
@@ -72,7 +74,7 @@ branches, the leaked information is shown in the following table.
     \caption{The leaked information by the definition}
 \end{table}
 
-\subsection{Multiple Leakage Sites}
+\subsection{Multiple Leak Sites}
 Real-world software can have various side-channel vulnerabilities. Those vulnerabilities 
 may spread in the whole program. An adversary may exploit more than one side-channel vulnerabilities 
 to gain more information~\cite{7163052, 191010}. For example, the controlled-side channel attack~\cite{7163052}, the author 
@@ -133,10 +135,26 @@ If A and B are dependent leakages, the total information leakage will be:
 If A and B are mutual exclusive leakges, then only A or B can be observed for one fixed input.
 The total information leakage will be $L_A$ or $L_B$.
 
+According to above definition, leakage 1, 2, 3 are independent leakages. Leakage 4, 5
+are mutual exclusive leakages. 
+
+We run the symbolic execution on the top of the execution traces. At the beginning of the exectution,
+each byte in the sensitive buffer is modeled with with a symbol. After that, the symbolic
+exectution engine interprets each instruction of the exectution traces. So every values in the
+registers or memory cells is modeled with a math formula.
+
+Given a program $P$, $k$ is the sensitive input. The $k$ should be a value in a memory cell or a sequential 
+buffer (e.g., an array). We use $k_i$ to denote the sensitive information, where $i$ is the index of the byte in
+the original buffer. We can have the following equations. The t1, t2, t3, is the temporary values during the execution.
+
+$$t_1 = f_1(k_1, k2, ... k_n)$$
+$$t_2 = f_2(k1, k2, ... k_n)$$
+$$t_3 = f_3(k1, k2, ... k_n)$$
+$...$
+$$t_m = f_m(k1, k2, ... k_n)$$
 
 
-We run the symbolic execution on the top of the execution traces. We use symbols
-to represent each byte in the input buffer. 
+
 \subsection{Scalability and Performance}
 
 We use the mutual information (MI) to quantify the information leakages. 
@@ -166,14 +184,6 @@ H(O) = Σp(Oi)log(p(Oi))
 
 For a determinist program, we can calculate the distribution of O as long as we know the distribution of input K. 
 So we can calculate how much information is leaked.
-
-For examples, given a program P, we have the sensitive input K. The K should be a value in a memory cell or a sequential buffer (e.g., an array). We use ki to denote the sensitive information, where i is the index of the byte in the original buffer.  We can have the following equations. The t1, t2, t3, is the temporary values during the execution.
-
-$$t_1 = f1(k1, k2, ... kn)$$
-$$t_2 = f2(k1, k2, ... kn)$$
-$$t_3 = f3(k1, k2, ... kn)$$
-$$tm = fm(k1, k2, ... kn)$$
-
 
 The attacker can retrieve the sensitive information by observing the different patterns in control-flows and data access when the program process different sensitive information. We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
 
