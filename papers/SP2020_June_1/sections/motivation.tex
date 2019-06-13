@@ -248,7 +248,18 @@ instructions compared to the original machine instructions. The IR layer designs
 simplify the implementations, also introduce significant overhead as well~\cite{217563}.
 
 \subsubsection{Monte Carlo Sampling}
-For an application with $n$ bits secret, there are total $2^n$ possible inputs. Of the
-$2^n$ possible secrets, 
+For an application with $m$ bytes secret, there are total $2^{8m}$ possible inputs. Of the
+$2^{8m}$ possible secrets, we want to know many of them of satisfy the given logic formula groups.
+Then we can use the definition ~/ref{def} to calculate the information leakage.
 
+A Monte Carlo method for approximating the number of satisfied values $|K_o|$ is to pick up 
+$M$ random values and check how many of those numbers satisfy those constrains. If $l$ values
+satisfy those constrains, then the approximating result is $\frac{l*2^{8m}}{M}$.
 
+However, the number of satisfying values could be exponentially small. Considering the formula
+$F={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ each represent
+one byte in the sensitive buffer, there is only one possible solution of $2^{32}$ possible
+values. The naive Monte Carlo Method also suffers from the curse of dimensionality. For example, 
+the libjpeg libraries can transfer the image from one format into another format. One image could
+be 1kMB. If we take each byte in the original buffer as symbols, the formula can have at most
+1024 symbols. We will attack the problem in the section.
