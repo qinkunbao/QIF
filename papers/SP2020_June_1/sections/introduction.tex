@@ -49,24 +49,23 @@ adversaries will exploit the different control-flow transfer and data-access pat
 the program process different sensitive data. We refer them as the potential information
 leakage sites. Our tool can provide a list of information leakage sites as well as how many 
 bits they can leak if the attacker can observe one site, two sites or multiple sites. 
-We define the amount of leaked information by the success rate of guessing the sensitive value 
-an adversary could increase after launching the side-channel attacks. It is interesting to 
+We define the amount of leaked information with simple but effective way. It is interesting to 
 mention that the definition here is different from the definition in several static analysis 
 tools. We will explain the reason in the following sections. After that, we run the symbolic 
 execution on the execution trace. We model each side-channel leakage as one logic formula. 
 The sensitive input is divided into several independent bytes and each byte is regarded as 
-the one symbol. Those formulas can unique model the side-channel vulnerability. 
-In other words, if the application has a different sensitive input but still satisfy the formula, 
-the code will still leak the same information about the input.  
+one unique symbol. Those formulas can precisely model every the side-channel vulnerability. 
+In other words, if the application has a different sensitive input but still satisfies the formula, 
+the code can still leak the same information about the input.  
 Those information leakage sites may spread in the whole program 
-and their leakages aren’t dependent. Simply adding them up can only give the upper bound 
+and their leakages may not be dependent. Simply adding them up can only give an upper bound 
 estimate. In order to accurately calculate the total information leakage, we must know the 
 dependent relationships among those multiple leakages sites. Therefore, we introduce a 
 monte carlo sampling method to estimate the total information leakage.
 
-We implement the proposed method as a tool named TANA that can precisely discover and quantify the information
+We implement the proposed method as a tool named TANA which can precisely discover and quantify the information
 leakage vulnerabilities. We apply TANA on several crypto and non-crypto libraries including OpenSSL,
-MbedTLS and libjpeg. The experiments confirm that TANA can precisely identify the pre-known vulnerabilities,
+MbedTLS and libjpeg. The experiment result confirms that TANA can precisely identify the pre-known vulnerabilities,
 report how much information is leaked and which byte in the original sensitive buffer is leaked. 
 The result shows that while those crypto libraries have a number of side-channels, most of them actually
 leak very little inforamtion. Also, we also use the tool to analysis the two reported side-channel attack 
