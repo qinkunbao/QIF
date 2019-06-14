@@ -12,9 +12,13 @@ The pin tool is used to collect the execution trace. CryptoHunt, TaintTrace and 
 The dissambler can analyze the ELF/PE file and output the function and the basic blocks. The CryptoHunt (Static Version) can process the result from the Dissambler and output the potential Crypto Function.
 
 ## Paper Draft
-QIF Google Document: \
-https://docs.google.com/document/d/1c0Ahiz9vz4jomn_zgYAkRgElKiWANoOlg_HD-i66af4/edit?usp=sharing
 
+PDF version (Latest): https://github.com/qinkunbao/QIF/blob/master/papers/SP2020_June_1/main.pdf
+
+QIF-DATA: https://github.com/qinkunbao/QIF-data
+
+QIF Google Document (No update until July 1): 
+https://docs.google.com/document/d/1c0Ahiz9vz4jomn_zgYAkRgElKiWANoOlg_HD-i66af4/edit?usp=sharing
 
 ## Prerequisites:
 - Ensure that you have one of the following systems  
