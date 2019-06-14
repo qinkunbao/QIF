@@ -113,7 +113,7 @@ VOID Routine(RTN rtn, VOID *v) {
     string rtn_name = RTN_Name(rtn);
     string img_name = IMG_Name(IMG_FindByAddress(rtn_start));
     RTN_Open(rtn);
-    RTN_InsertCall(rtn, IPOINT_BEFORE, (AFUNPTR)PrintFun,
+    RTN_InsertCall(rtn, IPOINT_BEFORE, (AFUNPTR)printFunctionName,
                    IARG_PTR, RTN_Name(rtn).c_str(),
                    IARG_PTR, IMG_Name(IMG_FindByAddress(rtn_start)).c_str(),
                    IARG_ADDRINT, rtn_start,
