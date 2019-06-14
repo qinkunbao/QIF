@@ -1,19 +1,21 @@
 \section{Introduction}
 
-Side channels are inevitable in computer systems. The attacker can infer the sensitive 
+Side channels are inevitable in modern computer systems. The attacker can infer the sensitive 
 information by observing the execution behaviour. The software-based attacks(e.g., Cache-based 
-side channels, controlled side attacks, cache template attacks) are especially common 
-because these attacks typically don’t need any physical access. 
-After examing the root cause of those vulnerabilities we believe it is dur the implementation 
-of those software, which has different memory access patterns during the execution. 
-Attackers can observe the pattern and infer the sensitive information based on source code.
+side channels~\cite{184415,191010,7163050,Osvik:2006:CAC:2117739.2117741}, 
+controlled channel attacks~\cite{7163052}) 
+are especially common because these attacks typically don't need any physical access. 
+After examing the root cause of those vulnerabilities, we believe it is due the implementation 
+of those software, which has different memory access patterns depending on the input secret 
+during the execution. Attackers can observe the pattern and infer the sensitive information.
 
-Various countermeasures have been proposed to defend the address-based side-channel attacks. 
-The basic idea is to identify and eliminate secret-dependent memory access patterns. 
-It is very tedious and hard to manually find every the leakage site. To address the problem, 
-a lot of methods have been proposed to automatically detect information leakages. 
+Various countermeasures~\cite{182946,203878,217537} have been proposed to defend the 
+address-based side-channel attacks. The basic idea is simple but effective, identifying 
+and eliminating secret-dependent memory access patterns. 
+However, it can be very tedious and error-prone to find every the leakage site manually. 
+To address the problem, a lot of methods have been proposed to automatically detect information leakages. 
 While those tools can typically report a list of potential leakages sites, they still 
-face a couple of limitations.
+face several limitations.
 
 First, the existing tools~\cite{203878, 217537} can discover a list of potential leakage sites. 
 But they fail to report how severe each potential leakage site could be. Most of leakages 
@@ -23,7 +25,7 @@ It is worthwhile to have a tool to tell how much information is actually leaks.
 For example, some secret dependent memory access patterns in OpenSSL have been known 
 and studied for years. But the authors still don't fix them all because they think 
 they aren’t not severe enough. The tool based on static analysis~\cite{182946} with 
-abstract interpretation, can give leakage leakage upper bound, which is useful to 
+abstract interpretation, can give leakage information upper bound, which is useful to 
 justify the implementation is safe enough. But they can’t indicate the leakage site 
 is severe enough due to the over approximation. The dynamic method will take a concrete 
 input and run the actual program. 

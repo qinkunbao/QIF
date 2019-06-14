@@ -13,7 +13,7 @@
 
 \begin{document}
 
-\title{TANA: Fined-grained Side-channel Inforamtion Leakage Quantifications in Binaries}
+\title{TANA: Fined-grained Side-channel Inforamtion Leakage Quantification in Binaries}
 \author{Anonymous}
 
 \maketitle
@@ -21,24 +21,26 @@
 \begin{abstract}
 Side-channel attacks allow attackers to infer some sensitive information based on 
 non-functional characteristics. Existing works on address-base side-channel detection 
-can provide a list of potential side-channels leakage sites. We observed that those 
+can provide a list of potential side-channels leakage sites. We observe that those 
 works still have the following limitations: 1) Many software may have multiple information 
 leakage sites. Some vulnerabilities could be more severe than others. But existing work 
-couldn’t tell the difference between those leakages. 2)  An attacker could exploit multiple 
+couldn’t tell the difference between those leakages. 2)  An attacker usually exploits multiple 
 leakages at one time. However, no existing tool can report how much information is leaked 
 in total.
 
 To overcome the above limitations: we proposed a tool called TANA, which can not only 
-find the side channels but can estimate how many bits are actually leaked through the 
-leakage. TANA works in three phases. First, the application is executed to record the 
+find the side-channel vulnerabilities but can estimate how many bits are actually leaked 
+through the leakage. TANA works in three steps. First, the application is executed to record the 
 trace. Second, TANA runs the instruction level symbolic execution on the top of the 
-execution trace. Tana will find side-channel information leakages and model each leakage 
+execution trace. TANA will find side-channel information leakages and model each leakage 
 as one unique math constraints. Finally, TANA will classify those constraints into 
 independent multiple groups and run the multiple step monte carlo to estimate the 
-information leakage. TANA will a very fined-grained result compared to existing tools. 
+information leakage. TANA can report a very fined-grained vulnerability result 
+compared to existing tools. 
 
 We apply the tool on OpenSSL, MbedTLS and libjpeg and find several serious side channel 
 vulnerabilities. We also evaluate the vulnerabilities from previous research. The result 
+confirms our intuition: 
 indicates most of the reported vulnerabilities are actually hard to exploit in practice.
 
 \end{abstract}
