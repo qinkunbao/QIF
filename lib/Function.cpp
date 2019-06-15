@@ -1,3 +1,11 @@
+/*************************************************************************
+	> File Name: Function.cpp
+	> Author: Qinkun Bao
+	> Mail: qinkunbao@gmail.com
+	> Created Time: Mon Apr 22 21:56:51 2019
+ ************************************************************************/
+
+
 #include <iostream>
 #include <fstream>
 #include <string>
