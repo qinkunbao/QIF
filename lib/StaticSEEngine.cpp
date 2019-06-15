@@ -1,7 +1,7 @@
 /*************************************************************************
 	> File Name: StaticSEEngine.cpp
-	> Author: 
-	> Mail: 
+	> Author: Qinkun Bao
+	> Mail: qinkunbao@gmail.com
 	> Created Time: Tue Apr 16 20:25:55 2019
  ************************************************************************/
 

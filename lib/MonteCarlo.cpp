@@ -1,7 +1,7 @@
 /*************************************************************************
 	> File Name: MonteCarlo.cpp
-	> Author: 
-	> Mail: 
+	> Author: Qinkun Bao
+	> Mail: qinkunbao@gmail.com
 	> Created Time: Mon May 20 21:06:14 2019
  ************************************************************************/
 #include <random>

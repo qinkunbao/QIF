@@ -1,4 +1,11 @@
-﻿#pragma once
+﻿/*************************************************************************
+	> File Name: ins_types.h
+	> Author: Qinkun Bao
+	> Mail: qinkunbao@gmail.com
+	> Created Time: Mon Apr 22 21:56:51 2019
+ ************************************************************************/
+
+#pragma once
 #include <vector>
 #include <string>
 #include <set>

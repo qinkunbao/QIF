@@ -1,3 +1,10 @@
+/*************************************************************************
+	> File Name: QIFSEEngine.h
+	> Author: Qinkun Bao
+	> Mail: qinkunbao@gmail.com
+	> Created Time: Mon Apr 22 21:56:51 2019
+ ************************************************************************/
+
 #pragma once
 
 #include <list>
