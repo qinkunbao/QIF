@@ -513,8 +513,13 @@ namespace tana {
             auto it = inst->get();
             eip = it->addrn;
             mem_data = it->read_mem_data();
+
+            checkMemoryAccess(it);
+
             bool status = it->symbolic_execution(this);
             std::vector<std::shared_ptr<BitVector>> sym_res;
+
+            // Get symbolic register value after the SE
             sym_res.push_back(ctx["eax"]);
             sym_res.push_back(ctx["ebx"]);
             sym_res.push_back(ctx["ecx"]);
@@ -525,6 +530,8 @@ namespace tana {
             sym_res.push_back(ctx["ebp"]);
             std::vector<uint32_t> con_res;
             ++inst;
+
+            // Get the  concrete register value after the SE
             if(inst != end) {
                 for (uint32_t i = 0; i < 8; ++i) {
                     con_res.push_back(inst->get()->vcpu.gpr[i]);
@@ -723,5 +730,69 @@ namespace tana {
         return -log(MonteCarloEResult)/log(2);
     }
 
+    void QIFSEEngine::checkMemoryAccess(tana::Inst_Base *inst)
+    {
+        int oprd_num = 0, memory_num = 0, memory_index = 0;
+        if(inst->oprd[0] != nullptr)  ++oprd_num;
+        if(inst->oprd[1] != nullptr)  ++oprd_num;
+        if(inst->oprd[2] != nullptr)  ++oprd_num;
+
+        if(oprd_num == 0)
+            return;
+
+        if(oprd_num == 1)
+        {
+            if(inst->oprd[0]->type == Operand::Mem)
+            {
+                memory_index = 0;
+                ++memory_num;
+            }
+        }
+
+        if(oprd_num == 2)
+        {
+            if(inst->oprd[0]->type == Operand::Mem)
+            {
+                memory_index = 0;
+                ++memory_num;
+            }
+            if(inst->oprd[1]->type == Operand::Mem)
+            {
+                memory_index = 1;
+                ++memory_num;
+            }
+
+        }
+
+        if(oprd_num == 3)
+        {
+            if(inst->oprd[0]->type == Operand::Mem)
+            {
+                memory_index = 0;
+                ++memory_num;
+            }
+            if(inst->oprd[1]->type == Operand::Mem)
+            {
+                memory_index = 1;
+                ++memory_num;
+            }
+            if(inst->oprd[2]->type == Operand::Mem)
+            {
+                memory_index = 2;
+                ++memory_num;
+            }
+        }
+
+        if(memory_num == 0)
+            return;
+
+        checkOperand(inst->oprd[memory_index]);
+
+    }
+
+    void QIFSEEngine::checkOperand(const std::shared_ptr<tana::Operand> &opr)
+    {
+        assert(opr->type == Operand::Mem);
+    }
 
 }

@@ -33,6 +33,7 @@ namespace tana {
         std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> constrains;
         uint32_t eip;
         uint32_t mem_data;
+        void checkOperand(const std::shared_ptr<Operand> &opr);
 
     public:
 
@@ -77,6 +78,9 @@ namespace tana {
         void reduceConstrains();
 
         float getEntropy();
+
+        void checkMemoryAccess(Inst_Base* inst);
+
 
     };
 
