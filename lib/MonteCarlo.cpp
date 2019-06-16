@@ -106,9 +106,16 @@ namespace tana {
         tests.reserve(sample_num);
         input_vector = MonteCarlo::getAllKeys(con);
         unsigned int input_demension = input_vector.size();
+
+        int step = 0, step_size = sample_num / 10;
         for(uint64_t i = 0; i < sample_num; ++i)
         {
             tests.push_back(std::make_unique<std::pair<std::vector<uint8_t >, bool>>(std::make_pair(getRandomVector(input_demension), true)));
+            if(i / step_size > step)
+            {
+                step = i / step_size;
+                std::cout << "Generating samples: " << step <<  "0%" << std::endl;
+            }
         }
     }
 
@@ -121,16 +128,22 @@ namespace tana {
                 auto random_vector_map = MonteCarlo::input2val(one_test.first, input_vector);
                 bool flag = con->validate(random_vector_map);
                 one_test.second = flag;
+                //if(flag)
+                //{
+                //    std::cout << "Success" << std::endl;
+                //}
             }
         }
     }
 
     void FastMonteCarlo::run(){
 
+        std::cout << "Start Computing " << "Constrain: "<< constrains.size() << std::endl;
         for(const auto &element :constrains)
         {
             auto &cons = std::get<1>(element);
             this->testConstrain(cons);
+            std::cout << "finishing one constrain" << std::endl;
         }
         for(const auto &test: tests)
         {

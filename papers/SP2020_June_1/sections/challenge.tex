@@ -10,6 +10,7 @@ as the mutual information or the maximal leakage. Those definitions provide stro
 when trying to show a program is secure if the their methods say the program leaks zero bits of
 information.
 
+
 However, the above definition is less useful if the program has some leakages. 
 Considering the example in section~\ref{code::entropy}, if an attacker observes the
 code runs branch A, the attacker can know the key actually equals to 128. Suppose it is 
@@ -29,6 +30,12 @@ launch the side-channel attack. When a side-channel attack happens, the adversar
 to retrieve the sensitive information, in which case the sensitive information is fixed (e.g. AES keys). 
 The adversary will run the attack over and over again and guess the value bit by bit. Like the 
 previous example, the existing static method doesn’t work well in those situations.
+
+\begin{tikzpicture}
+    \draw[gray, thick] (-1,2) -- (2,-4);
+    \draw[gray, thick] (-1,-1) -- (2,2);
+    \filldraw[black] (0,0) circle (2pt) node[anchor=west] {Intersection point};
+\end{tikzpicture}
 
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program mutiple times with one fixed input, we
