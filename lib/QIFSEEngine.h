@@ -30,7 +30,7 @@ namespace tana {
         bool memory_find(uint32_t addr);
         std::map<std::string, std::shared_ptr<BitVector>> ctx;
         std::shared_ptr<BitVector> CF, OF, SF, ZF, AF, PF;
-        std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> constrains;
+        std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> constrains;
         uint32_t eip;
         uint32_t mem_data;
         void checkOperand(const std::shared_ptr<Operand> &opr, Inst_Base* inst);
@@ -71,7 +71,9 @@ namespace tana {
 
         std::shared_ptr<tana::BitVector> getFlags(std::string) override;
 
-        void updateConstrains(std::shared_ptr<Constrain> cons) override;
+        void updateCFConstrains(std::shared_ptr<Constrain> cons) override;  //Update the control-flow transfer constrain
+
+        void updateDAConstrains(std::shared_ptr<Constrain> cons) override; //Update the data-access constrain
 
         void printMemory() override ;
 
