@@ -786,13 +786,19 @@ namespace tana {
         if(memory_num == 0)
             return;
 
-        checkOperand(inst->oprd[memory_index]);
+        checkOperand(inst->oprd[memory_index], inst);
 
     }
 
-    void QIFSEEngine::checkOperand(const std::shared_ptr<tana::Operand> &opr)
+    void QIFSEEngine::checkOperand(const std::shared_ptr<tana::Operand> &opr, Inst_Base* inst)
     {
         assert(opr->type == Operand::Mem);
+        /*
+        std::cout << "Inst: " << *inst << std::endl;
+        std::cout << "MemOperand: " << *opr << std::endl;
+         */
+        return;
+
     }
 
 }

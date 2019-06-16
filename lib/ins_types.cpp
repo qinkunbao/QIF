@@ -33,6 +33,63 @@ namespace tana {
         return instruction_operand;
     }
 
+    std::ostream& operator<<(std::ostream& os, const Operand& opr)
+    {
+        if(opr.type == Operand::Mem)
+        {
+            os << "Mem: ";
+            switch (opr.tag){
+                case 1:
+                {
+                    // Imm Value
+                    os << opr.field[0];
+                    return os;
+                }
+                case 2:
+                {
+                    // Register
+                    os << opr.field[0];
+                    return os;
+                }
+                case 3:
+                {
+                    // eax*2
+                    os << opr.field[0] << "*" << opr.field[1];
+                    return os;
+                }
+                case 4:
+                {
+                    // eax + Imm
+                    os << opr.field[0] << opr.field[1] << opr.field[2];
+                    return os;
+                }
+                case 5:
+                {
+                    // eax + ebx*2
+                    os << opr.field[0] << "+" << opr.field[1] << "*" << opr.field[2];
+                    return os;
+                }
+                case 6:
+                {
+                    // eax*2 + Imm
+                    os << opr.field[0] << "*" << opr.field[1] << opr.field[2] << opr.field[3];
+                    return os;
+                }
+                case 7:
+                {
+                    // eax + ebx*2 + Imm
+                    os << opr.field[0] << "+" << opr.field[1] << "*" << opr.field[2] << opr.field[3]
+                    << opr.field[4];
+                    return os;
+                }
+                default:
+                    ERROR("Wrong Address Operand");
+
+            }
+        }
+
+        return os;
+    }
 
     std::ostream& operator<<(std::ostream& os, const Inst_Base& inst)
     {

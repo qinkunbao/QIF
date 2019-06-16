@@ -328,7 +328,7 @@ namespace tana {
 
     }
 
-    bool BitVector::isSymbol() {
+    bool BitVector::isSymbol() const{
         return (val_type == ValueType ::SYMBOL) ? true : false;
 
     }
@@ -358,7 +358,7 @@ namespace tana {
         return ss.str();
     }
 
-    uint32_t BitVector::size()
+    uint32_t BitVector::size() const
     {
         return high_bit - low_bit + 1;
     }
@@ -499,8 +499,11 @@ namespace tana {
 
     }
 
-    uint32_t BitVector::symbol_num() const
+    uint32_t BitVector::symbol_num()
     {
+        if(symbol_num_cache != -1)
+            return symbol_num_cache;
+
         std::set<int> input_num;
         const std::unique_ptr<Operation> &op = this->opr;
 
@@ -512,7 +515,9 @@ namespace tana {
         if (op->val[0] != nullptr) symbol_num_internal(op->val[0], input_num);
         if (op->val[1] != nullptr) symbol_num_internal(op->val[1], input_num);
         if (op->val[2] != nullptr) symbol_num_internal(op->val[2], input_num);
-        return input_num.size();
+
+        symbol_num_cache = input_num.size();
+        return symbol_num_cache;
     }
 
 
