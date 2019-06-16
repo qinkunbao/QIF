@@ -102,6 +102,8 @@ namespace tana {
         std::string field[5];
         bool issegaddr = false;
         std::string segreg;
+
+        friend std::ostream& operator<<(std::ostream &os, const Operand& opr);
     };
 
     class Inst_Base {

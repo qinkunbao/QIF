@@ -59,6 +59,7 @@ namespace tana {
         void symbol_num_internal(const std::shared_ptr<BitVector> &v, std::set<int> &input) const;
         std::string print() const;
         void printV(std::stringstream& ss, uint32_t& length) const ;
+        int symbol_num_cache = -1; // -1 means cache miss
     public:
         int id;                                    // a unique id for each value
         ValueType val_type;                        // value type: SYMBOL or CONCRETE
@@ -102,15 +103,15 @@ namespace tana {
 
         static bool bit(uint32_t op0, uint32_t op1);
 
-        bool isSymbol();
+        bool isSymbol() const;
 
-        uint32_t size();
+        uint32_t size() const;
 
         bool operator==(const BitVector &v1);
 
         uint32_t printV(std::stringstream& ss) const ;
 
-        uint32_t symbol_num() const;
+        uint32_t symbol_num();
 
         friend std::ostream& operator<<(std::ostream& os, const BitVector& c);
 
