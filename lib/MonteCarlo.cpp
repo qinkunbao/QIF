@@ -39,7 +39,7 @@ namespace tana {
 
     std::vector<int>
     MonteCarlo::getAllKeys(
-            const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains){
+            const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> &constrains){
 
         std::vector<int> input_key_vector;
 
@@ -57,7 +57,7 @@ namespace tana {
 
     }
 
-    bool MonteCarlo::constrainSatisify(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains,
+    bool MonteCarlo::constrainSatisify(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> &constrains,
                            const std::map<int, uint32_t > &input_map)
     {
         for(const auto &element :constrains)
@@ -74,7 +74,7 @@ namespace tana {
     }
 
 
-    float MonteCarlo::calculateMonteCarlo(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> &constrains,
+    float MonteCarlo::calculateMonteCarlo(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> &constrains,
                                   uint64_t sample_num)
     {
         std::vector<int > input_vector = getAllKeys(constrains);
@@ -100,7 +100,7 @@ namespace tana {
     }
 
 
-    FastMonteCarlo::FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>>> con)
+    FastMonteCarlo::FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> con)
     :num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255)
     {
         tests.reserve(sample_num);

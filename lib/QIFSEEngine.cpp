@@ -656,11 +656,18 @@ namespace tana {
         return nullptr;
     }
 
-    void QIFSEEngine::updateConstrains(std::shared_ptr<Constrain> cons)
+    void QIFSEEngine::updateCFConstrains(std::shared_ptr<Constrain> cons)
     {
-        auto res = std::make_tuple(this->eip, cons);
+        auto res = std::make_tuple(this->eip, cons, LeakageType::CFLeakage);
         constrains.push_back(res);
     }
+
+    void QIFSEEngine::updateDAConstrains(std::shared_ptr<Constrain> cons)
+    {
+        auto res = std::make_tuple(this->eip, cons, LeakageType::DALeakage);
+        constrains.push_back(res);
+    }
+
 
     void QIFSEEngine::printConstrains()
     {
@@ -669,16 +676,17 @@ namespace tana {
         {
             auto addr = std::get<0>(element);
             auto &con = std::get<1>(element);
+            LeakageType type = std::get<2>(element);
             bool Valid = con->validate();
             std::string valid_str = Valid ? " True " : " False ";
+            std::string type_str = type == LeakageType ::CFLeakage? "CFleakage" : "DALeakage";
 
             if(!Valid) {
-
                 std::cout << "Addr: " << std::hex << addr << std::dec << valid_str;
-                std::cout << " Constrain: " << *con << std::endl;
+                std::cout << " Constrain: " << *con;
+                std::cout << " Type: " << type_str << std::endl;
             }
         }
-
     }
 
     // Reduce constrains that don't have symbols
@@ -687,7 +695,7 @@ namespace tana {
         auto con = constrains.begin();
         while(con != constrains.end())
         {
-            std::tuple<uint32_t, std::shared_ptr<tana::Constrain>> con_tuple = *con;
+            std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType > con_tuple = *con;
             std::shared_ptr<Constrain> constrain = std::get<1>(con_tuple);
             if(constrain->getNumSymbols() == 0)
             {
@@ -938,7 +946,7 @@ namespace tana {
             std::shared_ptr<tana::BitVector> mem_address_symbol, std::string mem_address_str) {
         uint32_t mem_address_concrete = std::stoul(mem_address_str, nullptr, 16);
         auto cons = std::make_shared<Constrain>(mem_address_symbol, BVOper::equal, mem_address_concrete);
-        this->updateConstrains(cons);
+        this->updateDAConstrains(cons);
         return cons;
     }
 

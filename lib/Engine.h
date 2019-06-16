@@ -14,7 +14,12 @@
 
 
 namespace tana {
-   class Inst_Base;
+    class Inst_Base;
+
+    enum class LeakageType{
+        CFLeakage,
+        DALeakage
+    };
 
     class SEEngine{
 
@@ -95,12 +100,15 @@ namespace tana {
             return nullptr;
         }
 
-        virtual void updateConstrains(std::shared_ptr<Constrain> cons)
+        virtual void updateCFConstrains(std::shared_ptr<Constrain> cons)
         {
             return;
         }
 
-
+        virtual void updateDAConstrains(std::shared_ptr<Constrain> cons)
+        {
+            return;
+        }
 
         virtual void printMemory()
         {
