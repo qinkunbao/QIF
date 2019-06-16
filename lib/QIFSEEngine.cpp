@@ -793,12 +793,119 @@ namespace tana {
     void QIFSEEngine::checkOperand(const std::shared_ptr<tana::Operand> &opr, Inst_Base* inst)
     {
         assert(opr->type == Operand::Mem);
-        /*
-        std::cout << "Inst: " << *inst << std::endl;
-        std::cout << "MemOperand: " << *opr << std::endl;
-         */
+
+        //std::cout << "Inst: " << *inst << std::endl;
+        //std::cout << "MemOperand: " << *opr << std::endl;
+        switch (opr->tag)
+        {
+            case 1: {
+                // Immediate Value
+                return;
+            }
+            case 2:
+            {
+                // 32 bit register value
+                auto reg = opr->field[0];
+                auto regV = this->readReg(reg);
+                auto regV_num = regV->symbol_num();
+
+                if(regV_num == 0)
+                {
+                    return;
+                }
+
+
+                return;
+            }
+            case 3:
+            {
+                // eax*2
+                auto reg = opr->field[0];
+                auto regV = this->readReg(reg);
+                auto regV_num = regV->symbol_num();
+
+                if(regV_num == 0)
+                {
+                    return;
+                }
+
+                return;
+            }
+            case 4:
+            {
+                // eax+0xffffff
+                auto reg = opr->field[0];
+                auto regV = this->readReg(reg);
+                auto regV_num = regV->symbol_num();
+
+                if(regV_num == 0)
+                {
+                    return;
+                }
+
+                return;
+            }
+            case 5:
+            {
+                // eax+ebx*2
+                auto reg1 = opr->field[0];
+                auto reg2 = opr->field[1];
+                auto regV1 = this->readReg(reg1);
+                auto regV2 = this->readReg(reg2);
+                auto regV1_num = regV1->symbol_num();
+                auto regV2_num = regV2->symbol_num();
+
+                if( (regV1_num + regV2_num) == 0)
+                {
+                    return;
+                }
+
+                return;
+            }
+            case 6:
+            {
+                // eax*2+0xffffff
+                auto reg = opr->field[0];
+                auto regV = this->readReg(reg);
+                auto regV_num = regV->symbol_num();
+
+                if(regV_num == 0)
+                {
+                    return;
+                }
+
+                return;
+            }
+            case 7:
+            {
+                // eax+ebx*2+0xffffff
+                auto reg1 = opr->field[0];
+                auto reg2 = opr->field[1];
+                auto regV1 = this->readReg(reg1);
+                auto regV2 = this->readReg(reg2);
+                auto regV1_num = regV1->symbol_num();
+                auto regV2_num = regV2->symbol_num();
+
+                if( (regV1_num + regV2_num) == 0)
+                {
+                    return;
+                }
+
+                return;
+            }
+            default:
+                ERROR("Invalid memory address mode");
+        }
+
         return;
 
+    }
+
+
+    std::shared_ptr<tana::Constrain> QIFSEEngine::getMemoryAccessConstrain(
+            std::shared_ptr<tana::BitVector> mem_address_symbol, uint32_t mem_address_concrete) {
+        auto cons = std::make_shared<Constrain>(mem_address_symbol, BVOper::equal, mem_address_concrete);
+        return cons;
     }
 
 }

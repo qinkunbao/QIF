@@ -34,6 +34,8 @@ namespace tana {
         uint32_t eip;
         uint32_t mem_data;
         void checkOperand(const std::shared_ptr<Operand> &opr, Inst_Base* inst);
+        std::shared_ptr<tana::Constrain> getMemoryAccessConstrain(std::shared_ptr<BitVector> mem_address_symbol, \
+                                                                  uint32_t mem_address_concrete);
 
     public:
 
@@ -81,10 +83,6 @@ namespace tana {
 
         void checkMemoryAccess(Inst_Base* inst);
 
-
     };
-
-
-
 
 }
