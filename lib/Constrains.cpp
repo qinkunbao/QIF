@@ -137,7 +137,7 @@ namespace tana {
         }
         os << *num;
 
-
+        os << " Input Symbol Number: " << con->symbol_num();
         os << "\n";
         return os;
     }
