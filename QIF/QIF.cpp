@@ -29,8 +29,9 @@ int main(int argc, char* argv[]) {
     vector<std::unique_ptr<Inst_Base>> inst_list;
     tana_type::T_ADDRESS start_addr = 0;
     tana_type::T_SIZE m_size = 0;
+    vector<uint8_t> key_value;
 
-    parse_trace(&trace_file, start_addr, m_size, inst_list);
+    parse_trace_qif(&trace_file, start_addr, m_size, inst_list, key_value);
 
     std::cout << "Start Address: " << std::hex << start_addr << std::dec << " Length: " << m_size << std::endl;
     uint32_t eax, ebx, ecx, edx, esi, edi, esp, ebp;
