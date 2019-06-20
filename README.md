@@ -21,8 +21,7 @@ QIF Google Document (No update until July 1):
 https://docs.google.com/document/d/1c0Ahiz9vz4jomn_zgYAkRgElKiWANoOlg_HD-i66af4/edit?usp=sharing
 
 Slides:
-https://docs.google.com/presentation/d/10IGKJQC_4Tc7YIN6G1gZXb5fAjc139DgKR0hc0Aokq0/edit?usp=sharing
-
+https://github.com/qinkunbao/QIF/blob/master/slides/Side%20Channel.pdf
 
 ## Prerequisites:
 - Ensure that you have one of the following systems  
