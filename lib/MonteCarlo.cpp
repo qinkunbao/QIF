@@ -128,18 +128,22 @@ namespace tana {
         bool flag;
         int num_fail_cons = 0;
         auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
-        for(const auto &element :constrains)
+
+        auto it = constrains.begin();
+        while(it != constrains.end())
         {
-            auto &cons = std::get<1>(element);
+            auto &cons = std::get<1>(*it);
             flag = cons->validate(key_value_map);
             if(flag)
             {
                 std::cout << "PASS" << std::endl;
+                ++it;
             } else
             {
                 std::cout << "FAIL: " << std::endl;
                 ++num_fail_cons;
-                std::cout << std::hex << std::get<0>(element) << std::dec << std::endl;
+                it = constrains.erase(it);
+                std::cout << std::hex << std::get<0>(*it) << std::dec << std::endl;
             }
         }
         std::cout << "Total Constrains: " << constrains.size() << std::endl;
