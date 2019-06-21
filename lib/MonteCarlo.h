@@ -61,7 +61,6 @@ namespace tana {
                        std::vector<uint8_t > key_value);
         void run();
         float getResult();
-
         bool verifyConstrain();
 
     };

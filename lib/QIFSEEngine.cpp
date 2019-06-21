@@ -335,6 +335,7 @@ namespace tana {
                 if(con != calculate) {
 
                     ERROR("Memory Error");
+                    memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
                 }
             }
         }
