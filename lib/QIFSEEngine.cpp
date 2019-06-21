@@ -729,13 +729,13 @@ namespace tana {
         //float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
         FastMonteCarlo res(100000000, constrains);
         res.run();
-        float MonteCarloEResult= res.getResult();
+        float MonteCarloResult= res.getResult();
 
         const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
 
         std::cout << "It took " << duration.count()/1000.0 << "ms"
         << " to finish the monte carlo sampling"<< std::endl;
-        return -log(MonteCarloEResult)/log(2);
+        return -log(MonteCarloResult)/log(2);
     }
 
     void QIFSEEngine::checkMemoryAccess(tana::Inst_Base *inst)

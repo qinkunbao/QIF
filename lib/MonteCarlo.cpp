@@ -57,8 +57,9 @@ namespace tana {
 
     }
 
-    bool MonteCarlo::constrainSatisify(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> &constrains,
-                           const std::map<int, uint32_t > &input_map)
+    bool MonteCarlo::constrainSatisfy(
+            const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> &constrains,
+            const std::map<int, uint32_t> &input_map)
     {
         for(const auto &element :constrains)
         {
@@ -86,7 +87,7 @@ namespace tana {
         {
             auto random_vector = getRandomVector(input_vector_size);
             auto random_vector_map = input2val(random_vector, input_vector);
-            if(constrainSatisify(constrains, random_vector_map))
+            if(constrainSatisfy(constrains, random_vector_map))
             {
                 ++satisfied_number;
             }
