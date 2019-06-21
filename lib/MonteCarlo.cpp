@@ -126,6 +126,7 @@ namespace tana {
     bool FastMonteCarlo::verifyConstrain()
     {
         bool flag;
+        int num_fail_cons = 0;
         auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
         for(const auto &element :constrains)
         {
@@ -136,9 +137,13 @@ namespace tana {
                 std::cout << "PASS" << std::endl;
             } else
             {
-                std::cout << "FAIL" << std::endl;
+                std::cout << "FAIL: " << std::endl;
+                ++num_fail_cons;
+                std::cout << std::hex << std::get<0>(element) << std::dec << std::endl;
             }
         }
+        std::cout << "Total Constrains: " << constrains.size() << std::endl;
+        std::cout << "Failed Constrains: " << num_fail_cons << std::endl;
         return true;
     }
 
