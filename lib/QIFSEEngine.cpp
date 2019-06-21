@@ -727,7 +727,7 @@ namespace tana {
         const auto before = clock::now();
 
         //float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
-        FastMonteCarlo res(100000000, constrains);
+        FastMonteCarlo res(100000, constrains);
         res.run();
         float MonteCarloResult= res.getResult();
 
@@ -735,7 +735,7 @@ namespace tana {
 
         std::cout << "It took " << duration.count()/1000.0 << "ms"
         << " to finish the monte carlo sampling"<< std::endl;
-        return -log(MonteCarloResult)/log(2);
+        return abs(-log(MonteCarloResult)/log(2));
     }
 
     void QIFSEEngine::checkMemoryAccess(tana::Inst_Base *inst)
@@ -944,8 +944,14 @@ namespace tana {
 
     std::shared_ptr<tana::Constrain> QIFSEEngine::getMemoryAccessConstrain(
             std::shared_ptr<tana::BitVector> mem_address_symbol, std::string mem_address_str) {
+        uint32_t L = 6;  // Here we use the cache model from the CacheD paper
+
         uint32_t mem_address_concrete = std::stoul(mem_address_str, nullptr, 16);
-        auto cons = std::make_shared<Constrain>(mem_address_symbol, BVOper::equal, mem_address_concrete);
+        uint32_t mem_address_concrete_L = mem_address_concrete >> L;
+
+        std::shared_ptr<BitVector> mem_address_symbol_L = buildop2(BVOper::bvshr, mem_address_symbol, L);
+
+        auto cons = std::make_shared<Constrain>(mem_address_symbol_L, BVOper::equal, mem_address_concrete_L);
         this->updateDAConstrains(cons);
         return cons;
     }
