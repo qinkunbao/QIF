@@ -81,7 +81,7 @@ namespace tana {
 
         void reduceConstrains();
 
-        float getEntropy();
+        float getEntropy(std::vector<uint8_t > key_value);
 
         void checkMemoryAccess(Inst_Base* inst);
 

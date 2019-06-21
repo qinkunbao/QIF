@@ -53,10 +53,16 @@ namespace tana {
         std::uniform_int_distribution<uint8_t> dist;
         std::minstd_rand engine{rd()};
 
+        std::vector<uint8_t > input_seed;
+
     public:
-        FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> constrains);
+        FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
+                       std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
+                       std::vector<uint8_t > key_value);
         void run();
         float getResult();
+
+        bool verifyConstrain();
 
     };
 }

@@ -101,8 +101,10 @@ namespace tana {
     }
 
 
-    FastMonteCarlo::FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> con)
-    :num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255)
+    FastMonteCarlo::FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
+                                   std::shared_ptr<tana::Constrain>, LeakageType >> con,
+                                   std::vector<uint8_t > key_value)
+    :num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255), input_seed(key_value)
     {
         tests.reserve(sample_num);
         input_vector = MonteCarlo::getAllKeys(con);
@@ -118,6 +120,26 @@ namespace tana {
                 std::cout << "Generating samples: " << step <<  "0%" << std::endl;
             }
         }
+    }
+
+
+    bool FastMonteCarlo::verifyConstrain()
+    {
+        bool flag;
+        auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
+        for(const auto &element :constrains)
+        {
+            auto &cons = std::get<1>(element);
+            flag = cons->validate(key_value_map);
+            if(flag)
+            {
+                std::cout << "PASS" << std::endl;
+            } else
+            {
+                std::cout << "FAIL" << std::endl;
+            }
+        }
+        return true;
     }
 
     void FastMonteCarlo::testConstrain(const std::shared_ptr<tana::Constrain> &con)
