@@ -28,8 +28,9 @@ namespace tana {
         getAllKeys(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> &constrains);
 
         bool
-        constrainSatisify(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> &constrains,
-                          const std::map<int, uint32_t> &input_map);
+        constrainSatisfy(
+                const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> &constrains,
+                const std::map<int, uint32_t> &input_map);
 
 
         float
