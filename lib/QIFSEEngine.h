@@ -36,13 +36,15 @@ namespace tana {
         void checkOperand(const std::shared_ptr<Operand> &opr, Inst_Base* inst);
         std::shared_ptr<tana::Constrain> getMemoryAccessConstrain(std::shared_ptr<BitVector> mem_address_symbol, \
                                                                   std::string mem_address_concrete);
+        std::map<int, uint32_t > key_value_map;
 
     public:
 
         using SEEngine::SEEngine;
         void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                   std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
-                  tana_type::T_ADDRESS, tana_type::T_SIZE m_size);
+                  tana_type::T_ADDRESS, tana_type::T_SIZE m_size,
+                  std::vector<uint8_t> key_value);
 
         QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx,
                     uint32_t esi, uint32_t edi, uint32_t esp, uint32_t ebp);

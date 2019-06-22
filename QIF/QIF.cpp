@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
     ebp = reg.gpr[7];
 
     auto *se = new QIFSEEngine(eax, ebx, ecx, edx, esi, edi, esp, ebp);
-    se->init(inst_list.begin(), inst_list.end(), start_addr, m_size/8);
+    se->init(inst_list.begin(), inst_list.end(), start_addr, m_size/8, key_value);
     se->run();
     se->reduceConstrains();
     se->printConstrains();

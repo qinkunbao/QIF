@@ -7,6 +7,7 @@
 #include <random>
 #include <algorithm>
 #include "MonteCarlo.h"
+#include "error.h"
 
 
 namespace tana {
@@ -128,6 +129,7 @@ namespace tana {
         bool flag;
         int num_fail_cons = 0;
         auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
+        debug_map(key_value_map);
 
         auto it = constrains.begin();
         while(it != constrains.end())
