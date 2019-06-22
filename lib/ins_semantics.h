@@ -462,5 +462,11 @@ namespace tana {
 
     };
 
+    class INST_X86_INS_CPUID : public Inst_Base{
+        using Inst_Base::Inst_Base;
+        bool symbolic_execution(SEEngine * se) final;
+
+    };
+
 
 }

@@ -366,6 +366,10 @@ namespace tana {
             case x86::x86_insn::X86_INS_CLD:
                 return std::make_unique<INST_X86_INS_CLD>(isStatic);
 
+
+            case x86::x86_insn::X86_INS_CPUID:
+                return std::make_unique<INST_X86_INS_CPUID>(isStatic);
+
             default:
             {
                 WARN("unrecognized instructions");
@@ -2366,6 +2370,27 @@ namespace tana {
     {
         return true;
     }
+
+    bool INST_X86_INS_CPUID ::symbolic_execution(tana::SEEngine *se)
+    {
+
+        uint32_t eax_c = se->getRegisterConcreteValue("eax");
+        uint32_t ebx_c = se->getRegisterConcreteValue("ebx");
+        uint32_t ecx_c = se->getRegisterConcreteValue("ecx");
+        uint32_t edx_c = se->getRegisterConcreteValue("edx");
+
+        auto eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax_c);
+        auto ebx_v = std::make_shared<BitVector>(ValueType::CONCRETE, ebx_c);
+        auto ecx_v = std::make_shared<BitVector>(ValueType::CONCRETE, ecx_c);
+        auto edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
+
+        se->writeReg("eax", eax_v);
+        se->writeReg("ebx", ebx_v);
+        se->writeReg("ecx", ecx_v);
+        se->writeReg("edx", edx_v);
+        return true;
+    }
+
 
 
 }
