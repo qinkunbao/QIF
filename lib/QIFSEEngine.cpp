@@ -24,7 +24,8 @@
 namespace tana {
     QIFSEEngine::QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi,
                              uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OF(nullptr), SF(nullptr),
-                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0){
+                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0),
+                                                           current_eip(nullptr), next_eip(nullptr){
 
         ctx["eax"] = std::make_shared<BitVector>(ValueType ::CONCRETE, eax);
         ctx["ebx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ebx);
@@ -513,7 +514,10 @@ namespace tana {
     QIFSEEngine::run() {
         for (auto inst = start; inst != end; ) {
             auto it = inst->get();
+            current_eip = it;
             ++inst;
+            next_eip = inst->get();
+
             eip = it->addrn;
             mem_data = it->read_mem_data();
 
