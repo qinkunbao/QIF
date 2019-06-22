@@ -368,7 +368,7 @@ namespace tana {
 
     }
 
-    uint32_t SEEngine::getRegisterValue(std::string reg_name)
+    uint32_t SEEngine::getRegisterConcreteValue(std::string reg_name)
     {
         x86::x86_reg reg_id = x86::reg_string2id(reg_name);
         uint32_t reg_index = Registers::getRegIndex(reg_id);

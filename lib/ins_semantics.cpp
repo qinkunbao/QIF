@@ -1047,6 +1047,14 @@ namespace tana {
         auto opcode_id = this->instruction_id;
         auto opcstr = "bv" + x86::insn_id2string(opcode_id);
         if (this->get_operand_number() == 1) {
+            uint32_t eax_c = se->getRegisterConcreteValue("eax");
+            uint32_t edx_c = se->getRegisterConcreteValue("edx");
+
+            auto eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax_c);
+            auto edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
+
+            se->writeReg("eax", eax_v);
+            se->writeReg("edx", edx_v);
             return true;
         }
 
