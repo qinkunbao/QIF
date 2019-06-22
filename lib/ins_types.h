@@ -6,6 +6,7 @@
  ************************************************************************/
 
 #pragma once
+
 #include <vector>
 #include <string>
 #include <set>
@@ -19,6 +20,7 @@
 namespace tana {
 
     class SEEngine;
+
     const static uint32_t T_BYTE = 1;
     const static uint32_t T_WORD = 2;
     const static uint32_t T_DWORD = 4;
@@ -31,20 +33,20 @@ namespace tana {
     const static uint32_t T_BYTE_SIZE = 8;
 
     const static uint32_t BATCH_SIZE = 2000;
-	const static uint32_t FORMULA_MAX_LENGTH = 0xffff;
-	const static uint32_t FORMULA_MIN_LENGTH = 6;
+    const static uint32_t FORMULA_MAX_LENGTH = 0xffff;
+    const static uint32_t FORMULA_MIN_LENGTH = 6;
 
-	const static uint32_t MIN_NUM_INPUT = 2;
+    const static uint32_t MIN_NUM_INPUT = 2;
 
-	const static uint32_t MAX_LOOP_HISTORY = 2000;
-	const static uint32_t MIN_LOOP_LENGTH = 20;
+    const static uint32_t MAX_LOOP_HISTORY = 2000;
+    const static uint32_t MIN_LOOP_LENGTH = 20;
 
-	const static uint32_t LOOP_PRINT_FREQUENCY = 1000;
+    const static uint32_t LOOP_PRINT_FREQUENCY = 1000;
 
-	const static uint32_t MAX_IMM_NUMBER = 0xff;
+    const static uint32_t MAX_IMM_NUMBER = 0xff;
 
-	const static uint32_t MAX_INT = 0x7fffffff;
-	const static uint32_t MAX_UNSIGNED_INT = 0xffffffff;
+    const static uint32_t MAX_INT = 0x7fffffff;
+    const static uint32_t MAX_UNSIGNED_INT = 0xffffffff;
 
     namespace tana_type {
 
@@ -56,8 +58,7 @@ namespace tana {
     }
 
 
-
-    class vcpu_ctx{
+    class vcpu_ctx {
         /*
          * General Purpose Registers
          * 0 EAX
@@ -73,19 +74,26 @@ namespace tana {
     public:
         std::array<uint32_t, GPR_NUM> gpr;
 
-        void set_eflags(uint32_t data)
-        {
+        void set_eflags(uint32_t data) {
             eflags = data;
         }
+
         vcpu_ctx();
 
         bool CF() const;
+
         bool PF() const;
+
         bool AF() const;
+
         bool ZF() const;
+
         bool SF() const;
+
         bool TF() const;
+
         bool DF() const;
+
         bool OF() const;
 
         bool eflags_state;
@@ -103,7 +111,7 @@ namespace tana {
         bool issegaddr = false;
         std::string segreg;
 
-        friend std::ostream& operator<<(std::ostream &os, const Operand& opr);
+        friend std::ostream &operator<<(std::ostream &os, const Operand &opr);
     };
 
     class Inst_Base {
@@ -120,11 +128,12 @@ namespace tana {
         vcpu_ctx vcpu;
         tana_type::T_ADDRESS memory_address;
 
-        std::string get_opcode_operand() const ;
+        std::string get_opcode_operand() const;
+
         uint32_t get_operand_number() const;
 
-
         explicit Inst_Base(bool);
+
         std::string get_memory_address();
 
         void parseOperand();
@@ -135,24 +144,22 @@ namespace tana {
 
         uint32_t read_reg_data(std::string RegName) const;
 
-        virtual bool symbolic_execution(SEEngine *se)
-        {
+        virtual bool symbolic_execution(SEEngine *se) {
 
-            std::cout << "Index: " << id <<" Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
+            std::cout << "Index: " << id << " Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
             std::cout << *this;
             return true;
         };
 
-        virtual bool taint()
-        {
-            std::cout << "Index: " << id <<" Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
+        virtual bool taint() {
+            std::cout << "Index: " << id << " Unsupported Instruction: " << this->get_opcode_operand() << std::endl;
             std::cout << *this;
             return true;
         };
 
         virtual ~Inst_Base() = default;
 
-        friend std::ostream& operator<<(std::ostream &os, const Inst_Base& inst);
+        friend std::ostream &operator<<(std::ostream &os, const Inst_Base &inst);
     };
 
     class Routine {
@@ -161,7 +168,8 @@ namespace tana {
         tana_type::T_ADDRESS end_addr;   // end address of the function
         std::string rtn_name;
         std::string module_name;
-        Routine(): start_addr(0), end_addr(0), rtn_name(), module_name() {}
+
+        Routine() : start_addr(0), end_addr(0), rtn_name(), module_name() {}
     };
 
 
