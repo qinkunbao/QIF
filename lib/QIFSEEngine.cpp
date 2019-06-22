@@ -512,7 +512,7 @@ namespace tana {
 
     int
     QIFSEEngine::run() {
-        for (auto inst = start; inst != end; ) {
+        for (auto inst = start; std::next(inst) != end; ) {
             auto it = inst->get();
             current_eip = it;
             ++inst;
@@ -951,7 +951,7 @@ namespace tana {
 
     std::shared_ptr<tana::Constrain> QIFSEEngine::getMemoryAccessConstrain(
             std::shared_ptr<tana::BitVector> mem_address_symbol, std::string mem_address_str) {
-        uint32_t L = 6;  // Here we use the cache model from the CacheD paper
+        uint32_t L = 6;  // Here we use the model from the CacheD paper
 
         uint32_t mem_address_concrete = std::stoul(mem_address_str, nullptr, 16);
         uint32_t mem_address_concrete_L = mem_address_concrete >> L;
@@ -961,6 +961,13 @@ namespace tana {
         auto cons = std::make_shared<Constrain>(mem_address_symbol_L, BVOper::equal, mem_address_concrete_L);
         this->updateDAConstrains(cons);
         return cons;
+    }
+
+    uint32_t QIFSEEngine::getRegisterValue(std::string reg_name)
+    {
+        x86::x86_reg reg_id = x86::reg_string2id(reg_name);
+        uint32_t reg_index = Registers::getRegIndex(reg_id);
+        return next_eip->vcpu.gpr[reg_index];
     }
 
 }

@@ -88,6 +88,8 @@ namespace tana {
 
         void checkMemoryAccess(Inst_Base* inst);
 
+        uint32_t getRegisterValue(std::string reg_name);
+
     };
 
 }
