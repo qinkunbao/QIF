@@ -19,7 +19,7 @@ namespace tana {
         std::cout << "File name: " << file_name << "\n";
         std::cout << "Message: " << error_message << "\n";
         std::cout << "********************************\n" << std::endl;
-        //exit(0);
+        exit(0);
     }
 
     void default_warn_handler(const char *file, int line, const char *message) {

@@ -24,17 +24,16 @@
 namespace tana {
     QIFSEEngine::QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi,
                              uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OF(nullptr), SF(nullptr),
-                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0)
-                                                           {
+                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0) {
 
-        ctx["eax"] = std::make_shared<BitVector>(ValueType ::CONCRETE, eax);
-        ctx["ebx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ebx);
-        ctx["ecx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ecx);
-        ctx["edx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, edx);
-        ctx["esi"] = std::make_shared<BitVector>(ValueType ::CONCRETE, esi);
-        ctx["edi"] = std::make_shared<BitVector>(ValueType ::CONCRETE, edi);
-        ctx["esp"] = std::make_shared<BitVector>(ValueType ::CONCRETE, esp);
-        ctx["ebp"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ebp);
+        ctx["eax"] = std::make_shared<BitVector>(ValueType::CONCRETE, eax);
+        ctx["ebx"] = std::make_shared<BitVector>(ValueType::CONCRETE, ebx);
+        ctx["ecx"] = std::make_shared<BitVector>(ValueType::CONCRETE, ecx);
+        ctx["edx"] = std::make_shared<BitVector>(ValueType::CONCRETE, edx);
+        ctx["esi"] = std::make_shared<BitVector>(ValueType::CONCRETE, esi);
+        ctx["edi"] = std::make_shared<BitVector>(ValueType::CONCRETE, edi);
+        ctx["esp"] = std::make_shared<BitVector>(ValueType::CONCRETE, esp);
+        ctx["ebp"] = std::make_shared<BitVector>(ValueType::CONCRETE, ebp);
 
         eflags = true;
 
@@ -43,7 +42,7 @@ namespace tana {
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                            std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                            tana_type::T_ADDRESS address, tana_type::T_SIZE m_size,
-                           std::vector<uint8_t > key_value) {
+                           std::vector<uint8_t> key_value) {
         this->start = it1;
         this->end = it2;
 
@@ -52,14 +51,14 @@ namespace tana {
 
         for (auto offset = 0; offset < m_size; offset = offset + 1) {
             ss << "Key" << offset;
-            v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str(), T_BYTE_SIZE);
+            v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str(), T_BYTE_SIZE);
             std::stringstream mem_addr;
             mem_addr << std::hex << address + offset << std::dec;
             std::string memoryAddr = mem_addr.str();
             this->writeMem(memoryAddr, v0->size(), v0);
             ss.str("");
             this->printMemory();
-            key_value_map.insert(std::pair<int, uint32_t >(v0->id, key_value[offset]));
+            key_value_map.insert(std::pair<int, uint32_t>(v0->id, key_value[offset]));
         }
         this->printMemory();
 
@@ -72,7 +71,7 @@ namespace tana {
         std::shared_ptr<BitVector> res = nullptr;
 
 
-        if(!v->isSymbol()) {
+        if (!v->isSymbol()) {
             // v is a concrete value
             uint32_t result = eval(v);
             result = BitVector::extract(result, high, low);
@@ -91,8 +90,7 @@ namespace tana {
         bool optimized_flag = false;
 
 
-        if( low == 1 && high == 16)
-        {
+        if (low == 1 && high == 16) {
             auto v_part1 = QIFSEEngine::Extract(v, 1, 8);
             auto v_part2 = QIFSEEngine::Extract(v, 9, 16);
             res = QIFSEEngine::Concat(v_part2, v_part1);
@@ -100,8 +98,7 @@ namespace tana {
 
         }
 
-        if( low == 9 && high == 24)
-        {
+        if (low == 9 && high == 24) {
             auto v_part1 = QIFSEEngine::Extract(v, 9, 16);
             auto v_part2 = QIFSEEngine::Extract(v, 17, 24);
             res = QIFSEEngine::Concat(v_part2, v_part1);
@@ -109,8 +106,7 @@ namespace tana {
 
         }
 
-        if( low == 17 && high == 32)
-        {
+        if (low == 17 && high == 32) {
             auto v_part1 = QIFSEEngine::Extract(v, 17, 24);
             auto v_part2 = QIFSEEngine::Extract(v, 25, 32);
             res = QIFSEEngine::Concat(v_part2, v_part1);
@@ -118,8 +114,7 @@ namespace tana {
 
         }
 
-        if( low == 1 && high == 24)
-        {
+        if (low == 1 && high == 24) {
             auto v_part1 = QIFSEEngine::Extract(v, 1, 8);
             auto v_part2 = QIFSEEngine::Extract(v, 9, 16);
             auto v_part3 = QIFSEEngine::Extract(v, 17, 24);
@@ -127,8 +122,7 @@ namespace tana {
             optimized_flag = true;
         }
 
-        if( low == 9 && high == 32)
-        {
+        if (low == 9 && high == 32) {
             auto v_part1 = QIFSEEngine::Extract(v, 9, 16);
             auto v_part2 = QIFSEEngine::Extract(v, 17, 24);
             auto v_part3 = QIFSEEngine::Extract(v, 25, 32);
@@ -152,8 +146,7 @@ namespace tana {
 
 
             if (ref_opr->opty == BVOper::bvconcat) {
-                if (ref_opr->val[2] != nullptr)
-                {
+                if (ref_opr->val[2] != nullptr) {
                     v_min = v2->low_bit;
                     v_max = v2->size();
                     v2_size = v2->size();
@@ -161,15 +154,13 @@ namespace tana {
                     if ((v_min == low) && (v_max == high)) {
                         res = v2;
                         optimized_flag = true;
-                    } else if( (v_min <= low) && ( v_max >= high) )
-                    {
+                    } else if ((v_min <= low) && (v_max >= high)) {
                         res = QIFSEEngine::Extract(v2, low, high);
                         optimized_flag = true;
                     }
                 }
 
-                if (ref_opr->val[1] != nullptr)
-                {
+                if (ref_opr->val[1] != nullptr) {
                     v_min = v_max + 1;
                     v_max = v_min + v1->size() - 1;
                     v1_size = v1->size();
@@ -177,29 +168,26 @@ namespace tana {
                     if ((v_min == low) && (v_max == high)) {
                         res = v1;
                         optimized_flag = true;
-                    } else if( (v_min <= low) && ( v_max >= high) )
-                    {
+                    } else if ((v_min <= low) && (v_max >= high)) {
                         res = QIFSEEngine::Extract(v1, low - v2_size, high - v2_size);
                         optimized_flag = true;
                     }
                 }
 
-                if (v->opr->val[0] != nullptr)
-                {
+                if (v->opr->val[0] != nullptr) {
                     v_min = v_max + 1;
                     v_max = v_min + v0->size() - 1;
                     if ((v_min == low) && (v_max == high)) {
                         res = v0;
                         optimized_flag = true;
-                    } else if( (v_min <= low) && ( v_max >= high) )
-                    {
+                    } else if ((v_min <= low) && (v_max >= high)) {
                         res = QIFSEEngine::Extract(v0, low - v2_size - v1_size, high - v2_size - v1_size);
                         optimized_flag = true;
                     }
                 }
             }
 
-            if(!optimized_flag) {
+            if (!optimized_flag) {
                 res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
                 res->high_bit = high;
                 res->low_bit = low;
@@ -216,7 +204,7 @@ namespace tana {
 
     std::vector<std::shared_ptr<BitVector>> QIFSEEngine::getAllOutput() {
         std::vector<std::shared_ptr<BitVector>> outputs;
-        auto v = std::make_shared<BitVector>(ValueType ::CONCRETE, 0);
+        auto v = std::make_shared<BitVector>(ValueType::CONCRETE, 0);
         outputs.push_back(v);
         return outputs;
     }
@@ -325,16 +313,14 @@ namespace tana {
         std::shared_ptr<BitVector> v0, v1;
         uint32_t offset = memory_address % 4;
         //Debug
-        if(memory_find(memory_address - offset))
-        {
+        if (memory_find(memory_address - offset)) {
             std::shared_ptr<BitVector> v_test = memory.at(memory_address - offset);
-            if(v_test->symbol_num() == 0)
-            {
+            if (v_test->symbol_num() == 0) {
                 uint32_t calculate = QIFSEEngine::eval(v_test);
                 uint32_t con = mem_data;
                 //std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex <<con << std::dec <<std::endl;
                 //std::cout << std::endl << memory_address_str << std::endl;
-                if(con != calculate) {
+                if (con != calculate) {
 
                     ERROR("Memory Error");
                     memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
@@ -351,7 +337,7 @@ namespace tana {
             } else {
                 std::stringstream ss;
                 ss << "Environment data: " << memory_address_str << std::dec;
-                v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                v0 = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
                 memory[memory_address] = v0;
                 assert(v0 != nullptr);
             }
@@ -364,41 +350,37 @@ namespace tana {
             } else {
                 std::stringstream ss;
                 ss << "Environment data: " << memory_address_str << std::dec;
-                v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                v0 = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
                 memory[memory_address - offset] = v0;
                 assert(v0 != nullptr);
             }
-            if(offset == 0)
-            {
+            if (offset == 0) {
                 v1 = QIFSEEngine::Extract(v0, 1, 16);
-            } else{
+            } else {
                 v1 = QIFSEEngine::Extract(v0, 17, 32);
             }
 
             return v1;
         }
 
-        if (size == T_BYTE_SIZE * T_BYTE)
-        {
+        if (size == T_BYTE_SIZE * T_BYTE) {
             if (memory_find(memory_address - offset)) {
                 v0 = memory[memory_address - offset];
             } else {
                 std::stringstream ss;
                 ss << "Environment data: " << memory_address_str << std::dec;
-                v0 = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                v0 = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
                 memory[memory_address - offset] = v0;
                 assert(v0 != nullptr);
             }
-            if(offset == 0) {
+            if (offset == 0) {
                 v1 = QIFSEEngine::Extract(v0, 1, 8);
-            }
-            else if(offset == 1) {
+            } else if (offset == 1) {
                 v1 = SEEngine::Extract(v0, 9, 16);
-            } else if(offset == 2)
-            {
+            } else if (offset == 2) {
                 v1 = QIFSEEngine::Extract(v0, 17, 24);
 
-            } else{
+            } else {
                 v1 = QIFSEEngine::Extract(v0, 25, 32);
 
             }
@@ -424,7 +406,7 @@ namespace tana {
         if (addr_size == T_BYTE_SIZE * T_DWORD) {
             //assert(memory_address % 4 == 0);
             memory[memory_address] = v;
-            assert(v!= nullptr);
+            assert(v != nullptr);
             return true;
         }
 
@@ -434,12 +416,12 @@ namespace tana {
             } else {
                 std::stringstream ss;
                 ss << "Mem:" << std::hex << memory_address << std::dec;
-                v_mem_origin = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                v_mem_origin = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
                 assert(v_mem_origin != nullptr);
                 memory[memory_address - offset] = v_mem_origin;
             }
 
-            if(offset == 0) {
+            if (offset == 0) {
                 std::shared_ptr<BitVector> v1 = SEEngine::Extract(v_mem_origin, 17, 32);
                 if (!v->isSymbol()) {
                     v = QIFSEEngine::Extract(v, 1, 16);
@@ -463,19 +445,18 @@ namespace tana {
             } else {
                 std::stringstream ss;
                 ss << "Mem:" << std::hex << memory_address << std::dec;
-                v_mem_origin = std::make_shared<BitVector>(ValueType ::CONCRETE, mem_data);
+                v_mem_origin = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
                 assert(v_mem_origin != nullptr);
                 memory[memory_address - offset] = v_mem_origin;
             }
 
-            if(offset == 0) {
+            if (offset == 0) {
                 std::shared_ptr<BitVector> v1 = QIFSEEngine::Extract(v_mem_origin, 9, 32);
                 if (!v->isSymbol()) {
                     v = QIFSEEngine::Extract(v, 1, 8);
                 }
                 v_mem = QIFSEEngine::Concat(v1, v);
-            } else if (offset == 1)
-            {
+            } else if (offset == 1) {
                 std::cout << *v_mem_origin << std::endl;
                 std::shared_ptr<BitVector> v1 = QIFSEEngine::Extract(v_mem_origin, 1, 8);
                 std::shared_ptr<BitVector> v2 = QIFSEEngine::Extract(v_mem_origin, 17, 32);
@@ -484,16 +465,14 @@ namespace tana {
                 }
                 v_mem = QIFSEEngine::Concat(v2, v, v1);
 
-            } else if (offset == 2)
-            {
+            } else if (offset == 2) {
                 std::shared_ptr<BitVector> v1 = QIFSEEngine::Extract(v_mem_origin, 1, 16);
                 std::shared_ptr<BitVector> v2 = QIFSEEngine::Extract(v_mem_origin, 25, 32);
                 if (!v->isSymbol()) {
                     v = QIFSEEngine::Extract(v, 1, 8);
                 }
                 v_mem = QIFSEEngine::Concat(v2, v, v1);
-            } else
-            {
+            } else {
                 std::shared_ptr<BitVector> v1 = QIFSEEngine::Extract(v_mem_origin, 1, 24);
                 if (!v->isSymbol()) {
                     v = QIFSEEngine::Extract(v, 1, 8);
@@ -512,7 +491,7 @@ namespace tana {
 
     int
     QIFSEEngine::run() {
-        for (auto inst = start; std::next(inst) != end; ) {
+        for (auto inst = start; std::next(inst) != end;) {
             auto it = inst->get();
             current_eip = it;
             ++inst;
@@ -538,7 +517,7 @@ namespace tana {
             std::vector<uint32_t> con_res;
 
             // Get the  concrete register value after the SE
-            if(inst != end) {
+            if (inst != end) {
                 for (uint32_t i = 0; i < 8; ++i) {
                     con_res.push_back(inst->get()->vcpu.gpr[i]);
                 }
@@ -546,27 +525,29 @@ namespace tana {
                 //std::cout << it->id << ": ";
                 for (uint32_t j = 0; j < 8; ++j) {
                     //std::cout << *sym_res[j] << " = " << std::hex << con_res[j] << std::dec <<" || ";
-                    if((sym_res[j])->symbol_num() == 0) {
-
-                        auto res = eval(sym_res[j]);
-                        if (res == con_res[j])
-                        {
-                            auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
-                            writeReg(Registers::convertRegID2RegName(j), reg_v);
-                        }
-
-                        if (res != con_res[j]) {
-                            std::cout << std::endl << "Error: " << std::hex << it->addrn << std::dec << std::endl;
-                            std::cout << "Register: " << Registers::convertRegID2RegName(j) << std::endl;
-                            std::cout << "Symbolic: " << std::hex << res << std::dec << std::endl;
-                            std::cout << "Concrete: " << std::hex << con_res[j] << std::dec << std::endl;
-                            std::cout << "Previous: " << *it << std::endl;
-                            std::cout << "Present: " << *(inst->get()) << std::endl;
-                            auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
-                            writeReg(Registers::convertRegID2RegName(j), reg_v);
-                            ERROR("ERROR");
-                        }
+                    uint32_t res;
+                    if ((sym_res[j])->symbol_num() == 0) {
+                        res = eval(sym_res[j]);
+                    } else {
+                        res = eval(sym_res[j], key_value_map);
                     }
+                    if ((res == con_res[j])&&((sym_res[j])->symbol_num() == 0)) {
+                        auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
+                        writeReg(Registers::convertRegID2RegName(j), reg_v);
+                    }
+
+                    if (res != con_res[j]) {
+                        std::cout << std::endl << "Error: " << std::hex << it->addrn << std::dec << std::endl;
+                        std::cout << "Register: " << Registers::convertRegID2RegName(j) << std::endl;
+                        std::cout << "Symbolic: " << std::hex << res << std::dec << std::endl;
+                        std::cout << "Concrete: " << std::hex << con_res[j] << std::dec << std::endl;
+                        std::cout << "Previous: " << *it << std::endl;
+                        std::cout << "Present: " << *(inst->get()) << std::endl;
+                        auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
+                        writeReg(Registers::convertRegID2RegName(j), reg_v);
+                        ERROR("ERROR");
+                    }
+
                 }
                 //std::cout << std::endl;
             }
@@ -579,40 +560,33 @@ namespace tana {
         return true;
     }
 
-    void QIFSEEngine::updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons)
-    {
-        if(flag_name == "CF")
-        {
+    void QIFSEEngine::updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons) {
+        if (flag_name == "CF") {
             this->CF = cons;
             return;
         }
 
-        if(flag_name == "OF")
-        {
+        if (flag_name == "OF") {
             this->OF = cons;
             return;
         }
 
-        if(flag_name == "SF")
-        {
+        if (flag_name == "SF") {
             this->SF = cons;
             return;
         }
 
-        if(flag_name == "ZF")
-        {
+        if (flag_name == "ZF") {
             this->ZF = cons;
             return;
         }
 
-        if(flag_name == "AF")
-        {
+        if (flag_name == "AF") {
             this->AF = cons;
             return;
         }
 
-        if(flag_name == "PF")
-        {
+        if (flag_name == "PF") {
             this->PF = cons;
             return;
         }
@@ -620,41 +594,33 @@ namespace tana {
         ERROR("Not recognized flag_name");
     }
 
-    void QIFSEEngine::clearFlags(std::string flag_name)
-    {
+    void QIFSEEngine::clearFlags(std::string flag_name) {
         std::shared_ptr<BitVector> con = std::make_shared<BitVector>(ValueType::CONCRETE, 0);
         this->updateFlags(flag_name, con);
     }
 
-    std::shared_ptr<tana::BitVector> QIFSEEngine::getFlags(std::string flag_name)
-    {
-        if(flag_name == "CF")
-        {
+    std::shared_ptr<tana::BitVector> QIFSEEngine::getFlags(std::string flag_name) {
+        if (flag_name == "CF") {
             return CF;
         }
 
-        if(flag_name == "OF")
-        {
+        if (flag_name == "OF") {
             return OF;
         }
 
-        if(flag_name == "SF")
-        {
+        if (flag_name == "SF") {
             return SF;
         }
 
-        if(flag_name == "ZF")
-        {
+        if (flag_name == "ZF") {
             return ZF;
         }
 
-        if(flag_name == "AF")
-        {
+        if (flag_name == "AF") {
             return AF;
         }
 
-        if(flag_name == "PF")
-        {
+        if (flag_name == "PF") {
             return PF;
         }
 
@@ -662,32 +628,28 @@ namespace tana {
         return nullptr;
     }
 
-    void QIFSEEngine::updateCFConstrains(std::shared_ptr<Constrain> cons)
-    {
+    void QIFSEEngine::updateCFConstrains(std::shared_ptr<Constrain> cons) {
         auto res = std::make_tuple(this->eip, cons, LeakageType::CFLeakage);
         constrains.push_back(res);
     }
 
-    void QIFSEEngine::updateDAConstrains(std::shared_ptr<Constrain> cons)
-    {
+    void QIFSEEngine::updateDAConstrains(std::shared_ptr<Constrain> cons) {
         auto res = std::make_tuple(this->eip, cons, LeakageType::DALeakage);
         constrains.push_back(res);
     }
 
 
-    void QIFSEEngine::printConstrains()
-    {
+    void QIFSEEngine::printConstrains() {
         std::cout << "\n";
-        for(const auto& element : constrains)
-        {
+        for (const auto &element : constrains) {
             auto addr = std::get<0>(element);
             auto &con = std::get<1>(element);
             LeakageType type = std::get<2>(element);
             bool Valid = con->validate();
             std::string valid_str = Valid ? " True " : " False ";
-            std::string type_str = type == LeakageType ::CFLeakage? "CFleakage" : "DALeakage";
+            std::string type_str = type == LeakageType::CFLeakage ? "CFleakage" : "DALeakage";
 
-            if(!Valid) {
+            if (!Valid) {
                 std::cout << "Addr: " << std::hex << addr << std::dec << valid_str;
                 std::cout << " Constrain: " << *con;
                 std::cout << " Type: " << type_str << std::endl;
@@ -696,38 +658,31 @@ namespace tana {
     }
 
     // Reduce constrains that don't have symbols
-    void QIFSEEngine::reduceConstrains()
-    {
+    void QIFSEEngine::reduceConstrains() {
         auto con = constrains.begin();
-        while(con != constrains.end())
-        {
-            std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType > con_tuple = *con;
+        while (con != constrains.end()) {
+            std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType> con_tuple = *con;
             std::shared_ptr<Constrain> constrain = std::get<1>(con_tuple);
-            if(constrain->getNumSymbols() == 0)
-            {
+            if (constrain->getNumSymbols() == 0) {
                 con = constrains.erase(con);
-            }
-            else
+            } else
                 ++con;
 
         }
 
     }
 
-    void QIFSEEngine::printMemory()
-    {
-        for (auto const& x : memory)
-        {
+    void QIFSEEngine::printMemory() {
+        for (auto const &x : memory) {
             std::cout << std::hex << x.first << std::dec  // string (key)
                       << ':'
                       << *(x.second) // string's value
-                      << std::endl ;
+                      << std::endl;
         }
 
     }
 
-    float QIFSEEngine::getEntropy(std::vector<uint8_t > key_value)
-    {
+    float QIFSEEngine::getEntropy(std::vector<uint8_t> key_value) {
         using clock = std::chrono::system_clock;
         using ms = std::chrono::milliseconds;
         const auto before = clock::now();
@@ -736,111 +691,95 @@ namespace tana {
         FastMonteCarlo res(100000, constrains, key_value);
         res.verifyConstrain();
         res.run();
-        float MonteCarloResult= res.getResult();
+        float MonteCarloResult = res.getResult();
 
         const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
 
-        std::cout << "It took " << duration.count()/1000.0 << "ms"
-        << " to finish the monte carlo sampling"<< std::endl;
-        return abs(-log(MonteCarloResult)/log(2));
+        std::cout << "It took " << duration.count() / 1000.0 << "ms"
+                  << " to finish the monte carlo sampling" << std::endl;
+        return abs(-log(MonteCarloResult) / log(2));
     }
 
-    void QIFSEEngine::checkMemoryAccess(tana::Inst_Base *inst)
-    {
+    void QIFSEEngine::checkMemoryAccess(tana::Inst_Base *inst) {
         int oprd_num = 0, memory_num = 0, memory_index = 0;
-        if(inst->oprd[0] != nullptr)  ++oprd_num;
-        if(inst->oprd[1] != nullptr)  ++oprd_num;
-        if(inst->oprd[2] != nullptr)  ++oprd_num;
+        if (inst->oprd[0] != nullptr) ++oprd_num;
+        if (inst->oprd[1] != nullptr) ++oprd_num;
+        if (inst->oprd[2] != nullptr) ++oprd_num;
 
-        if(oprd_num == 0)
+        if (oprd_num == 0)
             return;
 
-        if(oprd_num == 1)
-        {
-            if(inst->oprd[0]->type == Operand::Mem)
-            {
+        if (oprd_num == 1) {
+            if (inst->oprd[0]->type == Operand::Mem) {
                 memory_index = 0;
                 ++memory_num;
             }
         }
 
-        if(oprd_num == 2)
-        {
-            if(inst->oprd[0]->type == Operand::Mem)
-            {
+        if (oprd_num == 2) {
+            if (inst->oprd[0]->type == Operand::Mem) {
                 memory_index = 0;
                 ++memory_num;
             }
-            if(inst->oprd[1]->type == Operand::Mem)
-            {
+            if (inst->oprd[1]->type == Operand::Mem) {
                 memory_index = 1;
                 ++memory_num;
             }
 
         }
 
-        if(oprd_num == 3)
-        {
-            if(inst->oprd[0]->type == Operand::Mem)
-            {
+        if (oprd_num == 3) {
+            if (inst->oprd[0]->type == Operand::Mem) {
                 memory_index = 0;
                 ++memory_num;
             }
-            if(inst->oprd[1]->type == Operand::Mem)
-            {
+            if (inst->oprd[1]->type == Operand::Mem) {
                 memory_index = 1;
                 ++memory_num;
             }
-            if(inst->oprd[2]->type == Operand::Mem)
-            {
+            if (inst->oprd[2]->type == Operand::Mem) {
                 memory_index = 2;
                 ++memory_num;
             }
         }
 
-        if(memory_num == 0)
+        if (memory_num == 0)
             return;
 
         checkOperand(inst->oprd[memory_index], inst);
 
     }
 
-    void QIFSEEngine::checkOperand(const std::shared_ptr<tana::Operand> &opr, Inst_Base* inst)
-    {
+    void QIFSEEngine::checkOperand(const std::shared_ptr<tana::Operand> &opr, Inst_Base *inst) {
         assert(opr->type == Operand::Mem);
 
         //std::cout << "Inst: " << *inst << std::endl;
         //std::cout << "MemOperand: " << *opr << std::endl;
-        switch (opr->tag)
-        {
+        switch (opr->tag) {
             case 1: {
                 // Immediate Value
                 return;
             }
-            case 2:
-            {
+            case 2: {
                 // 32 bit register value
                 auto reg = opr->field[0];
                 auto regV = this->readReg(reg);
                 auto regV_num = regV->symbol_num();
 
-                if(regV_num == 0)
-                {
+                if (regV_num == 0) {
                     return;
                 }
                 this->getMemoryAccessConstrain(regV, inst->get_memory_address());
 
                 return;
             }
-            case 3:
-            {
+            case 3: {
                 // eax*2
                 auto reg = opr->field[0];
                 auto regV = this->readReg(reg);
                 auto regV_num = regV->symbol_num();
 
-                if(regV_num == 0)
-                {
+                if (regV_num == 0) {
                     return;
                 }
 
@@ -850,15 +789,13 @@ namespace tana {
 
                 return;
             }
-            case 4:
-            {
+            case 4: {
                 // eax+0xffffff
                 auto reg = opr->field[0];
                 auto regV = this->readReg(reg);
                 auto regV_num = regV->symbol_num();
 
-                if(regV_num == 0)
-                {
+                if (regV_num == 0) {
                     return;
                 }
 
@@ -870,8 +807,7 @@ namespace tana {
 
                 return;
             }
-            case 5:
-            {
+            case 5: {
                 // eax+ebx*2
                 auto reg1 = opr->field[0];
                 auto reg2 = opr->field[1];
@@ -880,8 +816,7 @@ namespace tana {
                 auto regV1_num = regV1->symbol_num();
                 auto regV2_num = regV2->symbol_num();
 
-                if( (regV1_num + regV2_num) == 0)
-                {
+                if ((regV1_num + regV2_num) == 0) {
                     return;
                 }
 
@@ -892,15 +827,13 @@ namespace tana {
 
                 return;
             }
-            case 6:
-            {
+            case 6: {
                 // eax*2+0xffffff
                 auto reg = opr->field[0];
                 auto regV = this->readReg(reg);
                 auto regV_num = regV->symbol_num();
 
-                if(regV_num == 0)
-                {
+                if (regV_num == 0) {
                     return;
                 }
 
@@ -915,8 +848,7 @@ namespace tana {
 
                 return;
             }
-            case 7:
-            {
+            case 7: {
                 // eax+ebx*2+0xffffff
                 auto reg1 = opr->field[0];
                 auto reg2 = opr->field[1];
@@ -925,8 +857,7 @@ namespace tana {
                 auto regV1_num = regV1->symbol_num();
                 auto regV2_num = regV2->symbol_num();
 
-                if( (regV1_num + regV2_num) == 0)
-                {
+                if ((regV1_num + regV2_num) == 0) {
                     return;
                 }
 
@@ -962,7 +893,6 @@ namespace tana {
         this->updateDAConstrains(cons);
         return cons;
     }
-
 
 
 }
