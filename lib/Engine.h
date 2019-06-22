@@ -32,6 +32,8 @@ namespace tana {
         std::vector<std::unique_ptr<Inst_Base>>::iterator start;
         std::vector<std::unique_ptr<Inst_Base>>::iterator end;
 
+        Inst_Base *current_eip, *next_eip;
+
         explicit SEEngine(bool type);
 
         static std::shared_ptr<BitVector> ZeroExt(std::shared_ptr<BitVector> v, tana_type::T_SIZE);
@@ -117,6 +119,9 @@ namespace tana {
 
 
         virtual ~SEEngine()= default;
+
+        uint32_t getRegisterValue(std::string reg_name);
+
 
     };
 

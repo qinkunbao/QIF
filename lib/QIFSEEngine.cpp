@@ -24,8 +24,8 @@
 namespace tana {
     QIFSEEngine::QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi,
                              uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OF(nullptr), SF(nullptr),
-                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0),
-                                                           current_eip(nullptr), next_eip(nullptr){
+                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0)
+                                                           {
 
         ctx["eax"] = std::make_shared<BitVector>(ValueType ::CONCRETE, eax);
         ctx["ebx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ebx);
@@ -963,11 +963,6 @@ namespace tana {
         return cons;
     }
 
-    uint32_t QIFSEEngine::getRegisterValue(std::string reg_name)
-    {
-        x86::x86_reg reg_id = x86::reg_string2id(reg_name);
-        uint32_t reg_index = Registers::getRegIndex(reg_id);
-        return next_eip->vcpu.gpr[reg_index];
-    }
+
 
 }

@@ -38,7 +38,6 @@ namespace tana {
                                                                   std::string mem_address_concrete);
         std::map<int, uint32_t > key_value_map;
 
-        Inst_Base *current_eip, *next_eip;
     public:
 
         using SEEngine::SEEngine;
@@ -88,7 +87,6 @@ namespace tana {
 
         void checkMemoryAccess(Inst_Base* inst);
 
-        uint32_t getRegisterValue(std::string reg_name);
 
     };
 
