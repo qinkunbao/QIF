@@ -120,7 +120,7 @@ namespace tana {
 
         virtual ~SEEngine()= default;
 
-        uint32_t getRegisterValue(std::string reg_name);
+        uint32_t getRegisterConcreteValue(std::string reg_name);
 
 
     };
