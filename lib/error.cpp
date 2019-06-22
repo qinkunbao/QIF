@@ -7,7 +7,7 @@
 
 #include <string>
 #include <iostream>
-
+#include <map>
 #include "error.h"
 
 namespace tana {
@@ -31,4 +31,21 @@ namespace tana {
         std::cout << "Message: " << error_message << "\n";
         std::cout << "********************************\n" << std::endl;
     }
+
+    void debug_map(const std::map<int , uint32_t > &value_map)
+    {
+        for( auto const& [key, val] : value_map )
+        {
+            std::cout << key
+                      << ':'
+                      << std::hex
+                      << val
+                      << std::dec
+                      << " ";
+        }
+
+        std::cout << std::endl;
+    }
+
+
 }

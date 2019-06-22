@@ -41,7 +41,8 @@ namespace tana {
 
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                            std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
-                           tana_type::T_ADDRESS address, tana_type::T_SIZE m_size) {
+                           tana_type::T_ADDRESS address, tana_type::T_SIZE m_size,
+                           std::vector<uint8_t > key_value) {
         this->start = it1;
         this->end = it2;
 
@@ -57,8 +58,8 @@ namespace tana {
             this->writeMem(memoryAddr, v0->size(), v0);
             ss.str("");
             this->printMemory();
+            key_value_map.insert(std::pair<int, uint32_t >(v0->id, key_value[offset]));
         }
-
         this->printMemory();
 
     }
