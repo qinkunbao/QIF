@@ -1047,7 +1047,6 @@ namespace tana {
         auto opcode_id = this->instruction_id;
         auto opcstr = "bv" + x86::insn_id2string(opcode_id);
         if (this->get_operand_number() == 1) {
-            //TODO
             return true;
         }
 

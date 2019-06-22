@@ -24,7 +24,7 @@
 namespace tana {
     QIFSEEngine::QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi,
                              uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OF(nullptr), SF(nullptr),
-                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0) {
+                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0){
 
         ctx["eax"] = std::make_shared<BitVector>(ValueType ::CONCRETE, eax);
         ctx["ebx"] = std::make_shared<BitVector>(ValueType ::CONCRETE, ebx);
@@ -513,6 +513,7 @@ namespace tana {
     QIFSEEngine::run() {
         for (auto inst = start; inst != end; ) {
             auto it = inst->get();
+            ++inst;
             eip = it->addrn;
             mem_data = it->read_mem_data();
 
@@ -531,7 +532,6 @@ namespace tana {
             sym_res.push_back(ctx["esp"]);
             sym_res.push_back(ctx["ebp"]);
             std::vector<uint32_t> con_res;
-            ++inst;
 
             // Get the  concrete register value after the SE
             if(inst != end) {
