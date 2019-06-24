@@ -543,4 +543,17 @@ namespace tana {
     };
 
 
+    class INST_X86_INS_CMOVNB : public Inst_Base{
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final ;
+    };
+
+    class INST_X86_INS_CDQ : public Inst_Base {
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+
 }

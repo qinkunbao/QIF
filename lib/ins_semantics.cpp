@@ -369,6 +369,12 @@ namespace tana {
             case x86::x86_insn::X86_INS_CPUID:
                 return std::make_unique<INST_X86_INS_CPUID>(isStatic);
 
+            case x86::x86_insn::X86_INS_CMOVNB:
+                return std::make_unique<INST_X86_INS_CMOVNB>(isStatic);
+
+            case x86::x86_insn::X86_INS_CDQ:
+                return std::make_unique<INST_X86_INS_CDQ>(isStatic);
+
             default: {
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
@@ -2386,5 +2392,80 @@ namespace tana {
         return true;
     }
 
+    bool INST_X86_INS_CMOVNB::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        if(this->vcpu.CF())
+            return true;
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v0, v1, res;
+
+        if (op0->type == Operand::Reg) {
+            if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
+                uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+                v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete),
+                                                 op0->bit);
+                se->writeReg(op0->field[0], v1);
+                return true;
+            }
+            if (op1->type == Operand::Reg) { // mov reg, reg
+                v1 = se->readReg(op1->field[0]);
+                se->writeReg(op0->field[0], v1);
+                return true;
+            }
+            if (op1->type == Operand::Mem) { // mov reg, dword ptr [ebp+0x1]
+                /* 1. Get mem address
+                2. check whether the mem address has been accessed
+                3. if not, create a new value
+                4. else load the value in that memory
+                */
+                v1 = se->readMem(this->get_memory_address(), op1->bit);
+                se->writeReg(op0->field[0], v1);
+                return true;
+            }
+
+            ERROR("op1 is not ImmValue, Reg or Mem");
+            return false;
+        }
+        if (op0->type == Operand::Mem) {
+            if (op1->type == Operand::ImmValue) { // mov dword ptr [ebp+0x1], 0x1111
+                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+                se->writeMem(this->get_memory_address(), op0->bit,
+                             std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete,
+                                                         se->isImmSym(temp_concrete), op0->bit));
+                return true;
+            } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
+                //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
+                v1 = se->readReg(op1->field[0]);
+                se->writeMem(this->get_memory_address(), op1->bit, v1);
+                return true;
+            }
+        }
+        ERROR("Error: The first operand in MOV is not Reg or Mem!");
+        return false;
+
+    }
+
+    bool INST_X86_INS_CDQ::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        auto eax_v = se->readReg("eax");
+        if(eax_v->symbol_num() == 0)
+        {
+            auto edx_c = se->getRegisterConcreteValue("edx");
+            auto edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
+            se->writeReg("edx", edx_v);
+            return true;
+        }
+
+        return true;
+
+    }
 
 }
