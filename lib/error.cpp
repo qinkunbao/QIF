@@ -12,7 +12,7 @@
 
 namespace tana {
     void default_error_handler(const char *file, int line, const char *message) {
-        std::string file_name(file);
+         std::string file_name(file);
         std::string error_message(message);
         std::cout << "\n********************************" << std::endl;
         std::cout << "Error at :" << line << "\n";
