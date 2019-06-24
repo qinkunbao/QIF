@@ -315,6 +315,8 @@ namespace tana {
         //Debug
         if (memory_find(memory_address - offset)) {
             std::shared_ptr<BitVector> v_test = memory.at(memory_address - offset);
+            //debug_map(key_value_map);
+            //std::cout << *v_test << std::endl;
             uint32_t calculate = 0, con = 0;
             if (v_test->symbol_num() == 0) {
                 calculate = QIFSEEngine::eval(v_test);
@@ -322,8 +324,10 @@ namespace tana {
                 calculate = QIFSEEngine::eval(v_test, key_value_map);
             }
             con = mem_data;
+            auto con_t = BitVector::extract(con, size, 1);
+            auto calculate_t = BitVector::extract(calculate, size, 1);
 
-            if (con != calculate) {
+            if (con_t != calculate_t) {
 
                 std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex << con << std::dec << std::endl;
                 std::cout << std::endl << memory_address_str << std::endl;
@@ -562,6 +566,7 @@ namespace tana {
             }
 
         }
+        this->printConstrains();
         return true;
     }
 
@@ -694,7 +699,7 @@ namespace tana {
 
         //float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
         FastMonteCarlo res(100000, constrains, key_value);
-        res.verifyConstrain();
+        //res.verifyConstrain();
         res.run();
         float MonteCarloResult = res.getResult();
 
