@@ -18,8 +18,7 @@ namespace tana {
         r = buildop2(relation, bit, num);
     }
 
-    void Constrain::update(BVOper add_type, std::shared_ptr<tana::BitVector> b, BVOper type, uint32_t num)
-    {
+    void Constrain::update(BVOper add_type, std::shared_ptr<tana::BitVector> b, BVOper type, uint32_t num) {
         auto constrain = buildop2(type, b, num);
         r = buildop2(add_type, r, constrain);
     }
@@ -31,15 +30,12 @@ namespace tana {
 
     }
 
-    uint32_t Constrain::getNumSymbols()
-    {
+    uint32_t Constrain::getNumSymbols() {
         return r->symbol_num();
     }
 
-    bool Constrain::validate()
-    {
-        if(r->symbol_num() > 0)
-        {
+    bool Constrain::validate() {
+        if (r->symbol_num() > 0) {
             return false;
         }
 
@@ -51,18 +47,18 @@ namespace tana {
         uint32_t v_left_con = SEEngine::eval(v_left);
         uint32_t v_right_con = SEEngine::eval(v_right);
 
-        switch (relation){
-            case BVOper ::greater:
+        switch (relation) {
+            case BVOper::greater:
                 return v_left_con > v_right_con;
-            case BVOper ::less:
+            case BVOper::less:
                 return v_left_con < v_right_con;
-            case BVOper ::equal:
+            case BVOper::equal:
                 return v_left_con == v_right_con;
-            case BVOper ::noequal:
+            case BVOper::noequal:
                 return v_left_con != v_right_con;
-            case BVOper ::bvand:
+            case BVOper::bvand:
                 return v_left_con && v_right_con;
-            case BVOper ::bvor:
+            case BVOper::bvor:
                 return v_left_con || v_right_con;
             default:
                 ERROR("Invalid BVOper");
@@ -70,10 +66,8 @@ namespace tana {
         }
     }
 
-    bool Constrain::validate(const std::map<int, uint32_t>& input_map )
-    {
-        if(r->symbol_num() == 0)
-        {
+    bool Constrain::validate(const std::map<int, uint32_t> &input_map) {
+        if (r->symbol_num() == 0) {
             return false;
         }
         auto &bv = (r)->opr;
@@ -84,18 +78,18 @@ namespace tana {
         uint32_t v_left_con = SEEngine::eval(v_left, input_map);
         uint32_t v_right_con = SEEngine::eval(v_right, input_map);
 
-        switch (relation){
-            case BVOper ::greater:
+        switch (relation) {
+            case BVOper::greater:
                 return v_left_con > v_right_con;
-            case BVOper ::less:
+            case BVOper::less:
                 return v_left_con < v_right_con;
-            case BVOper ::equal:
+            case BVOper::equal:
                 return v_left_con == v_right_con;
-            case BVOper ::noequal:
+            case BVOper::noequal:
                 return v_left_con != v_right_con;
-            case BVOper ::bvand:
+            case BVOper::bvand:
                 return v_left_con && v_right_con;
-            case BVOper ::bvor:
+            case BVOper::bvor:
                 return v_left_con || v_right_con;
             default:
                 ERROR("Invalid BVOper");
@@ -113,23 +107,23 @@ namespace tana {
         auto num = bv->val[1];
 
         os << *con;
-        switch (relation){
-            case BVOper ::greater:
+        switch (relation) {
+            case BVOper::greater:
                 os << " > ";
                 break;
-            case BVOper ::less:
+            case BVOper::less:
                 os << " < ";
                 break;
-            case BVOper ::equal:
+            case BVOper::equal:
                 os << " == ";
                 break;
-            case BVOper ::noequal:
+            case BVOper::noequal:
                 os << " != ";
                 break;
-            case BVOper ::bvand:
+            case BVOper::bvand:
                 os << " && ";
                 break;
-            case BVOper ::bvor:
+            case BVOper::bvor:
                 os << " | ";
                 break;
             default:
@@ -142,8 +136,7 @@ namespace tana {
         return os;
     }
 
-    std::vector<int> Constrain::getInputKeys()
-    {
+    std::vector<int> Constrain::getInputKeys() {
         return r->getInputSymbolVector();
     }
 

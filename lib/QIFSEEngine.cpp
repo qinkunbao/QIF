@@ -315,17 +315,22 @@ namespace tana {
         //Debug
         if (memory_find(memory_address - offset)) {
             std::shared_ptr<BitVector> v_test = memory.at(memory_address - offset);
+            uint32_t calculate = 0, con = 0;
             if (v_test->symbol_num() == 0) {
-                uint32_t calculate = QIFSEEngine::eval(v_test);
-                uint32_t con = mem_data;
-                //std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex <<con << std::dec <<std::endl;
-                //std::cout << std::endl << memory_address_str << std::endl;
-                if (con != calculate) {
-
-                    ERROR("Memory Error");
-                    memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
-                }
+                calculate = QIFSEEngine::eval(v_test);
+            } else {
+                calculate = QIFSEEngine::eval(v_test, key_value_map);
             }
+            con = mem_data;
+
+            if (con != calculate) {
+
+                std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex << con << std::dec << std::endl;
+                std::cout << std::endl << memory_address_str << std::endl;
+                ERROR("Memory Error");
+                memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
+            }
+
         }
         //Debug
 
@@ -531,7 +536,7 @@ namespace tana {
                     } else {
                         res = eval(sym_res[j], key_value_map);
                     }
-                    if ((res == con_res[j])&&((sym_res[j])->symbol_num() == 0)) {
+                    if ((res == con_res[j]) && ((sym_res[j])->symbol_num() == 0)) {
                         auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
                         writeReg(Registers::convertRegID2RegName(j), reg_v);
                     }

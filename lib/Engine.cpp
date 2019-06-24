@@ -32,8 +32,7 @@ namespace tana {
     }
 
 
-    SEEngine::SEEngine(bool state_type) : next_eip(nullptr)
-    {
+    SEEngine::SEEngine(bool state_type) : next_eip(nullptr) {
         imm2sym = state_type;
         eflags = false;
     }
@@ -332,7 +331,7 @@ namespace tana {
                     return op0 % op1;
                 case BVOper::equal:
                     return op0 == op1;
-                case BVOper ::noequal:
+                case BVOper::noequal:
                     return op0 != op1;
                 case BVOper::greater:
                     return op0 > op1;
@@ -340,7 +339,7 @@ namespace tana {
                     return op0 < op1;
 
                 case BVOper::bvbitnot:
-                    return op0? 0 : 1;
+                    return op0 ? 0 : 1;
             }
 
 
@@ -368,8 +367,7 @@ namespace tana {
 
     }
 
-    uint32_t SEEngine::getRegisterConcreteValue(std::string reg_name)
-    {
+    uint32_t SEEngine::getRegisterConcreteValue(std::string reg_name) {
         x86::x86_reg reg_id = x86::reg_string2id(reg_name);
         uint32_t reg_index = Registers::getRegIndex(reg_id);
         return next_eip->vcpu.gpr[reg_index];

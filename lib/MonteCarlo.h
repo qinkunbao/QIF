@@ -34,33 +34,40 @@ namespace tana {
 
 
         float
-        calculateMonteCarlo(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> &constrains,
-                            uint64_t sample_num);
+        calculateMonteCarlo(
+                const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> &constrains,
+                uint64_t sample_num);
 
 
     }
 
-    class FastMonteCarlo{
+    class FastMonteCarlo {
     private:
         std::vector<std::unique_ptr<std::pair<std::vector<uint8_t>, bool>>> tests;
         std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> constrains;
         uint64_t num_sample;
         uint64_t num_satisfied;
         std::vector<int> input_vector;
+
         void testConstrain(const std::shared_ptr<tana::Constrain> &con);
-        std::vector<uint8_t > getRandomVector(unsigned int size);
+
+        std::vector<uint8_t> getRandomVector(unsigned int size);
+
         std::random_device rd;
         std::uniform_int_distribution<uint8_t> dist;
         std::minstd_rand engine{rd()};
 
-        std::vector<uint8_t > input_seed;
+        std::vector<uint8_t> input_seed;
 
     public:
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
-                       std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
-                       std::vector<uint8_t > key_value);
+                std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
+                       std::vector<uint8_t> key_value);
+
         void run();
+
         float getResult();
+
         bool verifyConstrain();
 
     };

@@ -33,53 +33,44 @@ namespace tana {
         return instruction_operand;
     }
 
-    std::ostream& operator<<(std::ostream& os, const Operand& opr)
-    {
-        if(opr.type == Operand::Mem)
-        {
+    std::ostream &operator<<(std::ostream &os, const Operand &opr) {
+        if (opr.type == Operand::Mem) {
             os << "Mem: ";
-            switch (opr.tag){
-                case 1:
-                {
+            switch (opr.tag) {
+                case 1: {
                     // Imm Value
                     os << opr.field[0];
                     return os;
                 }
-                case 2:
-                {
+                case 2: {
                     // Register
                     os << opr.field[0];
                     return os;
                 }
-                case 3:
-                {
+                case 3: {
                     // eax*2
                     os << opr.field[0] << "*" << opr.field[1];
                     return os;
                 }
-                case 4:
-                {
+                case 4: {
                     // eax + Imm
                     os << opr.field[0] << opr.field[1] << opr.field[2];
                     return os;
                 }
-                case 5:
-                {
+                case 5: {
                     // eax + ebx*2
                     os << opr.field[0] << "+" << opr.field[1] << "*" << opr.field[2];
                     return os;
                 }
-                case 6:
-                {
+                case 6: {
                     // eax*2 + Imm
                     os << opr.field[0] << "*" << opr.field[1] << opr.field[2] << opr.field[3];
                     return os;
                 }
-                case 7:
-                {
+                case 7: {
                     // eax + ebx*2 + Imm
                     os << opr.field[0] << "+" << opr.field[1] << "*" << opr.field[2] << opr.field[3]
-                    << opr.field[4];
+                       << opr.field[4];
                     return os;
                 }
                 default:
@@ -91,8 +82,7 @@ namespace tana {
         return os;
     }
 
-    std::ostream& operator<<(std::ostream& os, const Inst_Base& inst)
-    {
+    std::ostream &operator<<(std::ostream &os, const Inst_Base &inst) {
         os << inst.id << " ";
         os << std::hex << inst.addrn << std::dec;
         os << " ";
@@ -107,7 +97,7 @@ namespace tana {
         os << "edi: " << std::hex << v_register[5] << std::dec << " ";
         os << "esp: " << std::hex << v_register[6] << std::dec << " ";
         os << "ebp: " << std::hex << v_register[7] << std::dec << " ";
-        if(inst.vcpu.eflags_state) {
+        if (inst.vcpu.eflags_state) {
             os << "CF: " << inst.vcpu.CF() << " ";
             os << "PF: " << inst.vcpu.PF() << " ";
             os << "AF: " << inst.vcpu.AF() << " ";
@@ -120,150 +110,121 @@ namespace tana {
         return os;
     }
 
-    vcpu_ctx::vcpu_ctx():eflags(0), eflags_state(false)
-    {
-        for(int i = 0; i < GPR_NUM; ++i)
-        {
+    vcpu_ctx::vcpu_ctx() : eflags(0), eflags_state(false) {
+        for (int i = 0; i < GPR_NUM; ++i) {
             gpr[i] = 0;
         }
     };
 
-    bool vcpu_ctx::CF() const
-    {
-        assert(eflags>=0);
+    bool vcpu_ctx::CF() const {
+        assert(eflags >= 0);
         return static_cast<bool>(eflags & 0x1u);
     }
 
-    bool vcpu_ctx::PF() const
-    {
-        assert(eflags>=0);
+    bool vcpu_ctx::PF() const {
+        assert(eflags >= 0);
         return static_cast<bool>(eflags & 0x4u);
     }
 
-    bool vcpu_ctx::AF() const
-    {
-        assert(eflags>=0);
+    bool vcpu_ctx::AF() const {
+        assert(eflags >= 0);
         return static_cast<bool>(eflags & 0x10u);
     }
 
-    bool vcpu_ctx::ZF() const
-    {
-        assert(eflags>=0);
+    bool vcpu_ctx::ZF() const {
+        assert(eflags >= 0);
         return static_cast<bool>(eflags & 0x40u);
     }
 
-    bool vcpu_ctx::SF() const
-    {
-        assert(eflags>=0);
+    bool vcpu_ctx::SF() const {
+        assert(eflags >= 0);
         return static_cast<bool>(eflags & 0x80u);
     }
 
-    bool vcpu_ctx::TF() const
-    {
-        assert(eflags>=0);
+    bool vcpu_ctx::TF() const {
+        assert(eflags >= 0);
         return static_cast<bool>(eflags & 0x100u);
     }
 
-    bool vcpu_ctx::DF() const
-    {
-        assert(eflags>=0);
+    bool vcpu_ctx::DF() const {
+        assert(eflags >= 0);
         return static_cast<bool>(eflags & 0x400u);
     }
 
-    bool vcpu_ctx::OF() const
-    {
-        assert(eflags>=0);
+    bool vcpu_ctx::OF() const {
+        assert(eflags >= 0);
         return static_cast<bool>(eflags & 0x800u);
     }
 
 
-    Inst_Base::Inst_Base(bool inst_type):id(0), addrn(0),
-                         instruction_id(x86::X86_INS_INVALID),
-                         oprd{nullptr, nullptr, nullptr},memory_address(0), is_static(inst_type),
-                         mem_data(0), mem_data_available(false)
-    {
+    Inst_Base::Inst_Base(bool inst_type) : id(0), addrn(0),
+                                           instruction_id(x86::X86_INS_INVALID),
+                                           oprd{nullptr, nullptr, nullptr}, memory_address(0), is_static(inst_type),
+                                           mem_data(0), mem_data_available(false) {
     }
 
 
-    uint32_t Inst_Base::get_operand_number() const
-    {
+    uint32_t Inst_Base::get_operand_number() const {
         return static_cast<uint32_t >(this->oprs.size());
     }
 
 
-    void Inst_Base::parseOperand()
-    {
-        if(is_static)
-        {
-            for (uint32_t i = 0; i < this->get_operand_number(); ++i)
-            {
+    void Inst_Base::parseOperand() {
+        if (is_static) {
+            for (uint32_t i = 0; i < this->get_operand_number(); ++i) {
                 this->oprd[i] = createOperandStatic(this->oprs[i], this->addrn);
             }
-        }
-
-        else{
-            for (uint32_t i = 0; i < this->get_operand_number(); ++i)
-            {
+        } else {
+            for (uint32_t i = 0; i < this->get_operand_number(); ++i) {
                 this->oprd[i] = createOperand(this->oprs[i], this->addrn);
             }
         }
     }
 
-    std::string Inst_Base::get_memory_address()
-    {
-        if(!is_static)
-        {
+    std::string Inst_Base::get_memory_address() {
+        if (!is_static) {
             std::stringstream sstream;
             sstream << std::hex << memory_address << std::dec;
             std::string result = sstream.str();
             return result;
-        }
-
-
-        else
-        {
+        } else {
             std::string reg_name;
             uint32_t num_opd = this->get_operand_number();
-            for(uint32_t count = 0; count < num_opd; ++ count)
-            {
+            for (uint32_t count = 0; count < num_opd; ++count) {
                 reg_name = oprs[count];
-                if(this->oprd[count]->type == Operand::Mem)
+                if (this->oprd[count]->type == Operand::Mem)
                     return oprs[count];
             }
             return reg_name;
         }
     }
 
-    void Inst_Base::set_mem_data(uint32_t data)
-    {
+    void Inst_Base::set_mem_data(uint32_t data) {
         mem_data_available = true;
         this->mem_data = data;
     }
 
-    uint32_t Inst_Base::read_mem_data() const
-    {
-        if(!mem_data_available) {
+    uint32_t Inst_Base::read_mem_data() const {
+        if (!mem_data_available) {
             ERROR("memory data not available");
             return 0;
         }
 
-        if(this->instruction_id == x86::X86_INS_POP
-        || this->instruction_id == x86::X86_INS_PUSH)
+        if (this->instruction_id == x86::X86_INS_POP
+            || this->instruction_id == x86::X86_INS_PUSH
+            || this->instruction_id == x86::X86_INS_LEAVE)
             return mem_data;
         uint32_t mem_size = 0;
-        for(int i = 0; i < 3; ++i)
-        {
-            if(oprd[i] == nullptr)
+        for (int i = 0; i < 3; ++i) {
+            if (oprd[i] == nullptr)
                 continue;
-            if(oprd[i]->type == Operand::Mem)
-            {
+            if (oprd[i]->type == Operand::Mem) {
                 mem_size = oprd[i]->bit;
             }
 
         }
 
-        switch (mem_size)
-        {
+        switch (mem_size) {
             case 32:
             case 16:
             case 8:
@@ -274,34 +235,30 @@ namespace tana {
 
     }
 
-    uint32_t Inst_Base::read_reg_data(std::string RegName) const
-    {
-        if(is_static){
+    uint32_t Inst_Base::read_reg_data(std::string RegName) const {
+        if (is_static) {
             ERROR("Regsiter data is not available");
             return 0;
         }
-       x86::x86_reg regid = Registers::convert2RegID(RegName);
-       RegType regType = Registers::getRegType(regid);
-       uint32_t regIndex = Registers::getRegIndex(regid);
-       uint32_t raw_reg_data = this->vcpu.gpr[regIndex];
-       switch (regType){
-           case FULL:
-               return raw_reg_data;
-           case HALF:
-               return BitVector::extract(raw_reg_data, 16, 1);
-           case QLOW:
-               return BitVector::extract(raw_reg_data, 8, 1);
-           case QHIGH:
-               return BitVector::extract(raw_reg_data, 16, 9);
-           case INVALIDREG:
-               ERROR("Invalid Register Type");
-       }
+        x86::x86_reg regid = Registers::convert2RegID(RegName);
+        RegType regType = Registers::getRegType(regid);
+        uint32_t regIndex = Registers::getRegIndex(regid);
+        uint32_t raw_reg_data = this->vcpu.gpr[regIndex];
+        switch (regType) {
+            case FULL:
+                return raw_reg_data;
+            case HALF:
+                return BitVector::extract(raw_reg_data, 16, 1);
+            case QLOW:
+                return BitVector::extract(raw_reg_data, 8, 1);
+            case QHIGH:
+                return BitVector::extract(raw_reg_data, 16, 9);
+            case INVALIDREG:
+                ERROR("Invalid Register Type");
+        }
         ERROR("Invalid Register Type");
         return 0;
     }
-
-
-
 
 
 }

@@ -148,8 +148,7 @@ namespace tana {
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic) {
 
 
-        switch (id)
-        {
+        switch (id) {
             case x86::x86_insn::X86_INS_NOP:
                 return std::make_unique<INST_X86_INS_NOP>(isStatic);
 
@@ -370,8 +369,7 @@ namespace tana {
             case x86::x86_insn::X86_INS_CPUID:
                 return std::make_unique<INST_X86_INS_CPUID>(isStatic);
 
-            default:
-            {
+            default: {
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
                 return std::make_unique<Inst_Base>(isStatic);
@@ -747,7 +745,8 @@ namespace tana {
         if (op0->type == Operand::Reg) {
             if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
                 uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
-                v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete), op0->bit);
+                v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete),
+                                                 op0->bit);
                 se->writeReg(op0->field[0], v1);
                 return true;
             }
@@ -1477,8 +1476,7 @@ namespace tana {
     bool INST_X86_INS_RET::symbolic_execution(SEEngine *se) {
         std::shared_ptr<BitVector> esp = se->readReg("esp");
         uint32_t add_size = 4;
-        if(oprd[0] != nullptr)
-        {
+        if (oprd[0] != nullptr) {
             assert(oprd[0]->type == Operand::ImmValue);
             add_size = add_size + std::stoul(oprd[0]->field[0], nullptr, 16);
         }
@@ -2097,8 +2095,7 @@ namespace tana {
         return true;
     }
 
-    bool INST_X86_INS_REP_STOSD::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_REP_STOSD::symbolic_execution(tana::SEEngine *se) {
 
         // ecx = ecx - 1
         auto v_ecx = se->readReg("ecx");
@@ -2118,8 +2115,7 @@ namespace tana {
         return true;
     }
 
-    bool INST_X86_INS_STOSB::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_STOSB::symbolic_execution(tana::SEEngine *se) {
         assert(oprd[0]->type == Operand::Mem);
         // Update register
 
@@ -2139,20 +2135,16 @@ namespace tana {
         return true;
     }
 
-    bool INST_X86_INS_CMOVZ::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_CMOVZ::symbolic_execution(tana::SEEngine *se) {
         bool zf = vcpu.ZF();
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> src;
-        if(zf)
-        {
-            if(op0->type == Operand::Mem)
-            {
+        if (zf) {
+            if (op0->type == Operand::Mem) {
                 src = se->readMem(this->get_memory_address(), op0->bit);
             }
-            if(op0->type == Operand::Reg)
-            {
+            if (op0->type == Operand::Reg) {
                 src = se->readReg(op1->field[0]);
             }
 
@@ -2165,19 +2157,16 @@ namespace tana {
         }
     }
 
-    bool INST_X86_INS_CMOVNS::symbolic_execution(tana::SEEngine *se){
+    bool INST_X86_INS_CMOVNS::symbolic_execution(tana::SEEngine *se) {
         bool sf = vcpu.SF();
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> src;
-        if(!sf)
-        {
-            if(op0->type == Operand::Mem)
-            {
+        if (!sf) {
+            if (op0->type == Operand::Mem) {
                 src = se->readMem(this->get_memory_address(), op0->bit);
             }
-            if(op0->type == Operand::Reg)
-            {
+            if (op0->type == Operand::Reg) {
                 src = se->readReg(op1->field[0]);
             }
 
@@ -2190,12 +2179,10 @@ namespace tana {
         }
     }
 
-    bool INST_X86_INS_SETZ::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_SETZ::symbolic_execution(tana::SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto ZF = se->getFlags("ZF");
-        if(op0->type == Operand::Reg)
-        {
+        if (op0->type == Operand::Reg) {
             auto v = SEEngine::Extract(ZF, 1, op0->bit);
             se->writeReg(op0->field[0], v);
             return true;
@@ -2203,8 +2190,7 @@ namespace tana {
         return false;
     }
 
-    bool INST_X86_INS_SETNZ::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_SETNZ::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
 
@@ -2213,13 +2199,11 @@ namespace tana {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         value = se->Extract(value, 1, op0->bit);
 
-        if(op0->type == Operand::Mem)
-        {
+        if (op0->type == Operand::Mem) {
             se->writeMem(this->get_memory_address(), op0->bit, value);
             return true;
         }
-        if(op0->type == Operand::Reg)
-        {
+        if (op0->type == Operand::Reg) {
             se->writeReg(op0->field[0], value);
             return true;
         }
@@ -2227,8 +2211,7 @@ namespace tana {
         return false;
     }
 
-    bool INST_X86_INS_BT ::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_BT::symbolic_execution(tana::SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v1, v0, res;
@@ -2238,7 +2221,7 @@ namespace tana {
             v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
         } else if (op1->type == Operand::Reg) {
             v1 = se->readReg(op1->field[0]);
-        } else{
+        } else {
             ERROR("The second operand of bt should be IMM or Reg");
         }
 
@@ -2258,10 +2241,8 @@ namespace tana {
 
     }
 
-    bool INST_X86_INS_MOVSB ::symbolic_execution(tana::SEEngine *se)
-    {
-        if(is_static)
-        {
+    bool INST_X86_INS_MOVSB::symbolic_execution(tana::SEEngine *se) {
+        if (is_static) {
             ERROR("Static model doesn't support the instruction movsb");
             return false;
         }
@@ -2293,10 +2274,8 @@ namespace tana {
     }
 
 
-    bool INST_X86_INS_MOVSD::symbolic_execution(tana::SEEngine *se)
-    {
-        if(is_static)
-        {
+    bool INST_X86_INS_MOVSD::symbolic_execution(tana::SEEngine *se) {
+        if (is_static) {
             ERROR("Static model doesn't support the instruction movsb");
             return false;
         }
@@ -2327,21 +2306,17 @@ namespace tana {
         return true;
     }
 
-    bool INST_X86_INS_MUL ::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_MUL::symbolic_execution(tana::SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         assert(op0->type == Operand::Reg);
 
-        if(op0->bit == 32)
-        {
+        if (op0->bit == 32) {
             auto eax_v = se->readReg("eax");
             std::shared_ptr<BitVector> src_v;
-            if(op0->type == Operand::Reg)
-            {
+            if (op0->type == Operand::Reg) {
                 src_v = se->readReg(op0->field[0]);
             }
-            if(op0->type == Operand::Mem)
-            {
+            if (op0->type == Operand::Mem) {
                 src_v = std::make_shared<BitVector>(ValueType::CONCRETE, op0->field[0]);
             }
 
@@ -2366,13 +2341,11 @@ namespace tana {
         return false;
     }
 
-    bool INST_X86_INS_CLD ::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_CLD::symbolic_execution(tana::SEEngine *se) {
         return true;
     }
 
-    bool INST_X86_INS_CPUID ::symbolic_execution(tana::SEEngine *se)
-    {
+    bool INST_X86_INS_CPUID::symbolic_execution(tana::SEEngine *se) {
 
         uint32_t eax_c = se->getRegisterConcreteValue("eax");
         uint32_t ebx_c = se->getRegisterConcreteValue("ebx");
@@ -2390,7 +2363,6 @@ namespace tana {
         se->writeReg("edx", edx_v);
         return true;
     }
-
 
 
 }

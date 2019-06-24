@@ -12,16 +12,15 @@
 #include "Constrains.h"
 
 
-
 namespace tana {
     class Inst_Base;
 
-    enum class LeakageType{
+    enum class LeakageType {
         CFLeakage,
         DALeakage
     };
 
-    class SEEngine{
+    class SEEngine {
 
 
     public:
@@ -39,12 +38,14 @@ namespace tana {
         static std::shared_ptr<BitVector> ZeroExt(std::shared_ptr<BitVector> v, tana_type::T_SIZE);
 
         static std::shared_ptr<BitVector> SignExt(std::shared_ptr<BitVector> v, tana_type::T_SIZE orgin_size,
-                                           tana_type::T_SIZE new_size);
+                                                  tana_type::T_SIZE new_size);
 
         static std::shared_ptr<BitVector> Extract(std::shared_ptr<BitVector> v, int low, int high);
+
         static std::shared_ptr<BitVector> Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2);
+
         static std::shared_ptr<BitVector> Concat(std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
-                                          std::shared_ptr<BitVector> v3);
+                                                 std::shared_ptr<BitVector> v3);
 
         static void getFormulaLength(const std::shared_ptr<BitVector> &v, uint32_t &len);
 
@@ -81,44 +82,37 @@ namespace tana {
 
         virtual int run();
 
-        virtual std::vector<std::shared_ptr<BitVector>> getAllOutput() =0;
-
+        virtual std::vector<std::shared_ptr<BitVector>> getAllOutput() = 0;
 
 
         std::shared_ptr<BitVector> formula_simplfy(std::shared_ptr<BitVector> v);
 
-        virtual void updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons)
-        {
+        virtual void updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons) {
             return;
         }
 
-        virtual void clearFlags(std::string flag_name)
-        {
+        virtual void clearFlags(std::string flag_name) {
             return;
         }
 
-        virtual std::shared_ptr<BitVector> getFlags(std::string)
-        {
+        virtual std::shared_ptr<BitVector> getFlags(std::string) {
             return nullptr;
         }
 
-        virtual void updateCFConstrains(std::shared_ptr<Constrain> cons)
-        {
+        virtual void updateCFConstrains(std::shared_ptr<Constrain> cons) {
             return;
         }
 
-        virtual void updateDAConstrains(std::shared_ptr<Constrain> cons)
-        {
+        virtual void updateDAConstrains(std::shared_ptr<Constrain> cons) {
             return;
         }
 
-        virtual void printMemory()
-        {
+        virtual void printMemory() {
             return;
         }
 
 
-        virtual ~SEEngine()= default;
+        virtual ~SEEngine() = default;
 
         uint32_t getRegisterConcreteValue(std::string reg_name);
 

@@ -20,7 +20,7 @@ namespace tana {
         std::shared_ptr<std::map<std::string, tana_type::index>> inst_enum(new std::map<std::string, tana_type::index>);
 
         tana_type::index
-        getOpcIndex(std::string& opc_name, std::shared_ptr<std::map<std::string, tana_type::index>>& name_map) {
+        getOpcIndex(std::string &opc_name, std::shared_ptr<std::map<std::string, tana_type::index>> &name_map) {
             auto it = name_map->find(opc_name);
             if (it != name_map->end())
                 return it->second;
@@ -82,13 +82,13 @@ namespace tana {
             isGoodLoop = false;
         }
 
-        bool Loop::isCheckedFinish(){
-            return(next(loop_current, 1) == loop_end);
+        bool Loop::isCheckedFinish() {
+            return (next(loop_current, 1) == loop_end);
         }
 
         bool Loop::checkLoopCurrent(std::vector<Inst_Base>::const_iterator inst_current) {
             ++loop_current;
-            if(inst_current->instruction_id == loop_current->instruction_id)
+            if (inst_current->instruction_id == loop_current->instruction_id)
                 return true;
             return false;
         }
@@ -105,7 +105,7 @@ namespace tana {
                 loop_start = std::prev(current, history_length);
             }
 
-			for (; loop_start != loop_end; ++loop_start) {
+            for (; loop_start != loop_end; ++loop_start) {
                 if (loop_start->instruction_id != current->instruction_id) {
                     continue;
                 }
@@ -131,57 +131,46 @@ namespace tana {
             return std::move(loop_candidate);
         }
 
-        std::vector<Loop> loopDetectionFast(std::vector<Inst_Base> *L, uint32_t id)
-        {
+        std::vector<Loop> loopDetectionFast(std::vector<Inst_Base> *L, uint32_t id) {
             std::vector<Loop> confirmLoop;
             std::list<Loop> potential_loops;
             Loop current_loop = Loop(L->cend(), L->cend());
             std::cout << id << " instructions in total\n";
             InstructionMap inst_map;
-            for(auto it = L->cbegin(); it != L->cend(); ++it)
-            {
+            for (auto it = L->cbegin(); it != L->cend(); ++it) {
                 //checkLoop
-                if(it->id % LOOP_PRINT_FREQUENCY == 0)
-                {
-                    std::cout << "Processing " << it->id << " Instruction " <<"Progress: "
-                              << static_cast<float >(it->id)/id << "\n";
+                if (it->id % LOOP_PRINT_FREQUENCY == 0) {
+                    std::cout << "Processing " << it->id << " Instruction " << "Progress: "
+                              << static_cast<float >(it->id) / id << "\n";
                 }
                 auto current_loop_size = current_loop.getLoopLength();
-                if(current_loop_size > 0)
-                {
+                if (current_loop_size > 0) {
                     auto temp_loop_end = std::next(it, current_loop_size);
                     Loop temp_loop = Loop(it, temp_loop_end);
-                    if (temp_loop == current_loop){
-                        it = std::next(it, current_loop_size-1);
+                    if (temp_loop == current_loop) {
+                        it = std::next(it, current_loop_size - 1);
                         continue;
-                    }
-                    else
-                    {
+                    } else {
                         current_loop = Loop(L->cend(), L->cend());
                         potential_loops.clear();
                     }
                 }
 
                 auto each_potential_loop = potential_loops.begin();
-                while(each_potential_loop != potential_loops.end())
-                {
-                    if(each_potential_loop->checkLoopCurrent(it))
-                    {
-                        if(each_potential_loop->isCheckedFinish()){
+                while (each_potential_loop != potential_loops.end()) {
+                    if (each_potential_loop->checkLoopCurrent(it)) {
+                        if (each_potential_loop->isCheckedFinish()) {
                             auto exist_loop = std::find(confirmLoop.begin(), confirmLoop.end(), *each_potential_loop);
-                            if(exist_loop == confirmLoop.end())
-                            {
+                            if (exist_loop == confirmLoop.end()) {
                                 confirmLoop.push_back(*each_potential_loop);
                                 current_loop = *each_potential_loop;
 
                             }
                             each_potential_loop = potential_loops.erase(each_potential_loop);
-                        } else{
+                        } else {
                             ++each_potential_loop;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         each_potential_loop = potential_loops.erase(each_potential_loop);
                     }
                 }
@@ -194,13 +183,11 @@ namespace tana {
         }
 
 
-        std::vector<Loop> loopDetection(const std::vector<std::unique_ptr<Inst_Base>> &Lptr, uint32_t id)
-        {
+        std::vector<Loop> loopDetection(const std::vector<std::unique_ptr<Inst_Base>> &Lptr, uint32_t id) {
             std::vector<Loop> confirmLoop;
-			std::list<Loop> potential_loops;
+            std::list<Loop> potential_loops;
             std::vector<Inst_Base> Inst;
-            for(const auto &ins: Lptr)
-            {
+            for (const auto &ins: Lptr) {
                 Inst.push_back(*ins);
             }
 
@@ -208,81 +195,67 @@ namespace tana {
 
             Loop current_loop = Loop(L->cend(), L->cend());
             std::cout << id << " instructions in total\n";
-            for(auto it = L->cbegin(); it != L->cend(); ++it)
-            {
+            for (auto it = L->cbegin(); it != L->cend(); ++it) {
 
                 //checkLoop
 
-                if(it->id % LOOP_PRINT_FREQUENCY == 0)
-                {
-                    std::cout << "Processing " << it->id << " Instruction " <<"Progress: "
-                    << static_cast<float >(it->id)/id << "\n";
+                if (it->id % LOOP_PRINT_FREQUENCY == 0) {
+                    std::cout << "Processing " << it->id << " Instruction " << "Progress: "
+                              << static_cast<float >(it->id) / id << "\n";
                 }
                 auto current_loop_size = current_loop.getLoopLength();
-                if(current_loop_size > 0)
-                {
+                if (current_loop_size > 0) {
                     auto temp_loop_end = std::next(it, current_loop_size);
                     Loop temp_loop = Loop(it, temp_loop_end);
-                    if (temp_loop == current_loop){
-                        it = std::next(it, current_loop_size-1);
+                    if (temp_loop == current_loop) {
+                        it = std::next(it, current_loop_size - 1);
                         continue;
-                    }
-                    else
-                    {
+                    } else {
                         current_loop = Loop(L->cend(), L->cend());
                         potential_loops.clear();
                     }
                 }
                 auto each_potential_loop = potential_loops.begin();
-                while(each_potential_loop != potential_loops.end())
-                {
-                    if(each_potential_loop->checkLoopCurrent(it))
-                    {
-                        if(each_potential_loop->isCheckedFinish()){
+                while (each_potential_loop != potential_loops.end()) {
+                    if (each_potential_loop->checkLoopCurrent(it)) {
+                        if (each_potential_loop->isCheckedFinish()) {
                             auto exist_loop = std::find(confirmLoop.begin(), confirmLoop.end(), *each_potential_loop);
-                            if(exist_loop == confirmLoop.end())
-                            {
+                            if (exist_loop == confirmLoop.end()) {
                                 confirmLoop.push_back(*each_potential_loop);
                                 current_loop = *each_potential_loop;
 
                             }
                             each_potential_loop = potential_loops.erase(each_potential_loop);
-                        } else{
+                        } else {
                             ++each_potential_loop;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         each_potential_loop = potential_loops.erase(each_potential_loop);
                     }
                 }
-				std::list<Loop> temp;
+                std::list<Loop> temp;
                 temp = findPotentialLoop(it, L->cend(), MAX_LOOP_HISTORY, MIN_LOOP_LENGTH);
                 potential_loops.splice(potential_loops.end(), temp);
             }
             return confirmLoop;
         }
 
-        void outPrintLoops(std::vector<Loop> loops, std::string file_name)
-        {
+        void outPrintLoops(std::vector<Loop> loops, std::string file_name) {
             int index = 0;
-            for(auto it = loops.begin(); it != loops.end(); ++it)
-            {
+            for (auto it = loops.begin(); it != loops.end(); ++it) {
                 std::string loopFile = file_name + std::to_string(index++) + ".ref";
                 std::ofstream fp;
                 fp.open(loopFile);
 
 
-                for (auto ins = it->getStart(); ins != it->getEnd(); ++ins)
-                {
+                for (auto ins = it->getStart(); ins != it->getEnd(); ++ins) {
 
                     std::string opc_opr = ins->get_opcode_operand();
-                    fp << std::hex << ins->addrn <<";";
+                    fp << std::hex << ins->addrn << ";";
 
                     fp << opc_opr << ";";
                     //fp << ins->dissass << ";";
-                    for (uint32_t j = 0; j < GPR_NUM; ++j)
-                    {
+                    for (uint32_t j = 0; j < GPR_NUM; ++j) {
                         fp << ins->vcpu.gpr[j] << ",";
                     }
                     fp << ins->memory_address << std::dec << ",\n";
@@ -295,32 +268,25 @@ namespace tana {
         }
 
 
-
-
         std::list<Loop>
         InstructionMap::findPotentialLoops(std::vector<Inst_Base>::const_iterator current,
-                                           std::vector<Inst_Base>::const_iterator instruction_end)
-        {
+                                           std::vector<Inst_Base>::const_iterator instruction_end) {
             std::list<Loop> potential_loops;
             auto current_inst_id = current->id;
             auto current_inst = current->instruction_id;
             auto find_result = instMap.find(current_inst);
-            if(find_result == instMap.end())
-            {
+            if (find_result == instMap.end()) {
                 return potential_loops;
             }
 
             auto &location_list = find_result->second;
 
-            for(auto loc = location_list.crbegin(); loc != location_list.crend(); ++loc )
-            {
+            for (auto loc = location_list.crbegin(); loc != location_list.crend(); ++loc) {
                 auto loop_length = current_inst_id - *loc;
-                if (loop_length < MIN_LOOP_LENGTH)
-                {
+                if (loop_length < MIN_LOOP_LENGTH) {
                     continue;
                 }
-                if(loop_length > MAX_LOOP_HISTORY)
-                {
+                if (loop_length > MAX_LOOP_HISTORY) {
                     break;
                 }
                 auto loop_start = std::prev(current, loop_length);
@@ -335,8 +301,7 @@ namespace tana {
                 if ((std::next(loop_start, 1)->instruction_id == std::next(current, 1)->instruction_id) &&
                     (std::next(loop_start, 2)->instruction_id == std::next(current, 2)->instruction_id) &&
                     (std::next(loop_start, 3)->instruction_id == std::next(current, 3)->instruction_id) &&
-                    (std::next(loop_start, 5)->instruction_id == std::next(current, 5)->instruction_id))
-                {
+                    (std::next(loop_start, 5)->instruction_id == std::next(current, 5)->instruction_id)) {
                     Loop potential_loop(loop_start, loop_end);
                     potential_loops.push_back(potential_loop);
                 }
@@ -349,8 +314,7 @@ namespace tana {
         }
 
         void
-        InstructionMap::updateMap(std::vector<Inst_Base>::const_iterator current)
-        {
+        InstructionMap::updateMap(std::vector<Inst_Base>::const_iterator current) {
             auto current_inst_id = current->id;
             auto current_inst = current->instruction_id;
             auto &inst_list = instMap[current_inst];
