@@ -226,8 +226,7 @@ namespace tana {
 
             std::vector<int> output_v_int;
 
-            for(auto v : *output_v)
-            {
+            for (auto v : *output_v) {
                 output_v_int.push_back(v->id);
             }
 
@@ -726,7 +725,7 @@ namespace tana {
                     mul_flag = true;
                 }
 
-                if (mul_flag && add_flag ) {
+                if (mul_flag && add_flag) {
                     return true;
                 } else {
                     mul_flag = false;
@@ -814,9 +813,9 @@ namespace tana {
         if ((opr1 == nullptr) && (opr2 == nullptr)) {
             if (type1 != type2)
                 return false;
-            if (type1 == ValueType ::SYMBOL)
+            if (type1 == ValueType::SYMBOL)
                 return true;
-            if (type1 == ValueType ::CONCRETE)
+            if (type1 == ValueType::CONCRETE)
                 return (v1->concrete_value) == (v2->concrete_value);
         }
 
@@ -868,7 +867,7 @@ namespace tana {
     }
 
     std::map<int, uint32_t> varmap::input2val(std::vector<uint32_t> input,
-                                                                 const std::vector<int> &vv) {
+                                              const std::vector<int> &vv) {
         std::map<int, uint32_t> input_v;
         assert(input.size() == vv.size());
 
@@ -903,7 +902,7 @@ namespace tana {
                     break;
                 }
 
-                
+
                 if (varmap::checkFormula(v1, v2, se1, se2)) {
                     result[i] = j;
                     break;

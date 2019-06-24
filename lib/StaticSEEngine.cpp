@@ -65,32 +65,29 @@ namespace tana {
 
     void
     StaticSEEngine::initAllRegSymol(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
-                                 std::vector<std::unique_ptr<Inst_Base>>::iterator it2)
-    {
-        ctx["eax"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "eax");
-        ctx["ebx"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "ebx");
-        ctx["ecx"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "ecx");
-        ctx["edx"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "edx");
-        ctx["esi"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "esi");
-        ctx["edi"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "edi");
-        ctx["esp"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "esp");
-        ctx["ebp"] = std::make_shared<BitVector>(ValueType ::SYMBOL, "ebp");
+                                    std::vector<std::unique_ptr<Inst_Base>>::iterator it2) {
+        ctx["eax"] = std::make_shared<BitVector>(ValueType::SYMBOL, "eax");
+        ctx["ebx"] = std::make_shared<BitVector>(ValueType::SYMBOL, "ebx");
+        ctx["ecx"] = std::make_shared<BitVector>(ValueType::SYMBOL, "ecx");
+        ctx["edx"] = std::make_shared<BitVector>(ValueType::SYMBOL, "edx");
+        ctx["esi"] = std::make_shared<BitVector>(ValueType::SYMBOL, "esi");
+        ctx["edi"] = std::make_shared<BitVector>(ValueType::SYMBOL, "edi");
+        ctx["esp"] = std::make_shared<BitVector>(ValueType::SYMBOL, "esp");
+        ctx["ebp"] = std::make_shared<BitVector>(ValueType::SYMBOL, "ebp");
 
         this->start = it1;
         this->end = it2;
     }
 
     void
-    StaticSEEngine::reset()
-    {
+    StaticSEEngine::reset() {
         this->memory.clear();
     }
 
     void
-    StaticSEEngine::initFromBlock(tana::Block &b)
-    {
+    StaticSEEngine::initFromBlock(tana::Block &b) {
 
-       this->initAllRegSymol(b.inst_list.begin(), b.inst_list.end());
+        this->initAllRegSymol(b.inst_list.begin(), b.inst_list.end());
     }
 
     std::vector<std::shared_ptr<BitVector>>
@@ -125,25 +122,21 @@ namespace tana {
         return outputs;
     }
 
-    std::shared_ptr<BitVector> StaticSEEngine::readReg(const std::string reg)
-    {
+    std::shared_ptr<BitVector> StaticSEEngine::readReg(const std::string reg) {
         x86::x86_reg reg_id = x86::reg_string2id(reg);
         return readReg(reg_id);
     }
 
-    std::shared_ptr<BitVector> StaticSEEngine::readReg(const x86::x86_reg reg)
-    {
+    std::shared_ptr<BitVector> StaticSEEngine::readReg(const x86::x86_reg reg) {
         RegType type = Registers::getRegType(reg);
-        if(type == FULL)
-        {
+        if (type == FULL) {
             auto index = Registers::getRegIndex(reg);
             std::string strName = Registers::convertRegID2RegName(index);
             std::shared_ptr<BitVector> res = ctx[strName];
             return res;
         }
 
-        if(type == HALF)
-        {
+        if (type == HALF) {
             auto index = Registers::getRegIndex(reg);
             std::string strName = Registers::convertRegID2RegName(index);
             std::shared_ptr<BitVector> origin = ctx[strName];
@@ -151,8 +144,7 @@ namespace tana {
             return res;
         }
 
-        if(type == QLOW)
-        {
+        if (type == QLOW) {
             auto index = Registers::getRegIndex(reg);
             std::string strName = Registers::convertRegID2RegName(index);
             std::shared_ptr<BitVector> origin = ctx[strName];
@@ -160,8 +152,7 @@ namespace tana {
             return res;
         }
 
-        if(type == QHIGH)
-        {
+        if (type == QHIGH) {
             auto index = Registers::getRegIndex(reg);
             std::string strName = Registers::convertRegID2RegName(index);
             std::shared_ptr<BitVector> origin = ctx[strName];
@@ -173,43 +164,38 @@ namespace tana {
 
     }
 
-    bool StaticSEEngine::writeReg(const x86::x86_reg reg, std::shared_ptr<tana::BitVector> v)
-    {
+    bool StaticSEEngine::writeReg(const x86::x86_reg reg, std::shared_ptr<tana::BitVector> v) {
         RegType type = Registers::getRegType(reg);
         uint32_t reg_index = Registers::getRegIndex(reg);
         std::string index_name = Registers::convertRegID2RegName(reg_index);
-        if(type == FULL)
-        {
+        if (type == FULL) {
             ctx[index_name] = v;
             return true;
         }
-        if(type == HALF)
-        {
+        if (type == HALF) {
             auto origin = ctx[index_name];
             auto reg_part = Extract(origin, 17, 32);
-            assert(v->size() == (REGISTER_SIZE/2));
+            assert(v->size() == (REGISTER_SIZE / 2));
             auto v_reg = Concat(reg_part, v);
             assert(v_reg->size() == REGISTER_SIZE);
             ctx[index_name] = v_reg;
             return true;
         }
-        if(type == QLOW)
-        {
+        if (type == QLOW) {
             auto origin = ctx[index_name];
             auto reg_part = Extract(origin, 9, 32);
-            assert(v->size() == (REGISTER_SIZE/4));
+            assert(v->size() == (REGISTER_SIZE / 4));
             auto v_reg = Concat(reg_part, v);
             assert(v_reg->size() == REGISTER_SIZE);
             ctx[index_name] = v_reg;
             return true;
         }
 
-        if(type == QHIGH)
-        {
+        if (type == QHIGH) {
             auto origin = ctx[index_name];
             auto reg_part1 = Extract(origin, 1, 8);
             auto reg_part2 = Extract(origin, 17, 32);
-            assert(v->size() == (REGISTER_SIZE/4));
+            assert(v->size() == (REGISTER_SIZE / 4));
             auto v_reg = Concat(reg_part2, v, reg_part1);
             assert(v_reg->size() == REGISTER_SIZE);
             ctx[index_name] = v_reg;
@@ -220,30 +206,26 @@ namespace tana {
 
     }
 
-    bool StaticSEEngine::writeReg(const std::string reg, std::shared_ptr<tana::BitVector> v)
-    {
+    bool StaticSEEngine::writeReg(const std::string reg, std::shared_ptr<tana::BitVector> v) {
         x86::x86_reg reg_id = x86::reg_string2id(reg);
         return writeReg(reg_id, v);
     }
 
-    std::shared_ptr<BitVector> StaticSEEngine::readMem(std::string memory_address, tana_type::T_SIZE size)
-    {
+    std::shared_ptr<BitVector> StaticSEEngine::readMem(std::string memory_address, tana_type::T_SIZE size) {
         std::shared_ptr<BitVector> v0;
         if (memory_find(memory_address)) {
             v0 = memory[memory_address];
         } else {
             std::stringstream ss;
             ss << "Mem:" << std::hex << memory_address << std::dec;
-            v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str());
+            v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str());
             memory[memory_address] = v0;
         }
-        if (size == T_BYTE_SIZE * T_DWORD)
-        {
+        if (size == T_BYTE_SIZE * T_DWORD) {
             return v0;
         }
 
-        if (size == T_BYTE_SIZE * T_WORD)
-        {
+        if (size == T_BYTE_SIZE * T_WORD) {
             std::shared_ptr<BitVector> v1 = SEEngine::Extract(v0, 1, 16);
             return v1;
         }
@@ -254,13 +236,11 @@ namespace tana {
 
 
     bool StaticSEEngine::writeMem(std::string memory_address, tana::tana_type::T_SIZE addr_size,
-                               std::shared_ptr<tana::BitVector> v)
-    {
+                                  std::shared_ptr<tana::BitVector> v) {
         assert(v->size() == addr_size || !v->isSymbol());
-        std::shared_ptr<BitVector> v0,  v_mem;
+        std::shared_ptr<BitVector> v0, v_mem;
 
-        if(addr_size == T_BYTE_SIZE * T_DWORD)
-        {
+        if (addr_size == T_BYTE_SIZE * T_DWORD) {
             memory[memory_address] = v;
             return true;
         }
@@ -270,15 +250,13 @@ namespace tana {
         } else {
             std::stringstream ss;
             ss << "Mem:" << std::hex << memory_address << std::dec;
-            v0 = std::make_shared<BitVector>(ValueType ::SYMBOL, ss.str());
+            v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str());
             memory[memory_address] = v0;
         }
 
-        if(addr_size == T_BYTE_SIZE * T_WORD)
-        {
+        if (addr_size == T_BYTE_SIZE * T_WORD) {
             std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 16);
-            if(!v->isSymbol())
-            {
+            if (!v->isSymbol()) {
                 v = SEEngine::Extract(v, 1, 16);
             }
             v_mem = Concat(v1, v);
@@ -286,11 +264,9 @@ namespace tana {
             return true;
         }
 
-        if(addr_size == T_BYTE_SIZE * T_BYTE)
-        {
+        if (addr_size == T_BYTE_SIZE * T_BYTE) {
             std::shared_ptr<BitVector> v1 = DynSEEngine::Extract(v0, 1, 8);
-            if(!v->isSymbol())
-            {
+            if (!v->isSymbol()) {
                 v = SEEngine::Extract(v, 1, 8);
             }
             v_mem = Concat(v1, v);
@@ -299,7 +275,6 @@ namespace tana {
         }
         return false;
     }
-
 
 
 }

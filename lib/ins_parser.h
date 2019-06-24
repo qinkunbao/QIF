@@ -6,6 +6,7 @@
  ************************************************************************/
 
 #pragma once
+
 #include <iostream>
 #include <fstream>
 #include <list>
@@ -30,14 +31,14 @@ namespace tana {
 
     bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Base>> &L);
 
-    bool parse_trace(std::ifstream *trace_file, tana_type::T_ADDRESS &addr_taint,\
-                     tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L );
+    bool parse_trace(std::ifstream *trace_file, tana_type::T_ADDRESS &addr_taint, \
+                     tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L);
 
-    bool parse_static_trace (std::ifstream &trace_file, std::ifstream &json_file, \
+    bool parse_static_trace(std::ifstream &trace_file, std::ifstream &json_file, \
                              std::vector<Block> &L);
 
     bool parse_trace_qif(std::ifstream *trace_file, tana_type::T_ADDRESS &addr_taint, \
                          tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L,
-                         std::vector<uint8_t >& key_value);
+                         std::vector<uint8_t> &key_value);
 
 }

@@ -16,10 +16,8 @@
 
 namespace tana {
 
-    std::ostream& operator << (std::ostream& os, BVOper bvop)
-    {
-        switch(bvop)
-        {
+    std::ostream &operator<<(std::ostream &os, BVOper bvop) {
+        switch (bvop) {
             case BVOper::bvadd:
                 return os << "bvadd";
 
@@ -100,7 +98,7 @@ namespace tana {
 
             case BVOper::bvbitnot:
                 return os << "!";
-            //omit default case to triger compiler warning for missing cases
+                //omit default case to triger compiler warning for missing cases
         };
 
         return os << static_cast<uint32_t>(bvop);
@@ -131,60 +129,51 @@ namespace tana {
     int BitVector::idseed = 0;
 
     BitVector::BitVector(ValueType vty, std::string s_info) : opr(nullptr), val_type(vty), info(s_info),
-                                                              concrete_value(0)
-    {
+                                                              concrete_value(0) {
         id = ++idseed;
     }
 
-    BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState) : opr(nullptr), concrete_value(con)
-    {
+    BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState) : opr(nullptr), concrete_value(con) {
         id = ++idseed;
-        val_type = Imm2SymState ? ValueType ::SYMBOL : vty;
+        val_type = Imm2SymState ? ValueType::SYMBOL : vty;
     }
 
     BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState, uint32_t size) : opr(nullptr),
                                                                                           concrete_value(con),
-                                                                                          low_bit(1), high_bit(size)
-    {
+                                                                                          low_bit(1), high_bit(size) {
         id = ++idseed;
-        val_type = Imm2SymState ? ValueType ::SYMBOL : vty;
+        val_type = Imm2SymState ? ValueType::SYMBOL : vty;
     }
 
-    BitVector::BitVector(ValueType vty, uint32_t con) : opr(nullptr), val_type(vty), concrete_value(con)
-    {
+    BitVector::BitVector(ValueType vty, uint32_t con) : opr(nullptr), val_type(vty), concrete_value(con) {
         id = ++idseed;
     }
 
-    BitVector::BitVector(ValueType vty, std::unique_ptr<Operation> oper) :concrete_value(0), val_type(vty)
-    {
+    BitVector::BitVector(ValueType vty, std::unique_ptr<Operation> oper) : concrete_value(0), val_type(vty) {
         id = ++idseed;
         opr = std::move(oper);
     }
 
-    BitVector::BitVector(ValueType vty, std::string symbol_info, uint32_t size) :concrete_value(0), val_type(vty),
-                                                                                 info(symbol_info),
-                                                                                 low_bit(1), high_bit(size)
-    {
+    BitVector::BitVector(ValueType vty, std::string symbol_info, uint32_t size) : concrete_value(0), val_type(vty),
+                                                                                  info(symbol_info),
+                                                                                  low_bit(1), high_bit(size) {
         id = ++idseed;
         assert(vty == ValueType::SYMBOL);
     }
 
-    std::set<int> BitVector::getInputSymbolSet()
-    {
+    std::set<int> BitVector::getInputSymbolSet() {
         std::queue<std::shared_ptr<BitVector> > que;
-        std::set<int > input_set;
+        std::set<int> input_set;
 
 
-        if(this->opr == nullptr){
-            if (this->val_type == ValueType::SYMBOL)
-            {
+        if (this->opr == nullptr) {
+            if (this->val_type == ValueType::SYMBOL) {
                 input_set.insert(this->id);
             }
             return input_set;
         }
 
-        for(int i = 0; i < 3; ++i)
-        {
+        for (int i = 0; i < 3; ++i) {
             const std::unique_ptr<Operation> &op = this->opr;
             if (op->val[i] != nullptr) que.push(op->val[i]);
 
@@ -196,7 +185,7 @@ namespace tana {
             que.pop();
 
             if (op == nullptr) {
-                if (v->val_type == ValueType ::SYMBOL)
+                if (v->val_type == ValueType::SYMBOL)
                     input_set.insert(v->id);
             } else {
                 for (int i = 0; i < 3; ++i) {
@@ -209,7 +198,7 @@ namespace tana {
 
 
     // Return the ID of each input symbol
-    std::vector<int >
+    std::vector<int>
     BitVector::getInputSymbolVector() {
         std::set<int> input_set = this->getInputSymbolSet();
 
@@ -221,9 +210,7 @@ namespace tana {
     }
 
 
-
-    uint32_t BitVector::arithmeticRightShift(uint32_t op1, uint32_t op2)
-    {
+    uint32_t BitVector::arithmeticRightShift(uint32_t op1, uint32_t op2) {
         int32_t temp1 = op1;
         int32_t temp2 = op2;
         int32_t result = temp1 >> temp2;
@@ -265,8 +252,7 @@ namespace tana {
         return res;
     }
 
-    uint32_t BitVector::extract(uint32_t op1, uint32_t high, uint32_t low)
-    {
+    uint32_t BitVector::extract(uint32_t op1, uint32_t high, uint32_t low) {
         assert(high > low);
         //assert(high <= REGISTER_SIZE);
         assert(low > 0);
@@ -277,8 +263,7 @@ namespace tana {
 
     }
 
-    uint32_t BitVector::concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size)
-    {
+    uint32_t BitVector::concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size) {
         std::bitset<REGISTER_SIZE> bit1(op1);
         std::bitset<REGISTER_SIZE> bit2(op2);
         std::string res;
@@ -301,20 +286,17 @@ namespace tana {
 
     }
 
-    bool BitVector::bit(uint32_t op0, uint32_t op1)
-    {
+    bool BitVector::bit(uint32_t op0, uint32_t op1) {
         std::bitset<REGISTER_SIZE> bit1(op0);
         uint32_t offset = op1 % REGISTER_SIZE;
         return bit1[offset];
     }
 
-    uint32_t BitVector::zeroext(uint32_t op1)
-    {
+    uint32_t BitVector::zeroext(uint32_t op1) {
         return op1;
     }
 
-    uint32_t BitVector::signext(uint32_t op1, uint32_t origin_size, uint32_t new_size)
-    {
+    uint32_t BitVector::signext(uint32_t op1, uint32_t origin_size, uint32_t new_size) {
         std::bitset<REGISTER_SIZE> bit1(op1);
         std::string res;
         std::string bit1_str = bit1.to_string();
@@ -328,29 +310,25 @@ namespace tana {
 
     }
 
-    bool BitVector::isSymbol() const{
-        return (val_type == ValueType ::SYMBOL) ? true : false;
+    bool BitVector::isSymbol() const {
+        return (val_type == ValueType::SYMBOL) ? true : false;
 
     }
 
-    std::string BitVector::print() const
-    {
+    std::string BitVector::print() const {
         std::stringstream ss;
-        if(val_type == ValueType ::SYMBOL)
-        {
-            if(!info.empty()) {
+        if (val_type == ValueType::SYMBOL) {
+            if (!info.empty()) {
                 ss << "(SYM_ID" << id;
                 ss << ", " << info << ")";
-            } else{
+            } else {
                 ss << "SYM_ID" << id;
             }
         }
-        if(val_type == ValueType ::CONCRETE)
-        {
-            if(info.empty()) {
+        if (val_type == ValueType::CONCRETE) {
+            if (info.empty()) {
                 ss << "0x" << std::hex << concrete_value << std::dec;
-            }
-            else{
+            } else {
                 ss << "(0x" << std::hex << concrete_value << std::dec;
                 ss << ", " << info << ")";
             }
@@ -358,8 +336,7 @@ namespace tana {
         return ss.str();
     }
 
-    uint32_t BitVector::size() const
-    {
+    uint32_t BitVector::size() const {
         return high_bit - low_bit + 1;
     }
 
@@ -370,9 +347,9 @@ namespace tana {
         if ((opr == nullptr) && (v1.opr == nullptr)) {
             if (val_type != v1.val_type)
                 return false;
-            if (val_type == ValueType ::SYMBOL)
+            if (val_type == ValueType::SYMBOL)
                 return (id == v1.id);
-            if (val_type == ValueType ::CONCRETE)
+            if (val_type == ValueType::CONCRETE)
                 return (concrete_value) == (v1.concrete_value);
         }
         if ((opr1 != nullptr) && (opr2 != nullptr)) {
@@ -423,8 +400,7 @@ namespace tana {
         return num;
     }
 
-    std::ostream& operator<<(std::ostream& os, const BitVector& dt)
-    {
+    std::ostream &operator<<(std::ostream &os, const BitVector &dt) {
         std::stringstream ss;
         dt.printV(ss);
         os << ss.str();
@@ -433,7 +409,7 @@ namespace tana {
     }
 
 
-    void BitVector::printV(std::stringstream &ss, uint32_t &length) const{
+    void BitVector::printV(std::stringstream &ss, uint32_t &length) const {
         const std::unique_ptr<Operation> &op = this->opr;
         ++length;
         if (op == nullptr) {
@@ -448,8 +424,7 @@ namespace tana {
 
         if (num_opr == 1) {
             ss << op->opty;
-            if(op->opty == BVOper ::bvextract)
-            {
+            if (op->opty == BVOper::bvextract) {
                 ss << "(";
                 (op->val[0])->printV(ss, length);
                 ss << "," << this->low_bit << "," << this->high_bit << ")";
@@ -480,14 +455,12 @@ namespace tana {
         }
     }
 
-    void BitVector::symbol_num_internal(const std::shared_ptr<BitVector> &v, std::set<int> &input) const
-    {
+    void BitVector::symbol_num_internal(const std::shared_ptr<BitVector> &v, std::set<int> &input) const {
         const std::unique_ptr<Operation> &op = v->opr;
         if (op == nullptr) {
-            if (v->val_type == ValueType ::CONCRETE)
+            if (v->val_type == ValueType::CONCRETE)
                 return;
-            else
-            {
+            else {
                 input.insert(v->id);
                 return;
             }
@@ -499,16 +472,15 @@ namespace tana {
 
     }
 
-    uint32_t BitVector::symbol_num()
-    {
-        if(symbol_num_cache != -1)
+    uint32_t BitVector::symbol_num() {
+        if (symbol_num_cache != -1)
             return symbol_num_cache;
 
         std::set<int> input_num;
         const std::unique_ptr<Operation> &op = this->opr;
 
         if (op == nullptr) {
-            if (this->val_type == ValueType ::SYMBOL)
+            if (this->val_type == ValueType::SYMBOL)
                 input_num.insert(this->id);
             return input_num.size();
         }
@@ -526,9 +498,9 @@ namespace tana {
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(opty, v1);
         std::shared_ptr<BitVector> result;
         if (v1->isSymbol())
-            result = std::make_shared<BitVector>(ValueType ::SYMBOL, std::move(oper));
+            result = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
         else {
-            result = std::make_shared<BitVector>(ValueType ::CONCRETE, std::move(oper));
+            result = std::make_shared<BitVector>(ValueType::CONCRETE, std::move(oper));
         }
         result->high_bit = v1->high_bit;
         result->low_bit = v1->low_bit;
@@ -541,9 +513,9 @@ namespace tana {
         std::shared_ptr<BitVector> result;
         //assert(v1->size() == v2->size()|| !v2->isSymbol() || !v1->isSymbol());
         if (v1->isSymbol() || v2->isSymbol())
-            result = std::make_shared<BitVector>(ValueType ::SYMBOL, std::move(oper));
+            result = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
         else
-            result = std::make_shared<BitVector>(ValueType ::CONCRETE, std::move(oper));
+            result = std::make_shared<BitVector>(ValueType::CONCRETE, std::move(oper));
         result->low_bit = v1->low_bit;
         result->high_bit = v1->high_bit;
         return result;
@@ -556,15 +528,15 @@ namespace tana {
     }
 
     std::shared_ptr<BitVector>
-    buildop3(BVOper opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,\
+    buildop3(BVOper opty, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2, \
              std::shared_ptr<BitVector> v3) {
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(opty, v1, v2, v3);
         std::shared_ptr<BitVector> result;
 
         if (v1->isSymbol() || v2->isSymbol() || v3->isSymbol())
-            result = std::make_shared<BitVector>(ValueType ::SYMBOL, std::move(oper));
+            result = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
         else
-            result = std::make_shared<BitVector>(ValueType ::CONCRETE, std::move(oper));
+            result = std::make_shared<BitVector>(ValueType::CONCRETE, std::move(oper));
 
         return result;
     }
