@@ -2116,18 +2116,40 @@ namespace tana {
     }
 
     bool INST_X86_INS_STOSB::symbolic_execution(tana::SEEngine *se) {
+
+
         assert(oprd[0]->type == Operand::Mem);
         // Update register
 
+        if(this->is_static) {
+            auto v_reg = se->readReg(oprd[0]->field[0]);
 
-        auto v_reg = se->readReg(oprd[0]->field[0]);
-        if (vcpu.DF() == 0) {
-            v_reg = buildop2(BVOper::bvadd, v_reg, 1);
-        } else {
-            v_reg = buildop2(BVOper::bvsub, v_reg, 1);
+            if (vcpu.DF() == 0) {
+                v_reg = buildop2(BVOper::bvadd, v_reg, 1);
+            } else {
+                v_reg = buildop2(BVOper::bvsub, v_reg, 1);
 
+            }
+            se->writeReg(oprd[0]->field[0], v_reg);
+        } else{
+            auto v_reg = se->readReg(oprd[0]->field[0]);
+            if(v_reg->val_type == ValueType::CONCRETE)
+            {
+                 uint32_t concrete_value = se->getRegisterConcreteValue(oprd[0]->field[0]);
+                 v_reg = std::make_shared<BitVector>(ValueType::CONCRETE, concrete_value);
+            }
+            else
+            {
+                if (vcpu.DF() == 0) {
+                    v_reg = buildop2(BVOper::bvadd, v_reg, 1);
+                } else {
+                    v_reg = buildop2(BVOper::bvsub, v_reg, 1);
+
+                }
+            }
+
+            se->writeReg(oprd[0]->field[0], v_reg);
         }
-        se->writeReg(oprd[0]->field[0], v_reg);
 
         // Store the contents of eax into the memory
         auto v_al = se->readReg("al");
