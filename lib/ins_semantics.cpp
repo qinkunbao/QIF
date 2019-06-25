@@ -1351,16 +1351,22 @@ namespace tana {
 
     bool INST_X86_INS_ROR::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvror);
+        //Update ZF
+        updateZF(se, res);
         return true;
     }
 
     bool INST_X86_INS_ROL::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvrol);
+        //Update ZF
+        updateZF(se, res);
         return true;
     }
 
     bool INST_X86_INS_SHL::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvshl);
+        //Update ZF
+        updateZF(se, res);
         return true;
     }
 
@@ -1402,6 +1408,9 @@ namespace tana {
 
     bool INST_X86_INS_SAR::symbolic_execution(SEEngine *se) {
         auto res = inst_dyn_details::two_operand(se, this, BVOper::bvsar);
+
+        //Update ZF
+        updateZF(se, res);
         return true;
     }
 
