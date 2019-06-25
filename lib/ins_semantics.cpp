@@ -1365,8 +1365,39 @@ namespace tana {
     }
 
     bool INST_X86_INS_SHR::symbolic_execution(SEEngine *se) {
-        auto res = inst_dyn_details::two_operand(se, this, BVOper::bvshr);
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v1, v0, res;
+        auto opcode_id = this->instruction_id;
+        auto opcstr = "bv" + x86::insn_id2string(opcode_id);
+
+        if (op1->type == Operand::ImmValue) {
+            uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+            v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
+        } else if (op1->type == Operand::Reg) {
+            v1 = se->readReg(op1->field[0]);
+        } else if (op1->type == Operand::Mem) {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        } else {
+            ERROR("other instructions: op1 is not ImmValue, Reg, or Mem!");
+        }
+
+        if (op0->type == Operand::Reg) { // dest op is reg
+            v0 = se->readReg(op0->field[0]);
+            res = buildop2(BVOper::bvshr, v0, v1);
+            se->writeReg(op0->field[0], res);
+        } else if (op0->type == Operand::Mem) { // dest op is mem
+            v0 = se->readMem(this->get_memory_address(), op0->bit);
+            res = buildop2(BVOper::bvshr, v0, v1);
+            se->writeMem(this->get_memory_address(), op0->bit, res);
+        } else {
+            ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");
+        }
+
+        //Update ZF
+        updateZF(se, res);
         return true;
+
     }
 
     bool INST_X86_INS_SAR::symbolic_execution(SEEngine *se) {
@@ -1886,6 +1917,11 @@ namespace tana {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
+        if((!this->is_static)&&(CF->symbol_num() == 0))
+        {
+            return true;
+        }
+
         std::shared_ptr<Constrain> constrains;
 
         if (vcpu.CF() == 0) {
@@ -2317,10 +2353,23 @@ namespace tana {
 
         auto src_reg = se->readReg(src);
         auto dest_reg = se->readReg(dest);
-        src_reg = buildop2(BVOper::bvadd, src_reg, 4);
-        se->writeReg(src, src_reg);
-        dest_reg = buildop2(BVOper::bvadd, dest_reg, 4);
-        se->writeReg(dest, dest_reg);
+        if(src_reg->symbol_num() == 0 && dest_reg->symbol_num() == 0) {
+            uint32_t src_c = se->getRegisterConcreteValue(src);
+            uint32_t dest_c = se->getRegisterConcreteValue(dest);
+
+            auto src_v = std::make_shared<BitVector>(ValueType::CONCRETE, src_c);
+            auto dest_v = std::make_shared<BitVector>(ValueType::CONCRETE, dest_c);
+
+            se->writeReg(src, src_v);
+            se->writeReg(dest, dest_v);
+
+        }
+        else {
+            src_reg = buildop2(BVOper::bvadd, src_reg, 4);
+            dest_reg = buildop2(BVOper::bvadd, dest_reg, 4);
+            se->writeReg(src, src_reg);
+            se->writeReg(dest, dest_reg);
+        }
 
         auto src_mem_address = this->read_reg_data(src);
         auto dest_mem_address = this->read_reg_data(dest);
@@ -2346,6 +2395,18 @@ namespace tana {
             }
             if (op0->type == Operand::Mem) {
                 src_v = std::make_shared<BitVector>(ValueType::CONCRETE, op0->field[0]);
+            }
+
+            if(eax_v->symbol_num() == 0 && src_v->symbol_num() == 0 && (!this->is_static))
+            {
+                uint32_t eax_c = se->getRegisterConcreteValue("eax");
+                uint32_t edx_c = se->getRegisterConcreteValue("edx");
+                auto eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax_c);
+                auto edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
+
+                se->writeReg("edx", edx_v);
+                se->writeReg("eax", eax_v);
+                return true;
             }
 
             auto result = buildop2(BVOper::bvimul, eax_v, src_v);
