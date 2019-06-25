@@ -375,6 +375,9 @@ namespace tana {
             case x86::x86_insn::X86_INS_CDQ:
                 return std::make_unique<INST_X86_INS_CDQ>(isStatic);
 
+            case x86::x86_insn::X86_INS_CMOVBE:
+                return std::make_unique<INST_X86_INS_CMOVBE>(isStatic);
+
             default: {
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
@@ -2536,6 +2539,46 @@ namespace tana {
 
         return true;
 
+    }
+
+    bool INST_X86_INS_CMOVBE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        if(this->vcpu.ZF() == 0 && this->vcpu.CF() == 0)
+            return true;
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v0, v1, res;
+
+        assert(op0->type == Operand::Reg);
+
+        v0 = se->readReg(op0->field[0]);
+
+        if(op1->type == Operand::Reg)
+        {
+            v1 = se->readReg(op1->field[0]);
+        }
+        else if(op1->type == Operand::Mem)
+        {
+            v1 = se->readMem(this->get_memory_address(), op1->bit);
+        }
+        else
+        {
+            ERROR("CMOVBE operand one error");
+        }
+
+        if(v1->symbol_num() == 0)
+        {
+            uint32_t concrete_v1 = se->getRegisterConcreteValue(op0->field[0]);
+            v1 = std::make_shared<BitVector>(ValueType::CONCRETE, concrete_v1);
+        }
+
+        se->writeReg(op0->field[0], v1);
+
+        return true;
     }
 
 }
