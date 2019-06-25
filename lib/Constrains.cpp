@@ -67,9 +67,6 @@ namespace tana {
     }
 
     bool Constrain::validate(const std::map<int, uint32_t> &input_map) {
-        if (r->symbol_num() == 0) {
-            return false;
-        }
         auto &bv = (r)->opr;
         std::shared_ptr<BitVector> v_left = bv->val[0];
         auto relation = bv->opty;
