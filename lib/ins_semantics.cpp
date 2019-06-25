@@ -382,6 +382,10 @@ namespace tana {
             case x86::x86_insn::X86_INS_SYSENTER:
                 return std::make_unique<INST_X86_INS_SYSENTER>(isStatic);
 
+
+            case x86::x86_insn::X86_INS_JECXZ:
+                return std::make_unique<INST_X86_INS_JECXZ>(isStatic);
+
             default: {
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
@@ -2594,6 +2598,21 @@ namespace tana {
         uint32_t eax_c = se->getRegisterConcreteValue("eax");
         auto eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax_c);
         se->writeReg("eax", eax_v);
+
+        return true;
+    }
+
+    bool INST_X86_INS_JECXZ::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        auto ecx_v = se->readReg("ecx");
+        if(ecx_v->symbol_num() == 0)
+            return true;
+
+        auto constrains = std::make_shared<Constrain>(ecx_v, BVOper::equal, 0);
+        se->updateCFConstrains(constrains);
 
         return true;
     }
