@@ -34,12 +34,12 @@ namespace tana {
 
     void debug_map(const std::map<int , uint32_t > &value_map)
     {
-        for( auto const& [key, val] : value_map )
+        for( auto const& x : value_map )
         {
-            std::cout << key
+            std::cout << x.first
                       << ':'
                       << std::hex
-                      << val
+                      << x.second
                       << std::dec
                       << " ";
         }
