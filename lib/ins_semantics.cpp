@@ -378,6 +378,10 @@ namespace tana {
             case x86::x86_insn::X86_INS_CMOVBE:
                 return std::make_unique<INST_X86_INS_CMOVBE>(isStatic);
 
+
+            case x86::x86_insn::X86_INS_SYSENTER:
+                return std::make_unique<INST_X86_INS_SYSENTER>(isStatic);
+
             default: {
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
@@ -2577,6 +2581,19 @@ namespace tana {
         }
 
         se->writeReg(op0->field[0], v1);
+
+        return true;
+    }
+
+
+    bool INST_X86_INS_SYSENTER::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        uint32_t eax_c = se->getRegisterConcreteValue("eax");
+        auto eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax_c);
+        se->writeReg("eax", eax_v);
 
         return true;
     }
