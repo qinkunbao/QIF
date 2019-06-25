@@ -412,6 +412,7 @@ namespace tana {
         uint32_t offset = memory_address % 4;
 
 
+
         if (addr_size == T_BYTE_SIZE * T_DWORD) {
             //assert(memory_address % 4 == 0);
             memory[memory_address] = v;

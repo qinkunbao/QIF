@@ -573,5 +573,16 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
+    class INST_X86_INS_CMPXCHG : public Inst_Base{
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class INST_X86_INS_SETB : public Inst_Base{
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
 
 }
