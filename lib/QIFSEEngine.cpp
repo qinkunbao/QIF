@@ -57,10 +57,10 @@ namespace tana {
             std::string memoryAddr = mem_addr.str();
             this->writeMem(memoryAddr, v0->size(), v0);
             ss.str("");
-            this->printMemory();
+            //this->printMemory();
             key_value_map.insert(std::pair<int, uint32_t>(v0->id, key_value[offset]));
         }
-        this->printMemory();
+        //this->printMemory();
 
     }
 
@@ -674,7 +674,12 @@ namespace tana {
             std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType> con_tuple = *con;
             std::shared_ptr<Constrain> constrain = std::get<1>(con_tuple);
             if (constrain->getNumSymbols() == 0) {
+                if(!constrain->validate())
+                {
+                    ERROR("Invalid constrain");
+                }
                 con = constrains.erase(con);
+
             } else
                 ++con;
 
@@ -699,7 +704,7 @@ namespace tana {
 
         //float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
         FastMonteCarlo res(100000, constrains, key_value);
-        //res.verifyConstrain();
+        res.verifyConstrain();
         res.run();
         float MonteCarloResult = res.getResult();
 

@@ -30,7 +30,7 @@ namespace tana {
     std::map<int, uint32_t>
     MonteCarlo::input2val(const std::vector<uint8_t> &input, std::vector<int> &bv) {
         std::map<int, uint32_t> input_v;
-        assert(input.size() == bv.size());
+        assert(input.size() >= bv.size());
         auto input_size = bv.size();
         for (int i = 0; i < input_size; ++i) {
             input_v.insert(std::pair<int, uint32_t>(bv[i], input[i]));
@@ -127,13 +127,14 @@ namespace tana {
             auto &cons = std::get<1>(*it);
             flag = cons->validate(key_value_map);
             if (flag) {
-                std::cout << "PASS" << std::endl;
+                //std::cout << "PASS" << std::endl;
                 ++it;
             } else {
                 std::cout << "FAIL: " << std::endl;
+                std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
+                std::cout << *cons <<std::endl;
                 ++num_fail_cons;
                 it = constrains.erase(it);
-                std::cout << std::hex << std::get<0>(*it) << std::dec << std::endl;
             }
         }
         std::cout << "Total Constrains: " << constrains.size() << std::endl;
@@ -162,7 +163,7 @@ namespace tana {
         for (const auto &element :constrains) {
             auto &cons = std::get<1>(element);
             this->testConstrain(cons);
-            std::cout << "finishing one constrain" << std::endl;
+            //std::cout << "finishing one constrain";
         }
         for (const auto &test: tests) {
             if (test->second) {
