@@ -386,6 +386,12 @@ namespace tana {
             case x86::x86_insn::X86_INS_JECXZ:
                 return std::make_unique<INST_X86_INS_JECXZ>(isStatic);
 
+            case x86::x86_insn::X86_INS_CMPXCHG:
+                return std::make_unique<INST_X86_INS_CMPXCHG>(isStatic);
+
+            case x86::x86_insn::X86_INS_SETB:
+                return std::make_unique<INST_X86_INS_SETB>(isStatic);
+
             default: {
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
@@ -2615,6 +2621,56 @@ namespace tana {
         se->updateCFConstrains(constrains);
 
         return true;
+    }
+
+
+    bool INST_X86_INS_CMPXCHG::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        //TODO
+
+        return true;
+
+    }
+
+
+    bool INST_X86_INS_SETB::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        if(!this->vcpu.eflags_state)
+            return false;
+
+        uint32_t con;
+
+        if(this->vcpu.CF() == 1)
+        {
+            con = 1;
+        } else{
+            con = 0;
+        }
+
+        auto con_v = std::make_shared<BitVector>(ValueType::CONCRETE, con);
+
+        auto op0 = this->oprd[0];
+        if(op0->type == Operand::Mem)
+        {
+            se->writeMem(this->get_memory_address(), op0->bit, con_v);
+            return true;
+        }
+
+        if(op0->type == Operand::Reg)
+        {
+            con_v->high_bit = op0->bit;
+            se->writeReg(op0->field[0], con_v);
+            return true;
+        }
+        return false;
     }
 
 }
