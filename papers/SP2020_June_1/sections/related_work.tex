@@ -10,5 +10,8 @@ leakage provided by CacheAudit.
 
 The dynamic approach, usually comes with taint analysis and symbolic execution, can perform a very 
 precise analysis. CacheD~\cite{203878} takes a concrete program execution trace and run the symbolic
-execution to get the formula of each memory address. 
+execution on the top of the trace to get the formula of each memory address. During the symbolic
+execution, every value except the sensitive key uses the concrete value. Therefore, CacheD is quite 
+precise in term of false positives. We adopted the similar idea to model the  secret-dependent memory 
+accesses.  
 \subsection{Quantifiy Information Leakage}
