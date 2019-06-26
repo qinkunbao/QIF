@@ -2,5 +2,13 @@
 \subsection{Side-channel vulnerabilities detection}
 
 There are a large number of works on side-channel vulnerability detections in recent years.
-In general, 
+CacheAudit~\cite{182946} uses abstract domains to compute the overapproximation of cache-based
+side-channel information leakage upper bound. However, due to over approximation, the leakage
+given by CacheAudit can indicate the program is side-channel free if the program has zero leakage. 
+However, it is less useful to judge the sensitive level of the side-channel leakage based on the
+leakage provided by CacheAudit. 
+
+The dynamic approach, usually comes with taint analysis and symbolic execution, can perform a very 
+precise analysis. CacheD~\cite{203878} takes a concrete program execution trace and run the symbolic
+execution to get the formula of each memory address. 
 \subsection{Quantifiy Information Leakage}
