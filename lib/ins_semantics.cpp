@@ -392,6 +392,12 @@ namespace tana {
             case x86::x86_insn::X86_INS_SETB:
                 return std::make_unique<INST_X86_INS_SETB>(isStatic);
 
+            case x86::x86_insn::X86_INS_JP:
+                return std::make_unique<INST_X86_INS_JP>(isStatic);
+
+            case x86::x86_insn::X86_INS_MOVSW:
+                return std::make_unique<INST_X86_INS_MOVSW>(isStatic);
+
             default: {
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
@@ -510,7 +516,7 @@ namespace tana {
 
 
         if (op0->type == Operand::Reg) {
-            size = Registers::getRegSize(op0->field[0]);
+            size = Registers::getRegSize(op0->field[0]) * T_BYTE_SIZE;
             v0 = se->readReg(op0->field[0]);
             res = buildop1(BVOper::bvneg, v0);
             se->writeReg(op0->field[0], res);
@@ -2397,6 +2403,14 @@ namespace tana {
             se->writeReg(dest, dest_reg);
         }
 
+        auto ecx_v = se->readReg("ecx");
+        if(ecx_v->symbol_num() == 0)
+        {
+            uint32_t ecx_c = se->getRegisterConcreteValue("ecx");
+            auto ecx_v = std::make_shared<BitVector>(ValueType::CONCRETE, ecx_c);
+            se->writeReg("ecx", ecx_v);
+        }
+
         auto src_mem_address = this->read_reg_data(src);
         auto dest_mem_address = this->read_reg_data(dest);
         std::stringstream src_ss, dest_ss;
@@ -2671,6 +2685,45 @@ namespace tana {
             return true;
         }
         return false;
+    }
+
+    bool INST_X86_INS_JP::symbolic_execution(tana::SEEngine *se)
+    {
+        return true;
+    }
+
+    bool INST_X86_INS_MOVSW::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        auto op0 = this->oprd[0];
+        auto op1 = this->oprd[1];
+
+        assert(op0->type == Operand::Mem);
+        assert(op1->type == Operand::Mem);
+
+        auto op0_reg = op0->field[0];
+        auto op1_reg = op1->field[0];
+
+        uint32_t op0_c = se->getRegisterConcreteValue(op0_reg);
+        uint32_t op1_c = se->getRegisterConcreteValue(op1_reg);
+
+        auto op0_v = std::make_shared<BitVector>(ValueType::CONCRETE, op0_c);
+        auto op1_v = std::make_shared<BitVector>(ValueType::CONCRETE, op1_c);
+
+        se->writeReg(op0_reg, op0_v);
+        se->writeReg(op1_reg, op1_v);
+
+        std::stringstream addr0, addr1;
+
+        addr0 << std::hex << op0_c << std::dec;
+        addr1 << std::hex << op1_c << std::dec;
+
+        auto read_v = se->readMem(addr1.str(), op1->bit);
+        se->writeMem(addr0.str(), op0->bit, read_v);
+
+        return true;
     }
 
 }
