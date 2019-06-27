@@ -87,6 +87,9 @@ add_executable(TestQIF
 add_executable(TestQIF1
         test/test_qif1.c)
 
+add_executable(TestQIF2
+        test/test_qif2.c)
+
 add_executable(TestRandom
         test/test_random_num.cpp)
 
