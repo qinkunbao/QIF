@@ -6,7 +6,9 @@ CacheAudit~\cite{182946} uses abstract domains to compute the overapproximation 
 side-channel information leakage upper bound. However, due to over approximation, the leakage
 given by CacheAudit can indicate the program is side-channel free if the program has zero leakage. 
 However, it is less useful to judge the sensitive level of the side-channel leakage based on the
-leakage provided by CacheAudit. 
+leakage provided by CacheAudit. CacheS~\cite{236338} imporves the work of CacheAudit by proposing 
+the novel abstract domains, which only precisely track secret related code. Like CacheAudit, CacheS
+can't provide the information to indicate the sensitive level of side-channel vulnerabilities.
 
 The dynamic approach, usually comes with taint analysis and symbolic execution, can perform a very 
 precise analysis. CacheD~\cite{203878} takes a concrete program execution trace and run the symbolic
@@ -14,4 +16,4 @@ execution on the top of the trace to get the formula of each memory address. Dur
 execution, every value except the sensitive key uses the concrete value. Therefore, CacheD is quite 
 precise in term of false positives. We adopted the similar idea to model the  secret-dependent memory 
 accesses.  
-\subsection{Quantifiy Information Leakage}
+\subsection{Quantitative Information Flow}
