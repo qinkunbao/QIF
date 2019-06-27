@@ -15,5 +15,9 @@ precise analysis. CacheD~\cite{203878} takes a concrete program execution trace 
 execution on the top of the trace to get the formula of each memory address. During the symbolic
 execution, every value except the sensitive key uses the concrete value. Therefore, CacheD is quite 
 precise in term of false positives. We adopted the similar idea to model the  secret-dependent memory 
-accesses.  
-\subsection{Quantitative Information Flow}
+accesses.  DATA~\cite{217537} detects address-based side-channel vulnerabilities by comparing 
+execution traces under various tests. 
+
+\subsection{Quantification}
+Quantitative Information Flow (QIF) aims at providing an information leakage estimate for the
+sensitive information through program analysis. 
