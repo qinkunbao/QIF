@@ -29,9 +29,13 @@ cannot tell precisely the difference between those leakages. 2)  An attacker usu
 leakages at one time. However, no existing tool can precisely report
 the sum of the information leakage from multiple sites given the information dependency among them.
 
-FIXME: EMPHASIZE NOVELTY AND METHOD.
+---FIXME: EMPHASIZE NOVELTY AND METHOD---
 To overcome the above limitations, we propose a novel method
-to more precisely quantify the information leakage...
+to more precisely quantify the information leakage. Previous work only considers
+``average'' information leakage given that the event, e.g., a branch condition, has not happened yet and
+it could either happen or not happen in the future. For example, given a crypto key, we can assume the key is fixed
+in the attack scenario because the attacker can fix the key and do profiling. The key insight is ...
+
 
 We have developed a tool called TANA, which can not only 
 find the side-channel vulnerabilities but can estimate how many bits are actually leaked 
