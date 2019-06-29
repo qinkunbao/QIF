@@ -190,4 +190,13 @@ namespace tana {
 
         return randVector;
     }
+
+    void FastMonteCarlo::spiltConstrainsByAddress()
+    {
+        for(const auto &constrain:constrains)
+        {
+            uint32_t addr = std::get<0>(constrain);
+        }
+
+    }
 }

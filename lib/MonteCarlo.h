@@ -59,6 +59,9 @@ namespace tana {
 
         std::vector<uint8_t> input_seed;
 
+        std::vector<std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>>
+        constrains_group_addr;
+
     public:
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
                 std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
@@ -69,6 +72,8 @@ namespace tana {
         float getResult();
 
         bool verifyConstrain();
+
+        void spiltConstrainsByAddress();
 
     };
 }
