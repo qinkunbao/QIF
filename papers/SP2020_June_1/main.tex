@@ -38,7 +38,7 @@ in the attack scenario because the attacker can fix the key and do profiling. Th
 By fixing with more constraints, we are able to obtain more precise information leakage.
 Our results are superisingly different compared to previous results and muhc more useful in practice.
 
-
+---FIXME: NEED A BETTER NAME---
 We have developed a tool called TANA, which can not only 
 find the side-channel vulnerabilities but can estimate how many bits are actually leaked 
 through the leakage. TANA works in three steps. First, the application is executed to record the 
@@ -48,9 +48,6 @@ as one unique math constraint. Finally, TANA will classify those constraints int
 independent multiple groups and run the multiple step Monte Carlo to estimate the 
 information leakage. TANA can report a very fined-grained vulnerability result 
 compared to the existing tools.
-
-The novel
-
 We apply the tool on OpenSSL, MbedTLS and libjpeg and find several serious side channel 
 vulnerabilities. We also evaluate the vulnerabilities from previous research. The result 
 confirms our intuition; it 
