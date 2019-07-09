@@ -2,19 +2,19 @@
 In this section, we first present a basic introduction about the 
 memory-based side-channel attack. Those attacks 
 are what we attempt to study in the paper. After that, we 
-will introduce existing works on side-channel detection and quantification.
+will introduce existing methods on side-channel detections and quantifications.
 
 \subsection{Address-based Side-Channels}
-Address-based side-channels are information channels that can leak sensitive information unintended
+Address-based side-channels are information channels that can leak sensitive information unintendedly
 through the different behaviors when the program accesses different memory address. Fundamentally,
 those difrences were caused by the memory hierarchy design in modern computer systems. When the 
 CPU fetches the data, it will first search the cache, which stores copies of the data that was 
 frequently used in main memory. If the data doesn't exist in the cache, the CPU will read
-the data from the main memory (RAM). According to the layer that causes the side-channel, we classify
+the data from the main memory (RAM). According to the layer that causes the side-channels, we classify
 the address-based side channels into two catogories: cache-based side-channel attacks and memory-based
 side-channel attacks.
 
-\subsubsection{Cache-based Attack}
+\subsubsection{Cache-based Attacks}
 In general, the cached-based side-channels seek 
 information relying on the time differences between the cache miss
 and cache hit. Here we introduce two common cache attacks:
