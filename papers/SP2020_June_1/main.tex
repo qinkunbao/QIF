@@ -10,11 +10,16 @@
 \usepackage{amsthm}
 \usepackage{tikz}
 
-\newcommand{\tana}{TANA}
+\newcommand{\highlight}[1]{\colorbox{yellow}{\textbf{#1}}}
+\newcommand{\fixme}[1]{\highlight{FIXME:} \emph{#1}}
+\newcommand{\todo}[1]{\highlight{TODO:} \emph{#1}}
+
+\newcommand{\tool}{TANA}
+\newcommand{\tana}{\tool}
 
 \begin{document}
 
-\title{\tana{}: Precise Fine-graine Side-channel Inforamtion Leakage Quantification in Binaries}
+\title{\tool{}: Precise Fine-graine Side-channel Inforamtion Leakage Quantification in Binaries}
 \author{Anonymous}
 
 \maketitle
@@ -47,14 +52,14 @@ Our results are superisingly different compared to previous results
 and much more useful in practice.
 
 ---FIXME: NEED A BETTER NAME---
-We have developed a tool called \tana{}, which can not only 
+We have developed a tool called \tool{}, which can not only 
 find the side-channel vulnerabilities but can estimate how many bits are actually leaked. 
- \tana{} works in three steps. First, the application is executed to record the 
-trace. Second, \tana{} runs the instruction level symbolic execution on the top of the 
-execution trace. \tana{} will find side-channel information leakages and model each leakage 
-as one unique math constraint. Finally, \tana{} will classify those constraints into 
+ \tool{} works in three steps. First, the application is executed to record the 
+trace. Second, \tool{} runs the instruction level symbolic execution on the top of the 
+execution trace. \tool{} will find side-channel information leakages and model each leakage 
+as one unique math constraint. Finally, \tool{} will classify those constraints into 
 independent multiple groups and run the multiple step Monte Carlo to estimate the 
-information leakage. \tana{} can report a very fined-grained vulnerability result 
+information leakage. \tool{} can report a very fined-grained vulnerability result 
 compared to the existing tools.
 We apply the tool on OpenSSL, MbedTLS and libjpeg and find several serious side channel 
 vulnerabilities. We also evaluate the vulnerabilities from previous research. The result 
