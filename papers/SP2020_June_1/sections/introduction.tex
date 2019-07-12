@@ -59,20 +59,22 @@ attacks, an adversary may run the target problem again and over again with the
 fixed unknown sensitive information as the input. Therefore, the previous
 threat model can't catch the real attack scenarios.
 
-In contrast, our method is precise and fine-grained. 
-We can assume the key is fixed
-in the attack scenario because the attacker can fix the key and perform profiling.
+In contrast, our method is more precise and fine-grained. 
+For our analysis, the input key is fixed.
 The average leakage does not fit in this scenario.
 The key insight is ...  \fixme{Qinkun: complete this and i will revise.}
+\Qinkun{During the real side-channel
+attacks, an adversary may run the target problem again and over again with the 
+fixed unknown sensitive information as the input and do the profiling. 
+Therefore, the previous threat model can't catch the real attack scenarios.}
 By fixing with more constraints, we are able to obtain more precise information leakage.
 Our results are superisingly different compared to previous results
 and much more useful in practice.
-Our method can also precisely estimate the information leakage form two combined leakages. 
+ 
 
 Our method can identify and quantify address-based
 sensitive information leakage sites in real-world applications automatically. 
-The intuition is that most
-adversaries will exploit different control-flow transfer and data-access patterns when 
+Adversaries will exploit different control-flow transfer and data-access patterns when 
 the program processes different sensitive data. We refer them as the potential information
 leakage sites. Our tool can provide a list of potential information leakage sites as well as how many 
 bits they can leak. We are also able to report precisely how many bits in total
