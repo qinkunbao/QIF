@@ -74,19 +74,20 @@ and much more useful in practice.
 
 Our method can identify and quantify address-based
 sensitive information leakage sites in real-world applications automatically. 
-Adversaries will exploit different control-flow transfer and data-access patterns when 
+Adversaries can exploit different control-flow transfer and data-access patterns when 
 the program processes different sensitive data. We refer them as the potential information
-leakage sites. Our tool can provide a list of potential information leakage sites as well as how many 
-bits they can leak. We are also able to report precisely how many bits in total
-can be leaked if an attacker is able to observe more than one site.
+leakage sites. Our tool can discover and estimate those potential information leakage sites 
+as well as how many bits they can leak. We are also able to report precisely how many bits
+can be leaked in total if an attacker observes more than one site.
 
 We define the amount of leaked information in a simple but effective way. It is interesting to 
 mention that the definition here is different from the definition in several static analysis 
 tools.
 Our method is based on ... \fixme{Qinkun: explain in high level, but give a novelty sense on
 how our method work, the method or theory, not workflow, not implementation.}
-We first run symbolic 
-execution on execution traces. We model each side-channel leakage as a logic formula. 
+\Qinkun{Here is the intuition. }
+
+We first run symbolic execution on execution traces. We model each side-channel leakage as a logic formula. 
 The sensitive input is divided into several independent bytes and each byte is regarded as 
 a unique symbol. Those formulas can precisely model every the side-channel vulnerability. 
 In other words, if the application has a different sensitive input but still satisfies the formula, 
