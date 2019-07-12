@@ -45,18 +45,39 @@ simply still gets an upper bound estimate of the total information leakage if th
 leakages aren’t independent. No existing tools can practically estimate the total information 
 leakage from multiple leakage sites in real world open source libraries.
 
-In the paper, we present a tool that can automatically identify and quantify address-based
+To overcome the above limitations, we propose a novel method
+to more precisely quantify the information leakage. Previous work only considers the
+``average'' information leakage which often neglect severe scenarios.
+% The average information leakage assume that an event, e.g., a branch condition,
+% can either happen or not happen in the future,
+% which often does not match the attach scenario..
+In contrast, our method is precise and fine-grain. 
+For example, given a crypto key, we can assume the key is fixed
+in the attack scenario because the attacker can fix the key and perform profiling.
+The average leakage does not fit in this scenario.
+The key insight is ...  \fixme{Qinkun: complete this and i will revise.}
+By fixing with more constraints, we are able to obtain more precise information leakage.
+Our results are superisingly different compared to previous results
+and much more useful in practice.
+Our method can also precisely combine two leakages. 
+
+Our method can automatically identify and quantify address-based
 sensitive information leakage sites in real-world applications. The intuition is that most
-adversaries will exploit the different control-flow transfer and data-access patterns when 
+adversaries will exploit different control-flow transfer and data-access patterns when 
 the program processes different sensitive data. We refer them as the potential information
 leakage sites. Our tool can provide a list of potential information leakage sites as well as how many 
-bits they can leak if the attacker can observe one site, two sites or multiple sites. 
-We define the amount of leaked information with simple but effective way. It is interesting to 
+bits they can leak. We are also able to report precisely how many bits in total
+can be leaked if an attacker is able to observe more than one site.
+
+We define the amount of leaked information in a simple but effective way. It is interesting to 
 mention that the definition here is different from the definition in several static analysis 
-tools. We will explain the reason in the following sections. After that, we run the symbolic 
-execution on the execution trace. We model each side-channel leakage as one logic formula. 
+tools.
+Our method is based on ... \fixme{Qinkun: explain in high level, but give a novelty sense on
+  how our method work, the method or theory, not workflow, not implementation.}
+We first run symbolic 
+execution on execution traces. We model each side-channel leakage as a logic formula. 
 The sensitive input is divided into several independent bytes and each byte is regarded as 
-one unique symbol. Those formulas can precisely model every the side-channel vulnerability. 
+a unique symbol. Those formulas can precisely model every the side-channel vulnerability. 
 In other words, if the application has a different sensitive input but still satisfies the formula, 
 the code can still leak the same information about the input.  
 Those information leakage sites may spread in the whole program 
@@ -65,27 +86,27 @@ estimate. In order to accurately calculate the total information leakage, we mus
 dependent relationships among those multiple leakages sites. Therefore, we introduce a 
 monte carlo sampling method to estimate the total information leakage.
 
-We implement the proposed method as a tool named TANA which can precisely discover and quantify the information
-leakage vulnerabilities. We apply TANA on several crypto and non-crypto libraries including OpenSSL,
-MbedTLS and libjpeg. The experiment result confirms that TANA can precisely identify the pre-known vulnerabilities,
+We implement the proposed method as a tool named \tool{} which can precisely discover and quantify the information
+leakage vulnerabilities. We apply \tool{} on several crypto and non-crypto libraries including OpenSSL,
+MbedTLS and libjpeg. The experiment result confirms that \tool{} can precisely identify the pre-known vulnerabilities,
 report how much information is leaked and which byte in the original sensitive buffer is leaked. 
 The result shows that while those crypto libraries have a number of side-channels, most of them actually
 leak very little inforamtion. Also, we also use the tool to analysis the two reported side-channel attack 
-in the libjpeg library. Finally, we present new vulnerabilities. With the help of TANA, we confirm those
+in the libjpeg library. Finally, we present new vulnerabilities. With the help of \tool{}, we confirm those
 vulnerabilities are easily to be exploited.
 
 In summary, we make the following contributions:
 
 \begin{itemize}
-	\item We propose a novel trace-based analysis method that can quantify fined-grained side-channel
-        information leakages. We model each information leakage vulnerability as one formula. Therefore,
+	\item We propose a novel method that can quantify fine-grain side-channel
+        information leakages. We model each information leakage vulnerability as a formula and 
         mutiple side-channel vulnerabilities can be seen as the disjunctions of those formula, which
         precisely models the program semantics.
         \item We transfer the information quantification problem into a probabilty distribution problem and 
-        use Monte Carlo sampling method to estimate the information leakage. Some initial results indicate the 
-        the sampling method suffers from the curse of dimensionality problem. We therefore design a guided
-        sampling method and provide the corresponding error esitimate.
-	\item We implement the proposed method into a practical tool and apply it to several software. TANA 
+        use the Monte Carlo sampling method to estimate the information leakage. %% Some initial results indicate the 
+        %% the sampling method suffers from the curse of dimensionality problem. We therefore design a guided
+        %% sampling method and provide the corresponding error esitimate.
+	\item We implement the proposed method into a practical tool and apply it to several real-world software. \tool{} 
         successfully identify the address-based side-channel vulnerabilities and provide the corresponding
         information leakge. The information lekage result provide the detailed information that help developers
         to fix the vulnerability.

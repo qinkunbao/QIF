@@ -10,11 +10,16 @@
 \usepackage{amsthm}
 \usepackage{tikz}
 
-\newcommand{\tana}{\textsc{TANA}}
+\newcommand{\highlight}[1]{\colorbox{yellow}{\textbf{#1}}}
+\newcommand{\fixme}[1]{\highlight{FIXME:} \emph{#1}}
+\newcommand{\todo}[1]{\highlight{TODO:} \emph{#1}}
+
+\newcommand{\tool}{TANA}
+\newcommand{\tana}{\tool}
 
 \begin{document}
 
-\title{TANA: Fined-grained Side-channel Inforamtion Leakage Quantification in Binaries}
+\title{\tool{}: Precise Fine-graine Side-channel Inforamtion Leakage Quantification in Binaries}
 \author{Anonymous}
 
 \maketitle
@@ -31,22 +36,30 @@ the sum of the information leakage from multiple sites given the information dep
 
 ---FIXME: EMPHASIZE NOVELTY AND METHOD---
 To overcome the above limitations, we propose a novel method
-to more precisely quantify the information leakage. Previous work only considers
-``average'' information leakage given that the event, e.g., a branch condition, has not happened yet and
-it could either happen or not happen in the future. For example, given a crypto key, we can assume the key is fixed
-in the attack scenario because the attacker can fix the key and do profiling. The key insight is ...
-By fixing with more constraints, we are able to obtain more precise information leakage.
-Our results are superisingly different compared to previous results and muhc more useful in practice.
+to more precisely quantify the information leakage. Previous work only considers the
+``average'' information leakage which often neglect severe scenarios.
+% The average information leakage assume that an event, e.g., a branch condition,
+% can either happen or not happen in the future,
+% which often does not match the attach scenario..
+In contrast, our method is precise and fine-grain. 
+Our method can also precisely combine two leakages. 
+%% For example, given a crypto key, we can assume the key is fixed
+%% in the attack scenario because the attacker can fix the key and perform profiling.
+%% The average leakage does not fit in this scenario.
+%% The key insight is ...  --- Qinkun: complete this and i will revise. ----
+%% By fixing with more constraints, we are able to obtain more precise information leakage.
+Our results are superisingly different compared to previous results
+and much more useful in practice.
 
 ---FIXME: NEED A BETTER NAME---
-We have developed a tool called TANA, which can not only 
-find the side-channel vulnerabilities but can estimate how many bits are actually leaked 
-through the leakage. TANA works in three steps. First, the application is executed to record the 
-trace. Second, TANA runs the instruction level symbolic execution on the top of the 
-execution trace. TANA will find side-channel information leakages and model each leakage 
-as one unique math constraint. Finally, TANA will classify those constraints into 
+We have developed a tool called \tool{}, which can not only 
+find the side-channel vulnerabilities but can estimate how many bits are actually leaked. 
+ \tool{} works in three steps. First, the application is executed to record the 
+trace. Second, \tool{} runs the instruction level symbolic execution on the top of the 
+execution trace. \tool{} will find side-channel information leakages and model each leakage 
+as one unique math constraint. Finally, \tool{} will classify those constraints into 
 independent multiple groups and run the multiple step Monte Carlo to estimate the 
-information leakage. TANA can report a very fined-grained vulnerability result 
+information leakage. \tool{} can report a very fined-grained vulnerability result 
 compared to the existing tools.
 We apply the tool on OpenSSL, MbedTLS and libjpeg and find several serious side channel 
 vulnerabilities. We also evaluate the vulnerabilities from previous research. The result 
