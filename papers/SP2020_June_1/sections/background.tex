@@ -21,8 +21,8 @@ and cache hit. Here we introduce two common cache attacks:
 PRIME+PROBE, FLUSH+RELOAD.
 
 \textbf{PRIME+PROBE} targets a single cache set. It has two phases. During the
-"prime" phase, the attacker fills the cache set with his own data.
-In the second "probe" phase, the attacker accesses the cache set
+``prime'' phase, the attacker fills the cache set with his own data.
+In the second ``probe'' phase, the attacker accesses the cache set
 again. If the victim accesses the cache set and evicts part of 
 the data, the attacker will experience a slow mesurement. If not, 
 the mesurement will be fast.
@@ -30,9 +30,9 @@ the mesurement will be fast.
 \textbf{FLUSH+RELOAD} targets a single cache line. 
 It requires the attacker and victim share the same memory.
 It also have two phases. During the "flush" phase, the attacker 
-will flush the "monitered memory" from the cache. Then the attacker
+will flush the ``monitered memory'' from the cache. Then the attacker
 wait for the victim to access the memory. In the next phase, the 
-attacker reload the "monitered memory". If the time is short, which
+attacker reload the ``monitered memory''. If the time is short, which
 indicates there is a cache hit and the victim reolads the memory before. 
 On the other hand, the time will be longer since the CPU need to reolad
 the memory into the cache line. 
@@ -47,8 +47,9 @@ data pages.
 After examing the memory-based side-channels attack. We find the root
 cause of those attacks are secret-dependent memory access and control
 flow transfers.
+
 \lstinputlisting[language=c, 
-                 numbers=right,
+                 numbers=left,
                  caption={Sample code shows secret-dependent memory access and 
                           secret-dependent control-flow transfer.},
                  captionpos=b,
@@ -68,15 +69,15 @@ in the paper.
 Given an event e which occurs with the probability $P(e)$, if the event e happens, 
 then we receive
 \begin{displaymath}
-    I = - log_2P(e)
+    I = - \log_2P(e)
 \end{displaymath}
 bits of information by knowing the event e.
 
-The above definition is obvious. Suppose a char variable \textit{a} in C program has the size
+The above definition is obvious. Suppose a char variable $a$ in C program has the size
 of one byte (8 bits), so the value in the variable can range from 0 - 255. We assume
-the \textit{a} has the uniform distribution. If at one time we observe the \textit{a}
-equals to 1, the probability will be 1/256. So the information we get is 
-$-log(1/256) = 8 bits$, which is exactly the size of the char variable in C program.
+the \textit{a} has the uniform distribution. If at one time we observe the $a$
+equals to 1, the probability will be $\frac{1}{256}$. So the information we get is 
+$-\log(\frac{1}{256}) = 8$ bits, which is exactly the size of the char variable in the C program.
 
 Existing works on information leakage quantification are based on mutual information or 
 min-entropy \cite{10.1007/978-3-642-00596-1_21}.
@@ -84,7 +85,7 @@ In their frameworks, the input sensitive
 information $K$ is viewed as a random variable. Let $k_i$ be one of the possible
 value of $K$. The Shannon entropy $H(K)$ is defined by
 \begin{displaymath}
-    H(K) = - \sum_{k_i {\in} K}P(k_i)log_2P(k_i)
+    H(K) = - \sum_{k_i {\in} K}P(k_i)\log_2P(k_i)
 \end{displaymath}
 
 The Shannon entropy can be used to quantify the initial uncertainty about the sensitive
@@ -93,7 +94,7 @@ the sensitive input, an adversary has some observations (O) through the side-cha
 In this work, the observations are referred to the secret-dependent control-flows and
 secret-dependent data-accesses patterns. The conditional entropy $H(K|O)$ is
 \begin{displaymath}
-    H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)log_2P(k_i|o_j)}}
+    H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)\log_2P(k_i|o_j)}}
 \end{displaymath}
 Intuitively, the conditional information marks the uncertainty about $K$ after the adversary
 has gained some observations (O). 
@@ -101,12 +102,12 @@ has gained some observations (O).
 Many previous works use the mutual information $I(K; O)$ to quantify the leakage which is defined 
 as follows:
 \begin{displaymath}
-    Leakage = I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
+    \mathit{Leakage} = I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)\log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
 \end{displaymath}
 where $P(k_i, o_i)$ is the joint discrete distribution of $K$ and $O$.
 Alternatively, the mutual information can also be computed with the following equation:
 \begin{displaymath}
-    Leakage = I(K;O) = H(K) - H(K|O) = H(O) - H(O|K)
+    \mathit{Leakage} = I(K;O) = H(K) - H(K|O) = H(O) - H(O|K)
 \end{displaymath}
 
 For a deterministic program, once the input $K$ is fixed, the program will have the same
@@ -115,7 +116,7 @@ equals to 1 or 0. So the conditional entropy $H(O|K)$ will equal to zero. So the
 by the mutual information can be simplified into:
 \begin{displaymath}
 \label{mutual:information}
-    Leakage = I(K;O) = H(O)
+    \mathit{Leakage} = I(K;O) = H(O)
 \end{displaymath}
 In other words, once we know the distribution of those memory-access patterns. We can 
 calculate how much information is actually leaked.
@@ -125,11 +126,12 @@ The formal information theory can prove that the maximal leakage is the upper bo
 information (Channel Capacity).
 
 \begin{displaymath}
-    Leakage = log(C(O))
+    \mathit{Leakage} = \log(C(O))
 \end{displaymath}
 $C(O)$ represents the number of different observations that an attacker can have. 
 
 Now we provide a concrete example to show how the two types of quantification definition works.
+
 \lstinputlisting[language=c, 
                  numbers=right,
                  caption={A simple program},
@@ -141,7 +143,7 @@ Now we provide a concrete example to show how the two types of quantification de
 \textbf{Maximal leakage} 
 Depending on the value of key, the code can run four different branches which corrosponding to 
 four different observations. Therefore, by the maximal leakage definition, the leakage equals to 
-$log4 = 2$ bits.
+$\log4 = 2$ bits.
 
 \textbf{Mutual Information} If the key satisfies the uniform distribution, the probability of the code runs each branch
 can be computed with the following result: 
@@ -155,4 +157,4 @@ P      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
 \caption{The distribution of observations}
 \end{table}
 Therefore, the leakage equals to 
-$\frac{1}{256}log\frac{1}{256} + \frac{1}{4}log\frac{1}{4}*2 + \frac{127}{256}log\frac{127}{256} = 1.7$ bits.
+$\frac{1}{256}\log\frac{1}{256} + \frac{1}{4}\log\frac{1}{4}*2 + \frac{127}{256}\log\frac{127}{256} = 1.7$ bits.
