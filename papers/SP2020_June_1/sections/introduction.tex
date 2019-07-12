@@ -11,7 +11,7 @@ during the execution, cause the following address-based side channels. Those sid
 vulnerabilities can be exploited by observing the different memory access patterns. An
 attacker can observe the pattern and infer the sensitive information.
 
-Various countermeasures~\cite{182946,203878,217537} have been proposed to defend the 
+Various countermeasures~\cite{182946,203878,217537} have been proposed to defend against the 
 address-based side-channel attacks. The basic idea is simple, identifying 
 and eliminating secret-dependent memory access patterns. 
 However, it can be very tedious and error-prone to find every the leakage site manually. 
@@ -25,7 +25,7 @@ found by those tools are typically hard to be exploited and leak very little inf
 (e.g., one bit of the length of the key~\cite{203878}).  
 It is worthwhile to have a tool to tell how much information is actually leaks. 
 For example, some secret dependent memory access patterns in OpenSSL have been known 
-and studied for years. But the authors still don't fix them all because they think 
+for years. But the authors still don't fix them all because they think 
 those vulnerabilities aren’t not severe enough. The tool based on static analysis~\cite{182946} with 
 abstract interpretation, can give inforamtion leakage upper bound, which is useful to 
 justify the implementation is secure enough. But they can’t indicate the leakage site 
@@ -37,32 +37,41 @@ than 2000 potential leakage sites for the RSA implementation of OpenSSL. But mos
 them were dismissed by the author after some manual inspections.
 
 Second, many open source libraries may have multiple leakage sites. 
-A side-channel attacker~\cite{191010,7163052} can exploit more than one leakage sites at one time. 
-The attacker may retrieve some information from one site and some other information 
-from another site.
+A side-channel attacker~\cite{191010,7163052,hornby2011side} can exploit more than one leakage 
+sites at one time. 
+The attacker may retrieve part of the sensitive information from one site, part of the sensitive
+information from another site and combine them together.
 It is hard know how much information is actually leaked in total. Adding those leakages 
-simply still gets an upper bound estimate of the total information leakage if those 
+simply gets a very rough upper bound estimate of the total information leakage if those 
 leakages aren’t independent. No existing tools can practically estimate the total information 
 leakage from multiple leakage sites in real world open source libraries.
 
 To overcome the above limitations, we propose a novel method
 to more precisely quantify the information leakage. Previous work only considers the
-``average'' information leakage which often neglect severe scenarios.
+``average'' information leakage which often neglects severe scenarios.
 % The average information leakage assume that an event, e.g., a branch condition,
 % can either happen or not happen in the future,
-% which often does not match the attach scenario..
-In contrast, our method is precise and fine-grain. 
-For example, given a crypto key, we can assume the key is fixed
+% which often does not match the attack scenario..
+The average information assumes that the target program will have \textbf{different} sensitive 
+information as the input when the attacker launch the attack,
+which often does not match the attack scenario. During the real side-channel
+attacks, an adversary may run the target problem again and over again with the 
+fixed unknown sensitive information as the input. Therefore, the previous
+threat model can't catch the real attack scenarios.
+
+In contrast, our method is precise and fine-grained. 
+We can assume the key is fixed
 in the attack scenario because the attacker can fix the key and perform profiling.
 The average leakage does not fit in this scenario.
 The key insight is ...  \fixme{Qinkun: complete this and i will revise.}
 By fixing with more constraints, we are able to obtain more precise information leakage.
 Our results are superisingly different compared to previous results
 and much more useful in practice.
-Our method can also precisely combine two leakages. 
+Our method can also precisely estimate the information leakage form two combined leakages. 
 
-Our method can automatically identify and quantify address-based
-sensitive information leakage sites in real-world applications. The intuition is that most
+Our method can identify and quantify address-based
+sensitive information leakage sites in real-world applications automatically. 
+The intuition is that most
 adversaries will exploit different control-flow transfer and data-access patterns when 
 the program processes different sensitive data. We refer them as the potential information
 leakage sites. Our tool can provide a list of potential information leakage sites as well as how many 
@@ -73,7 +82,7 @@ We define the amount of leaked information in a simple but effective way. It is 
 mention that the definition here is different from the definition in several static analysis 
 tools.
 Our method is based on ... \fixme{Qinkun: explain in high level, but give a novelty sense on
-  how our method work, the method or theory, not workflow, not implementation.}
+how our method work, the method or theory, not workflow, not implementation.}
 We first run symbolic 
 execution on execution traces. We model each side-channel leakage as a logic formula. 
 The sensitive input is divided into several independent bytes and each byte is regarded as 
@@ -91,7 +100,7 @@ leakage vulnerabilities. We apply \tool{} on several crypto and non-crypto libra
 MbedTLS and libjpeg. The experiment result confirms that \tool{} can precisely identify the pre-known vulnerabilities,
 report how much information is leaked and which byte in the original sensitive buffer is leaked. 
 The result shows that while those crypto libraries have a number of side-channels, most of them actually
-leak very little inforamtion. Also, we also use the tool to analysis the two reported side-channel attack 
+leak very little information. Also, we also use the tool to analysis the two reported side-channel attack 
 in the libjpeg library. Finally, we present new vulnerabilities. With the help of \tool{}, we confirm those
 vulnerabilities are easily to be exploited.
 
