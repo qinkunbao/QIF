@@ -85,7 +85,12 @@ mention that the definition here is different from the definition in several sta
 tools.
 Our method is based on ... \fixme{Qinkun: explain in high level, but give a novelty sense on
 how our method work, the method or theory, not workflow, not implementation.}
-\Qinkun{Here is the intuition. }
+\Qinkun{Here is the intuition. Before the attack, the adversary has a big but finite input space.
+Every time the adversary observes one leakage site, he can removes some potential input and
+reduce the size of the input space. The smaller the input space is, the more information is 
+actually leaked. On an extreme situation, if the size of the input space reduce to one, the
+adversary can determine the input information uniquely, which means the total information is 
+leaked.}
 
 We first run symbolic execution on execution traces. We model each side-channel leakage as a logic formula. 
 The sensitive input is divided into several independent bytes and each byte is regarded as 
