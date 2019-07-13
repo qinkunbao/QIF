@@ -704,7 +704,7 @@ namespace tana {
         const auto before = clock::now();
 
         //float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
-        FastMonteCarlo res(100000, constrains, key_value);
+        FastMonteCarlo res(10000000, constrains, key_value);
         res.verifyConstrain();
         res.run();
         float MonteCarloResult = res.getResult();
