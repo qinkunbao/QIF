@@ -105,6 +105,7 @@ namespace tana {
         unsigned int input_demension = input_vector.size();
 
         int step = 0, step_size = sample_num / 10;
+        spiltConstrainsByAddress();
         for (uint64_t i = 0; i < sample_num; ++i) {
             tests.push_back(std::make_unique<std::pair<std::vector<uint8_t>, bool>>(
                     std::make_pair(getRandomVector(input_demension), true)));
@@ -196,7 +197,36 @@ namespace tana {
         for(const auto &constrain:constrains)
         {
             uint32_t addr = std::get<0>(constrain);
+            std::vector<std::tuple<uint32_t , std::shared_ptr<tana::Constrain>, LeakageType>>*
+            constrain_group = internal_find_constrain_group_by_addr(addr);
+
+            if(constrain_group == nullptr)
+            {
+              std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >>
+              constrains_group;
+              constrains_group.push_back(constrain);
+              constrains_group_addr.push_back(constrains_group);
+
+            } else
+            {
+              constrain_group->push_back(constrain);
+            }
         }
 
     }
+
+    std::vector<std::tuple<uint32_t , std::shared_ptr<tana::Constrain>, LeakageType>>* \
+        FastMonteCarlo::internal_find_constrain_group_by_addr(uint32_t addr){
+        for(auto &constrain_group : constrains_group_addr)
+        {
+            uint32_t con_addr = std::get<0>(constrain_group.front());
+            if(con_addr == addr)
+            {
+              return &constrain_group;
+            }
+        }
+
+        return nullptr;
+    }
+
 }
