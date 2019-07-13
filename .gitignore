@@ -56,7 +56,7 @@ disassembler/target/
 
 
 # Latex
-main.pdf
+papers/*/main.pdf
 *.aux
 *.glo
 *.idx
