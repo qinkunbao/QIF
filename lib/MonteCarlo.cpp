@@ -176,6 +176,7 @@ void FastMonteCarlo::run() {
 
   std::cout << "Start Computing "
             << "Constrain: " << constrains.size() << std::endl;
+  this->reset_tests();
   for (const auto &element : constrains) {
     auto &cons = std::get<1>(element);
     this->testConstrain(cons);
@@ -185,6 +186,26 @@ void FastMonteCarlo::run() {
     if (test->second) {
       ++num_satisfied;
     }
+  }
+}
+
+void FastMonteCarlo::run_addr_group() {
+  for (const auto &constrains_addr : constrains_group_addr) {
+    uint64_t num_satisfied_for_group = 0;
+    this->reset_tests();
+    for (const auto &element : constrains_addr) {
+      auto &cons = std::get<1>(element);
+      this->testConstrain(cons);
+      // std::cout << "finishing one constrain";
+    }
+    for (const auto &test : tests) {
+      if (test->second) {
+        ++num_satisfied_for_group;
+      }
+    }
+    uint32_t addr = std::get<0>(constrains_addr.front());
+    auto result = std::make_tuple(addr, num_satisfied_for_group);
+    num_satisfied_group.push_back(result);
   }
 }
 
@@ -238,4 +259,27 @@ std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
   return nullptr;
 }
 
+void FastMonteCarlo::reset_tests() {
+  for (auto &it : tests) {
+    it->second = true;
+  }
+}
+
+void FastMonteCarlo::print_group_result(){
+  auto sample_num = tests.size();
+  std::cout << "Information Leak for each address: \n";
+  for(auto &it :num_satisfied_group)
+  {
+    uint32_t addr = std::get<0>(it);
+    uint64_t num = std::get<1>(it);
+    float portion = (static_cast<float>(num)) / (static_cast<float>(sample_num));
+    float leaked_information = abs(-log(portion) / log(2));
+    std::cout << "Address: " << std::hex << addr << std::dec << " Leaked:"
+    << leaked_information << " bits\n";
+  }
+}
+
+
+
 } // namespace tana
+

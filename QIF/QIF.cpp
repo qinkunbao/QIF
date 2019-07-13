@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
     se->printConstrains();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << se->getEntropy(key_value) << std::endl;
+    std::cout << "Total Leak"<<se->getEntropy(key_value) << std::endl;
 
     return 1;
 }

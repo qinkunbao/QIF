@@ -707,6 +707,8 @@ namespace tana {
         FastMonteCarlo res(10000000, constrains, key_value);
         res.verifyConstrain();
         res.run();
+        res.run_addr_group();
+        res.print_group_result();
         float MonteCarloResult = res.getResult();
 
         const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
