@@ -14,7 +14,7 @@ attacker can observe the pattern and infer the sensitive information.
 Various countermeasures~\cite{182946,203878,217537} have been proposed to defend against the 
 address-based side-channel attacks. The basic idea is simple, identifying 
 and eliminating secret-dependent memory access patterns. 
-However, it can be very tedious and error-prone to find every the leakage site manually. 
+However, it can be very tedious and error-prone to find each leakage site manually. 
 To address the problem, a lot of methods have been proposed to automatically detect information leakages. 
 While those tools can typically report a list of potential leakages sites, they still 
 face the following limitations.
@@ -70,35 +70,33 @@ Therefore, the previous threat model can't catch the real attack scenarios.}
 By fixing with more constraints, we are able to obtain more precise information leakage.
 Our results are superisingly different compared to previous results
 and much more useful in practice.
- 
+
+We define the amount of leaked information in a simple but effective way. It is interesting to 
+mention that the definition here is different from the definition in several static analysis 
+tools. Our method is based on ... \fixme{Qinkun: explain in high level, but give a novelty sense on
+how our method work, the method or theory, not workflow, not implementation.}
+\Qinkun{Here is the intuition. Before the attack, the adversary has a big but finite input space.
+Every time the adversary observes one leakage site, he can eliminate some potential input and
+reduce the size of the input space. The smaller the input space is, the more information is 
+actually leaked. On an extreme situation, if the size of the input space reduce to one, the
+adversary can determine the input information uniquely, which means the total information is 
+leaked. We define the leaked information as the proportion of the number of possible input 
+that satisfies the attacker's observation.}
 
 Our method can identify and quantify address-based
 sensitive information leakage sites in real-world applications automatically. 
-Adversaries can exploit different control-flow transfer and data-access patterns when 
+Adversaries can exploit different control-flow transfers and data-access patterns when 
 the program processes different sensitive data. We refer them as the potential information
 leakage sites. Our tool can discover and estimate those potential information leakage sites 
 as well as how many bits they can leak. We are also able to report precisely how many bits
 can be leaked in total if an attacker observes more than one site.
-
-We define the amount of leaked information in a simple but effective way. It is interesting to 
-mention that the definition here is different from the definition in several static analysis 
-tools.
-Our method is based on ... \fixme{Qinkun: explain in high level, but give a novelty sense on
-how our method work, the method or theory, not workflow, not implementation.}
-\Qinkun{Here is the intuition. Before the attack, the adversary has a big but finite input space.
-Every time the adversary observes one leakage site, he can removes some potential input and
-reduce the size of the input space. The smaller the input space is, the more information is 
-actually leaked. On an extreme situation, if the size of the input space reduce to one, the
-adversary can determine the input information uniquely, which means the total information is 
-leaked.}
-
-We first run symbolic execution on execution traces. We model each side-channel leakage as a logic formula. 
+We run symbolic execution on execution traces. We model each side-channel leakage as a math formula. 
 The sensitive input is divided into several independent bytes and each byte is regarded as 
 a unique symbol. Those formulas can precisely model every the side-channel vulnerability. 
 In other words, if the application has a different sensitive input but still satisfies the formula, 
-the code can still leak the same information about the input.  
+the code can still leak the same information.  
 Those information leakage sites may spread in the whole program 
-and their leakages may not be dependent. Simply adding them up can only give an upper bound 
+and their leakages may not be dependent. Simply adding them up can only get a coarse upper bound 
 estimate. In order to accurately calculate the total information leakage, we must know the 
 dependent relationships among those multiple leakages sites. Therefore, we introduce a 
 monte carlo sampling method to estimate the total information leakage.
@@ -115,14 +113,14 @@ vulnerabilities are easily to be exploited.
 In summary, we make the following contributions:
 
 \begin{itemize}
-	\item We propose a novel method that can quantify fine-grain side-channel
+	\item We propose a novel method that can quantify fine-grained side-channel
         information leakages. We model each information leakage vulnerability as a formula and 
         mutiple side-channel vulnerabilities can be seen as the disjunctions of those formula, which
         precisely models the program semantics.
         \item We transfer the information quantification problem into a probabilty distribution problem and 
-        use the Monte Carlo sampling method to estimate the information leakage. %% Some initial results indicate the 
-        %% the sampling method suffers from the curse of dimensionality problem. We therefore design a guided
-        %% sampling method and provide the corresponding error esitimate.
+        use the Monte Carlo sampling method to estimate the information leakage. Some initial results indicate the 
+        the sampling method suffers from the curse of dimensionality problem. We therefore design a guided
+        sampling method and provide the corresponding error esitimate.
 	\item We implement the proposed method into a practical tool and apply it to several real-world software. \tool{} 
         successfully identify the address-based side-channel vulnerabilities and provide the corresponding
         information leakge. The information lekage result provide the detailed information that help developers
