@@ -547,19 +547,31 @@ namespace tana {
                     }
 
                     if (res != con_res[j]) {
-                        std::cout << std::endl << "Error: " << std::hex << it->addrn << std::dec << std::endl;
-                        std::cout << "Register: " << Registers::convertRegID2RegName(j) << std::endl;
-                        std::cout << "Symbolic: " << std::hex << res << std::dec << std::endl;
-                        std::cout << "Concrete: " << std::hex << con_res[j] << std::dec << std::endl;
-                        std::cout << "Previous: " << *it << std::endl;
-                        std::cout << "Present: " << *(inst->get()) << std::endl;
+                        std::cout << "\n"
+                                  << "Error: " << std::hex << it->addrn
+                                  << "\n";
+
+                        std::cout << "Register: " << Registers::convertRegID2RegName(j)
+                                  << "\n";
+
+                        std::cout << "Symbolic: " << res
+                                  << "\n";
+
+                        std::cout << "Concrete: " << con_res[j] << std::dec
+                                  << "\n";
+
+                        std::cout << "Previous: " << *it
+                                  << "\n";
+
+                        std::cout << "Present: " << *(inst->get())
+                                  << std::endl;
+
                         auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
                         writeReg(Registers::convertRegID2RegName(j), reg_v);
                         ERROR("ERROR");
                     }
 
                 }
-                //std::cout << std::endl;
             }
             if (!status) {
                 ERROR("No recognized instruction");

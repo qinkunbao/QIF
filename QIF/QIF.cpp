@@ -48,7 +48,9 @@ int main(int argc, char* argv[]) {
 
     parse_trace_qif(&trace_file, start_addr, m_size, inst_list, key_value);
 
-    std::cout << "Start Address: " << std::hex << start_addr << std::dec << " Length: " << m_size << std::endl;
+    std::cout << "Start Address: " << std::hex << start_addr << std::dec
+              << " Length: " << m_size << std::endl;
+
     uint32_t eax, ebx, ecx, edx, esi, edi, esp, ebp;
     auto reg = (inst_list.front())->vcpu;
     eax = reg.gpr[0];
@@ -67,7 +69,8 @@ int main(int argc, char* argv[]) {
     se->printConstrains();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leak"<<se->getEntropy(key_value, MonteCarloTimes) << std::endl;
+    std::cout << "Total Leaked Bits = "<<se->getEntropy(key_value, MonteCarloTimes)
+    << std::endl;
 
     return 1;
 }
