@@ -698,13 +698,13 @@ namespace tana {
 
     }
 
-    float QIFSEEngine::getEntropy(std::vector<uint8_t> key_value) {
+    float QIFSEEngine::getEntropy(std::vector<uint8_t> key_value,  \
+                                  uint64_t MonteCarloTimes) {
         using clock = std::chrono::system_clock;
         using ms = std::chrono::milliseconds;
         const auto before = clock::now();
 
-        //float MonteCarloEResult = MonteCarlo::calculateMonteCarlo(constrains, 1000000);
-        FastMonteCarlo res(10000000, constrains, key_value);
+        FastMonteCarlo res(MonteCarloTimes, constrains, key_value);
         res.verifyConstrain();
         res.run();
         res.run_addr_group();

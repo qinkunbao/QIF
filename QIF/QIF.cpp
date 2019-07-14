@@ -5,8 +5,9 @@
 	> Created Time: Mon May  6 15:25:32 2019
  ************************************************************************/
 
-#include<iostream>
+#include <iostream>
 #include <memory>
+#include <sstream>
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
 
@@ -15,14 +16,28 @@ using namespace tana;
 
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
+    if (argc < 2) {
+        cout << "Usage: " << argv[0] << " <traces.txt> " << " <Monte Carlo Times> "
+        << "\n";
+        cout << "or\n";
         cout << "Usage: " << argv[0] << " <traces.txt> " << endl;
         return 1;
     }
 
+
+    uint64_t MonteCarloTimes = 100000;
+    if(argc == 3)
+    {
+      stringstream strValue;
+      strValue << argv[2];
+      uint64_t temp;
+      strValue >> temp;
+      MonteCarloTimes = temp;
+    }
+
     ifstream trace_file(argv[1]);
     if (!trace_file.is_open()) {
-        cout << "Cann't open files" << endl;
+        cout << "Can't open files" << endl;
         return 1;
     }
 
@@ -52,7 +67,7 @@ int main(int argc, char* argv[]) {
     se->printConstrains();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leak"<<se->getEntropy(key_value) << std::endl;
+    std::cout << "Total Leak"<<se->getEntropy(key_value, MonteCarloTimes) << std::endl;
 
     return 1;
 }

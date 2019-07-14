@@ -90,7 +90,7 @@ namespace tana {
 
         void reduceConstrains();
 
-        float getEntropy(std::vector<uint8_t> key_value);
+        float getEntropy(std::vector<uint8_t> key_value, uint64_t MonteCarloTimes);
 
         void checkMemoryAccess(Inst_Base *inst);
 
