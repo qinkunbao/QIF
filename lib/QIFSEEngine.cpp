@@ -725,7 +725,7 @@ namespace tana {
 
         const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
 
-        std::cout << "It took " << duration.count() / 1000.0 << "ms"
+        std::cout << "It took " << duration.count() / 1000.0 << " ms"
                   << " to finish the monte carlo sampling" << std::endl;
         return abs(-log(MonteCarloResult) / log(2));
     }
