@@ -10,276 +10,270 @@
 #include <random>
 
 namespace tana {
-std::vector<uint8_t> MonteCarlo::getRandomVector(unsigned int size) {
-  std::vector<uint8_t> randVector(size);
-  for (uint32_t index = 0; index < size; ++index) {
-    std::random_device random_device;         // create object for seeding
-    std::minstd_rand engine{random_device()}; // create engine and seed it
-    std::uniform_int_distribution<uint8_t> dist(
-        0, 255); // create distribution for integers with [1; 9] range
-    auto random_number =
-        dist(engine); // finally get a pseudo-randomrandom integer number
-    randVector[index] = random_number;
-  }
+    std::vector<uint8_t> MonteCarlo::getRandomVector(unsigned int size) {
+        std::vector<uint8_t> randVector(size);
+        for (uint32_t index = 0; index < size; ++index) {
+            std::random_device random_device;         // create object for seeding
+            std::minstd_rand engine{random_device()}; // create engine and seed it
+            std::uniform_int_distribution<uint8_t> dist(
+                    0, 255); // create distribution for integers with [1; 9] range
+            auto random_number =
+                    dist(engine); // finally get a pseudo-randomrandom integer number
+            randVector[index] = random_number;
+        }
 
-  return randVector;
-}
-
-std::map<int, uint32_t> MonteCarlo::input2val(const std::vector<uint8_t> &input,
-                                              std::vector<int> &bv) {
-  std::map<int, uint32_t> input_v;
-  assert(input.size() >= bv.size());
-  auto input_size = bv.size();
-  for (int i = 0; i < input_size; ++i) {
-    input_v.insert(std::pair<int, uint32_t>(bv[i], input[i]));
-  }
-  return input_v;
-}
-
-std::vector<int> MonteCarlo::getAllKeys(
-    const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>,
-                                 LeakageType>> &constrains) {
-
-  std::vector<int> input_key_vector;
-
-  for (const auto &element : constrains) {
-    auto &cons = std::get<1>(element);
-    std::vector<int> input_k1 = cons->getInputKeys();
-    input_key_vector.insert(std::end(input_key_vector), std::begin(input_k1),
-                            std::end(input_k1));
-  }
-
-  sort(input_key_vector.begin(), input_key_vector.end());
-  input_key_vector.erase(
-      unique(input_key_vector.begin(), input_key_vector.end()),
-      input_key_vector.end());
-
-  return input_key_vector;
-}
-
-bool MonteCarlo::constrainSatisfy(
-    const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>,
-                                 LeakageType>> &constrains,
-    const std::map<int, uint32_t> &input_map) {
-  for (const auto &element : constrains) {
-    auto &cons = std::get<1>(element);
-    if (!cons->validate(input_map)) {
-      return false;
+        return randVector;
     }
-  }
 
-  return true;
-}
-
-float MonteCarlo::calculateMonteCarlo(
-    const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>,
-                                 LeakageType>> &constrains,
-    uint64_t sample_num) {
-  std::vector<int> input_vector = getAllKeys(constrains);
-  auto input_vector_size = input_vector.size();
-
-  uint64_t satisfied_number = 0, total_num = sample_num;
-
-  for (uint64_t i = 0; i < sample_num; ++i) {
-    auto random_vector = getRandomVector(input_vector_size);
-    auto random_vector_map = input2val(random_vector, input_vector);
-    if (constrainSatisfy(constrains, random_vector_map)) {
-      ++satisfied_number;
+    std::map<int, uint32_t> MonteCarlo::input2val(const std::vector<uint8_t> &input,
+                                                  std::vector<int> &bv) {
+        std::map<int, uint32_t> input_v;
+        assert(input.size() >= bv.size());
+        auto input_size = bv.size();
+        for (int i = 0; i < input_size; ++i) {
+            input_v.insert(std::pair<int, uint32_t>(bv[i], input[i]));
+        }
+        return input_v;
     }
-  }
 
-  float result =
-      (static_cast<float>(satisfied_number)) / (static_cast<float>(total_num));
+    std::vector<int> MonteCarlo::getAllKeys(
+            const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>,
+                    LeakageType>> &constrains) {
 
-  return result;
-}
+        std::vector<int> input_key_vector;
 
-FastMonteCarlo::FastMonteCarlo(
-    uint64_t sample_num,
-    std::vector<
-        std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
-        con,
-    std::vector<uint8_t> key_value)
-    : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
-      input_seed(key_value) {
-  tests.reserve(sample_num);
-  input_vector = MonteCarlo::getAllKeys(con);
-  unsigned int input_dimensions = input_vector.size();
+        for (const auto &element : constrains) {
+            auto &cons = std::get<1>(element);
+            std::vector<int> input_k1 = cons->getInputKeys();
+            input_key_vector.insert(std::end(input_key_vector), std::begin(input_k1),
+                                    std::end(input_k1));
+        }
 
-  int step = 0, step_size = sample_num / 10;
-  spiltConstrainsByAddress();
-  for (uint64_t i = 0; i < sample_num; ++i) {
-    tests.push_back(std::make_unique<std::pair<std::vector<uint8_t>, bool>>(
-        std::make_pair(getRandomVector(input_dimensions), true)));
-    if (i / step_size > step) {
-      step = i / step_size;
-      std::cout << "Generating samples: " << step << "0%" << std::endl;
+        sort(input_key_vector.begin(), input_key_vector.end());
+        input_key_vector.erase(
+                unique(input_key_vector.begin(), input_key_vector.end()),
+                input_key_vector.end());
+
+        return input_key_vector;
     }
-  }
-}
 
-bool FastMonteCarlo::verifyConstrain() {
-  bool flag;
-  int num_fail_cons = 0;
-  int num_DA = 0, num_CF = 0;
-  auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
-  debug_map(key_value_map);
+    bool MonteCarlo::constrainSatisfy(
+            const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>,
+                    LeakageType>> &constrains,
+            const std::map<int, uint32_t> &input_map) {
+        for (const auto &element : constrains) {
+            auto &cons = std::get<1>(element);
+            if (!cons->validate(input_map)) {
+                return false;
+            }
+        }
 
-  auto it = constrains.begin();
-  while (it != constrains.end()) {
-    auto &cons = std::get<1>(*it);
-    flag = cons->validate(key_value_map);
-    if (flag) {
-      // std::cout << "PASS" << std::endl;
-
-      if (std::get<2>(*it) == LeakageType::CFLeakage) {
-        ++num_CF;
-      }
-      if (std::get<2>(*it) == LeakageType::DALeakage) {
-        ++num_DA;
-      }
-
-      ++it;
-    } else {
-      std::cout << "FAIL: " << std::endl;
-      std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
-      std::cout << *cons << std::endl;
-      ++num_fail_cons;
-      it = constrains.erase(it);
+        return true;
     }
-  }
-  std::cout << "Total Constrains: " << constrains.size() << std::endl;
-  std::cout << "Control Transfer: " << num_CF << std::endl;
-  std::cout << "Data Access: " << num_DA << std::endl;
-  std::cout << "Failed Constrains: " << num_fail_cons << std::endl;
-  return true;
-}
 
-void FastMonteCarlo::testConstrain(
-    const std::shared_ptr<tana::Constrain> &con) {
-  for (auto &it : tests) {
-    std::pair<std::vector<uint8_t>, bool> &one_test = *it;
-    if (one_test.second) {
-      auto random_vector_map =
-          MonteCarlo::input2val(one_test.first, input_vector);
-      bool flag = con->validate(random_vector_map);
-      one_test.second = flag;
-      // if(flag)
-      //{
-      //    std::cout << "Success" << std::endl;
-      //}
+    float MonteCarlo::calculateMonteCarlo(
+            const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>,
+                    LeakageType>> &constrains,
+            uint64_t sample_num) {
+        std::vector<int> input_vector = getAllKeys(constrains);
+        auto input_vector_size = input_vector.size();
+
+        uint64_t satisfied_number = 0, total_num = sample_num;
+
+        for (uint64_t i = 0; i < sample_num; ++i) {
+            auto random_vector = getRandomVector(input_vector_size);
+            auto random_vector_map = input2val(random_vector, input_vector);
+            if (constrainSatisfy(constrains, random_vector_map)) {
+                ++satisfied_number;
+            }
+        }
+
+        float result =
+                (static_cast<float>(satisfied_number)) / (static_cast<float>(total_num));
+
+        return result;
     }
-  }
-}
 
-void FastMonteCarlo::run() {
+    FastMonteCarlo::FastMonteCarlo(
+            uint64_t sample_num,
+            std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
+            std::vector<uint8_t> key_value)
+            : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
+              input_seed(key_value) {
+        tests.reserve(sample_num);
+        input_vector = MonteCarlo::getAllKeys(con);
+        unsigned int input_dimensions = input_vector.size();
 
-  std::cout << "Start Computing "
-            << "Constrain: " << constrains.size() << std::endl;
-  this->reset_tests();
-  for (const auto &element : constrains) {
-    auto &cons = std::get<1>(element);
-    this->testConstrain(cons);
-    // std::cout << "finishing one constrain";
-  }
-  for (const auto &test : tests) {
-    if (test->second) {
-      ++num_satisfied;
+        int step = 0, step_size = sample_num / 10;
+        spiltConstrainsByAddress();
+        for (uint64_t i = 0; i < sample_num; ++i) {
+            tests.push_back(std::make_unique<std::pair<std::vector<uint8_t>, bool>>(
+                    std::make_pair(getRandomVector(input_dimensions), true)));
+            if (i / step_size > step) {
+                step = i / step_size;
+                std::cout << "Generating samples: " << step << "0%" << std::endl;
+            }
+        }
     }
-  }
-}
 
-void FastMonteCarlo::run_addr_group() {
-  for (const auto &constrains_addr : constrains_group_addr) {
-    uint64_t num_satisfied_for_group = 0;
-    this->reset_tests();
-    for (const auto &element : constrains_addr) {
-      auto &cons = std::get<1>(element);
-      this->testConstrain(cons);
-      // std::cout << "finishing one constrain";
+    bool FastMonteCarlo::verifyConstrain() {
+        bool flag;
+        int num_fail_cons = 0;
+        int num_DA = 0, num_CF = 0;
+        auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
+        debug_map(key_value_map);
+        auto it = constrains.begin();
+        while (it != constrains.end()) {
+            auto &cons = std::get<1>(*it);
+            flag = cons->validate(key_value_map);
+            if (flag) {
+                // std::cout << "PASS" << std::endl;
+
+                if (std::get<2>(*it) == LeakageType::CFLeakage) {
+                    ++num_CF;
+                }
+                if (std::get<2>(*it) == LeakageType::DALeakage) {
+                    ++num_DA;
+                }
+
+                ++it;
+            } else {
+                std::cout << "Failed Constrains: " << std::endl;
+                std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
+                std::cout << *cons << std::endl;
+                ++num_fail_cons;
+                it = constrains.erase(it);
+            }
+        }
+        std::cout << "Total Constrains: " << constrains.size() << std::endl;
+        std::cout << "Control Transfer: " << num_CF << std::endl;
+        std::cout << "Data Access: " << num_DA << std::endl;
+        std::cout << "Failed Constrains: " << num_fail_cons << std::endl;
+        return true;
     }
-    for (const auto &test : tests) {
-      if (test->second) {
-        ++num_satisfied_for_group;
-      }
+
+    void FastMonteCarlo::testConstrain(
+            const std::shared_ptr<tana::Constrain> &con) {
+        for (auto &it : tests) {
+            std::pair<std::vector<uint8_t>, bool> &one_test = *it;
+            if (one_test.second) {
+                auto random_vector_map =
+                        MonteCarlo::input2val(one_test.first, input_vector);
+                bool flag = con->validate(random_vector_map);
+                one_test.second = flag;
+                // if(flag)
+                //{
+                //    std::cout << "Success" << std::endl;
+                //}
+            }
+        }
     }
-    uint32_t addr = std::get<0>(constrains_addr.front());
-    auto result = std::make_tuple(addr, num_satisfied_for_group);
-    num_satisfied_group.push_back(result);
-  }
-}
 
-float FastMonteCarlo::getResult() {
-  float result =
-      (static_cast<float>(num_satisfied)) / (static_cast<float>(num_sample));
-  return result;
-}
+    void FastMonteCarlo::run() {
 
-std::vector<uint8_t> FastMonteCarlo::getRandomVector(unsigned int size) {
-  std::vector<uint8_t> randVector(size);
-  for (uint32_t index = 0; index < size; ++index) {
-
-    auto random_number =
-        dist(engine); // finally get a pseudo-randomrandom integer number
-    randVector[index] = random_number;
-  }
-
-  return randVector;
-}
-
-void FastMonteCarlo::spiltConstrainsByAddress() {
-  for (const auto &constrain : constrains) {
-    uint32_t addr = std::get<0>(constrain);
-    std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>,
-                           LeakageType>> *constrain_group =
-        internal_find_constrain_group_by_addr(addr);
-
-    if (constrain_group == nullptr) {
-      std::vector<
-          std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
-          constrains_group;
-      constrains_group.push_back(constrain);
-      constrains_group_addr.push_back(constrains_group);
-
-    } else {
-      constrain_group->push_back(constrain);
+        std::cout << "Start Computing "
+                  << "Constrain: " << constrains.size() << std::endl;
+        this->reset_tests();
+        for (const auto &element : constrains) {
+            auto &cons = std::get<1>(element);
+            this->testConstrain(cons);
+            // std::cout << "finishing one constrain";
+        }
+        for (const auto &test : tests) {
+            if (test->second) {
+                ++num_satisfied;
+            }
+        }
     }
-  }
-}
 
-std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
+    void FastMonteCarlo::run_addr_group() {
+        for (const auto &constrains_addr : constrains_group_addr) {
+            uint64_t num_satisfied_for_group = 0;
+            this->reset_tests();
+            for (const auto &element : constrains_addr) {
+                auto &cons = std::get<1>(element);
+                this->testConstrain(cons);
+                // std::cout << "finishing one constrain";
+            }
+            for (const auto &test : tests) {
+                if (test->second) {
+                    ++num_satisfied_for_group;
+                }
+            }
+            uint32_t addr = std::get<0>(constrains_addr.front());
+            auto result = std::make_tuple(addr, num_satisfied_for_group);
+            num_satisfied_group.push_back(result);
+        }
+    }
+
+    float FastMonteCarlo::getResult() {
+        float result =
+                (static_cast<float>(num_satisfied)) / (static_cast<float>(num_sample));
+        return result;
+    }
+
+    std::vector<uint8_t> FastMonteCarlo::getRandomVector(unsigned int size) {
+        std::vector<uint8_t> randVector(size);
+        for (uint32_t index = 0; index < size; ++index) {
+
+            auto random_number =
+                    dist(engine); // finally get a pseudo-randomrandom integer number
+            randVector[index] = random_number;
+        }
+
+        return randVector;
+    }
+
+    void FastMonteCarlo::spiltConstrainsByAddress() {
+        for (const auto &constrain : constrains) {
+            uint32_t addr = std::get<0>(constrain);
+            std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>,
+                    LeakageType>> *constrain_group =
+                    internal_find_constrain_group_by_addr(addr);
+
+            if (constrain_group == nullptr) {
+                std::vector<
+                        std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
+                        constrains_group;
+                constrains_group.push_back(constrain);
+                constrains_group_addr.push_back(constrains_group);
+
+            } else {
+                constrain_group->push_back(constrain);
+            }
+        }
+    }
+
+    std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
     *FastMonteCarlo::internal_find_constrain_group_by_addr(uint32_t addr) {
-  for (auto &constrain_group : constrains_group_addr) {
-    uint32_t con_addr = std::get<0>(constrain_group.front());
-    if (con_addr == addr) {
-      return &constrain_group;
+        for (auto &constrain_group : constrains_group_addr) {
+            uint32_t con_addr = std::get<0>(constrain_group.front());
+            if (con_addr == addr) {
+                return &constrain_group;
+            }
+        }
+
+        return nullptr;
     }
-  }
 
-  return nullptr;
-}
+    void FastMonteCarlo::reset_tests() {
+        for (auto &it : tests) {
+            it->second = true;
+        }
+    }
 
-void FastMonteCarlo::reset_tests() {
-  for (auto &it : tests) {
-    it->second = true;
-  }
-}
-
-void FastMonteCarlo::print_group_result(){
-  auto sample_num = tests.size();
-  std::cout << "Information Leak for each address: \n";
-  for(auto &it :num_satisfied_group)
-  {
-    uint32_t addr = std::get<0>(it);
-    uint64_t num = std::get<1>(it);
-    float portion = (static_cast<float>(num)) / (static_cast<float>(sample_num));
-    float leaked_information = abs(-log(portion) / log(2));
-    std::cout << "Address: " << std::hex << addr << std::dec << " Leaked:"
-    << leaked_information << " bits\n";
-  }
-}
-
-
+    void FastMonteCarlo::print_group_result() {
+        auto sample_num = tests.size();
+        std::cout << "Information Leak for each address: \n";
+        for (auto &it : num_satisfied_group) {
+            uint32_t addr = std::get<0>(it);
+            uint64_t num = std::get<1>(it);
+            float portion =
+                    (static_cast<float>(num)) / (static_cast<float>(sample_num));
+            float leaked_information = abs(-log(portion) / log(2));
+            std::cout << "Address: " << std::hex << addr << std::dec
+                      << " Leaked:" << leaked_information << " bits\n";
+        }
+    }
 
 } // namespace tana
-

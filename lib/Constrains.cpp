@@ -71,10 +71,15 @@ namespace tana {
         std::shared_ptr<BitVector> v_left = bv->val[0];
         auto relation = bv->opty;
         std::shared_ptr<BitVector> v_right = bv->val[1];
+        uint32_t v_left_con, v_right_con;
 
-        uint32_t v_left_con = SEEngine::eval(v_left, input_map);
-        uint32_t v_right_con = SEEngine::eval(v_right, input_map);
-
+        if(r->symbol_num() > 0) {
+            v_left_con = SEEngine::eval(v_left, input_map);
+            v_right_con = SEEngine::eval(v_right, input_map);
+        } else{
+            v_left_con = SEEngine::eval(v_left);
+            v_right_con = SEEngine::eval(v_right);
+        }
         switch (relation) {
             case BVOper::greater:
                 return v_left_con > v_right_con;
