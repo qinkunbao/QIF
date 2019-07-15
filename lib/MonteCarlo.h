@@ -86,5 +86,7 @@ namespace tana {
 
         void print_group_result();
 
+        void calculateConstrains();
+
     };
 }

@@ -8,6 +8,7 @@
 #include "error.h"
 #include <algorithm>
 #include <random>
+#include <set>
 
 namespace tana {
     std::vector<uint8_t> MonteCarlo::getRandomVector(unsigned int size) {
@@ -118,38 +119,43 @@ namespace tana {
 
     bool FastMonteCarlo::verifyConstrain() {
         bool flag;
-        int num_fail_cons = 0;
-        int num_DA = 0, num_CF = 0;
         auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
-        debug_map(key_value_map);
+        //debug_map(key_value_map);
         auto it = constrains.begin();
+        std::set<uint32_t > addr_set;
         while (it != constrains.end()) {
             auto &cons = std::get<1>(*it);
             flag = cons->validate(key_value_map);
             if (flag) {
-                // std::cout << "PASS" << std::endl;
-
-                if (std::get<2>(*it) == LeakageType::CFLeakage) {
-                    ++num_CF;
-                }
-                if (std::get<2>(*it) == LeakageType::DALeakage) {
-                    ++num_DA;
-                }
-
                 ++it;
             } else {
                 std::cout << "Failed Constrains: " << std::endl;
                 std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
                 std::cout << *cons << std::endl;
-                ++num_fail_cons;
+                addr_set.insert(std::get<0>(*it));
                 it = constrains.erase(it);
             }
         }
-        std::cout << "Total Constrains: " << constrains.size() << std::endl;
+        std::cout << "Failed Constrains: " << addr_set.size() << std::endl;
+        return true;
+    }
+
+    void FastMonteCarlo::calculateConstrains()
+    {
+        int num_DA = 0, num_CF = 0;
+        for(const auto &cons_vector :constrains_group_addr)
+        {
+            auto one_cons = cons_vector.front();
+            if(std::get<2>(one_cons) == LeakageType::CFLeakage){
+                ++num_CF;
+            }
+            if(std::get<2>(one_cons) == LeakageType::DALeakage){
+                ++num_DA;
+            }
+        }
+        std::cout << "Total Constrains: " << constrains_group_addr.size() << std::endl;
         std::cout << "Control Transfer: " << num_CF << std::endl;
         std::cout << "Data Access: " << num_DA << std::endl;
-        std::cout << "Failed Constrains: " << num_fail_cons << std::endl;
-        return true;
     }
 
     void FastMonteCarlo::testConstrain(
