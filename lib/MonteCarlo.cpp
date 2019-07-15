@@ -161,10 +161,7 @@ namespace tana {
                         MonteCarlo::input2val(one_test.first, input_vector);
                 bool flag = con->validate(random_vector_map);
                 one_test.second = flag;
-                // if(flag)
-                //{
-                //    std::cout << "Success" << std::endl;
-                //}
+
             }
         }
     }

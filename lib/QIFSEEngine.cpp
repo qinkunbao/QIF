@@ -579,7 +579,6 @@ namespace tana {
             }
 
         }
-        this->printConstrains();
         return true;
     }
 
