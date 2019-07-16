@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     }
 
 
-    uint64_t MonteCarloTimes = 10000000;
+    uint64_t MonteCarloTimes = 10000;
     if(argc == 3)
     {
       stringstream strValue;
