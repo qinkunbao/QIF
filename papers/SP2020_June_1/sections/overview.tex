@@ -1,8 +1,12 @@
 \section{Overview}
-The shortcomings of existing work inspire us to design a new tool to detect
-and quantify information leakage vulnerabilities in binaries. We capture the 
-fined-grained semantics of each secret-dependent control-flow transfers 
-and data-accesses. 
+The shortcomings of the existing work inspire us to design a new tool to detect
+and quantify information leakage vulnerabilities in binaries. First, we 
+the target program with the concrete inputs (sensitive information) with
+the dynamic binary instrumentation (DBI) to collect the execution traces.
+After that, we run the symbolic execution to capture the fined-grained 
+semantic information of each secret-dependent control-flow transfers 
+and data-accesses. Finally we run the Markov Chain Monte Carlo (MCMC)
+to estimate the information leakage. 
 
 \begin{enumerate}
     \item \textit{Execution trace generation.} The design goal of \tool\ is to
