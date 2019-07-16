@@ -5,24 +5,23 @@ in quantifying the side-channel vulnerability leakages. We describe the
 chanllenges and then briefly present the corresponding solution.
 
 \subsection{Information Leakage Definition}
-Existing static-based side-channel quantification works defined information leakage
-as the mutual information or the maximal leakage. Those definitions provide strong security guarantee
-when trying to show a program is secure if the their methods say the program leaks zero bits of
-information.
+Existing static-based side-channel quantification works~\cite{182946} define information leakage
+as the mutual information or the maximal leakage. Those definitions provide a strong security guarantee
+when trying to prove a program is secure enough if the their methods calculate the program 
+leaks zero bits of information.
 
-
-However, the above definition is less useful if the program has some leakages. 
-Considering the example in section~\ref{code::entropy}, if an attacker observes the
-code runs branch A, the attacker can know the key actually equals to 128. Suppose it is 
-a dummy password checker, in which case the attacker can fully retrieve the password.
+However, the above definition is less useful to justify the sensitive level of leakage sites. 
+Considering the example code~\ref{code::entropy} in the previous section, if an attacker knows the
+code executes branch A by some observations, the attacker can know the key actually equals to 128. 
+Suppose it is a dummy password checker, in which case the attacker can fully retrieve the password.
 Therefore, the total information leakage should be 8 bits, which equals to the size
 of unsigned char. 
 According to the mutual definition, however, the leakage will be 1.7 bits. The maximal information
-leakage is 2 bits. Both approaches fail to precisely tell how much information is actually leaked
-during the exectution.
+leakage is 2 bits. Both approaches fail to tell how much information is actually leaked
+during the execution precisely.
 
-The problem with the existing method is that they are static-based and the 
-input values are neglected with the definition. 
+The problem with the existing methods is that they are static-based and the 
+input values are neglected by the previous definition. 
 They assume the attacker runs the program multiple times with many different sensitive 
 information as the input. Both the mutual information and the max-leakage give an ``average" 
 estimate of the information leakage. But it isn't the typical scenario for an adversary to 
@@ -47,7 +46,7 @@ previous example, the existing static method doesn’t work well in those situat
 
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program mutiple times with one fixed input, we
-want to how much information he can infer by oberserving the memory access patterns.
+want to know how much information he can infer by oberserving the memory access patterns.
 We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} where the information
 leakage equals:
 
