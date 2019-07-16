@@ -31,11 +31,19 @@ to retrieve the sensitive information, in which case the sensitive information i
 The adversary will run the attack over and over again and guess the value bit by bit. Like the 
 previous example, the existing static method doesn’t work well in those situations.
 
-\begin{tikzpicture}
-    \draw[gray, thick] (-1,2) -- (2,-4);
-    \draw[gray, thick] (-1,-1) -- (2,2);
-    \filldraw[black] (0,0) circle (2pt) node[anchor=west] {Intersection point};
-\end{tikzpicture}
+\begin{figure}
+\centering
+\subfloat[Mutual Information]
+{
+    \includegraphics[width=.4\linewidth]{./figures/MI.pdf}
+    \label{fig:1}
+}
+\subfloat[Real Attack]
+{
+    \includegraphics[width=.4\linewidth]{./figures/RA.pdf}
+    \label{fig:2}
+}
+\end{figure}
 
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program mutiple times with one fixed input, we
