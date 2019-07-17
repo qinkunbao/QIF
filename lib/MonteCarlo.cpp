@@ -271,13 +271,19 @@ namespace tana {
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
-            float portion =
-                    (static_cast<float>(num)) / (static_cast<float>(sample_num));
-            float leaked_information = abs(-log(portion) / log(2));
-            std::cout << "Address: " << std::hex << addr << std::dec
-                      << " Leaked:" << leaked_information << " bits"
-                      << " Num of Satisfied: " << num << std::endl;
-
+            if (num != 0) {
+                float portion =
+                        (static_cast<float>(num)) / (static_cast<float>(sample_num));
+                float leaked_information = abs(-log(portion) / log(2));
+                std::cout << "Address: " << std::hex << addr << std::dec
+                          << " Leaked:" << leaked_information << " bits"
+                          << " Num of Satisfied: " << num << std::endl;
+            }
+            else
+            {
+                std::cout << "Address: " << std::hex << addr << std::dec;
+                std::cout << " Monte Carlo Failed" << std::endl;
+            }
         }
     }
 
