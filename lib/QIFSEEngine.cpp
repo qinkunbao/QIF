@@ -731,6 +731,14 @@ namespace tana {
     }
 
     void QIFSEEngine::checkMemoryAccess(tana::Inst_Base *inst) {
+
+        // LEA, the only instruction that performs memory addressing
+        // calculations but doesn't actually address memory.
+        if(inst->instruction_id == x86::X86_INS_LEA)
+        {
+            return;
+        }
+
         int oprd_num = 0, memory_num = 0, memory_index = 0;
         if (inst->oprd[0] != nullptr) ++oprd_num;
         if (inst->oprd[1] != nullptr) ++oprd_num;
