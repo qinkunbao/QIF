@@ -667,7 +667,7 @@ namespace tana {
             auto addr = std::get<0>(element);
             auto &con = std::get<1>(element);
             LeakageType type = std::get<2>(element);
-            bool Valid = con->validate();
+            bool Valid = con->validate(key_value_map);
             std::string valid_str = Valid ? " True " : " False ";
             std::string type_str = type == LeakageType::CFLeakage ? "CFleakage" : "DALeakage";
 
@@ -905,7 +905,8 @@ namespace tana {
 
                 auto res1 = buildop2(BVOper::bvimul, regV2, mul_value);
                 auto res2 = buildop2(BVOper::bvadd, regV1, res1);
-                auto res = buildop2(BVOper::bvadd, res2, imm_value);
+                auto bvopr = symbol == "+" ? BVOper::bvadd : BVOper::bvsub;
+                auto res = buildop2(bvopr, res2, imm_value);
                 this->getMemoryAccessConstrain(res, inst->get_memory_address());
                 return;
             }
@@ -924,6 +925,19 @@ namespace tana {
 
         uint32_t mem_address_concrete = std::stoul(mem_address_str, nullptr, 16);
         uint32_t mem_address_concrete_L = mem_address_concrete >> L;
+
+        // check the address with the real address
+        uint32_t mem_address_symbol_concrete = this->eval(mem_address_symbol, key_value_map);
+        if(mem_address_symbol_concrete != mem_address_concrete)
+        {
+            std::cout << "Memory Address Error: \n";
+            std::cout << "Current Inst: " << *current_eip << " "<<"\n";
+            std::cout << "Concrete Memory Address: " << std::hex << mem_address_concrete << "\n";
+            std::cout << "Symbol Memory Address: " << mem_address_symbol_concrete << std::endl;
+            std::cout << " " << *mem_address_symbol << std::endl;
+            this->eval(mem_address_symbol, key_value_map);
+            return nullptr;
+        }
 
         std::shared_ptr<BitVector> mem_address_symbol_L = buildop2(BVOper::bvshr, mem_address_symbol, L);
 
