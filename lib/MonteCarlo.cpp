@@ -275,7 +275,9 @@ namespace tana {
                     (static_cast<float>(num)) / (static_cast<float>(sample_num));
             float leaked_information = abs(-log(portion) / log(2));
             std::cout << "Address: " << std::hex << addr << std::dec
-                      << " Leaked:" << leaked_information << " bits\n";
+                      << " Leaked:" << leaked_information << " bits"
+                      << " Num of Satisfied: " << num << std::endl;
+
         }
     }
 
