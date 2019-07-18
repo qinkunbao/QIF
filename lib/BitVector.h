@@ -73,6 +73,8 @@ namespace tana {
         std::string info;
         std::unique_ptr<Operation> opr = nullptr;
 
+        uint32_t formula_cache_concrete_value;
+        bool flag_formula_cache_concrete;
 
         BitVector() = delete;
 

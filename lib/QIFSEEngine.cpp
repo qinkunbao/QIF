@@ -532,6 +532,7 @@ namespace tana {
                     con_res.push_back(inst->get()->vcpu.gpr[i]);
                 }
 
+
                 //std::cout << it->id << ": ";
                 for (uint32_t j = 0; j < 8; ++j) {
                     //std::cout << *sym_res[j] << " = " << std::hex << con_res[j] << std::dec <<" || ";
@@ -539,12 +540,14 @@ namespace tana {
                     if ((sym_res[j])->symbol_num() == 0) {
                         res = eval(sym_res[j]);
                     } else {
-                        res = eval(sym_res[j], key_value_map);
+                        //res = eval_cache(sym_res[j], key_value_map);
+                        res = con_res[j];
                     }
                     if ((res == con_res[j]) && ((sym_res[j])->symbol_num() == 0)) {
                         auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
                         writeReg(Registers::convertRegID2RegName(j), reg_v);
                     }
+
 
                     if (res != con_res[j]) {
                         std::cout << "\n"
@@ -569,6 +572,12 @@ namespace tana {
                         auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
                         writeReg(Registers::convertRegID2RegName(j), reg_v);
                         ERROR("ERROR");
+                    }
+
+                    if((sym_res[j])->symbol_num() > 2000 )
+                    {
+                        auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
+                        writeReg(Registers::convertRegID2RegName(j), reg_v);
                     }
 
                 }
@@ -927,6 +936,7 @@ namespace tana {
         uint32_t mem_address_concrete_L = mem_address_concrete >> L;
 
         // check the address with the real address
+        /*
         uint32_t mem_address_symbol_concrete = this->eval(mem_address_symbol, key_value_map);
         if(mem_address_symbol_concrete != mem_address_concrete)
         {
@@ -935,15 +945,28 @@ namespace tana {
             std::cout << "Concrete Memory Address: " << std::hex << mem_address_concrete << "\n";
             std::cout << "Symbol Memory Address: " << mem_address_symbol_concrete << std::endl;
             std::cout << " " << *mem_address_symbol << std::endl;
-            this->eval(mem_address_symbol, key_value_map);
             return nullptr;
         }
-
+        */
         std::shared_ptr<BitVector> mem_address_symbol_L = buildop2(BVOper::bvshr, mem_address_symbol, L);
 
         auto cons = std::make_shared<Constrain>(mem_address_symbol_L, BVOper::equal, mem_address_concrete_L);
         this->updateDAConstrains(cons);
         return cons;
+    }
+
+
+    uint32_t QIFSEEngine::eval_cache(const std::shared_ptr<BitVector> &v,
+                        const std::map<int, uint32_t> &inmap){
+        if(v->flag_formula_cache_concrete)
+        {
+            return v->formula_cache_concrete_value;
+        }
+        else{
+            v->formula_cache_concrete_value = SEEngine::eval(v,inmap);
+            v->flag_formula_cache_concrete = true;
+            return v->formula_cache_concrete_value;
+        }
     }
 
 
