@@ -1503,11 +1503,21 @@ namespace tana {
 
         if (op0->type == Operand::Reg) { // dest op is reg
             v0 = se->readReg(op0->field[0]);
-            res = buildop2(BVOper::bvxor, v0, v1);
+            if(v0 == v1){
+                res = std::make_shared<BitVector>(ValueType::CONCRETE, 0);
+            }
+            else {
+                res = buildop2(BVOper::bvxor, v0, v1);
+            }
             se->writeReg(op0->field[0], res);
         } else if (op0->type == Operand::Mem) { // dest op is mem
             v0 = se->readMem(this->get_memory_address(), op0->bit);
-            res = buildop2(BVOper::bvxor, v0, v1);
+            if(v0 == v1){
+                res = std::make_shared<BitVector>(ValueType::CONCRETE, 0);
+            }
+            else {
+                res = buildop2(BVOper::bvxor, v0, v1);
+            }
             se->writeMem(this->get_memory_address(), op0->bit, res);
         } else {
             ERROR("other instructions: op2 is not ImmValue, Reg, or Mem!");

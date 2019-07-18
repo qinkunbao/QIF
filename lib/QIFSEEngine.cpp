@@ -532,7 +532,6 @@ namespace tana {
                     con_res.push_back(inst->get()->vcpu.gpr[i]);
                 }
 
-
                 //std::cout << it->id << ": ";
                 for (uint32_t j = 0; j < 8; ++j) {
                     //std::cout << *sym_res[j] << " = " << std::hex << con_res[j] << std::dec <<" || ";
@@ -540,8 +539,8 @@ namespace tana {
                     if ((sym_res[j])->symbol_num() == 0) {
                         res = eval(sym_res[j]);
                     } else {
-                        //res = eval_cache(sym_res[j], key_value_map);
-                        res = con_res[j];
+                        res = eval_cache(sym_res[j], key_value_map);
+                        //res = con_res[j];
                     }
                     if ((res == con_res[j]) && ((sym_res[j])->symbol_num() == 0)) {
                         auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
@@ -574,11 +573,6 @@ namespace tana {
                         ERROR("ERROR");
                     }
 
-                    if((sym_res[j])->symbol_num() > 2000 )
-                    {
-                        auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
-                        writeReg(Registers::convertRegID2RegName(j), reg_v);
-                    }
 
                 }
             }
