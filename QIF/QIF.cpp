@@ -8,9 +8,11 @@
 #include <iostream>
 #include <memory>
 #include <sstream>
+#include <chrono>
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
 
+using namespace std::chrono;
 using namespace std;
 using namespace tana;
 
@@ -25,7 +27,7 @@ int main(int argc, char* argv[]) {
     }
 
 
-    uint64_t MonteCarloTimes = 10000;
+    uint64_t MonteCarloTimes = 10;
     if(argc == 3)
     {
       stringstream strValue;
@@ -45,6 +47,8 @@ int main(int argc, char* argv[]) {
     tana_type::T_ADDRESS start_addr = 0;
     tana_type::T_SIZE m_size = 0;
     vector<uint8_t> key_value;
+
+    auto start = high_resolution_clock::now();
 
     parse_trace_qif(&trace_file, start_addr, m_size, inst_list, key_value);
 
@@ -72,5 +76,13 @@ int main(int argc, char* argv[]) {
     std::cout << "Total Leaked Bits = "<<se->getEntropy(key_value, MonteCarloTimes)
     << std::endl;
 
-    return 1;
+    auto stop = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    cout << "Time taken by QIF: "
+         << duration.count()/1000000 << " seconds" << endl;
+
+
+    return 0;
 }

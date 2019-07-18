@@ -553,4 +553,27 @@ namespace tana {
         return result;
     }
 
+    int BitVector::length()
+    {
+        if(formula_length_cache)
+            return formula_length;
+
+        const std::unique_ptr<Operation> &op = this->opr;
+
+        int length_temp = 0;
+        if (op == nullptr) {
+            formula_length = 1;
+            formula_length_cache = true;
+            return formula_length;
+        }
+
+        if (op->val[0] != nullptr) length_temp += (op->val[0])->length();
+        if (op->val[1] != nullptr) length_temp += (op->val[1])->length();
+        if (op->val[2] != nullptr) length_temp += (op->val[2])->length();
+        formula_length = length_temp;
+        formula_length_cache = true;
+        return formula_length;
+
+    }
+
 }
