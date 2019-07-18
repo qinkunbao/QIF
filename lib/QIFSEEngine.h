@@ -94,6 +94,9 @@ namespace tana {
 
         void checkMemoryAccess(Inst_Base *inst);
 
+        uint32_t eval_cache(const std::shared_ptr<BitVector> &v,
+                      const std::map<int, uint32_t> &inmap);
+
 
     };
 

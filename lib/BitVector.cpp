@@ -129,34 +129,46 @@ namespace tana {
     int BitVector::idseed = 0;
 
     BitVector::BitVector(ValueType vty, std::string s_info) : opr(nullptr), val_type(vty), info(s_info),
-                                                              concrete_value(0) {
+                                                              concrete_value(0),
+                                                              formula_cache_concrete_value(0),
+                                                              flag_formula_cache_concrete(false){
         id = ++idseed;
     }
 
-    BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState) : opr(nullptr), concrete_value(con) {
+    BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState) : opr(nullptr), concrete_value(con),
+                                                                           formula_cache_concrete_value(0),
+                                                                           flag_formula_cache_concrete(false) {
         id = ++idseed;
         val_type = Imm2SymState ? ValueType::SYMBOL : vty;
     }
 
     BitVector::BitVector(ValueType vty, uint32_t con, bool Imm2SymState, uint32_t size) : opr(nullptr),
                                                                                           concrete_value(con),
-                                                                                          low_bit(1), high_bit(size) {
+                                                                                          low_bit(1), high_bit(size),
+                                                                                          formula_cache_concrete_value(0),
+                                                                                          flag_formula_cache_concrete(false){
         id = ++idseed;
         val_type = Imm2SymState ? ValueType::SYMBOL : vty;
     }
 
-    BitVector::BitVector(ValueType vty, uint32_t con) : opr(nullptr), val_type(vty), concrete_value(con) {
+    BitVector::BitVector(ValueType vty, uint32_t con) : opr(nullptr), val_type(vty), concrete_value(con),
+                                                        formula_cache_concrete_value(0),
+                                                        flag_formula_cache_concrete(false){
         id = ++idseed;
     }
 
-    BitVector::BitVector(ValueType vty, std::unique_ptr<Operation> oper) : concrete_value(0), val_type(vty) {
+    BitVector::BitVector(ValueType vty, std::unique_ptr<Operation> oper) : concrete_value(0), val_type(vty),
+                                                                           formula_cache_concrete_value(0),
+                                                                           flag_formula_cache_concrete(false){
         id = ++idseed;
         opr = std::move(oper);
     }
 
     BitVector::BitVector(ValueType vty, std::string symbol_info, uint32_t size) : concrete_value(0), val_type(vty),
                                                                                   info(symbol_info),
-                                                                                  low_bit(1), high_bit(size) {
+                                                                                  low_bit(1), high_bit(size),
+                                                                                  formula_cache_concrete_value(0),
+                                                                                  flag_formula_cache_concrete(false){
         id = ++idseed;
         assert(vty == ValueType::SYMBOL);
     }
