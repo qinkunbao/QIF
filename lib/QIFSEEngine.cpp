@@ -573,6 +573,14 @@ namespace tana {
                         ERROR("ERROR");
                     }
 
+                    // If the length of formula exceeds 5000, the tool
+                    // will use concrete value instead
+                    if(sym_res[j]->length() > 5000)
+                    {
+                        auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
+                        writeReg(Registers::convertRegID2RegName(j), reg_v);
+                    }
+
 
                 }
             }

@@ -60,6 +60,9 @@ namespace tana {
 
         std::string print() const;
 
+        int formula_length = -1;
+        bool formula_length_cache = false;
+
         void printV(std::stringstream &ss, uint32_t &length) const;
 
         int symbol_num_cache = -1; // -1 means cache miss
@@ -122,6 +125,8 @@ namespace tana {
         uint32_t printV(std::stringstream &ss) const;
 
         uint32_t symbol_num();
+
+        int length();
 
         friend std::ostream &operator<<(std::ostream &os, const BitVector &c);
 
