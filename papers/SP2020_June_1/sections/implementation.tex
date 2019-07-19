@@ -1,4 +1,17 @@
 \section{Implementation}
-We implement the \tana\ with 12K lines of code in C++11. It has three components, Intel
+We implement the \tool{} with 12K lines of code in C++11. It has three components, Intel
 Pin tool that can collect the execution trace, the intruction-level symbolic execution
 engine and the backend that can estimate the information leakage. 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ll}
+    \hline
+    Component                            & Lines of code    \\ \hline
+    Trace Logging                        & 101 LoC of C++   \\ 
+    Symbolic Execution & 11547 LoC of C++ \\ 
+    Monte Carlo Sampling                 & 603 LoC of C++   \\ 
+    Others                               & LoC of Python    \\ \hline
+    \end{tabular}
+    \caption{\tool{}'s main components and their LoC}
+\end{table}
