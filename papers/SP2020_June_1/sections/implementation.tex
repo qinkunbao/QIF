@@ -1,7 +1,11 @@
 \section{Implementation}
 We implement the \tool{} with 12K lines of code in C++11. It has three components, Intel
 Pin tool that can collect the execution trace, the intruction-level symbolic execution
-engine and the backend that can estimate the information leakage. 
+engine and the backend that can estimate the information leakage. The tool can also report 
+the memory address of the leakage site. To assist the developers fix the bugs more easiliy,
+we also have several Python scripts that can report the leakage location in the source code 
+with the debug information and the symbol information. A sample report can be found at the 
+appendix.
 
 \begin{table}[h]
     \centering
@@ -15,3 +19,11 @@ engine and the backend that can estimate the information leakage.
     \end{tabular}
     \caption{\tool{}'s main components and their LoC}
 \end{table}
+
+Our current implementation can support part of the Intel 32-bit intructions that are important 
+in finding memory-based side-channels vulnerabilities, which include bitwise operations, 
+control transfer, data movement and logic instructions. For other 
+instructions the current implementation doesn't support, 
+the tool will use the concrete values to update the registers and memory cell.
+Therefore, the tool may miss some leakages but won't give us any new false positives with the
+implementation.
