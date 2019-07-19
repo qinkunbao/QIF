@@ -1,17 +1,31 @@
 \section{Design}
-In this section, we will explain the design decisions to realize A. 
+In this section, we will explain the design decisions to realize \tool{}. 
 
 
 \subsection{Trace Logging}
-The trace information can be logged via some emulators (e.g., QEMU) or Binary Instrumentation Tools. For our project, we write an Intel Pin Tool to record the execution traces. The trace data has the following information:
-Each instruction mnemonics and its memory address
-The operands of each instruction and their values
-The memory address of sensitive information and its length
-The value of eflags register
-Most software developers stores sensitive information in an array, a variable or a buffer, which means that those data is stored in a contiguous area in the memory. We use the symbol information in the binary to track the address in the memory.
+The trace information can be logged via some emulators (e.g., QEMU) or Binary Instrumentation Tools. 
+For our project, we write an Intel Pin Tool to record the execution traces. 
+The trace data has the following information:
+\begin{itemize}
+    \item Each instruction mnemonics and its memory address.
+    \item The operands of each instruction and their concrete values during the 
+          runtime.
+    \item The value of eflags register.
+    \item The memory address and the length of the sensitive information.
+     Most software developers stores sensitive information in an array,
+     a variable or a buffer, which means that those data is stored in a contiguous 
+     area in the memory. We use the symbol information in the binary to track the 
+     address in the memory.
+
+\end{itemize}
 
 \subsection{Instruction Level Symbolic Execution}
-The main purpose of the this step is to generate constraints of the input sensitive information for the execution trace. If we give the target program a new input which is different from the origin input that was used to generate the execution trace but still satisfies those constraints, the new execution trace will still have the same control flow and data access patterns. 
+The main purpose of the this step is to generate constraints of the input 
+sensitive information for the execution trace. 
+If we give the target program a new input which 
+is different from the origin input that was used 
+to generate the execution trace but still satisfies those constraints,
+ the new execution trace will still have the same control flow and data access patterns. 
 
 The tool runs the symbolic execution on the top of the execution traces. At the beginning of the symbolic execution, the tool creates fresh symbols for each byte in the sensitive buffer. For other data in the register or memory at the beginning of the symbolic execution, we use the concrete value from the runtime information collected in the previous step. During the symbolic execution, the tool will maintain a symbol and a concrete value for every variables in the memory and registers. The formula is made up with concrete values and the input key as the symbols calculated through the symbolic execution. For each formula, the tool will check weather it can be reduced into a concrete values. If so, the tool will only use the concrete values in the following symbolic execution.
 
