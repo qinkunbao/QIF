@@ -44,6 +44,7 @@ previous example, the existing static method doesn’t work well in those situat
 }
 \end{figure}
 
+\textbf{Solution:}
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program mutiple times with one fixed input, we
 want to know how much information he can infer by oberserving the memory access patterns.
@@ -160,7 +161,8 @@ The total information leakage will be $L_A$ or $L_B$.
 According to above definition, leakage 1, 2, 3 are independent leakages. Leakage 4, 5
 are mutual exclusive leakages. 
 
-We run the symbolic execution on the top of the execution traces. At the beginning of the exectution,
+\textbf{Solution: }We run the symbolic execution on the top of the execution traces.
+At the beginning of the exectution,
 each byte in the sensitive buffer is modeled with with a symbol. After that, the symbolic
 exectution engine interprets each instruction of the exectution traces. So every values in the
 registers or memory cells is modeled with a math formula.
@@ -256,7 +258,6 @@ from the two following reasons.
     \item Symbolic Execution. 
     \item The Naive Monte Carlo Sampling.
 \end{itemize}
-
 \subsubsection{Symbolic Execution}
 Symbolic execution interprets each instruction and update the memory cells and registers with a 
 formula that captured the sementics of the exectution. Unfortunately, the number of machine instructions 
@@ -269,8 +270,8 @@ will translate machine instructions into intermediate languages (IR). The IR typ
 instructions compared to the original machine instructions. The IR layer designs, which significantly
 simplify the implementations, also introduce significant overhead as well~\cite{217563}.
 
-We adopt the similar approach from~\cite{217563} and implement the symbolic exectution directly on
-the top X86 instructions.
+\textbf{Solution: }We adopt the similar approach from~\cite{217563} and implement the symbolic exectution 
+directly on the top X86 instructions.
 
 \subsubsection{Monte Carlo Sampling}
 For an application with $m$ bytes secret, there are total $2^{8m}$ possible inputs. Of the
@@ -287,4 +288,9 @@ one byte in the sensitive buffer, there is only one possible solution of $2^{32}
 values. The naive Monte Carlo Method also suffers from the curse of dimensionality. For example, 
 the libjpeg libraries can transfer the image from one format into another format. One image could
 be 1kMB. If we take each byte in the original buffer as symbols, the formula can have at most
-1024 symbols. We will attack the problem in the section.
+1024 symbols. 
+
+\textbf{Solution: }We adopt the Markov Chain Monte Carlo to estimate the number of possible input
+that satisfies the logic formula groups. The key idea is that we have one group of input that satisfies
+the logic formula constrains. We can also estimate the error with chebyshev inequality. We will
+introduce the method in the following sections.
