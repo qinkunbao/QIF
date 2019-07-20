@@ -28,7 +28,9 @@ PRIME+PROBE, FLUSH+RELOAD.
 In the second ``probe'' phase, the attacker accesses the cache set
 again. If the victim accesses the cache set and evicts part of 
 the data, the attacker will experience a slow mesurement. If not, 
-the mesurement will be fast. By knowing the 
+the mesurement will be fast. By knowing which cache set the target
+program that actually access, the attacker can infer part of
+the sensitive information.
 
 \textbf{FLUSH+RELOAD} targets a single cache line. 
 It requires the attacker and victim share the same memory.
