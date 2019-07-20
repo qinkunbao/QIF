@@ -5,14 +5,17 @@ are what we attempt to study in the paper. After that, we
 will present existing methods on side-channel detections and quantifications.
 
 \subsection{Address-based Side-Channels}
-Address-based side-channels are information channels that can leak sensitive information unintendedly
-through the different behaviors when the program accesses different memory addresses. Fundamentally,
-those differences were caused by the memory hierarchy design in modern computer systems. When the 
-CPU fetches the data, it first searches the cache, which stores copies of the data that was 
-frequently used in main memory. If the data doesn't exist in the cache, the CPU will read
-the data from the main memory (RAM). According to the layer that causes the side-channels, we classify
-the address-based side channels into two catogories: cache-based side-channel attacks and memory-based
-side-channel attacks.
+Address-based side-channels are information channels that can 
+leak sensitive information unintendedly through the different 
+behaviors when the program accesses different memory addresses. 
+Fundamentally, those differences were caused by the memory hierarchy design 
+in modern computer systems. When the CPU fetches the data, it first searches
+the cache, which stores copies of the data that was 
+frequently used in main memory. If the data doesn't exist in the cache, 
+the CPU will read the data from the main memory (RAM). 
+According to the layer that causes the side-channels, we classify
+the address-based side channels into two catogories: 
+cache-based side-channel attacks and memory-based side-channel attacks.
 
 \subsubsection{Cache-based Attacks}
 In general, the cached-based side-channels seek 
@@ -25,7 +28,7 @@ PRIME+PROBE, FLUSH+RELOAD.
 In the second ``probe'' phase, the attacker accesses the cache set
 again. If the victim accesses the cache set and evicts part of 
 the data, the attacker will experience a slow mesurement. If not, 
-the mesurement will be fast.
+the mesurement will be fast. By knowing the 
 
 \textbf{FLUSH+RELOAD} targets a single cache line. 
 It requires the attacker and victim share the same memory.
