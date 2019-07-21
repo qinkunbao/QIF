@@ -16,5 +16,4 @@ void sample_encrypt_setup
             m[i] = m[i] % 256;
         }
     }
-
 }

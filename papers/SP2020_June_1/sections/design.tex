@@ -3,14 +3,15 @@ In this section, we will explain the design decisions to realize \tool{}.
 
 
 \subsection{Trace Logging}
-The trace information can be logged via some emulators (e.g., QEMU) or Binary Instrumentation Tools. 
+The trace information can be logged via some emulators (e.g., QEMU) or 
+Binary Instrumentation Tools. 
 For our project, we write an Intel Pin Tool to record the execution traces. 
 The trace data has the following information:
 \begin{itemize}
     \item Each instruction mnemonics and its memory address.
     \item The operands of each instruction and their concrete values during the 
           runtime.
-    \item The value of eflags register.
+    \item The value of eflags register. 
     \item The memory address and the length of the sensitive information.
      Most software developers stores sensitive information in an array,
      a variable or a buffer, which means that those data is stored in a contiguous 
@@ -20,23 +21,64 @@ The trace data has the following information:
 \end{itemize}
 
 \subsection{Instruction Level Symbolic Execution}
-The main purpose of the this step is to generate constraints of the input 
-sensitive information for the execution trace. 
+The main purpose of the this step is to generate 
+constraints of the input sensitive information for the execution trace. 
 If we give the target program a new input which 
 is different from the origin input that was used 
 to generate the execution trace but still satisfies those constraints,
- the new execution trace will still have the same control flow and data access patterns. 
+the new execution trace still have the same control flow and 
+data access patterns. 
 
-The tool runs the symbolic execution on the top of the execution traces. At the beginning of the symbolic execution, the tool creates fresh symbols for each byte in the sensitive buffer. For other data in the register or memory at the beginning of the symbolic execution, we use the concrete value from the runtime information collected in the previous step. During the symbolic execution, the tool will maintain a symbol and a concrete value for every variables in the memory and registers. The formula is made up with concrete values and the input key as the symbols calculated through the symbolic execution. For each formula, the tool will check weather it can be reduced into a concrete values. If so, the tool will only use the concrete values in the following symbolic execution.
+The tool runs the symbolic execution on the top of the execution traces.
+At the beginning of the symbolic execution, the tool creates fresh 
+symbols for each byte in the sensitive buffer. For other data in the 
+register or memory at the beginning of the symbolic execution,
+we use concrete values from the runtime information collected in
+the previous step. During the symbolic execution for each instruction, 
+the tool updates every variable in the memory and registers with a
+math formula. The formula is made up with concrete values and 
+the input key as the symbols accumulated through the symbolic execution.
+For each formula, the tool will check weather it can be reduced
+into a concrete values (e.g., $k_1+12-k_1$ = 12 ). 
+If so, the tool will only use the concrete values in the 
+following symbolic execution.
 
-\subsection{Verification and Optimization}
-We run the symbolic execution on the top of x86 instructions to achieve the better performance and accuracy of the memory model. In other words, we don’t rely on any intermediate languages to simplify the symbolic execution. While the implementation itself has a lot of benefits, we need to implement the symbolic execution rules for more than one thousand x86 instructions. However, due to the complexity of X86, it is inevitable to make mistakes. Therefore, we verify the correctness of the symbolic execution. The tool will collect the runtime information (Register values, memory values) and compare them with the values generated from the symbolic execution. Whenever the tool finishes the symbolic execution of each instruction, the tool will compare the formula for each symbol and its actual value. If the two values don’t match, we check the code and fix the error. Also, if the formula doesn’t contain the any symbols, the tool will use the concrete value instead of symbolic execution.
+\subsubsection{Verification and Optimization}
+We run the symbolic execution(SE) on the top of x86 instructions.
+In other words, we don’t rely on any intermediate languages to 
+simplify the implemetation of symbolic execution. 
+While the implementation itself 
+has a lot of benefits (Better performance, accurate memory model), 
+we need to implement the symbolic execution 
+rules for each X86 instruction. 
+However, due to the complexity of X86, it is inevitable to make mistakes. 
+Therefore, we verify the correctness of the SE engine during the execution. 
+The tool will collect the runtime information (Register values, 
+memory values) and compare them with the formula generated from the 
+symbolic execution. Whenever the tool finishes the symbolic execution 
+of each instruction, the tool will compare the formula for each symbol 
+and its actual value. If the two values don’t match, we check the code
+and fix the error. Also, if the formula doesn’t contain any symbols,
+the tool will use the concrete value instead of symbolic execution.
 
-\subsection{Secret-dependent control-flows}
+\subsubsection{Secret-dependent control-flows}
 An adversary can infer sensitive information from secret dependent control-flows. 
-There are two kinds of control-transfer instructions: the unconditional control transfer instructions and the conditional transfer instructions. The unconditional instructions, like CALL, JUMP, RET transfer control from one code segment location to another. Since the transfer is independent from the input sensitive information, an attacker was not able to infer any sensitive information from the control-flow. So the unconditional control transfer doesn’t leak any information based on our threat model. During the symbolic execution, we just update the register information and memory cells with the new formulas.
+There are two kinds of control-transfer instructions: the unconditional 
+control-transfer instructions and the conditional transfer instructions.
+The unconditional instructions, like CALL, JUMP, RET transfer control
+from one code segment location to another. Since the transfer is 
+independent from the input sensitive information, an attacker was 
+not able to infer any sensitive information from the control-flow. 
+So the unconditional control transfer doesn’t leak any information 
+based on our threat model. During the symbolic execution, 
+we just update the register information and memory cells with new formulas accordingly.
 
-The conditional transfer instructions, like conditional jump, may or may not transfer control, depending the CPU state. For any conditional jump, the CPU will test if certain condition flag (e.g., CF = 0, ZF =1) is true or false and jump to the certain branches respectively. So the symbolic engine will compute the flag and represent the flag in a symbol formula. Because we are running on a symbolic execution on a execution trace, we know which branch executes. If a conditional jump uses the CPU status flag, we will generate the constraint accordingly.
+The conditional transfer instructions, like conditional jump, may or may not transfer control, 
+depending the CPU state. For conditional jumps, the CPU will test if certain condition flag 
+(e.g., CF = 0, ZF =1) is true or false and jump to the certain branches respectively.
+So the symbolic engine will compute the flag and represent the flag in a symbol formula. 
+Because we are running on a symbolic execution on a execution trace, we know which branch executes.
+If a conditional jump uses the CPU status flag, we will generate the constraint accordingly.
 
 For examples,
 
@@ -49,16 +91,29 @@ For examples,
 
 \end{lstlisting}
 
-At the beginning of the instruction segment, the value at the address of local14h can be written as F(K). At the address e785, the value will be updated with F(K)+1. Then the code compare the value with 4 and use the result as a conditional jump. Based on the result, we can have the following constrain:
+At the beginning of the instruction segment, the value at the address of local14h can be written as F(K). 
+At the address e785, the value will be updated with F(K)+1. Then the code compare the value with 4 and use the 
+result as a conditional jump. Based on the result, we can have the following constrain:
 
 F(K) + 1 = 4
  
-\subsection{Secret-dependent data access}
-Like control-flows, an adversary can also infer sensitive information from the data access pattern as well. We try to find this kind of leakages by checking every memory operand of the instruction. We generate the memory addressing formula. As discussed before, every symbols in the formula is the input key. If the formula doesn’t contain any symbols, the memory access is independent from the input sensitive information and won’t leak any sensitive information according to our threat model. Otherwise, we will generate the constraint for the memory addressing. 
+\subsubsection{Secret-dependent data access}
+Like control-flows, an adversary can also infer sensitive information from the 
+data access pattern as well. We try to find this kind of leakages by checking 
+every memory operand of the instruction. We generate the memory addressing formula. 
+As discussed before, every symbols in the formula is the input key. 
+If the formula doesn’t contain any symbols, the memory access is independent 
+from the input sensitive information and won’t leak any sensitive information 
+according to our threat model. Otherwise, we will generate the constraint for
+the memory addressing. 
 
-
+\subsection{Leaked Information Estimation}
 Monte Carlo Volume Sampling
-From the above steps, we already have the constraints from the execution trace. The only variables in those constraints is the sensitive data. An adversary who wants to infer the sensitive data based on side-channel attacks can’t observe the sensitive information directly. The adversary, however, can observe the memory access pattern of the software.  
+From the above steps, we already have the constraints from the execution trace. 
+The only variables in those constraints is the sensitive data. An adversary who 
+wants to infer the sensitive data based on side-channel attacks can’t observe 
+the sensitive information directly. The adversary, however, can observe the
+memory access pattern of the software.  
 
 We use the Monte Carlo Sampling to calculate the ratio of input that satisfies those constraints.
 We will estimate how much information is actually leaked from each input key.
