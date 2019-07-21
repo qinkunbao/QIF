@@ -23,7 +23,7 @@ information relying on the time differences between the cache miss
 and cache hit. Here we introduce two common cache attacks:
 PRIME+PROBE, FLUSH+RELOAD.
 
-\textbf{PRIME+PROBE} targets a single cache set. It has two phases. During the
+\textit{PRIME+PROBE} targets a single cache set. It has two phases. During the
 ``prime'' phase, the attacker fills the cache set with his own data.
 In the second ``probe'' phase, the attacker accesses the cache set
 again. If the victim accesses the cache set and evicts part of 
@@ -32,7 +32,7 @@ the mesurement will be fast. By knowing which cache set the target
 program that actually access, the attacker can infer part of
 the sensitive information.
 
-\textbf{FLUSH+RELOAD} targets a single cache line. 
+\textit{FLUSH+RELOAD} targets a single cache line. 
 It requires the attacker and victim share the same memory.
 It also have two phases. During the "flush" phase, the attacker 
 will flush the ``monitered memory'' from the cache. Then the attacker
@@ -59,6 +59,7 @@ flow transfers.
                           secret-dependent control-flow transfer.},
                  captionpos=b,
                  label={code:background},
+                 frame=single,
                  basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
                  {sample_code/background.c}
 
@@ -138,9 +139,10 @@ $C(O)$ represents the number of different observations that an attacker can have
 Now we provide a concrete example to show how the two types of quantification definition works.
 
 \lstinputlisting[language=c, 
-                 numbers=right,
+                 numbers=left,
                  caption={A simple program},
                  captionpos=b,
+                 frame=single,
                  label={code::entropy},
                  basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
                  {sample_code/dependent.c}
