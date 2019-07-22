@@ -92,16 +92,20 @@ For examples,
 0x0000e785      cmp dword [local_14h], 4
 0x0000e789      jne 0xe7df
 0x0000e78b      mov dword [local_14h], 0
-
+...
 \end{lstlisting}
 
 At the beginning of the instruction segment, the value at the 
 address of local14h can be written as F(K). At the address e785, 
 the value will be updated with F(K)+1. Then the code compares 
 the value with 4 and use the result as a conditional jump. 
-Based on the result, we can have the following constrain:
+Based on the result, we can have the following formula:
 
-F(K) + 1 = 4
+$$F(K) + 1 = 4$$
+
+The formula, together with the memory address (0xe789) is store
+as a \textit{formula tuple (address, formula)}. 
+Each formula tuple represents one leak site.
 
 \subsubsection{Secret-dependent data access}
 Like input-dependent control transfers, an adversary can also infer 
@@ -116,36 +120,42 @@ the memory addressing.
 
 \subsection{Leaked Information Estimation}
 
-From the above steps~\ref{InstructionSE}, we already have the constraints 
+From the above step~\ref{InstructionSE}, we can generate the constraints 
 from the execution trace. 
 The only variables in those constraints is the sensitive data. An adversary who 
-wants to infer the sensitive data based on side-channel attacks can’t observe 
+wants to infer the sensitive data based on side-channel attacks can't observe 
 the sensitive information directly. The adversary, however, can observe the
 memory access pattern of the software. Each math formula can uniquely model
 one leakage site.
 
-
-In this section, we calculate the amount of leaked information by counting 
-the number of solutions that satisfy those constraints.
+In this section, we calculate the amount of leaked information with the
+definition~\ref{def}. The basic idea is to count the number of solutions 
+that satisfy those constraints.
 
 We use the Monte Carlo Sampling to calculate the ratio of input that satisfies 
-those constraints. We will estimate how much information is actually leaked 
-from each input key.
+those constraints. Our method can estimate how much information is actually 
+leaked from each input key symbol.
 
-Normalizations
-The goal of the normalizations is to simplify the constraints. 
-Each constraint will be evaluated multiple times during the following sampling, 
+\subsubsection{Preprocessing}
+We apply two preprocessing steps before running the Monte Carlo sampling. First,
+we try to simplify those formulas by applying some normalizations rules. After
+that, we split those formulas into multiple groups.
+
+The goal of the normalization is to simplify the formulas. 
+Each formulas will be evaluated multiple times with different input 
+during the following sampling, 
 we would like to make those formula simpler to reduce the whole execution time.  
-Each formula is implemented as a abstract syntax tree. We apply a series normalization
-rules (e.g. key1 xor key1 = 0) to simplify the formula.
+Each formula is implemented as a abstract syntax tree. We apply a series of 
+normalization rules (e.g. key1 xor key1 = 0) to simplify the formula.
 
+After that, we split the formula tuple into multiple groups. 
+Each group consists of different formulas but with the same memory address.
+In other words, those formulas in the same group represent one leakage
+site. The instructions inside a loop are executed multiple times with
+the different item from the input buffer. We group them together to 
+know the total information leakage.
 
-Split the independent constraints into multiple groups
-Each constraints may have multiple symbols as the input. 
-If each two formulas have complete different inputs,
-then those leakages modeled by the constraints are independent. 
-
-Multiple Stage Monte Carlo Sampling
+\subsubsection{Markov Chain Monte Carlo}
 After the above steps, each side-channel leakage vulnerability is 
 transfered into a formula. The only symbol in the original formula is the key. 
 An adversary who wants to infer the sensitive data based on side-channel 
@@ -153,16 +163,23 @@ attacks can’t observe the sensitive information directly.
 
 The adversary, however, can observe the memory access pattern of the software. 
 If the attacker can observe one leakage site, the attack is modeled as one formula. 
-If he observe mutiple information leakage, the attack is modeled as the conjoint formula.
+If he observes mutiple information leakage, the attack is modeled as the conjoint 
+of those formulas.
 Calculating the total information leakage can be reduced to the problem of approximating 
-the number of solutions. One intution way is to use the Monte Carlo method. However, 
+the number of solutions. This is a \#P problem.
+
+One intution way is to use the Monte Carlo method. However, 
 the number of satisfying keys could be exponentially small. Image an attacker 
 who can recover the one unique key after the attacks, in such case, 
 the conjoint of formula F = (f(k)) will only have one solution.
+One intuition is to use the Monte Carlo method to approximate 
+the number of solutions.
 
-In order to estimate how much information is actually leaked from each input key.
-we have to calculate the ratio of input that satisfies those constraints. 
-One intuition is to use the Monte Carlo method to approximate the number of solutions.
+We adopt the Markov Chain Monte Carlo (MCMC) to estimate the number of 
+satisfying solutions. The basic idea is to construct a Markov Chain that
+has the desired distribution.
+
+
 \newtheorem{theorem}{Theorem}[section]
 
 \begin{theorem}
