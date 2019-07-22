@@ -23,6 +23,10 @@ Quantitative Information Flow (QIF) aims at providing an information leakage est
 sensitive information given the public output. If zero bits of the information is leaked, the 
 program is called non-interference. McCamant~\cite{McCamantE2008} quantify the information leaked
 as the network flow capacity. Phan~\cite{Phan:2012:SQI:2382756.2382791} propose symbolic QIF. The
-goal of their work is to ensure the program is non-interference. Therefore, they adopt an over
+goal of their work is to ensure the program is non-interference. They adopt an over
 approximation way of estimating the total information leakage and their method doesn't work for
-secret-dependent memory access side-channels.
+secret-dependent memory access side-channels. CHALICE~\cite{Chattopadhyay:2017:QIL:3127041.3127044}
+quantifies the information leakage with the symbolic execution. But CHALICE can only
+detect the secret-dependent control flow.
+
+
