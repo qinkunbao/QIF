@@ -1,7 +1,6 @@
 \section{Design}
 In this section, we will explain the design decisions to realize \tool{}. 
 
-
 \subsection{Trace Logging}
 The trace information can be logged via some emulators (e.g., QEMU) or 
 Binary Instrumentation Tools. 
@@ -21,6 +20,7 @@ The trace data has the following information:
 \end{itemize}
 
 \subsection{Instruction Level Symbolic Execution}
+\label{InstructionSE}
 The main purpose of the step is to generate 
 constraints of the input sensitive information from the execution trace. 
 If we give the target program a new input which 
@@ -69,18 +69,18 @@ The unconditional instructions, like CALL, JUMP, RET transfer control
 from one code segment location to another. Since the transfer is 
 independent from the input sensitive information, an attacker was 
 not able to infer any sensitive information from the control-flow. 
-So the unconditional control-transfer doesn’t leak any information 
+So the unconditional control-transfer doesn't leak any information 
 based on our threat model. During the symbolic execution, 
 we just update the register information and memory cells with 
 new formulas accordingly.
 
-The conditional transfer instructions, like conditional jump, may or 
-may not transfer control flows, depending the CPU state. For conditional 
-jumps, the CPU will test if certain condition flag (e.g., CF = 0, ZF =1) 
-is true or false and jump to the certain branches respectively.
-So the symbolic engine will compute the flag and represent the flag 
+The conditional control-flow transfer instructions, like conditional jumps,
+depending on CPU states, may or may not transfer control flows.
+For conditional jumps, the CPU will test if certain condition flag 
+(e.g., CF = 0, ZF =1) is met and jump to the certain branches respectively.
+The symbolic engine will compute the flag and represent the flag 
 in a symbol formula. Because we are running on a symbolic execution 
-on a execution trace, we know which branch executes.
+on a execution trace, we know which branch is executed.
 If a conditional jump uses the CPU status flag, we will generate 
 the constraint accordingly.
 
@@ -97,15 +97,16 @@ For examples,
 
 At the beginning of the instruction segment, the value at the 
 address of local14h can be written as F(K). At the address e785, 
-the value will be updated with F(K)+1. Then the code compare 
+the value will be updated with F(K)+1. Then the code compares 
 the value with 4 and use the result as a conditional jump. 
 Based on the result, we can have the following constrain:
 
 F(K) + 1 = 4
 
 \subsubsection{Secret-dependent data access}
-Like control-flows, an adversary can also infer sensitive information from the 
-data access pattern as well. We try to find this kind of leakages by checking 
+Like input-dependent control transfers, an adversary can also infer 
+sensitive information from the data access pattern as well. 
+We try to find this kind of leakages by checking 
 every memory operand of the instruction. We generate the memory addressing 
 formulas. As discussed before, every symbols in the formula is the input key. 
 If the formula doesn’t contain any symbols, the memory access is independent 
@@ -114,12 +115,18 @@ according to our threat model. Otherwise, we will generate the constraint for
 the memory addressing.
 
 \subsection{Leaked Information Estimation}
-Monte Carlo Volume Sampling
-From the above steps, we already have the constraints from the execution trace. 
+
+From the above steps~\ref{InstructionSE}, we already have the constraints 
+from the execution trace. 
 The only variables in those constraints is the sensitive data. An adversary who 
 wants to infer the sensitive data based on side-channel attacks can’t observe 
 the sensitive information directly. The adversary, however, can observe the
-memory access pattern of the software.  
+memory access pattern of the software. Each math formula can uniquely model
+one leakage site.
+
+
+In this section, we calculate the amount of leaked information by counting 
+the number of solutions that satisfy those constraints.
 
 We use the Monte Carlo Sampling to calculate the ratio of input that satisfies 
 those constraints. We will estimate how much information is actually leaked 
@@ -132,8 +139,6 @@ we would like to make those formula simpler to reduce the whole execution time.
 Each formula is implemented as a abstract syntax tree. We apply a series normalization
 rules (e.g. key1 xor key1 = 0) to simplify the formula.
 
-
-Key1 + 1 + 2 + key3 < key2 => key1 + 3 < key2
 
 Split the independent constraints into multiple groups
 Each constraints may have multiple symbols as the input. 
