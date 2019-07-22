@@ -50,7 +50,8 @@ int main(int argc, char* argv[]) {
 
     auto start = high_resolution_clock::now();
 
-    parse_trace_qif(&trace_file, start_addr, m_size, inst_list, key_value);
+    int max_inst = 100000;
+    parse_trace_qif(&trace_file, start_addr, m_size, inst_list, key_value, max_inst);
 
     std::cout << "Start Address: " << std::hex << start_addr << std::dec
               << " Length: " << m_size << std::endl;

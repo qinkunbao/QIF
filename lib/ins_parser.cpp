@@ -341,7 +341,7 @@ namespace tana {
 
     bool parse_trace_qif(std::ifstream *trace_file, tana_type::T_ADDRESS &addr_taint, \
                          tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L,
-                         std::vector<uint8_t> &key_value) {
+                         std::vector<uint8_t> &key_value, int max_inst) {
         std::string line;
         uint32_t id_count = 1, num = 1;
         getline(*trace_file, line);
@@ -454,6 +454,10 @@ namespace tana {
             ins->parseOperand();
 
             L.push_back(std::move(ins));
+            if(id_count > max_inst)
+            {
+                break;
+            }
         }
 
         if (trace_file->good())
