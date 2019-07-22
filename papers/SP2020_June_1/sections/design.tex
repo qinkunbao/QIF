@@ -156,29 +156,40 @@ the different item from the input buffer. We group them together to
 know the total information leakage.
 
 \subsubsection{Markov Chain Monte Carlo}
-After the above steps, each side-channel leakage vulnerability is 
-transfered into a formula. The only symbol in the original formula is the key. 
+The only symbol in the original formula is the key. 
 An adversary who wants to infer the sensitive data based on side-channel 
-attacks can’t observe the sensitive information directly. 
+attacks can't observe the sensitive information directly. 
 
+\textit{Motivation:}
 The adversary, however, can observe the memory access pattern of the software. 
 If the attacker can observe one leakage site, the attack is modeled as one formula. 
 If he observes mutiple information leakage, the attack is modeled as the conjoint 
-of those formulas.
-Calculating the total information leakage can be reduced to the problem of approximating 
-the number of solutions. This is a \#P problem.
+of those formulas. Calculating the total information leakage can be reduced to the
+problem of approximating the number of solutions. This is a \#P problem.
 
-One intution way is to use the Monte Carlo method. However, 
-the number of satisfying keys could be exponentially small. Image an attacker 
-who can recover the one unique key after the attacks, in such case, 
-the conjoint of formula F = (f(k)) will only have one solution.
-One intuition is to use the Monte Carlo method to approximate 
-the number of solutions.
+One intuition way is to use the Monte Carlo method. However, 
+as the discussion in the previous section~\ref{MCreasons},
+the number of satisfying keys could be exponentially small. Imagine an attacker 
+who can recover one unique key after the attack, in such case, 
+the conjoint of formula F = (f(k)) only has one solution.
+Also, the target program may have mutiple inputs. When the number of input
+symbols arises, the simple Monte Carlo may suffer from the curse of dimensionality,
+which means the accuracy of the result drops dramatically when the
+number of input symbols increases. 
 
 We adopt the Markov Chain Monte Carlo (MCMC) to estimate the number of 
 satisfying solutions. The basic idea is to construct a Markov Chain that
 has the desired distribution.
 
+\textit{Definition:}
+Starting from here, we present the formal definition of the MCMC algorithm.
+First, we introduce the definition of the concepts of the algorithm.
+
+\begin{mydef}
+      An approximation scheme is an alogorithm for finding an approximation
+      answer within a factor $1 + \epsilon$ of the optimal answer with the
+      probability of $1 - \zeta$.
+\end{mydef}
 
 \newtheorem{theorem}{Theorem}[section]
 
