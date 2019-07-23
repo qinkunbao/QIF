@@ -26,7 +26,10 @@ as the network flow capacity. Phan~\cite{Phan:2012:SQI:2382756.2382791} propose 
 goal of their work is to ensure the program is non-interference. They adopt an over
 approximation way of estimating the total information leakage and their method doesn't work for
 secret-dependent memory access side-channels. CHALICE~\cite{Chattopadhyay:2017:QIL:3127041.3127044}
-quantifies the information leakage with the symbolic execution. But CHALICE can only
-detect the secret-dependent control flow.
+quantifies the information leakage based on Cache miss and Cache hit behaviours. But CHALICE can only 
+work on PICA code, which limits its usage to X86 bianry. Due to complexity of the Cache model and 
+Cartesian Bounding they use, CHALICE can only scale to small programs, which limits its usage in
+real-world applications.
+
 
 
