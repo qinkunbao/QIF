@@ -1,37 +1,37 @@
 \section{Introduction}
 
-Side channels are inevitable in modern computer systems. The attacker can infer the sensitive 
-information by observing the execution behaviour. The software-based attacks(e.g., Cache-based 
+Side channels are inevitable in modern computer systems. The attacker can infer sensitive 
+information by observing the execution behavior. The software-based attacks(e.g., Cache-based 
 side channels~\cite{184415,191010,7163050,Osvik:2006:CAC:2117739.2117741}, 
 controlled channel attacks~\cite{7163052}) 
 are especially common because these attacks typically don't need any physical access. 
 After examing the root cause of those vulnerabilities, we believe that the implementation 
-of those software, which has different memory access patterns depending on the input secret 
+of software, which has different memory access patterns depending on the input secret 
 during the execution, cause the following address-based side channels. Those side-channel
 vulnerabilities can be exploited by observing the different memory access patterns. An
-attacker can observe the pattern and infer the sensitive information.
+attacker can observe the pattern and infer sensitive information.
 
 Various countermeasures~\cite{182946,203878,217537} have been proposed to defend against the 
 address-based side-channel attacks. The basic idea is simple, identifying 
 and eliminating secret-dependent memory access patterns. 
 However, it can be very tedious and error-prone to find each leakage site manually. 
-To address the problem, a lot of methods have been proposed to automatically detect information leakages. 
+A lot of methods have been proposed to detect information leakages automatically. 
 While those tools can typically report a list of potential leakages sites, they still 
 face the following limitations.
 
 First, existing tools~\cite{203878, 217537} can discover a list of potential leakage sites. 
-But they fail to report how severe each potential leakage site could be. Most of leakages 
+But they fail to report how severe each potential leakage site could be. Most of the leakages 
 found by those tools are typically hard to be exploited and leak very little information 
 (e.g., one bit of the length of the key~\cite{203878}).  
-It is worthwhile to have a tool to tell how much information is actually leaks. 
+It is worthwhile to have a tool to tell how much information is actually leaked. 
 For example, some secret dependent memory access patterns in OpenSSL have been known 
 for years. But the authors still don't fix them all because they think 
-those vulnerabilities aren’t not severe enough. The tool based on static analysis~\cite{182946} with 
-abstract interpretation, can give inforamtion leakage upper bound, which is useful to 
+those vulnerabilities aren’t severe enough. The tool based on static analysis~\cite{182946} with 
+abstract interpretation can give information leakage upper bound, which is useful to 
 justify the implementation is secure enough. But they can’t indicate the leakage site 
-is severe or not due to the over approximation when those tools calculate inforamtion leakage. 
+is severe or not due to the over-approximation when those tools calculate information leakage. 
 The dynamic method will take a concrete input and run the actual program. 
-Those tools are typically very precise in term of true leakage. But none of those tools 
+Those tools are typically very precise in term of real leakage. But none of those tools 
 can actually report how many bits are actually leaked. For example, DATA~\cite{217537} reports more 
 than 2000 potential leakage sites for the RSA implementation of OpenSSL. But most of 
 them were dismissed by the author after some manual inspections.
@@ -40,48 +40,38 @@ Second, many open source libraries may have multiple leakage sites.
 A side-channel attacker~\cite{191010,7163052,hornby2011side} can exploit more than one leakage 
 sites at one time. 
 The attacker may retrieve part of the sensitive information from one site, part of the sensitive
-information from another site and combine them together.
+information from another site and combine them.
 It is hard know how much information is actually leaked in total. Adding those leakages 
 simply gets a very rough upper bound estimate of the total information leakage if those 
 leakages aren’t independent. No existing tools can practically estimate the total information 
-leakage from multiple leakage sites in real world open source libraries.
+leakage from multiple leakage sites in real-world open source libraries.
 
 To overcome the above limitations, we propose a novel method
 to more precisely quantify the information leakage. Previous work only considers the
 ``average'' information leakage which often neglects severe scenarios.
-% The average information leakage assume that an event, e.g., a branch condition,
-% can either happen or not happen in the future,
-% which often does not match the attack scenario..
 The average information assumes that the target program will have \textbf{different} sensitive 
-information as the input when the attacker launch the attack,
+information as the input when the attacker launches the attack,
 which often does not match the attack scenario. During the real side-channel
 attacks, an adversary may run the target problem again and over again with the 
 fixed unknown sensitive information as the input. Therefore, the previous
-threat model can't catch the real attack scenarios.
+threat model can't catch real attack scenarios.
 
 In contrast, our method is more precise and fine-grained. 
-For our analysis, the input key is fixed.
-The average leakage does not fit in this scenario.
-The key insight is ...  \fixme{Qinkun: complete this and i will revise.}
-\Qinkun{During the real side-channel
-attacks, an adversary may run the target problem again and over again with the 
-fixed unknown sensitive information as the input and do the profiling. 
-Therefore, the previous threat model can't catch the real attack scenarios.}
-By fixing with more constraints, we are able to obtain more precise information leakage.
-Our results are superisingly different compared to previous results
-and much more useful in practice.
-
-We define the amount of leaked information in a simple but effective way. It is interesting to 
-mention that the definition here is different from the definition in several static analysis 
-tools. Our method is based on ... \fixme{Qinkun: explain in high level, but give a novelty sense on
-how our method work, the method or theory, not workflow, not implementation.}
-\Qinkun{Here is the intuition. Before the attack, the adversary has a big but finite input space.
+For our analysis, the input key is fixed. We classify the address-based side-channel 
+vulnerabilities into two categories: 1.\textit{secret-dependent control-flow transfers} 
+and 2.\textit{secret-dependent data access} and model them with the math formulas which
+constrain the value of sensitive information.
+We define the amount of leaked information as the number of possible solutions that can
+reduced after applying each constrains.
+It is interesting to mention that the definition is different from the 
+definition in previous static-based analysis tools. 
+Before the attack, the adversary has a big but finite input space.
 Every time the adversary observes one leakage site, he can eliminate some potential input and
 reduce the size of the input space. The smaller the input space is, the more information is 
-actually leaked. On an extreme situation, if the size of the input space reduce to one, the
+actually gained. On an extreme situation, if the size of the input space reduces to one, the
 adversary can determine the input information uniquely, which means the total information is 
 leaked. We define the leaked information as the proportion of the number of possible input 
-that satisfies the attacker's observation.}
+that satisfies the attacker's observation.
 
 Our method can identify and quantify address-based
 sensitive information leakage sites in real-world applications automatically. 
@@ -101,27 +91,28 @@ estimate. In order to accurately calculate the total information leakage, we mus
 dependent relationships among those multiple leakages sites. Therefore, we introduce a 
 monte carlo sampling method to estimate the total information leakage.
 
-We implement the proposed method as a tool named \tool{} which can precisely discover and quantify the information
-leakage vulnerabilities. We apply \tool{} on several crypto and non-crypto libraries including OpenSSL,
+We implement the proposed method as a tool named \tool{} which can precisely discover and quantify the leaked information. 
+We apply \tool{} on several crypto and non-crypto libraries including OpenSSL,
 MbedTLS and libjpeg. The experiment result confirms that \tool{} can precisely identify the pre-known vulnerabilities,
-report how much information is leaked and which byte in the original sensitive buffer is leaked. 
+reports how much information is leaked and which byte in the original sensitive buffer is leaked. 
 The result shows that while those crypto libraries have a number of side-channels, most of them actually
 leak very little information. Also, we also use the tool to analysis the two reported side-channel attack 
 in the libjpeg library. Finally, we present new vulnerabilities. With the help of \tool{}, we confirm those
-vulnerabilities are easily to be exploited.
+vulnerabilities are easily to be exploited. Our results are superisingly different compared to previous results
+and much more useful in practice.
 
 In summary, we make the following contributions:
 
 \begin{itemize}
 	\item We propose a novel method that can quantify fine-grained side-channel
-        information leakages. We model each information leakage vulnerability as a formula and 
-        mutiple side-channel vulnerabilities can be seen as the disjunctions of those formula, which
+        information leakages. We model each information leakage vulnerability as math formulas and 
+        mutiple side-channel vulnerabilities can be seen as the disjunctions of those formulas, which
         precisely models the program semantics.
         \item We transfer the information quantification problem into a probabilty distribution problem and 
         use the Monte Carlo sampling method to estimate the information leakage. Some initial results indicate the 
         the sampling method suffers from the curse of dimensionality problem. We therefore design a guided
         sampling method and provide the corresponding error esitimate.
-	\item We implement the proposed method into a practical tool and apply it to several real-world software. \tool{} 
+	\item We implement the proposed method into a practical tool and apply it on several real-world software. \tool{} 
         successfully identify the address-based side-channel vulnerabilities and provide the corresponding
         information leakge. The information lekage result provide the detailed information that help developers
         to fix the vulnerability.
