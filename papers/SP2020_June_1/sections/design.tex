@@ -123,7 +123,7 @@ the formula can be written as:
 
 $$F(\vec{K}) = Addr1$$
 
-\subsection{Leaked Information Estimation}
+\subsection{Markov Chain Monte Carlo Sampling (MCMC}
 
 From the above step~\ref{InstructionSE}, we can generate the constraints 
 from the execution trace. 
@@ -134,12 +134,15 @@ memory access pattern of the software. Each math formula can uniquely model
 one leakage site.
 
 In this section, we calculate the amount of leaked information with the
-definition~\ref{def}. The basic idea is to count the number of solutions 
-that satisfy those constraints.
+definition from~\ref{def}. The basic idea is to calculate $\frac{|K|}{|K^o|}$.
+The size of $K$ is usually exponentially large. A naive method for approximating
+the result is to pick $k$ elements from $K$ and check how many of them are also
+contained in $K^o$. If $q$ elements are also in $K^o$. In expectation, we can
+use $\frac{k}{q}$ to approximate the value of $\frac{|K|}{|K^o|}$. In this step,
+we first split the contrains tuple into multiple groups depending on the memory
+address. After that, we run the Markov Chain Monte Carlo to estimate the amount
+of leaked information.
 
-We use the Monte Carlo Sampling to calculate the ratio of input that satisfies 
-those constraints. Our method can estimate how much information is actually 
-leaked from each input key symbol.
 
 \subsubsection{Preprocessing}
 We apply two preprocessing steps before running the Monte Carlo sampling. First,
@@ -160,12 +163,11 @@ site. The instructions inside a loop are executed multiple times with
 the different item from the input buffer. We group them together to 
 know the total information leakage.
 
-\subsubsection{Markov Chain Monte Carlo}
 The only symbol in the original formula is the key. 
 An adversary who wants to infer the sensitive data based on side-channel 
 attacks can't observe the sensitive information directly. 
 
-\textit{Motivation:}
+\subsubsection{Motivation}
 The adversary, however, can observe the memory access pattern of the software. 
 If the attacker can observe one leakage site, the attack is modeled as one formula. 
 If he observes mutiple information leakage, the attack is modeled as the conjoint 
