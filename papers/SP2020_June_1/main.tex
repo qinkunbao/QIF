@@ -29,30 +29,38 @@
 \maketitle
 
 \begin{abstract}
-Side-channel attacks allow attackers to infer some sensitive information based on 
-non-functional characteristics. Existing works on address-base side-channel detection 
+Side-channel attacks allow attackers to infer some sensitive 
+information based on non-functional characteristics. 
+Existing works on address-based side-channel detection 
 can provide a list of potential side-channel leakage sites. We observe 
- the following limitations in the previous work: 1) 
-Some vulnerabilities could be more severe than others, but the existing work 
-cannot tell precisely the difference between those leakages. 2)  An attacker usually exploits multiple 
-leakages at one time. However, no existing tool can precisely report
-the sum of the information leakage from multiple sites given the information dependency among them.
+the following limitations in the previous work: 1) 
+Some vulnerabilities could be more severe than others, 
+but the existing work cannot tell precisely the 
+difference between those leakages. 2)  An attacker 
+usually exploits multiple leakages at one time. 
+However, no existing tool can accurately report
+the sum of the information leakage from various
+sites given the information dependency among them.
+   
 
----FIXME: EMPHASIZE NOVELTY AND METHOD---
 To overcome the above limitations, we propose a novel method
-to more precisely quantify the information leakage. Previous work only considers the
-``average'' information leakage which often neglect severe scenarios.
-% The average information leakage assume that an event, e.g., a branch condition,
-% can either happen or not happen in the future,
-% which often does not match the attach scenario..
+to more precisely quantify the information leakage. 
+Previous work only considers the
+``average'' information leakage 
+which often neglect severe scenarios.
+The average information leakage assume that an event, e.g., a branch condition,
+can either happen or not happen in the future,
+which often does not match the attack scenario..
 In contrast, our method is precise and fine-grain. 
 Our method can also precisely combine two leakages. 
-%% For example, given a crypto key, we can assume the key is fixed
-%% in the attack scenario because the attacker can fix the key and perform profiling.
-%% The average leakage does not fit in this scenario.
+For example, given a crypto key, we can assume the key is fixed
+in the attack scenario because the attacker can fix the key and perform profiling.
+The average leakage does not fit in this scenario.
 %% The key insight is ...  --- Qinkun: complete this and i will revise. ----
-%% By fixing with more constraints, we are able to obtain more precise information leakage.
-Our results are superisingly different compared to previous results
+By fixing with more constraints, we can obtain 
+more precise information leakage.
+Our results are surprisingly different 
+compared to previous results
 and much more useful in practice.
 
 ---FIXME: NEED A BETTER NAME---
@@ -62,13 +70,13 @@ find the side-channel vulnerabilities but can estimate how many bits are actuall
 trace. Second, \tool{} runs the instruction level symbolic execution on the top of the 
 execution trace. \tool{} will find side-channel information leakages and model each leakage 
 as one unique math constraint. Finally, \tool{} will classify those constraints into 
-independent multiple groups and run the multiple step Monte Carlo to estimate the 
+independent multiple groups and run the Markov Chain Monte Carlo to estimate the 
 information leakage. \tool{} can report a very fined-grained vulnerability result 
 compared to the existing tools.
-We apply the tool on OpenSSL, MbedTLS and libjpeg and find several serious side channel 
+We apply the tool on OpenSSL, MbedTLS and libjpeg and find several serious side-channel 
 vulnerabilities. We also evaluate the vulnerabilities from previous research. The result 
-confirms our intuition; it 
-indicates most of the reported vulnerabilities are actually hard to exploit in practice.
+confirms our intuition: most of the reported vulnerabilities in previus research
+are hard to exploit in practice.
 
 \end{abstract}
 
