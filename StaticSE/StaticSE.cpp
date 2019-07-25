@@ -64,7 +64,7 @@ int printFormulas(char* filename)
         // Print all formulas in output_se
         uint32_t length = 0;
         for(size_t i = 0; i < output_se.size(); i++) {
-            (output_se[i]) = se->formula_simplfy(output_se[i]);
+            //(output_se[i]) = se->formula_simplfy(output_se[i]);
 
             length = output_se[i]->printV(ss);
             cout << "Formula index: " << i << " Length: " << length <<  " Input Number: "<< (output_se[i])->symbol_num()\
