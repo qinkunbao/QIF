@@ -6,8 +6,8 @@ project(taintTrace)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(JSON_BuildTests OFF CACHE INTERNAL "")
 
-find_package(nlohmann_json 3.2.0 REQUIRED)
 
 include_directories(lib)
 include_directories(TaintTrace)
@@ -16,6 +16,7 @@ include_directories(LoopDetection)
 include_directories(test)
 include_directories(BitTaint)
 include_directories(StaticSE)
+add_subdirectory(nlohmann_json)
 
 
 add_library(TraceLib
