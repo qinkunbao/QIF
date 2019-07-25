@@ -88,15 +88,17 @@ namespace tana {
         os << " ";
         os << inst.get_opcode_operand();
         os << " ";
-        auto &v_register = inst.vcpu.gpr;
-        os << "eax: " << std::hex << v_register[0] << std::dec << " ";
-        os << "ebx: " << std::hex << v_register[1] << std::dec << " ";
-        os << "ecx: " << std::hex << v_register[2] << std::dec << " ";
-        os << "edx: " << std::hex << v_register[3] << std::dec << " ";
-        os << "esi: " << std::hex << v_register[4] << std::dec << " ";
-        os << "edi: " << std::hex << v_register[5] << std::dec << " ";
-        os << "esp: " << std::hex << v_register[6] << std::dec << " ";
-        os << "ebp: " << std::hex << v_register[7] << std::dec << " ";
+        if(!inst.is_static) {
+            auto &v_register = inst.vcpu.gpr;
+            os << "eax: " << std::hex << v_register[0] << std::dec << " ";
+            os << "ebx: " << std::hex << v_register[1] << std::dec << " ";
+            os << "ecx: " << std::hex << v_register[2] << std::dec << " ";
+            os << "edx: " << std::hex << v_register[3] << std::dec << " ";
+            os << "esi: " << std::hex << v_register[4] << std::dec << " ";
+            os << "edi: " << std::hex << v_register[5] << std::dec << " ";
+            os << "esp: " << std::hex << v_register[6] << std::dec << " ";
+            os << "ebp: " << std::hex << v_register[7] << std::dec << " ";
+        }
         if (inst.vcpu.eflags_state) {
             os << "CF: " << inst.vcpu.CF() << " ";
             os << "PF: " << inst.vcpu.PF() << " ";
