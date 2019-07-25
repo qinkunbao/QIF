@@ -123,11 +123,11 @@ the formula can be written as:
 
 $$F(\vec{K}) = Addr1$$
 
-\subsection{Markov Chain Monte Carlo Sampling (MCMC}
+\subsection{Markov Chain Monte Carlo Approximate Counting}
 
 From the above step~\ref{InstructionSE}, we can generate the constraints 
 from the execution trace. 
-The only variables in those constraints is the sensitive data. An adversary who 
+The only variables in those constraints are the sensitive data. An adversary who 
 wants to infer the sensitive data based on side-channel attacks can't observe 
 the sensitive information directly. The adversary, however, can observe the
 memory access pattern of the software. Each math formula can uniquely model
@@ -190,12 +190,12 @@ has the desired distribution.
 
 \textit{Definition:}
 Starting from here, we present the formal definition of the MCMC algorithm.
-First, we introduce the definition of the concepts of the algorithm.
+First, we introduce the definition of the concept of the algorithm.
 
 \begin{mydef}
       An approximation scheme is an alogorithm for finding an approximation
-      answer within a factor $1 + \epsilon$ of the optimal answer with the
-      probability of $1 - \zeta$.
+      answer within a factor $1 + \epsilon$ of the correct number of the set
+      $K^o$ with the probability of $1 - \zeta$.
 \end{mydef}
 
 \newtheorem{theorem}{Theorem}[section]
@@ -204,3 +204,14 @@ First, we introduce the definition of the concepts of the algorithm.
       If $F={A_1,A_2,...,A_n}$ is a finite collection of closed sets then 
       $\cup_{i}^{n}A_i$ is a closed set.
 \end{theorem}
+
+\subsubsection{MCMC Algorithm}
+In the section, we present the detail of MCMC algorithm for counting the 
+cardinality of $K^o$. We will fisrt present the description of the 
+MCMC and then explain the algorithm with a concrete example.
+\begin{enumerate}
+      \item Start with the concrete input $\vec{k} = (k_0, k_1, k_2, ..., k_n)$,
+      $\vec{k}$ should be the on valid solution which satisfies the constraint
+      $F = C_1(\vec{k})\land C_2(\vec{k})\land C_2(\vec{k}) \land ... \land C_m(\vec{k})$
+      \item for t = 1, 2, 3,..., N
+\end{enumerate}
