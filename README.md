@@ -1,4 +1,7 @@
 # Trace Aanlysis
+
+[![Build Status](https://travis-ci.com/qinkunbao/QIF.svg?token=N93BqvToieqFRYyp9sps&branch=master)](https://travis-ci.com/qinkunbao/QIF)
+
 This repo contains five useful tools for trace analysis.
 - A Pin Tool
 - CryptoHunt
