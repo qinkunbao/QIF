@@ -29,54 +29,35 @@
 \maketitle
 
 \begin{abstract}
-Side-channel attacks allow attackers to infer some sensitive 
-information based on non-functional characteristics. 
-Existing works on address-based side-channel detection 
-can provide a list of potential side-channel leakage sites. We observe 
-the following limitations in the previous work: 1) 
-Some vulnerabilities could be more severe than others, 
-but the existing work cannot tell precisely the 
-difference between those leakages. 2)  An attacker 
-usually exploits multiple leakages at one time. 
-However, no existing tool can accurately report
-the sum of the information leakage from various
-sites given the information dependency among them.
-   
-
-To overcome the above limitations, we propose a novel method
-to more precisely quantify the information leakage. 
-Previous work only considers the
-``average'' information leakage 
-which often neglect severe scenarios.
-The average information leakage assume that an event, e.g., a branch condition,
-can either happen or not happen in the future,
-which often does not match the attack scenario..
-In contrast, our method is precise and fine-grain. 
-Our method can also precisely combine two leakages. 
-For example, given a crypto key, we can assume the key is fixed
-in the attack scenario because the attacker can fix the key and perform profiling.
-The average leakage does not fit in this scenario.
-%% The key insight is ...  --- Qinkun: complete this and i will revise. ----
-By fixing with more constraints, we can obtain 
-more precise information leakage.
-Our results are surprisingly different 
-compared to previous results
-and much more useful in practice.
-
----FIXME: NEED A BETTER NAME---
-We have developed a tool called \tool{}, which can not only 
-find the side-channel vulnerabilities but can estimate how many bits are actually leaked. 
- \tool{} works in three steps. First, the application is executed to record the 
-trace. Second, \tool{} runs the instruction level symbolic execution on the top of the 
-execution trace. \tool{} will find side-channel information leakages and model each leakage 
-as one unique math constraint. Finally, \tool{} will classify those constraints into 
-independent multiple groups and run the Markov Chain Monte Carlo to estimate the 
-information leakage. \tool{} can report a very fined-grained vulnerability result 
-compared to the existing tools.
-We apply the tool on OpenSSL, MbedTLS and libjpeg and find several serious side-channel 
-vulnerabilities. We also evaluate the vulnerabilities from previous research. The result 
-confirms our intuition: most of the reported vulnerabilities in previus research
-are hard to exploit in practice.
+    Side-channel attacks allow attackers to infer some sensitive 
+    information based on non-functional characteristics. 
+    Existing works on address-based side-channel detection 
+    can provide a list of potential side-channel leakage sites. However, they 
+    1) only consider the ``average'' information leakage 
+    which often neglect severe attack scenarios,
+    2) cannot accurately report
+    the sum of multiple information leakages from various sites at one time.
+       
+    
+    To overcome the above limitations, we propose a novel method
+    to quantify the information leakage more precisely.  
+    %% The key insight is ...  --- Qinkun: complete this and i will revise. ----
+    %%---FIXME: NEED A BETTER NAME---%%
+    The key insight is XXXXX.
+    We have developed a tool called \tool{}, which can not only 
+    find the side-channel vulnerabilities but also estimate how many bits are actually leaked. 
+    \tool{} works in three steps. First, the application is executed to record the 
+    trace. Second, \tool{} runs the instruction level symbolic execution on the top of the 
+    execution trace. \tool{} will find side-channel information leakages and model each leakage 
+    as one unique math constraint. Finally, \tool{} will classify those constraints into 
+    independent multiple groups and run the Markov Chain Monte Carlo to estimate the 
+    information leakage. \tool{} can report a very fined-grained vulnerability result 
+    compared to the existing tools.
+    
+    We applied the tool on OpenSSL, MbedTLS and libjpeg and found several serious side-channel 
+    vulnerabilities. Compared with previous research, the results are surprisingly different 
+    that most of the reported vulnerabilities are hard to exploit in practice. 
+    %% which are confirmed with manual checks and software developpers. 
 
 \end{abstract}
 
