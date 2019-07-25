@@ -109,6 +109,23 @@ namespace tana {
         if ((v->opr != nullptr) && (isTree(v)))
             outputs.push_back(v);
 
+        v = ctx["esi"];
+        if ((v->opr != nullptr) && (isTree(v)))
+            outputs.push_back(v);
+
+        v = ctx["edi"];
+        if ((v->opr != nullptr) && (isTree(v)))
+            outputs.push_back(v);
+
+        v = ctx["esp"];
+        if ((v->opr != nullptr) && (isTree(v)))
+            outputs.push_back(v);
+
+        v = ctx["ebp"];
+        if ((v->opr != nullptr) && (isTree(v)))
+            outputs.push_back(v);
+
+
         // symbols in memory
         for (auto const &x : memory) {
 
