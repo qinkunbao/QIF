@@ -35,7 +35,6 @@ https://github.com/qinkunbao/QIF/blob/master/slides/Side%20Channel.pdf
 - Cmake 3.10 or newer 
 - Radare2 3.0.1
 - R2-pipe
-- JSON for Modern C++ https://github.com/nlohmann/json
 
 ## Build
 To Build the Pin Tool, please refer https://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool
