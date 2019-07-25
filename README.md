@@ -1,6 +1,7 @@
 # Trace Aanlysis
 
 [![Build Status](https://travis-ci.com/qinkunbao/QIF.svg?token=N93BqvToieqFRYyp9sps&branch=master)](https://travis-ci.com/qinkunbao/QIF)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/39bde068886343179a4d82c9cc50e100)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=qinkunbao/QIF&amp;utm_campaign=Badge_Grade)
 
 This repo contains five useful tools for trace analysis.
 - A Pin Tool
