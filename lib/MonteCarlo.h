@@ -84,7 +84,7 @@ namespace tana {
 
         void run_addr_group();
 
-        void print_group_result();
+        void print_group_result(std::string resultFile);
 
         void calculateConstrains();
 

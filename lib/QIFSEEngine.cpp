@@ -720,26 +720,6 @@ namespace tana {
 
     }
 
-    float QIFSEEngine::getEntropy(std::vector<uint8_t> key_value,  \
-                                  uint64_t MonteCarloTimes) {
-        using clock = std::chrono::system_clock;
-        using ms = std::chrono::milliseconds;
-        const auto before = clock::now();
-
-        FastMonteCarlo res(MonteCarloTimes, constrains, key_value);
-        res.verifyConstrain();
-        res.run();
-        res.run_addr_group();
-        res.calculateConstrains();
-        res.print_group_result();
-        float MonteCarloResult = res.getResult();
-
-        const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
-
-        std::cout << "It took " << duration.count() / 1000.0 << " ms"
-                  << " to finish the monte carlo sampling" << std::endl;
-        return abs(-log(MonteCarloResult) / log(2));
-    }
 
     void QIFSEEngine::checkMemoryAccess(tana::Inst_Base *inst) {
 
@@ -970,6 +950,12 @@ namespace tana {
             return v->formula_cache_concrete_value;
         }
     }
+
+    std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
+    QIFSEEngine::getConstrains(){
+        return constrains;
+    }
+
 
 
 }
