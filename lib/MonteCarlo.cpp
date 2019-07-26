@@ -205,6 +205,11 @@ namespace tana {
                     ++num_satisfied_for_group;
                 }
             }
+            if(num_satisfied_for_group == 0)
+            {
+                ++it;
+                continue;
+            }
             if ((this->num_sample / num_satisfied_for_group) == 1) {
                 it = constrains_group_addr.erase(it);
             } else {
