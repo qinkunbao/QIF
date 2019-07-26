@@ -205,7 +205,7 @@ namespace tana {
                     ++num_satisfied_for_group;
                 }
             }
-            if (num_satisfied_for_group == this->num_sample) {
+            if ((this->num_sample / num_satisfied_for_group) == 1) {
                 it = constrains_group_addr.erase(it);
             } else {
                 uint32_t addr = std::get<0>((*it).front());
