@@ -398,6 +398,9 @@ namespace tana {
             case x86::x86_insn::X86_INS_MOVSW:
                 return std::make_unique<INST_X86_INS_MOVSW>(isStatic);
 
+            case x86::x86_insn::X86_INS_BSWAP:
+                return std::make_unique<INST_X86_INS_BSWAP>(isStatic);
+
             default: {
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
@@ -2760,6 +2763,36 @@ namespace tana {
         se->writeMem(addr0.str(), op0->bit, read_v);
 
         return true;
+    }
+
+
+    bool INST_X86_INS_BSWAP::symbolic_execution(tana::SEEngine *se)
+    {
+        auto op0 = this->oprd[0];
+        assert(op0->type == Operand::Reg);
+
+        auto regName = op0->field[0];
+
+        auto regV = se->readReg(regName);
+
+        if(regV->symbol_num() == 0)
+        {
+            uint32_t regC = se->getRegisterConcreteValue(regName);
+            auto regValue = std::make_shared<BitVector>(ValueType::CONCRETE, regC);
+            se->writeReg(regName, regValue);
+            return true;
+        }
+
+        auto part0 = se->Extract(regV, 1, 8);
+        auto part1 = se->Extract(regV, 9, 16);
+        auto part2 = se->Extract(regV, 17, 24);
+        auto part3 = se->Extract(regV, 25, 32);
+
+        auto res = se->Concat(se->Concat(part0,part1,part2), part3);
+        se->writeReg(regName, res);
+        return true;
+
+
     }
 
 }
