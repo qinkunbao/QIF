@@ -122,7 +122,7 @@ namespace tana {
         auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
         //debug_map(key_value_map);
         auto it = constrains.begin();
-        std::set<uint32_t > addr_set;
+        std::set<uint32_t> addr_set;
         while (it != constrains.end()) {
             auto &cons = std::get<1>(*it);
             flag = cons->validate(key_value_map);
@@ -140,16 +140,14 @@ namespace tana {
         return true;
     }
 
-    void FastMonteCarlo::calculateConstrains()
-    {
+    void FastMonteCarlo::calculateConstrains() {
         int num_DA = 0, num_CF = 0;
-        for(const auto &cons_vector :constrains_group_addr)
-        {
+        for (const auto &cons_vector :constrains_group_addr) {
             auto one_cons = cons_vector.front();
-            if(std::get<2>(one_cons) == LeakageType::CFLeakage){
+            if (std::get<2>(one_cons) == LeakageType::CFLeakage) {
                 ++num_CF;
             }
-            if(std::get<2>(one_cons) == LeakageType::DALeakage){
+            if (std::get<2>(one_cons) == LeakageType::DALeakage) {
                 ++num_DA;
             }
         }
@@ -190,10 +188,12 @@ namespace tana {
     }
 
     void FastMonteCarlo::run_addr_group() {
-        for (const auto &constrains_addr : constrains_group_addr) {
+
+        auto it = constrains_group_addr.begin();
+        while (it != constrains_group_addr.end()) {
             uint64_t num_satisfied_for_group = 0;
             this->reset_tests();
-            for (const auto &element : constrains_addr) {
+            for (const auto &element : (*it)) {
                 auto &cons = std::get<1>(element);
                 this->testConstrain(cons);
                 // std::cout << "finishing one constrain";
@@ -203,9 +203,14 @@ namespace tana {
                     ++num_satisfied_for_group;
                 }
             }
-            uint32_t addr = std::get<0>(constrains_addr.front());
-            auto result = std::make_tuple(addr, num_satisfied_for_group);
-            num_satisfied_group.push_back(result);
+            if (num_satisfied_for_group == this->num_sample) {
+                it = constrains_group_addr.erase(it);
+            } else {
+                uint32_t addr = std::get<0>((*it).front());
+                auto result = std::make_tuple(addr, num_satisfied_for_group);
+                num_satisfied_group.push_back(result);
+                ++it;
+            }
         }
     }
 
@@ -278,9 +283,7 @@ namespace tana {
                 std::cout << "Address: " << std::hex << addr << std::dec
                           << " Leaked:" << leaked_information << " bits"
                           << " Num of Satisfied: " << num << std::endl;
-            }
-            else
-            {
+            } else {
                 std::cout << "Address: " << std::hex << addr << std::dec;
                 std::cout << " Monte Carlo Failed" << std::endl;
             }

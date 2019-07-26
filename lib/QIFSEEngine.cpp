@@ -728,9 +728,9 @@ namespace tana {
 
         FastMonteCarlo res(MonteCarloTimes, constrains, key_value);
         res.verifyConstrain();
-        res.calculateConstrains();
         res.run();
         res.run_addr_group();
+        res.calculateConstrains();
         res.print_group_result();
         float MonteCarloResult = res.getResult();
 
