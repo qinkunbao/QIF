@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
     std::string traceFileName(argv[1]);
     std::string sep("/");
     auto fileSegment = split(traceFileName, sep);
-    auto fileName = "result_" + fileSegment.back();
+    auto fileName = "result_" + fileSegment.rbegin()[1] + fileSegment.back();
 
     vector<std::unique_ptr<Inst_Base>> inst_list;
     tana_type::T_ADDRESS start_addr = 0;
