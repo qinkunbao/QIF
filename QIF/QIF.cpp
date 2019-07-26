@@ -10,6 +10,7 @@
 #include <sstream>
 #include <chrono>
 #include <cmath>
+#include <string.h>
 #include "MonteCarlo.h"
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
