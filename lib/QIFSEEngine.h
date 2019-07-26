@@ -90,12 +90,14 @@ namespace tana {
 
         void reduceConstrains();
 
-        float getEntropy(std::vector<uint8_t> key_value, uint64_t MonteCarloTimes);
-
         void checkMemoryAccess(Inst_Base *inst);
 
         uint32_t eval_cache(const std::shared_ptr<BitVector> &v,
                       const std::map<int, uint32_t> &inmap);
+
+
+        std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
+        getConstrains();
 
 
     };

@@ -4,11 +4,13 @@
         > Mail: qinkunbao@gmail.com
         > Created Time: Mon May 20 21:06:14 2019
  ************************************************************************/
-#include "MonteCarlo.h"
-#include "error.h"
 #include <algorithm>
 #include <random>
 #include <set>
+#include <iostream>
+#include <fstream>
+#include "MonteCarlo.h"
+#include "error.h"
 
 namespace tana {
     std::vector<uint8_t> MonteCarlo::getRandomVector(unsigned int size) {
@@ -270,7 +272,7 @@ namespace tana {
         }
     }
 
-    void FastMonteCarlo::print_group_result() {
+    void FastMonteCarlo::print_group_result(std::string result) {
         auto sample_num = tests.size();
         std::cout << "Information Leak for each address: \n";
         for (auto &it : num_satisfied_group) {
@@ -288,6 +290,35 @@ namespace tana {
                 std::cout << " Monte Carlo Failed" << std::endl;
             }
         }
+
+        std::ofstream myfile;
+        myfile.open (result);
+        int constrain_index = 0;
+        for (auto &it : num_satisfied_group) {
+            uint32_t addr = std::get<0>(it);
+            uint64_t num = std::get<1>(it);
+            if (num != 0) {
+                float portion =
+                        (static_cast<float>(num)) / (static_cast<float>(sample_num));
+                float leaked_information = abs(-log(portion) / log(2));
+                myfile << "Address: " << std::hex << addr << std::dec
+                       << " Leaked:" << leaked_information << " bits"
+                       << " Num of Satisfied: " << num << std::endl;
+            } else {
+                myfile << "Address: " << std::hex << addr << std::dec;
+                myfile << " Monte Carlo Failed" << std::endl;
+            }
+            auto con = constrains_group_addr[constrain_index];
+            myfile <<"Number of constrains: "<< con.size();
+            for(auto &each_con : con)
+            {
+                myfile << "\n";
+                myfile << *(std::get<1>(each_con));
+            }
+            ++constrain_index;
+            myfile << "\n";
+        }
+        myfile.close();
     }
 
 } // namespace tana

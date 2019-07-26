@@ -9,12 +9,51 @@
 #include <memory>
 #include <sstream>
 #include <chrono>
+#include <cmath>
+#include "MonteCarlo.h"
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
 
 using namespace std::chrono;
 using namespace std;
 using namespace tana;
+
+
+float getEntropy(std::vector<uint8_t> key_value,  \
+                 uint64_t MonteCarloTimes, \
+                 std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
+                 constrains, \
+                 std::string fileName) {
+    using clock = std::chrono::system_clock;
+    using ms = std::chrono::milliseconds;
+    const auto before = clock::now();
+
+    FastMonteCarlo res(MonteCarloTimes, constrains, key_value);
+    res.verifyConstrain();
+    res.run();
+    res.run_addr_group();
+    res.calculateConstrains();
+    res.print_group_result(fileName);
+    float MonteCarloResult = res.getResult();
+
+    const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
+
+    std::cout << "It took " << duration.count() / 1000.0 << " ms"
+              << " to finish the monte carlo sampling" << std::endl;
+    return abs(-log(MonteCarloResult) / log(2));
+}
+
+std::vector<std::string> split(std::string str,std::string sep){
+    char* cstr=const_cast<char*>(str.c_str());
+    char* current;
+    std::vector<std::string> arr;
+    current=strtok(cstr,sep.c_str());
+    while(current!=NULL){
+        arr.push_back(current);
+        current=strtok(NULL,sep.c_str());
+    }
+    return arr;
+}
 
 
 int main(int argc, char* argv[]) {
@@ -27,7 +66,7 @@ int main(int argc, char* argv[]) {
     }
 
 
-    uint64_t MonteCarloTimes = 10;
+    uint64_t MonteCarloTimes = 10000;
     if(argc == 3)
     {
       stringstream strValue;
@@ -43,6 +82,11 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    std::string traceFileName(argv[1]);
+    std::string sep("/");
+    auto fileSegment = split(traceFileName, sep);
+    auto fileName = "result_" + fileSegment.back();
+
     vector<std::unique_ptr<Inst_Base>> inst_list;
     tana_type::T_ADDRESS start_addr = 0;
     tana_type::T_SIZE m_size = 0;
@@ -50,7 +94,7 @@ int main(int argc, char* argv[]) {
 
     auto start = high_resolution_clock::now();
 
-    int max_inst = 100000;
+    int max_inst = 200000;
     parse_trace_qif(&trace_file, start_addr, m_size, inst_list, key_value, max_inst);
 
     std::cout << "Start Address: " << std::hex << start_addr << std::dec
@@ -73,8 +117,10 @@ int main(int argc, char* argv[]) {
     se->reduceConstrains();
     se->printConstrains();
 
+    auto constrains = se->getConstrains();
+
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leaked Bits = "<<se->getEntropy(key_value, MonteCarloTimes)
+    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName)
     << std::endl;
 
     auto stop = high_resolution_clock::now();
