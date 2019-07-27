@@ -122,6 +122,7 @@ namespace tana {
     }
 
     void updateCFadd(SEEngine *se, std::shared_ptr<BitVector> b1, \
+                     std::shared_ptr<BitVector> b2,\
                      uint32_t op_size) {
         uint32_t max_num_size;
         if (op_size == 32) {
@@ -135,7 +136,10 @@ namespace tana {
         } else {
             ERROR("Invalid operand size");
         }
-        auto res = buildop2(BVOper::greater, b1, max_num_size);
+        auto max_num_v = std::make_shared<BitVector>(ValueType::CONCRETE, max_num_size);
+        auto left = buildop2(BVOper::bvsub, max_num_v, b2);
+
+        auto res = buildop2(BVOper::greater, b1, left);
         se->updateFlags("CF", res);
     }
 
@@ -1197,7 +1201,7 @@ namespace tana {
 
         if (se->eflags) {
             // Update CF
-            updateCFadd(se, res, op0->bit);
+            updateCFadd(se, v1, v0, op0->bit);
 
             // Update SF
             updateSF(se, res, op0->bit);
@@ -1358,7 +1362,7 @@ namespace tana {
 
         if (se->eflags) {
             // Update CF
-            updateCFadd(se, res, op0->bit);
+            updateCFadd(se, v1, v0, op0->bit);
 
             // Update SF
             updateSF(se, res, op0->bit);
