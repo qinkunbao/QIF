@@ -10,6 +10,26 @@ work on stripped binaries, we use the symbol information to trace
 back leakage sites into the source code. We use Intel Pin version 3.7 
 to record the execution trace.
 
+\begin{table*}[t]
+    \begin{tabular}{|c|c|c|c|c|c|c|c|l|}
+    \hline
+    Program                   & Implementation                     & Start Function         & Input Size (bits)     & CF                    & DA                    & Total Leaked Bits     & Number of Instructions & Process Time (s) \\ \hline
+    AES                       & OpenSSL 0.9.7                      & AES\_set\_encrypt\_key &                       &                       &                       &                       &                        &                  \\
+    DES                       & OpenSSL 0.9.7                      & DES\_string\_to\_key   &                       &                       &                       &                       &                        &                  \\
+    RSA                       & OpenSSL 0.9.7                      &                        &                       &                       &                       &                       &                        &                  \\
+    AES                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
+    DES                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
+    RSA                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
+    AES                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
+    DES                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
+    RSA                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
+    AES                       & mbed TLS 2.15                      &                        &                       &                       &                       &                       &                        &                  \\
+    DES                       & mbed TLS 2.15                      &                        &                       &                       &                       &                       &                        &                  \\
+    \multicolumn{1}{|l|}{RSA} & \multicolumn{1}{l|}{mbed TLS 2.15} & \multicolumn{1}{l|}{}  & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}  &                  \\
+    \multicolumn{2}{|l|}{libjpeg}                                  & \multicolumn{1}{l|}{}  & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}  &                 
+    \end{tabular}
+\end{table*}
+
 During the evaluate, we are interested in the following aspects:
 \begin{enumerate}
     \item \textbf{Finding Leakage Sites.} How effective is \tool{} in 
@@ -26,6 +46,7 @@ During the evaluate, we are interested in the following aspects:
     study those vulnerabilities and try to explain the reason why the 
     author fix or not fix the side channel vulnerabilities.
 \end{enumerate}
+
 
 \subsection{Finding Leakage Sites}
 \subsection{Leakage Sites Quantifications}
