@@ -115,7 +115,7 @@ total information leakage, we need to know the relation of those leakage sites.
 
                 
 
-Considering the running example in ~\ref{code::multiple}, in which $k1$, $k2$ and $k3$ are
+Consider the running example in ~\ref{code::multiple}, in which $k1$, $k2$ and $k3$ are
 the sensitive key. The code has six different leakage. Leakage 1, 2, 3 are the secret-dependent
 data accesses and leakage 4, 5, 6 are the secret-dependent control-flow transfers.  
 The attacker can infer the last three digits of
@@ -123,9 +123,9 @@ $k1$, $k2$, $k3$ from leakage 1, 2, 3. So those leakages are independent. For le
 we have no idea about the total information leakage.
 
 
-Suppose one program has two side-channel vulnerabilities A and B, which can leak $L_A$ and $L_B$ bits
+Suppose one program has two side-channel vulnerabilities A and B, which can leak $L_A$ and $L_B$ bits respectively
 according to the definition~\ref{def}. 
-The total leaked information is noted as $L_{Total}$. The relation between A and B have the following three cases. 
+Depending on the relation between A and B, the total leaked information $L_{Total}$ will be:
 
 \subsubsection{Independent Leakages}
 If A and B are independent leakages, the total information leakage will be:
@@ -141,103 +141,36 @@ The total information leakage will be $L_A$ or $L_B$.
 
 According to above definition, leakage 1, 2, 3 are independent leakages. Leakage 4, 5
 are mutual exclusive leakages. 
-For real-world applications, it is tough to estimate the total leaked information for the following reasons.
-First, the real-world applications have more than thousands of lines of code. Side-channel vulnerabilities
-exist in many different locations of the source code. One leakage site leaks the temporary value. 
+For real-world applications, it is hard to estimate the total leaked information for the following reasons.
+First, the real-world applications have more than thousands of lines of code. One leakage site leaks the temporary value. 
 But the value contains some information about the original buffer. It is hard to know how the 
 the sensitive value affects the temporary value. Second, some leakages sites may be
 dependent. The occurrence of the first affects the occurrence of the second sites. We 
 can't simply add them up. Third, leakage sites are in the different blocks of the 
-control-flow graph, which means that only one of the two leakages site may execute
+control-flow graph, which means that only one of the two leakages site may be executed
 during the exectution.
 
-\textbf{Solution: }
-We run the symbolic execution on the top of the execution traces.
-At the beginning of the exectution,
-each byte in the sensitive buffer is modeled with with a symbol. After that, the symbolic
-exectution engine interprets each instruction of the exectution traces. So every values in the
-registers or memory cells is modeled with a math formula.
+\textbf{Solution: }Given a program $P$ with $k$ as the sensitive input, 
+we use $k_i$ to denote the sensitive information, where $i$ is the index of the byte in the original buffer.  
+We can represent each temporal
+values with a formula. There are two types of values in the formula: the concrete value and
+the symbolic value. We use the runtime information to simplify the formula. In other words,
+we only use symbolic values to represent the sensitive input. For other values that are
+independent from the sensitive input, we use the concrete value from the runtime information. 
 
-Given a program $P$, $k$ is the sensitive input. The $k$ should be a value in a memory cell or a sequential 
-buffer (e.g., an array). We use $k_i$ to denote the sensitive information, where $i$ is the index of the byte in
-the original buffer. We can have the following equations. The t1, t2, t3, is the temporary values during the execution.
-
-$$t_1 = f_1(k_1, k2, ... k_n)$$
-$$t_2 = f_2(k1, k2, ... k_n)$$
-$$t_3 = f_3(k1, k2, ... k_n)$$
-$...$
-$$t_m = f_m(k1, k2, ... k_n)$$
-
-After that, we model each potential leakage sites as a math formulas.
-
+After that, we model each leakage sites as a math formulas.
 The attacker can retrieve the sensitive information by observing the different patterns in 
 control-flows and data access when the program process different sensitive information. 
 We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
-
-
-\subsubsection{Secret-dependent Control Flow}
-Here is an example of the secret-dependent control-flows. Consider the code snippet in List 1. 
-Here the key is the confidential data. The code will have different behaviours (time, cache access) 
-dependenting on which branch is actually executing. By observing the behaviour, 
-the attacker can infer which branch actually executed and know some of the sensitive information. 
-One of the famous leakage example is the square and multiply in many RSA implementations. 
-
-For example, the attacker knows the key equals to zero if he observes the code run the branch1. 
-Because key has 256 different possibilities. The original key has lg256 = 8 bits information. 
-If the attacker can observe the code run branch 1. Then he will knows the key equals to zero. 
-If the code run branch 2, the attacker can infer the key doesn’t equal to zero. 
-
-\begin{lstlisting}
-Branch 1
-temp = 0xb;
-0 =< key <= 256;
-temp = key/2;
-\end{lstlisting}
-
-Information Leakage = -log(1/p) = -log(1/256) = 8 bits
-
-\begin{lstlisting}
-Branch 2
-temp != 0; 
-0 =< key <= 256;
-temp = key/2;
-\end{lstlisting}
-
-Information Leakage = -log(255/256) bits
-
-\subsubsection{Seret-dependent Memory Access}
-
-\begin{lstlisting}
-
-T[64]; // Lookup tables with 64 entries
-index = key % 63;
-temp = T[index]; 
-// Secret-dependent memory access       
-
-\end{lstlisting}
-
-The simple program above is an example of secret dependent memory access. 
-Here T is a precomputed tables with sixty-four entries. 
-Depending on the values of key, the program may access any values in the array. 
-Those kind of code patterns may wildly exist in many crypto and media libraries. 
-
-Suppose the attackers observe the code accesses the first entry of the lookup tables. 
-We can have the following formulas.
-
-\begin{lstlisting}
-key mod 63 = 1
-0 =< key <= 256
-\end{lstlisting}
-
-So the key can be one of the following values:
-1 64 127 190 253
-
-Information leakages = -log(5/256) =  5.6 bits
-
+For secret-dependent control transfers, we model the leakage using the path conditions that cause the control
+transfer. For secret-dependent memory accesses, we use a symbolic formula $F(\vec{K})$ to
+represent the memory address and check if different sensitive inputs can lead to different
+memory accesses. As long as we model each leakage with a formula. We can regard multiple leakges as the conjunction of
+those formulas. 
 
 \subsection{Scalability and Performance}
 
-After we transfer each potential leaks sites into logic formula. We can group several formulas together
+After we transfer each potential leaks sites into formula. We can group several formulas together
 to estimate the total information leakage. One naive way is to use the Monte Carlo sampling  estimate the
 number of input keys. With the definition ~\ref{def}, we can estimate the total information leakage.
 
@@ -247,7 +180,7 @@ We systematically analyze the performance bottlenecks of the whole process. In g
 from the two following reasons. 
 \begin{itemize}
     \item Symbolic Execution. 
-    \item The Naive Monte Carlo Sampling.
+    \item The Monte Carlo Sampling.
 \end{itemize}
 \subsubsection{Symbolic Execution}
 Symbolic execution interprets each instruction and update the memory cells and registers with a 
