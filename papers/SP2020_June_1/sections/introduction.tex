@@ -1,10 +1,10 @@
 \section{Introduction}
 %% side channels are important
 Side channels are inevitable in modern computer systems as the sensitive information 
-may be leaked by kinds of neglected behaviors, 
+may be leaked by all kinds of neglected behaviors, 
 such as power, electromagnetic radiation and even sound~\cite{}. 
 Among them, software-based side-channel vulnerabilities are especially common and have been studied for years~\cite{}. 
-The vulnerability results from vulnerable software codes and shared hardware components.
+The vulnerability results from vulnerable software code and shared hardware components.
 As the threat model in Figure~\ref{}, there is an information flow with secrets.  
 By observing the outputs or hardware behaviors, attackers could 
 infer the sensitive information such as encryption keys~\cite{} in crypto 
@@ -12,10 +12,10 @@ systems.
 
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against 
-side-channel attacks by reducing the shared resources
-and eliminating the leaked paths~\cite{182946,203878,217537}. 
+side-channel attacks, including reducing the shared resources,
+eliminating the leaked paths~\cite{182946,203878,217537}. 
 In addition to the runtime overhead, those methods are limited to specific hardware.
-Therefore, an increasing number of poeple seek software-based methods to 
+Therefore, an increasing number of poeple seek software-based solutions to 
 defend against side-channel attacks. Those methods rely on the 
 fact that many side-channel vulnerabilities are caused by the 
 secret-dependent runtime execution patterns(e.g, time, cache and CPU usage). 
@@ -34,24 +34,28 @@ These works help to find a list of hidden vulnerabilities in real-world software
 but fail to report how severe a potential leakage site could be. 
 Many of the reported vulnerabilities are typically hard to be exploited 
 and leak very little information (e.g., one bit of the length of the key~\cite{203878}).  
-For example, the vulnerabilities in OpenSSL library are assigned with low severity and not considered 
+For example, many vulnerabilities in OpenSSL library are assigned with low severity and not considered 
 in the threat model now~\cite{OpenSSL:Security:Policy}. 
 It is worthwhile to have a tool to tell how much information is actually leaked and help 
 developers fix them.
 
-To assess side-channel vulnerabilities, the first problem is that we need a proper quantification metric .
-Although tools based on static analysis with abstract interpretation can give an upper bound, 
+To assess side-channel vulnerabilities, the first problem is that we need a proper quantification metric.
+Although tools based on static analysis with abstract interpretation can give an upper bound
+about the amount of leaked information, 
 which is useful to justify whether the implementation is secure enough, 
-they can’t indicate the leakage is seuvere or not due to the over-approximation~\cite{}. 
-The dynamic methods will take a concrete input and run the program actually, which should be very precise in term of real leakage,
-but they suffer from the incompleteness of testing and trade-off of performance and accuracy~\cite{}. 
+they can’t indicate the leakage is severe or not due to the over-approximation~\cite{182946}. 
+The dynamic methods will take a concrete input and run the program, which should be very precise 
+in term of real leakage,
+but they suffer from the incompleteness of testing and trade-off of performance and accuracy~\cite{}.
+Also, no existing tool based on dynamic methods can report the amount of leaked information.
 %For example, DATA~\cite{217537} reports more than 2000 potential leakage sites for the RSA implementation of OpenSSL.
 %But most of them were dismissed by the author after some manual inspections.
 
-Secondly, open source libraries may have multiple leakage sites. Attackers can explot more than one leakage
+Secondly, open source libraries may have multiple leakage sites. 
+Attackers can explot more than one leakage
 sites at one time~\cite{191010,7163052,hornby2011side}. 
-The attacker may retrieve part of the sensitive information from one site, part of the sensitive
-information from another site and combine them.
+The attacker may retrieve part of the sensitive information from one site, part of other sensitive
+information from another site and combine them together.
 It is necessary to know how much information is actually leaked in total. 
 No existing tools can practically estimate the total information leakage from multiple leakage sites in real-world libraries.
 Simply adding the results together gets a very rough upper bound of the total information leakage if those 
@@ -59,7 +63,7 @@ leakages aren’t independent.
 
 
 To overcome the above limitations, we propose a novel method
-to more precisely quantify the information leakage. Previous work only considers the
+to precisely quantify the information leakage. Previous work only considers the
 ``average'' information leakage which often neglects severe scenarios.
 The average information assumes that the target program will have \textbf{different} sensitive 
 information as the input when the attacker launches the attack,
@@ -68,13 +72,13 @@ attacks, an adversary may run the target problem again and over again with the
 fixed unknown sensitive information as the input. Therefore, the previous
 threat model can't catch real attack scenarios.
 
-In contrast, our method is more precise and fine-grained. 
+In contrast, our method is more precise. 
 For our analysis, the input key is fixed. We classify the address-based side-channel 
 vulnerabilities into two categories: 1.\textit{secret-dependent control-flow transfers} 
 and 2.\textit{secret-dependent data access} and model them with the math formulas which
 constrain the value of sensitive information.
-We define the amount of leaked information as the number of possible solutions that can
-reduced after applying each constrains.
+We define the amount of leaked information as the number of possible solutions that can be
+reduced after applying each constrain.
 It is interesting to mention that the definition is different from the 
 definition in previous static-based analysis tools. 
 Before the attack, the adversary has a big but finite input space.
