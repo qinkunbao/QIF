@@ -1,21 +1,30 @@
 \section{Introduction}
 %% side channels are important
-Side channels are hardly avoided in modern computer systems as the sensitive information 
+Side channels are inevitable in modern computer systems as the sensitive information 
 may be leaked by kinds of neglected behaviors, 
 such as power, electromagnetic radiation and even sound~\cite{}. 
 Among them, software-based side-channel vulnerabilities are especially common and have been studied for years~\cite{}. 
 The vulnerability results from vulnerable software codes and shared hardware components.
 As the threat model in Figure~\ref{}, there is an information flow with secrets.  
 By observing the outputs or hardware behaviors, attackers could 
-infer the program execution and guess the secrets such as encryption keys~\cite{}.
+infer the sensitive information such as encryption keys~\cite{} in crypto 
+systems.
 
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against 
-software-based side-channel attacks by reducing the shared resources
-and eliminating the leak paths~\cite{182946,203878,217537}. 
-In addition to runtime overheads, they are limited to specific hardwares. 
-So it is imperative to discover and fix side channel vulnerabilities in advance 
-and automatic detection methods are proposed recently~\cite{}.
+side-channel attacks by reducing the shared resources
+and eliminating the leaked paths~\cite{182946,203878,217537}. 
+In addition to the runtime overhead, those methods are limited to specific hardware.
+Therefore, an increasing number of poeple seek software-based methods to 
+defend against side-channel attacks. Those methods rely on the 
+fact that many side-channel vulnerabilities are caused by the 
+secret-dependent runtime execution patterns(e.g, time, cache and CPU usage). 
+They discover thsoe patterns and eliminate them to avoid side-channel attacks. 
+Given the complexity of modern computer systems and the large code base of the
+software, it is difficult for software developers to find those vulnerabilities
+manuallly. As a consequence, various of approaches~\cite{182946,203878,Osvik:2006:CAC:2117739.2117741} 
+are proposed to detect side-channel vulnerabilities automatically.
+
 
 %% There are some detection methods but need a good assess method 
 In general, both static analysis and dynamic analysis
@@ -26,8 +35,9 @@ but fail to report how severe a potential leakage site could be.
 Many of the reported vulnerabilities are typically hard to be exploited 
 and leak very little information (e.g., one bit of the length of the key~\cite{203878}).  
 For example, the vulnerabilities in OpenSSL library are assigned with low severity and not considered 
-in the threat model now~\cite{https://www.openssl.org/policies/secpolicy.html}. 
-It is worthwhile to have a tool to tell how much information is actually leaked and help to fix them.
+in the threat model now~\cite{OpenSSL:Security:Policy}. 
+It is worthwhile to have a tool to tell how much information is actually leaked and help 
+developers fix them.
 
 To assess side-channel vulnerabilities, the first problem is that we need a proper quantification metric .
 Although tools based on static analysis with abstract interpretation can give an upper bound, 

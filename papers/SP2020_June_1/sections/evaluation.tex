@@ -1,19 +1,9 @@
 \section{Evaluation}
-We evaluate \tool{} with the real-world crypto libraries and non-crypto. 
-For crypto libraries, we choose OpenSSL and mbedTLS, two most commonly used
-crypto libraries in today's software. For OpenSSL, we compile it with the option \textit{no-asm} 
-to disable the assembly language routines. For non-crypto libraries, 
-we study the libjepg, a commonly used lossy library implemented by 
-the Independent JPEG Group. We build the source code into a 32 bit 
-ELF binary with the GCC 8.0 on Ubuntu 14.04. Although our tool can
-work on stripped binaries, we use the symbol information to trace
-back leakage sites into the source code. We use Intel Pin version 3.7 
-to record the execution trace.
 
 \begin{table*}[t]
-    \begin{tabular}{|c|c|c|c|c|c|c|c|l|}
+    \begin{tabular}{c c c c c c c c l}
     \hline
-    Program                   & Implementation                     & Start Function         & Input Size (bits)     & CF                    & DA                    & Total Leaked Bits     & Number of Instructions & Process Time (s) \\ \hline
+    Program                   & Implementation                     & Start Function         & Key Size (bits)     & CF                    & DA                    & Total Leakage     & Number of Instructions & Process Time (s) \\ \hline
     AES                       & OpenSSL 0.9.7                      & AES\_set\_encrypt\_key &                       &                       &                       &                       &                        &                  \\
     DES                       & OpenSSL 0.9.7                      & DES\_string\_to\_key   &                       &                       &                       &                       &                        &                  \\
     RSA                       & OpenSSL 0.9.7                      &                        &                       &                       &                       &                       &                        &                  \\
@@ -25,10 +15,20 @@ to record the execution trace.
     RSA                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
     AES                       & mbed TLS 2.15                      &                        &                       &                       &                       &                       &                        &                  \\
     DES                       & mbed TLS 2.15                      &                        &                       &                       &                       &                       &                        &                  \\
-    \multicolumn{1}{|l|}{RSA} & \multicolumn{1}{l|}{mbed TLS 2.15} & \multicolumn{1}{l|}{}  & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}  &                  \\
-    \multicolumn{2}{|l|}{libjpeg}                                  & \multicolumn{1}{l|}{}  & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}  &                 
+    \hline
     \end{tabular}
 \end{table*}
+We evaluate \tool{} with the real-world crypto libraries and non-crypto. 
+For crypto libraries, we choose OpenSSL and mbedTLS, two most commonly used
+crypto libraries in today's software. For OpenSSL, we compile it with the option \textit{no-asm} 
+to disable the assembly language routines. For non-crypto libraries, 
+we study the libjepg, a commonly used lossy library implemented by 
+the Independent JPEG Group. We build the source code into a 32 bit 
+ELF binary with the GCC 8.0 on Ubuntu 14.04. Although our tool can
+work on stripped binaries, we use the symbol information to trace
+back leakage sites into the source code. We use Intel Pin version 3.7 
+to record the execution trace.
+
 
 During the evaluate, we are interested in the following aspects:
 \begin{enumerate}
