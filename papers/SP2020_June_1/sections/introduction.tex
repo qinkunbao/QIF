@@ -48,10 +48,10 @@ but they suffer from the incompleteness of testing and trade-off of performance 
 %For example, DATA~\cite{217537} reports more than 2000 potential leakage sites for the RSA implementation of OpenSSL.
 %But most of them were dismissed by the author after some manual inspections.
 
-Secondly, open source libraries may have multiple leakage sites, which can be exploited for attackers
-at one time~\cite{191010,7163052,hornby2011side}. 
-%The attacker may retrieve part of the sensitive information from one site, part of the sensitive
-%information from another site and combine them.
+Secondly, open source libraries may have multiple leakage sites. Attackers can explot more than one leakage
+sites at one time~\cite{191010,7163052,hornby2011side}. 
+The attacker may retrieve part of the sensitive information from one site, part of the sensitive
+information from another site and combine them.
 It is necessary to know how much information is actually leaked in total. 
 No existing tools can practically estimate the total information leakage from multiple leakage sites in real-world libraries.
 Simply adding the results together gets a very rough upper bound of the total information leakage if those 
