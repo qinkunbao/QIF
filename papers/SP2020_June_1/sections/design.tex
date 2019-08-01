@@ -139,7 +139,7 @@ cache lines, which means the value of L is 6.
 \subsection{Information Leakage Estimation}
 
 In this section, we present the alogorithm to calculate the information
-leakage with the definition~\ref{def}. 
+leakage based on the definition~\ref{def}. 
 
 \subsubsection{Problem Statement}
 From the above step~\ref{InstructionSE}, we can generate the constraint 
@@ -151,8 +151,8 @@ as each leakage site has one constraint, we can
 use the conjunction of those constraints to represent those leakage sites. 
 
 According to the definition~\ref{def}, to calculate the amount of leaked 
-information, the key is to calculate $\frac{|K|}{|K^o|}$. $|K^o|$ represent
-the set that contain every input keys that satisfy the constraint. As the 
+information, the key is to calculate $\frac{|K|}{|K^o|}$. $|K^o|$ represents
+the set that contains every input keys that satisfy the constraint. As the 
 cardinality of $K$ is known, the key problem is to know the cardinality of
 $K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site has
 the following constraints: $C_1, C_2, ..., C_n$ respectively. 
@@ -167,26 +167,68 @@ contained in $K^o$. If $q$ elements are also in $K^o$. In expectation, we can
 use $\frac{k}{q}$ to approximate the value of $\frac{|K|}{|K^o|}$.
 
 However, as the discussion in ~\ref{MCreasons},
-the above sampling method will typically fail due to the following two reasons:
+the above sampling method will typically fail in practice due to the following two problems:
 
 \begin{itemize}
       \item The curse of dimensionality. $F_{c1...cn}$ is the conjunction of many
       constraints. Therefore, the input variables of each constraints will also be 
       the input variables of the $F_(c1...cn)$. The sampling method will fail as 
       $n$ increases. For example, when $n$ equals to 2, the whole serach space is 
-      a $256^2$ cube. If we want to the distance between each points equals to 1,
-      we need $256^2$ points. When $n$ equals to 10, we need $256^8$ points if we 
+      a $256^2$ cube. If we want the distance between each points equals to 1,
+      we need $256^2$ points. When $n$ equals to 10, we need $256^{10}$ points if we 
       still we want the distance between each points equals to 1. As a result, the 
-      error of the result based on sampling method will increases exponentially with
-      adding dimension. 
+      error of the result based on sampling method will increase exponentially with
+      adding dimensions. 
 
-      \item The number of satisfying solution could be exponentially small.
-      According to Chernoff bound, we need to exponentially many samples to get 
+      \item The number of satisfying assignments could be exponentially small.
+      According to Chernoff bound, we need exponentially many samples to get 
       a tight bound. On an extreme situation, if the constraint only has one unique
-      satisfying solutions. 
+      satisfying solution, the simple Monte Carlo method can't find the satisfying
+      assignment after sampling many points.
 \end{itemize}
 
+In regard to the above problems, we present our methods. First, we split 
+$F_(c1...cn)$ into several constraints with different input symbols. After
+that, we run random-walk based sampling method on each constraint.
+
 \subsubsection{Definitions}
+
+For a constraint $C_i$, we define a function $S$, mapping
+the constraint into a set of input symbols. For example, 
+$S(k1 + k2 > 128) = \{k1, k2\}$.
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\begin{definition}[]
+      \label{independentC}
+      Given two constraints $C_m$ and $C_n$, we call them independent iff 
+      $$S(C_m) \cap S(C_n) = \emptyset$$
+\end{definition}
+
+Based on the definition~\label{independentC}, the first step is to split
+the constraint $F_{c1c2...cn}$ into several independent constraints. There
+are many partitions. For our project, we are interested in the following
+one.
+
+\begin{definition}
+      \label{Goodpartition}
+      For the constraint $F_{c_1c_2...c_n}$ and the constraint group
+      $C_{g1}, C_{g2}, ..., C_{gm}$, we call  $C_{g1}, C_{g2}, ..., C_{gm}$
+      is a good partition of $F_{c_1c_2...c_n}$ iff
+      \begin{enumerate}
+            \item $C_{g1} \land C_{g2} \land ,..., \land C_{gm} = F_{c_1c_2...c_n}$
+            \item $\forall \quad i, j \in \{1, 2, 3, ..., m\} \quad \textrm{and} \quad 
+                  i \neq j, \quad S(C_i) \cap S(C_j) = \emptyset $
+            \item For any other partitions  $C_{g1}, C_{g2}, ..., C_{gn}$ satisfy 1) and
+                  2), $m \geq n$    
+      \end{enumerate}
+      
+\end{definition}
+
+The reason we want to  
+
+
 We apply two preprocessing steps before running the Monte Carlo sampling. First,
 we try to simplify those formulas by applying some normalizations rules. After
 that, we split those formulas into multiple groups.
