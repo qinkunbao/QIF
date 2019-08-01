@@ -127,33 +127,66 @@ from the input sensitive information and won’t leak any sensitive information
 according to our threat model. Otherwise, we will generate the constraint for
 the memory addressing. We model the memory address with a symbolic formula 
 $F(\vec{K})$. 
-Because we also have the concrete value of the memory address $Addr1$. Therefore,
-the formula can be written as:
+Because we also have the concrete value of the memory address $Addr1$. 
+Inspired by the work from~\cite{203878}, the formula can be written as:
 
-$$F(\vec{K}) = Addr1$$
+$$F(\vec{K}) >> L = Addr1 >> L$$
 
-\subsection{Markov Chain Monte Carlo Approximate Counting}
+The $L$ represents the minimum memory address granularity that an attacker 
+can observe. For example, Flush and Reload can distinguish between different
+cache lines, which means the value of L is 6.
 
-From the above step~\ref{InstructionSE}, we can generate the constraints 
-from the execution trace. 
-The only variables in those constraints are the sensitive data. An adversary who 
-wants to infer the sensitive data based on side-channel attacks can't observe 
-the sensitive information directly. The adversary, however, can observe the
-memory access pattern of the software. Each math formula can uniquely model
-one leakage site.
+\subsection{Information Leakage Estimation}
 
-In this section, we calculate the amount of leaked information with the
-definition from~\ref{def}. The basic idea is to calculate $\frac{|K|}{|K^o|}$.
-The size of $K$ is usually exponentially large. A naive method for approximating
+In this section, we present the alogorithm to calculate the information
+leakage with the definition~\ref{def}. 
+
+\subsubsection{Problem Statement}
+From the above step~\ref{InstructionSE}, we can generate the constraint 
+for each unique leakage site on the execution trace.
+The only variables in those constraints are the sensitive data represented
+with $k_1, k_2, ... , k_n$. Suppose the address of the leakage site is $i$,
+we use $C_i$ to denote the constraint. For mutiple leakage sites, 
+as each leakage site has one constraint, we can 
+use the conjunction of those constraints to represent those leakage sites. 
+
+According to the definition~\ref{def}, to calculate the amount of leaked 
+information, the key is to calculate $\frac{|K|}{|K^o|}$. $|K^o|$ represent
+the set that contain every input keys that satisfy the constraint. As the 
+cardinality of $K$ is known, the key problem is to know the cardinality of
+$K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site has
+the following constraints: $C_1, C_2, ..., C_n$ respectively. 
+The total leakage has the constraint $F_{c1c2...cn} = C_1 \land C_2 \land C_3
+\land ... \land C_n$. The problem of estimating the total leaked information 
+can be transfered into counting the number of different solutions that satisfies
+the constraint $F_{c1c2...cn}$. 
+
+A native method for approximating 
 the result is to pick $k$ elements from $K$ and check how many of them are also
 contained in $K^o$. If $q$ elements are also in $K^o$. In expectation, we can
-use $\frac{k}{q}$ to approximate the value of $\frac{|K|}{|K^o|}$. In this step,
-we first split the contrains tuple into multiple groups depending on the memory
-address. After that, we run the Markov Chain Monte Carlo to estimate the amount
-of leaked information.
+use $\frac{k}{q}$ to approximate the value of $\frac{|K|}{|K^o|}$.
 
+However, as the discussion in ~\ref{MCreasons},
+the above sampling method will typically fail due to the following two reasons:
 
-\subsubsection{Preprocessing}
+\begin{itemize}
+      \item The curse of dimensionality. $F_{c1...cn}$ is the conjunction of many
+      constraints. Therefore, the input variables of each constraints will also be 
+      the input variables of the $F_(c1...cn)$. The sampling method will fail as 
+      $n$ increases. For example, when $n$ equals to 2, the whole serach space is 
+      a $256^2$ cube. If we want to the distance between each points equals to 1,
+      we need $256^2$ points. When $n$ equals to 10, we need $256^8$ points if we 
+      still we want the distance between each points equals to 1. As a result, the 
+      error of the result based on sampling method will increases exponentially with
+      adding dimension. 
+
+      \item The number of satisfying solution could be exponentially small.
+      According to Chernoff bound, we need to exponentially many samples to get 
+      a tight bound. On an extreme situation, if the constraint only has one unique
+      satisfying solutions. 
+\end{itemize}
+
+\subsubsection{Definitions}
 We apply two preprocessing steps before running the Monte Carlo sampling. First,
 we try to simplify those formulas by applying some normalizations rules. After
 that, we split those formulas into multiple groups.
@@ -201,11 +234,6 @@ has the desired distribution.
 Starting from here, we present the formal definition of the MCMC algorithm.
 First, we introduce the definition of the concept of the algorithm.
 
-\begin{mydef}
-      An approximation scheme is an alogorithm for finding an approximation
-      answer within a factor $1 + \epsilon$ of the correct number of the set
-      $K^o$ with the probability of $1 - \zeta$.
-\end{mydef}
 
 \newtheorem{theorem}{Theorem}[section]
 
