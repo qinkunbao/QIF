@@ -226,7 +226,14 @@ one.
       
 \end{definition}
 
-The reason we want to  
+The reason we want a good partition of the constrain is that we want to 
+reduce the dimensions. Consider the example in the previous section,
+$$F: {k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$$
+The good partition of $F$ would be
+$$C_{g1}: {k_1} = 1\quad C_{g2}: {k_2} = 2\quad C_{g3}: {k_3} = 3\quad C_{g4}: {k_4} = 4$$     
+So instead of sampling in the four dimension space, we can
+sample each constraint in the one dimension space and combine them
+together.
 
 
 We apply two preprocessing steps before running the Monte Carlo sampling. First,
