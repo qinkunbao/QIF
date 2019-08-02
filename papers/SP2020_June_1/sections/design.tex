@@ -215,7 +215,7 @@ one.
       \label{Goodpartition}
       For the constraint $F_{c_1c_2...c_n}$ and the constraint group
       $C_{g1}, C_{g2}, ..., C_{gm}$, we call  $C_{g1}, C_{g2}, ..., C_{gm}$
-      is a good partition of $F_{c_1c_2...c_n}$ iff
+      is the maximum independent partition of $F_{c_1c_2...c_n}$ iff
       \begin{enumerate}
             \item $C_{g1} \land C_{g2} \land ,..., \land C_{gm} = F_{c_1c_2...c_n}$
             \item $\forall \quad i, j \in \{1, 2, 3, ..., m\} \quad \textrm{and} \quad 
@@ -234,8 +234,18 @@ $$C_{g1}: {k_1} = 1\quad C_{g2}: {k_2} = 2\quad C_{g3}: {k_3} = 3\quad C_{g4}: {
 So instead of sampling in the four dimension space, we can
 sample each constraint in the one dimension space and combine them
 together.
+\newtheorem{theorem}{Theorem}[section]
 
+\begin{theorem}
+      \label{IndependentConstraint}
+$C_{g1}, C_{g2}, ..., C_{gm}$ is a maximum independent partition of $F_{c_1c_2...c_n}$.
+$K_c$ is the input set that satisfies constrain $c$. We can have the following
+equation in regard to the size of $K_c$
+$$|K_{F_{c_1c_2...c_n}}| = |K_{C_{g1}}|*|K_{C_{g2}}|*...*|K_{C_{gn}}|$$
+\end{theorem}
 
+With the~\ref{IndependentConstraint}, we can transfer counting a large constraint with high
+dimensions into several small constraints and reduce the dimensions.
 We apply two preprocessing steps before running the Monte Carlo sampling. First,
 we try to simplify those formulas by applying some normalizations rules. After
 that, we split those formulas into multiple groups.
@@ -282,9 +292,6 @@ has the desired distribution.
 \textit{Definition:}
 Starting from here, we present the formal definition of the MCMC algorithm.
 First, we introduce the definition of the concept of the algorithm.
-
-
-\newtheorem{theorem}{Theorem}[section]
 
 \begin{theorem}
       If $F={A_1,A_2,...,A_n}$ is a finite collection of closed sets then 
