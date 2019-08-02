@@ -169,7 +169,7 @@ use $\frac{k}{q}$ to approximate the value of $\frac{|K|}{|K^o|}$.
 However, as the discussion in ~\ref{MCreasons},
 the above sampling method will typically fail in practice due to the following two problems:
 
-\begin{itemize}
+\begin{enumerate}
       \item The curse of dimensionality. $F_{c1...cn}$ is the conjunction of many
       constraints. Therefore, the input variables of each constraints will also be 
       the input variables of the $F_(c1...cn)$. The sampling method will fail as 
@@ -185,13 +185,13 @@ the above sampling method will typically fail in practice due to the following t
       a tight bound. On an extreme situation, if the constraint only has one unique
       satisfying solution, the simple Monte Carlo method can't find the satisfying
       assignment after sampling many points.
-\end{itemize}
+\end{enumerate}
 
 In regard to the above problems, we present our methods. First, we split 
-$F_(c1...cn)$ into several constraints with different input symbols. After
+$F_(c1...cn)$ into several independent constraint groups. After
 that, we run random-walk based sampling method on each constraint.
 
-\subsubsection{Definitions}
+\subsubsection{Maximum Independent Partition}
 
 For a constraint $C_i$, we define a function $S$, mapping
 the constraint into a set of input symbols. For example, 
@@ -217,7 +217,7 @@ one.
       $C_{g1}, C_{g2}, ..., C_{gm}$, we call  $C_{g1}, C_{g2}, ..., C_{gm}$
       is the maximum independent partition of $F_{c_1c_2...c_n}$ iff
       \begin{enumerate}
-            \item $C_{g1} \land C_{g2} \land ,..., \land C_{gm} = F_{c_1c_2...c_n}$
+            \item $C_{g1} \land C_{g2} \land ... \land C_{gm} = F_{c_1c_2...c_n}$
             \item $\forall \quad i, j \in \{1, 2, 3, ..., m\} \quad \textrm{and} \quad 
                   i \neq j, \quad S(C_i) \cap S(C_j) = \emptyset $
             \item For any other partitions  $C_{g1}, C_{g2}, ..., C_{gn}$ satisfy 1) and
@@ -226,7 +226,7 @@ one.
       
 \end{definition}
 
-The reason we want a good partition of the constrain is that we want to 
+The reason we want a good partition of the constraints is that we want to 
 reduce the dimensions. Consider the example in the previous section,
 $$F: {k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$$
 The good partition of $F$ would be
@@ -244,29 +244,11 @@ equation in regard to the size of $K_c$
 $$|K_{F_{c_1c_2...c_n}}| = |K_{C_{g1}}|*|K_{C_{g2}}|*...*|K_{C_{gn}}|$$
 \end{theorem}
 
-With the~\ref{IndependentConstraint}, we can transfer counting a large constraint with high
-dimensions into several small constraints and reduce the dimensions.
-We apply two preprocessing steps before running the Monte Carlo sampling. First,
-we try to simplify those formulas by applying some normalizations rules. After
-that, we split those formulas into multiple groups.
+With the~\ref{IndependentConstraint}, we can transfer the problem of counting the number of 
+solutions in a large constraint with high
+dimensions into counting solutions of 
+several small constraints.
 
-The goal of the normalization is to simplify the formulas. 
-Each formulas will be evaluated multiple times with different input 
-during the following sampling, 
-we would like to make those formula simpler to reduce the whole execution time.  
-Each formula is implemented as a abstract syntax tree. We apply a series of 
-normalization rules (e.g. key1 xor key1 = 0) to simplify the formula.
-
-After that, we split the formula tuple into multiple groups. 
-Each group consists of different formulas but with the same memory address.
-In other words, those formulas in the same group represent one leakage
-site. The instructions inside a loop are executed multiple times with
-the different item from the input buffer. We group them together to 
-know the total information leakage.
-
-The only symbol in the original formula is the key. 
-An adversary who wants to infer the sensitive data based on side-channel 
-attacks can't observe the sensitive information directly. 
 
 \subsubsection{Motivation}
 The adversary, however, can observe the memory access pattern of the software. 
