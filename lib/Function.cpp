@@ -60,7 +60,8 @@ namespace tana {
     std::string Function::findTaintedRTN(tana_type::T_ADDRESS addr) {
         for (auto iter = rtn_libraries.begin(); iter != rtn_libraries.end(); iter++) {
             if ((addr >= (iter->start_addr)) && (addr <= (iter->end_addr))) {
-                return iter->rtn_name + " Module Name: " + iter->module_name;
+                return "Function Name: " + iter->rtn_name + " Module Name: " + iter->module_name + " Offset: "
+                                      + std::to_string(addr - iter->start_addr);
             }
         }
         return "NOT Found";

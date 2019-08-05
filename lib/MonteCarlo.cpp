@@ -102,7 +102,29 @@ namespace tana {
             std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
             std::vector<uint8_t> key_value)
             : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
-              input_seed(key_value) {
+              input_seed(key_value), isFunctionInformationAvailable(false), func(nullptr) {
+        tests.reserve(sample_num);
+        input_vector = MonteCarlo::getAllKeys(con);
+        unsigned int input_dimensions = input_vector.size();
+
+        int step = 0, step_size = sample_num / 10;
+        spiltConstrainsByAddress();
+        for (uint64_t i = 0; i < sample_num; ++i) {
+            tests.push_back(std::make_unique<std::pair<std::vector<uint8_t>, bool>>(
+                    std::make_pair(getRandomVector(input_dimensions), true)));
+            if (i / step_size > step) {
+                step = i / step_size;
+                std::cout << "Generating samples: " << step << "0%" << std::endl;
+            }
+        }
+    }
+
+    FastMonteCarlo::FastMonteCarlo(
+            uint64_t sample_num,
+            std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
+            std::vector<uint8_t> key_value, std::unique_ptr<Function> fun)
+            : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
+              input_seed(key_value), isFunctionInformationAvailable(true), func(std::move(fun)) {
         tests.reserve(sample_num);
         input_vector = MonteCarlo::getAllKeys(con);
         unsigned int input_dimensions = input_vector.size();
@@ -134,11 +156,14 @@ namespace tana {
                 std::cout << "Failed Constrains: " << std::endl;
                 std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
                 std::cout << *cons << std::endl;
+                if(isFunctionInformationAvailable) {
+                    std::cout << func->findTaintedRTN(std::get<0>(*it)) <<"\n"<< std::endl;
+                }
                 addr_set.insert(std::get<0>(*it));
                 it = constrains.erase(it);
             }
         }
-        std::cout << "\n Number of Failed Constrains: " << addr_set.size() << std::endl;
+        std::cout << "\n Number of Failed Constrains: " << addr_set.size() <<"\n"<< std::endl;
         return true;
     }
 
@@ -290,9 +315,15 @@ namespace tana {
                 std::cout << "Address: " << std::hex << addr << std::dec
                           << " Leaked:" << leaked_information << " bits"
                           << " Num of Satisfied: " << num << std::endl;
+                if(isFunctionInformationAvailable) {
+                    std::cout << func->findTaintedRTN(addr) << "\n"<<std::endl;
+                }
             } else {
                 std::cout << "Address: " << std::hex << addr << std::dec;
                 std::cout << " Monte Carlo Failed" << std::endl;
+                if(isFunctionInformationAvailable) {
+                    std::cout << func->findTaintedRTN(addr) << "\n" <<std::endl;
+                }
             }
         }
 
@@ -309,9 +340,15 @@ namespace tana {
                 myfile << "Address: " << std::hex << addr << std::dec
                        << " Leaked:" << leaked_information << " bits"
                        << " Num of Satisfied: " << num << std::endl;
+                if(isFunctionInformationAvailable) {
+                    myfile << func->findTaintedRTN(addr) << "\n" << std::endl;
+                }
             } else {
                 myfile << "Address: " << std::hex << addr << std::dec;
                 myfile << " Monte Carlo Failed" << std::endl;
+                if(isFunctionInformationAvailable) {
+                    myfile << func->findTaintedRTN(addr) << "\n" <<std::endl;
+                }
             }
             auto con = constrains_group_addr[constrain_index];
             myfile <<"Number of constrains: "<< con.size();
