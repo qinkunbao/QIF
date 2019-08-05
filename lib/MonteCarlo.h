@@ -14,6 +14,7 @@
 #include "BitVector.h"
 #include "Constrains.h"
 #include "Engine.h"
+#include "Function.h"
 
 
 namespace tana {
@@ -69,10 +70,19 @@ namespace tana {
 
         void reset_tests();
 
+        bool isFunctionInformationAvailable;
+
+        std::unique_ptr<Function> func;
+
     public:
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
-                std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
+                       std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
                        std::vector<uint8_t> key_value);
+
+        FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
+                       std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
+                       std::vector<uint8_t> key_value,
+                       std::unique_ptr<Function> func);
 
         void run();
 
