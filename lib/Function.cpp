@@ -29,20 +29,25 @@ namespace tana {
             }
 
             istringstream strbuf(line);
-            string addr, function_name, module_name;
+            string addr, function_name, module_name, fun_size;
             getline(strbuf, addr, ';');
             getline(strbuf, module_name, ';');
             getline(strbuf, function_name, ';');
+            getline(strbuf, fun_size, ';');
+
 
             Routine *func = new Routine();
             func->rtn_name = function_name;
             func->module_name = module_name;
-            func->start_addr = stoul(addr, 0, 16);
-            for (auto it = rtn_libraries.begin(); it != rtn_libraries.end(); ++it) {
-                if (it->start_addr == func->start_addr) {
-                    continue;
-                }
-            }
+            func->start_addr = stoul(addr, nullptr, 16);
+            func->size = stoul(fun_size, nullptr, 10);
+            func->end_addr = func->start_addr + func->size;
+
+            auto pos = existing_rtn.find(func->start_addr);
+            if(pos != existing_rtn.end())
+            { continue;}
+
+            existing_rtn.insert(func->start_addr);
             rtn_libraries.push_back(*func);
             ++num_fun;
             if (!(num_fun % 1000)) {
@@ -50,17 +55,13 @@ namespace tana {
             }
             //std::cout << "112" << std::endl;
         }
-        rtn_libraries.sort([](const Routine &a, const Routine &b) { return a.start_addr < b.start_addr; });
-        for (auto iter = rtn_libraries.begin(); next(iter, 1) != rtn_libraries.end(); ++iter) {
-            iter->end_addr = next(iter, 1)->start_addr;
-        }
-        rtn_libraries.pop_back();
     }
 
     std::string Function::findTaintedRTN(tana_type::T_ADDRESS addr) {
         for (auto iter = rtn_libraries.begin(); iter != rtn_libraries.end(); iter++) {
             if ((addr >= (iter->start_addr)) && (addr <= (iter->end_addr))) {
-                return iter->rtn_name + " Module Name: " + iter->module_name;
+                return "Function Name: " + iter->rtn_name + " Module Name: " + iter->module_name + " Offset: "
+                                      + std::to_string(addr - iter->start_addr);
             }
         }
         return "NOT Found";

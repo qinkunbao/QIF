@@ -14,6 +14,7 @@
 #include "MonteCarlo.h"
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
+#include "Function.h"
 
 using namespace std::chrono;
 using namespace std;
@@ -24,12 +25,13 @@ float getEntropy(std::vector<uint8_t> key_value,  \
                  uint64_t MonteCarloTimes, \
                  std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
                  constrains, \
-                 std::string fileName) {
+                 std::string fileName, \
+                 std::unique_ptr<Function> func) {
     using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
     const auto before = clock::now();
 
-    FastMonteCarlo res(MonteCarloTimes, constrains, key_value);
+    FastMonteCarlo res(MonteCarloTimes, constrains, key_value, std::move(func));
     res.verifyConstrain();
     res.run();
     res.run_addr_group();
@@ -49,9 +51,9 @@ std::vector<std::string> split(std::string str,std::string sep){
     char* current;
     std::vector<std::string> arr;
     current=strtok(cstr,sep.c_str());
-    while(current!=NULL){
+    while(current!= nullptr){
         arr.push_back(current);
-        current=strtok(NULL,sep.c_str());
+        current=strtok(nullptr, sep.c_str());
     }
     return arr;
 }
@@ -66,6 +68,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    std::unique_ptr<Function> func;
+
 
     uint64_t MonteCarloTimes = 10000;
     if(argc == 3)
@@ -75,6 +79,12 @@ int main(int argc, char* argv[]) {
       uint64_t temp;
       strValue >> temp;
       MonteCarloTimes = temp;
+    }
+
+    if(argc == 4)
+    {
+        ifstream func_file(argv[3]);
+        func = std::make_unique<Function>(&func_file);
     }
 
     ifstream trace_file(argv[1]);
@@ -121,7 +131,7 @@ int main(int argc, char* argv[]) {
     auto constrains = se->getConstrains();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName)
+    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName, std::move(func))
     << std::endl;
 
     auto stop = high_resolution_clock::now();

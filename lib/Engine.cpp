@@ -238,6 +238,12 @@ namespace tana {
         return values_reduced;
     }
 
+    uint32_t
+    SEEngine::debugEval(const std::shared_ptr<BitVector> &v)
+    {
+        return SEEngine::eval(v, this->key_value_map);
+    }
+
 
     uint32_t
     SEEngine::eval(const std::shared_ptr<BitVector> &v) { //for no input

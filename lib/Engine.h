@@ -33,6 +33,8 @@ namespace tana {
 
         Inst_Base *current_eip, *next_eip;
 
+        std::map<int, uint32_t> key_value_map;
+
         explicit SEEngine(bool type);
 
         static std::shared_ptr<BitVector> ZeroExt(std::shared_ptr<BitVector> v, tana_type::T_SIZE);
@@ -67,6 +69,8 @@ namespace tana {
                              const std::map<int, uint32_t> &inmap);
 
         static uint32_t eval(const std::shared_ptr<BitVector> &v);
+
+        uint32_t  debugEval(const std::shared_ptr<BitVector> &v);
 
         virtual std::shared_ptr<BitVector> readReg(x86::x86_reg reg) = 0;
 

@@ -162,15 +162,6 @@ namespace tana {
         friend std::ostream &operator<<(std::ostream &os, const Inst_Base &inst);
     };
 
-    class Routine {
-    public:
-        tana_type::T_ADDRESS start_addr; // start address of the function
-        tana_type::T_ADDRESS end_addr;   // end address of the function
-        std::string rtn_name;
-        std::string module_name;
-
-        Routine() : start_addr(0), end_addr(0), rtn_name(), module_name() {}
-    };
 
 
 }

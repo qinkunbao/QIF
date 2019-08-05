@@ -2178,10 +2178,18 @@ namespace tana {
     bool INST_X86_INS_JZ::symbolic_execution(tana::SEEngine *se) {
         if (!se->eflags)
             return false;
-        std::shared_ptr<BitVector> SF = se->getFlags("ZF");
+        std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
         std::shared_ptr<Constrain> constrains;
 
-        constrains = std::make_shared<Constrain>(SF, BVOper::equal, vcpu.ZF());
+        constrains = std::make_shared<Constrain>(ZF, BVOper::equal, vcpu.ZF());
+
+        //if(se->debugEval(ZF) != vcpu.ZF() && ZF->isSymbol()) {
+        //    std::cout << *this << std::endl;
+
+        //    std::cout << "ZF: " << *ZF << std::endl;
+        //    std::cout << "ZF: " << se->debugEval(ZF) << std::endl;
+        //    std::cout << "eax: " << std::hex << se->debugEval(se->readReg("eax")) << std::dec << std::endl;
+        //}
         se->updateCFConstrains(constrains);
         return true;
     }
