@@ -14,6 +14,7 @@
 #include "MonteCarlo.h"
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
+#include "Function.h"
 
 using namespace std::chrono;
 using namespace std;
@@ -75,6 +76,12 @@ int main(int argc, char* argv[]) {
       uint64_t temp;
       strValue >> temp;
       MonteCarloTimes = temp;
+    }
+
+    if(argc == 4)
+    {
+        ifstream func_file(argv[3]);
+        auto fun = new Function(&func_file);
     }
 
     ifstream trace_file(argv[1]);
