@@ -7,16 +7,13 @@
 
 #include <cassert>
 #include <algorithm>
-#include <limits.h>
 #include <sstream>
 #include <cmath>
 #include <chrono>
 #include "ins_types.h"
 #include "QIFSEEngine.h"
-#include "VarMap.h"
 #include "error.h"
 #include "Register.h"
-#include "MonteCarlo.h"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
@@ -662,12 +659,27 @@ namespace tana {
     }
 
     void QIFSEEngine::updateCFConstrains(std::shared_ptr<Constrain> cons) {
+
         auto res = std::make_tuple(this->eip, cons, LeakageType::CFLeakage);
+        if(!cons->validate(this->key_value_map) && (cons->getNumSymbols() > 0))
+        {
+
+            //std::cout << "Debug" << std::endl;
+            ERROR("Debug");
+            exit(0);
+        }
         constrains.push_back(res);
     }
 
     void QIFSEEngine::updateDAConstrains(std::shared_ptr<Constrain> cons) {
         auto res = std::make_tuple(this->eip, cons, LeakageType::DALeakage);
+        if(!cons->validate(this->key_value_map) && (cons->getNumSymbols() > 0))
+        {
+
+            //std::cout << "Debug" << std::endl;
+            ERROR("Debug");
+            exit(0);
+        }
         constrains.push_back(res);
     }
 

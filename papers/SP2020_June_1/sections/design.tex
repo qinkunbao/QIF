@@ -1,10 +1,13 @@
 \section{Design}
-In this section, we will explain the design decisions to realize \tool{}. 
+In this section, we describe the design of \tool{} by focusing on
+how our design solves the three challenges discussed in the previous
+section.
 
 \subsection{Trace Logging}
 The trace information can be logged via some emulators (e.g., QEMU) or 
-Binary Instrumentation Tools. 
-For our project, we write an Intel Pin Tool to record the execution traces. 
+dynamic binary instrumentation tools (DBI). 
+We run a program with the concrete input under the DBI to record the
+execution trace.
 The trace data has the following information:
 \begin{itemize}
     \item Each instruction mnemonics and its memory address.
@@ -16,7 +19,6 @@ The trace data has the following information:
      a variable or a buffer, which means that those data is stored in a contiguous 
      area in the memory. We use the symbol information in the binary to track the 
      address in the memory.
-
 \end{itemize}
 
 \subsection{Instruction Level Symbolic Execution}
@@ -32,8 +34,8 @@ data access patterns.
 The tool runs the symbolic execution on the top of the execution traces.
 At the beginning of the symbolic execution, the tool creates fresh 
 symbols for each byte in the sensitive buffer. For other data in the 
-register or memory at the beginning of the symbolic execution,
-we use concrete values from the runtime information collected in
+register or memory at the beginning, we use concrete values from the 
+runtime information collected in
 the previous step. During the symbolic execution for each instruction, 
 the tool updates every variable in the memory and registers with a
 math formula. The formula is made up with concrete values and 
@@ -125,54 +127,128 @@ from the input sensitive information and won’t leak any sensitive information
 according to our threat model. Otherwise, we will generate the constraint for
 the memory addressing. We model the memory address with a symbolic formula 
 $F(\vec{K})$. 
-Because we also have the concrete value of the memory address $Addr1$. Therefore,
-the formula can be written as:
+Because we also have the concrete value of the memory address $Addr1$. 
+Inspired by the work from~\cite{203878}, the formula can be written as:
 
-$$F(\vec{K}) = Addr1$$
+$$F(\vec{K}) >> L = Addr1 >> L$$
 
-\subsection{Markov Chain Monte Carlo Approximate Counting}
+The $L$ represents the minimum memory address granularity that an attacker 
+can observe. For example, Flush and Reload can distinguish between different
+cache lines, which means the value of L is 6.
 
-From the above step~\ref{InstructionSE}, we can generate the constraints 
-from the execution trace. 
-The only variables in those constraints are the sensitive data. An adversary who 
-wants to infer the sensitive data based on side-channel attacks can't observe 
-the sensitive information directly. The adversary, however, can observe the
-memory access pattern of the software. Each math formula can uniquely model
-one leakage site.
+\subsection{Information Leakage Estimation}
 
-In this section, we calculate the amount of leaked information with the
-definition from~\ref{def}. The basic idea is to calculate $\frac{|K|}{|K^o|}$.
-The size of $K$ is usually exponentially large. A naive method for approximating
+In this section, we present the alogorithm to calculate the information
+leakage based on the definition~\ref{def}. 
+
+\subsubsection{Problem Statement}
+From the above step~\ref{InstructionSE}, we can generate the constraint 
+for each unique leakage site on the execution trace.
+The only variables in those constraints are the sensitive data represented
+with $k_1, k_2, ... , k_n$. Suppose the address of the leakage site is $i$,
+we use $C_i$ to denote the constraint. For mutiple leakage sites, 
+as each leakage site has one constraint, we can 
+use the conjunction of those constraints to represent those leakage sites. 
+
+According to the definition~\ref{def}, to calculate the amount of leaked 
+information, the key is to calculate $\frac{|K|}{|K^o|}$. $|K^o|$ represents
+the set that contains every input keys that satisfy the constraint. As the 
+cardinality of $K$ is known, the key problem is to know the cardinality of
+$K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site has
+the following constraints: $C_1, C_2, ..., C_n$ respectively. 
+The total leakage has the constraint $F_{c1c2...cn} = C_1 \land C_2 \land C_3
+\land ... \land C_n$. The problem of estimating the total leaked information 
+can be transfered into counting the number of different solutions that satisfies
+the constraint $F_{c1c2...cn}$. 
+
+A native method for approximating 
 the result is to pick $k$ elements from $K$ and check how many of them are also
 contained in $K^o$. If $q$ elements are also in $K^o$. In expectation, we can
-use $\frac{k}{q}$ to approximate the value of $\frac{|K|}{|K^o|}$. In this step,
-we first split the contrains tuple into multiple groups depending on the memory
-address. After that, we run the Markov Chain Monte Carlo to estimate the amount
-of leaked information.
+use $\frac{k}{q}$ to approximate the value of $\frac{|K|}{|K^o|}$.
 
+However, as the discussion in ~\ref{MCreasons},
+the above sampling method will typically fail in practice due to the following two problems:
 
-\subsubsection{Preprocessing}
-We apply two preprocessing steps before running the Monte Carlo sampling. First,
-we try to simplify those formulas by applying some normalizations rules. After
-that, we split those formulas into multiple groups.
+\begin{enumerate}
+      \item The curse of dimensionality. $F_{c1...cn}$ is the conjunction of many
+      constraints. Therefore, the input variables of each constraints will also be 
+      the input variables of the $F_(c1...cn)$. The sampling method will fail as 
+      $n$ increases. For example, when $n$ equals to 2, the whole serach space is 
+      a $256^2$ cube. If we want the distance between each points equals to 1,
+      we need $256^2$ points. When $n$ equals to 10, we need $256^{10}$ points if we 
+      still we want the distance between each points equals to 1. As a result, the 
+      error of the result based on sampling method will increase exponentially with
+      adding dimensions. 
 
-The goal of the normalization is to simplify the formulas. 
-Each formulas will be evaluated multiple times with different input 
-during the following sampling, 
-we would like to make those formula simpler to reduce the whole execution time.  
-Each formula is implemented as a abstract syntax tree. We apply a series of 
-normalization rules (e.g. key1 xor key1 = 0) to simplify the formula.
+      \item The number of satisfying assignments could be exponentially small.
+      According to Chernoff bound, we need exponentially many samples to get 
+      a tight bound. On an extreme situation, if the constraint only has one unique
+      satisfying solution, the simple Monte Carlo method can't find the satisfying
+      assignment after sampling many points.
+\end{enumerate}
 
-After that, we split the formula tuple into multiple groups. 
-Each group consists of different formulas but with the same memory address.
-In other words, those formulas in the same group represent one leakage
-site. The instructions inside a loop are executed multiple times with
-the different item from the input buffer. We group them together to 
-know the total information leakage.
+In regard to the above problems, we present our methods. First, we split 
+$F_(c1...cn)$ into several independent constraint groups. After
+that, we run random-walk based sampling method on each constraint.
 
-The only symbol in the original formula is the key. 
-An adversary who wants to infer the sensitive data based on side-channel 
-attacks can't observe the sensitive information directly. 
+\subsubsection{Maximum Independent Partition}
+
+For a constraint $C_i$, we define a function $S$, mapping
+the constraint into a set of input symbols. For example, 
+$S(k1 + k2 > 128) = \{k1, k2\}$.
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\begin{definition}[]
+      \label{independentC}
+      Given two constraints $C_m$ and $C_n$, we call them independent iff 
+      $$S(C_m) \cap S(C_n) = \emptyset$$
+\end{definition}
+
+Based on the definition~\label{independentC}, the first step is to split
+the constraint $F_{c1c2...cn}$ into several independent constraints. There
+are many partitions. For our project, we are interested in the following
+one.
+
+\begin{definition}
+      \label{Goodpartition}
+      For the constraint $F_{c_1c_2...c_n}$ and the constraint group
+      $C_{g1}, C_{g2}, ..., C_{gm}$, we call  $C_{g1}, C_{g2}, ..., C_{gm}$
+      is the maximum independent partition of $F_{c_1c_2...c_n}$ iff
+      \begin{enumerate}
+            \item $C_{g1} \land C_{g2} \land ... \land C_{gm} = F_{c_1c_2...c_n}$
+            \item $\forall \quad i, j \in \{1, 2, 3, ..., m\} \quad \textrm{and} \quad 
+                  i \neq j, \quad S(C_i) \cap S(C_j) = \emptyset $
+            \item For any other partitions  $C_{g1}, C_{g2}, ..., C_{gn}$ satisfy 1) and
+                  2), $m \geq n$    
+      \end{enumerate}
+      
+\end{definition}
+
+The reason we want a good partition of the constraints is that we want to 
+reduce the dimensions. Consider the example in the previous section,
+$$F: {k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$$
+The good partition of $F$ would be
+$$C_{g1}: {k_1} = 1\quad C_{g2}: {k_2} = 2\quad C_{g3}: {k_3} = 3\quad C_{g4}: {k_4} = 4$$     
+So instead of sampling in the four dimension space, we can
+sample each constraint in the one dimension space and combine them
+together.
+\newtheorem{theorem}{Theorem}[section]
+
+\begin{theorem}
+      \label{IndependentConstraint}
+$C_{g1}, C_{g2}, ..., C_{gm}$ is a maximum independent partition of $F_{c_1c_2...c_n}$.
+$K_c$ is the input set that satisfies constrain $c$. We can have the following
+equation in regard to the size of $K_c$
+$$|K_{F_{c_1c_2...c_n}}| = |K_{C_{g1}}|*|K_{C_{g2}}|*...*|K_{C_{gn}}|$$
+\end{theorem}
+
+With the~\ref{IndependentConstraint}, we can transfer the problem of counting the number of 
+solutions in a large constraint with high
+dimensions into counting solutions of 
+several small constraints.
+
 
 \subsubsection{Motivation}
 The adversary, however, can observe the memory access pattern of the software. 
@@ -198,14 +274,6 @@ has the desired distribution.
 \textit{Definition:}
 Starting from here, we present the formal definition of the MCMC algorithm.
 First, we introduce the definition of the concept of the algorithm.
-
-\begin{mydef}
-      An approximation scheme is an alogorithm for finding an approximation
-      answer within a factor $1 + \epsilon$ of the correct number of the set
-      $K^o$ with the probability of $1 - \zeta$.
-\end{mydef}
-
-\newtheorem{theorem}{Theorem}[section]
 
 \begin{theorem}
       If $F={A_1,A_2,...,A_n}$ is a finite collection of closed sets then 

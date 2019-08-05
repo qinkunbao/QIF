@@ -1,4 +1,23 @@
 \section{Evaluation}
+
+\begin{table*}[t]
+    \begin{tabular}{c c c c c c c c l}
+    \hline
+    Program                   & Implementation                     & Start Function         & Key Size (bits)     & CF                    & DA                    & Total Leakage     & Number of Instructions & Process Time (s) \\ \hline
+    AES                       & OpenSSL 0.9.7                      & AES\_set\_encrypt\_key &                       &                       &                       &                       &                        &                  \\
+    DES                       & OpenSSL 0.9.7                      & DES\_string\_to\_key   &                       &                       &                       &                       &                        &                  \\
+    RSA                       & OpenSSL 0.9.7                      &                        &                       &                       &                       &                       &                        &                  \\
+    AES                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
+    DES                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
+    RSA                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
+    AES                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
+    DES                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
+    RSA                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
+    AES                       & mbed TLS 2.15                      &                        &                       &                       &                       &                       &                        &                  \\
+    DES                       & mbed TLS 2.15                      &                        &                       &                       &                       &                       &                        &                  \\
+    \hline
+    \end{tabular}
+\end{table*}
 We evaluate \tool{} with the real-world crypto libraries and non-crypto. 
 For crypto libraries, we choose OpenSSL and mbedTLS, two most commonly used
 crypto libraries in today's software. For OpenSSL, we compile it with the option \textit{no-asm} 
@@ -9,6 +28,7 @@ ELF binary with the GCC 8.0 on Ubuntu 14.04. Although our tool can
 work on stripped binaries, we use the symbol information to trace
 back leakage sites into the source code. We use Intel Pin version 3.7 
 to record the execution trace.
+
 
 During the evaluate, we are interested in the following aspects:
 \begin{enumerate}
@@ -26,6 +46,7 @@ During the evaluate, we are interested in the following aspects:
     study those vulnerabilities and try to explain the reason why the 
     author fix or not fix the side channel vulnerabilities.
 \end{enumerate}
+
 
 \subsection{Finding Leakage Sites}
 \subsection{Leakage Sites Quantifications}
