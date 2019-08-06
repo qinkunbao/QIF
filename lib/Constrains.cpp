@@ -5,7 +5,7 @@
 	> Created Time: Mon Apr 22 21:56:56 2019
  ************************************************************************/
 
-#include<iostream>
+#include <iostream>
 #include "Constrains.h"
 #include "Engine.h"
 #include "error.h"

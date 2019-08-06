@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
 
     auto start = high_resolution_clock::now();
 
-    int max_inst = 200000;
+    int max_inst = 400000;
     parse_trace_qif(&trace_file, start_addr, m_size, inst_list, key_value, max_inst);
 
     std::cout << "Start Address: " << std::hex << start_addr << std::dec
