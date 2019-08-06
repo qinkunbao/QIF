@@ -26,12 +26,13 @@ float getEntropy(std::vector<uint8_t> key_value,  \
                  std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
                  constrains, \
                  std::string fileName, \
-                 std::unique_ptr<Function> func) {
+                 std::unique_ptr<Function> func, \
+                 std::map<int, uint32_t> key_value_map) {
     using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
     const auto before = clock::now();
 
-    FastMonteCarlo res(MonteCarloTimes, constrains, key_value, std::move(func));
+    FastMonteCarlo res(MonteCarloTimes, constrains, key_value, std::move(func), key_value_map);
     res.verifyConstrain();
     res.run();
     res.run_addr_group();
@@ -128,10 +129,12 @@ int main(int argc, char* argv[]) {
     se->reduceConstrains();
     se->printConstrains();
 
+    auto key_value_map = se->return_key_value_map();
     auto constrains = se->getConstrains();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName, std::move(func))
+    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName, std::move(func),
+                                                     key_value_map)
     << std::endl;
 
     auto stop = high_resolution_clock::now();

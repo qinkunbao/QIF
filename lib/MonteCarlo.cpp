@@ -100,9 +100,10 @@ namespace tana {
     FastMonteCarlo::FastMonteCarlo(
             uint64_t sample_num,
             std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
-            std::vector<uint8_t> key_value)
+            std::vector<uint8_t> key_value, std::map<int, uint32_t> key_value_map_c)
             : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
-              input_seed(key_value), isFunctionInformationAvailable(false), func(nullptr) {
+              input_seed(key_value), isFunctionInformationAvailable(false), func(nullptr),
+              key_value_map(key_value_map_c){
         tests.reserve(sample_num);
         input_vector = MonteCarlo::getAllKeys(con);
         unsigned int input_dimensions = input_vector.size();
@@ -122,9 +123,10 @@ namespace tana {
     FastMonteCarlo::FastMonteCarlo(
             uint64_t sample_num,
             std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
-            std::vector<uint8_t> key_value, std::unique_ptr<Function> fun)
+            std::vector<uint8_t> key_value, std::unique_ptr<Function> fun, std::map<int, uint32_t> key_value_map_c)
             : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
-              input_seed(key_value), isFunctionInformationAvailable(true), func(std::move(fun)) {
+              input_seed(key_value), isFunctionInformationAvailable(true), func(std::move(fun)),
+              key_value_map(key_value_map_c){
         tests.reserve(sample_num);
         input_vector = MonteCarlo::getAllKeys(con);
         unsigned int input_dimensions = input_vector.size();
@@ -143,7 +145,7 @@ namespace tana {
 
     bool FastMonteCarlo::verifyConstrain() {
         bool flag;
-        auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
+        //auto key_value_map = MonteCarlo::input2val(input_seed, input_vector);
         //debug_map(key_value_map);
         auto it = constrains.begin();
         std::set<uint32_t> addr_set;
