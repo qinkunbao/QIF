@@ -55,7 +55,9 @@ add_library(TraceLib
         lib/Constrains.h
         lib/Constrains.cpp
         lib/MonteCarlo.h
-        lib/MonteCarlo.cpp)
+        lib/MonteCarlo.cpp
+        lib/CallStack.h
+        lib/CallStack.cpp)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 

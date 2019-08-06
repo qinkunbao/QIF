@@ -6,11 +6,10 @@
  ************************************************************************/
 
 #pragma once
-#include <list>
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <list>
+#include <vector>
 #include <map>
 #include <sstream>
 
@@ -31,7 +30,7 @@ namespace tana {
 
 	class Function {
 	private:
-		std::list<tana::Routine> rtn_libraries;
+		std::vector<tana::Routine> rtn_libraries;
 		std::set<tana_type::T_ADDRESS> existing_rtn;
 
 
