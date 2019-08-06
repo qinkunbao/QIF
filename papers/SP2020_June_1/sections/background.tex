@@ -72,17 +72,16 @@ side-channles. We identify and quantify the leakage of the two kinds of vulnerab
 in the paper.
 
 \subsection{Information Leakage Quantification}
-Given an event e which occurs with the probability $P(e)$, if the event e happens, 
+Given an event $e$ which occurs with the probability $P(e)$, if the event $e$ happens, 
 then we receive
 \begin{displaymath}
     I = - \log_2P(e)
 \end{displaymath}
-bits of information by knowing the event e.
-
-The above definition is obvious. Suppose a char variable $a$ in C program has the size
-of one byte (8 bits), so the value in the variable can range from 0 - 255. We assume
-the \textit{a} has the uniform distribution. If at one time we observe the $a$
-equals to 1, the probability will be $\frac{1}{256}$. So the information we get is 
+bits of information by knowing the event $e$.
+Consider a char variable $a$ in a C program, which has the size
+of one byte (8 bits). It ranges from 0 -- 255.  Assume
+ \textit{a} has the uniform distribution. If at one time we observe that $a$
+equals $1$, the probability of this observation is $\frac{1}{256}$. So the information we get is 
 $-\log(\frac{1}{256}) = 8$ bits, which is exactly the size of the char variable in the C program.
 
 Existing works on information leakage quantification are based on mutual information or 
