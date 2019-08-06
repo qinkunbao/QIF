@@ -156,6 +156,7 @@ namespace tana {
                 std::cout << "Failed Constrains: " << std::endl;
                 std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
                 std::cout << *cons << std::endl;
+                cons->validate(key_value_map);
                 if(isFunctionInformationAvailable) {
                     std::cout << func->findTaintedRTN(std::get<0>(*it)) <<"\n"<< std::endl;
                 }

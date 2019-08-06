@@ -944,7 +944,7 @@ namespace tana {
         */
         std::shared_ptr<BitVector> mem_address_symbol_L = buildop2(BVOper::bvshr, mem_address_symbol, L);
 
-        auto cons = std::make_shared<Constrain>(mem_address_symbol_L, BVOper::equal, mem_address_concrete_L);
+        auto cons = std::make_shared<Constrain>(this->eip, mem_address_symbol_L, BVOper::equal, mem_address_concrete_L);
         this->updateDAConstrains(cons);
         return cons;
     }

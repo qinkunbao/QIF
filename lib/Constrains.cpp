@@ -14,17 +14,18 @@
 
 
 namespace tana {
-    Constrain::Constrain(std::shared_ptr<BitVector> bit, BVOper relation, uint32_t num) {
+    Constrain::Constrain(uint32_t inx, std::shared_ptr<BitVector> bit, BVOper relation, uint32_t num):inst_index(inx) {
+
         r = buildop2(relation, bit, num);
     }
 
     void Constrain::update(BVOper add_type, std::shared_ptr<tana::BitVector> b, BVOper type, uint32_t num) {
         auto constrain = buildop2(type, b, num);
-        r = buildop2(add_type, r, constrain);
+       r = buildop2(add_type, r, constrain);
     }
 
-    Constrain::Constrain(std::shared_ptr<tana::BitVector> b1, BVOper relation,
-                         std::shared_ptr<tana::BitVector> b2) {
+    Constrain::Constrain(uint32_t inx, std::shared_ptr<tana::BitVector> b1, BVOper relation,
+                         std::shared_ptr<tana::BitVector> b2):inst_index(inx) {
 
         r = buildop2(relation, b1, b2);
 
@@ -108,6 +109,7 @@ namespace tana {
         auto relation = bv->opty;
         auto num = bv->val[1];
 
+        os << "Index ID: " << dt.inst_index << ": ";
         os << *con;
         switch (relation) {
             case BVOper::greater:
