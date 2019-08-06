@@ -42,6 +42,7 @@ previous example, the existing static method doesn’t work well in those situat
     \includegraphics[width=.4\linewidth]{./figures/RA.pdf}
     \label{fig:2}
 }
+\caption{some caption here. \fixme{redraw the figure. i will give you the instruction.}}
 \end{figure}
 
 \textbf{Solution:}
@@ -133,7 +134,7 @@ $$L_{total} = L_A + L_B $$
 
 \subsubsection{Dependent Leakages}
 If A and B are dependent leakages, the total information leakage will be:
-$$\max{\{L_A, L_B\}}  <= L_{total} < L_A + L_B$$
+$$\max{\{L_A, L_B\}}  \leq L_{total} < L_A + L_B$$
 
 \subsubsection{Mutual Exclusive Leakages}
 If A and B are mutual exclusive leakges, then only A or B can be observed for one fixed input.

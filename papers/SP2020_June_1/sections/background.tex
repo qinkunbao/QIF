@@ -133,12 +133,16 @@ information (Channel Capacity).
 \begin{displaymath}
     \mathit{Leakage} = \log(C(O))
 \end{displaymath}
-$C(O)$ represents the number of different observations that an attacker can have. 
-
-Now we provide a concrete example to show how the two types of quantification definition works.
+Here $C(O)$ represents the number of different observations that an attacker can have. 
 
 
-\textbf{Maximal leakage} 
+\section{Running Example}
+
+Now we provide a concrete example to show how the two types of quantification definition works and show that
+how our method is different.
+
+\vspace{3pt}
+\textbf{Maximal Leakage.} 
 Depending on the value of key, the code can run four different branches which corrosponding to 
 four different observations. Therefore, by the maximal leakage definition, the leakage equals to 
 $\log4 = 2$ bits.
@@ -152,8 +156,11 @@ $\log4 = 2$ bits.
                  basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
                  {sample_code/dependent.c}
 
-\textbf{Mutual Information} If the key satisfies the uniform distribution, the probability of the code runs each branch
-can be computed with the following result: 
+\vspace{3pt}
+\textbf{Mutual Information.}
+If the key satisfies the uniform distribution, the probability of the code runs each branch
+can be computed with the following result.  
+
 \begin{table}[h]
 \centering
 \resizebox{\columnwidth}{!}{
@@ -165,6 +172,10 @@ Possibility      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
 }
 \caption{The distribution of observations}
 \end{table}
+
 Therefore, the leakage equals to 
 $\frac{1}{256}\log\frac{1}{256} + \frac{1}{4}\log\frac{1}{4}*2 + \frac{127}{256}\log\frac{127}{256} = 1.7$ bits.
 
+\vspace{3pt}
+\textbf{\tool.}
+\fixme{What is out result here?}

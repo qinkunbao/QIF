@@ -68,7 +68,7 @@ Y.~{Xu}, W.~{Cui}, and M.~{Peinado}, ``Controlled-channel attacks:
 
 \bibitem{hornby2011side}
 T.~Hornby, ``Side-channel attacks on everyday applications: distinguishing
-  inputs with flush+ reload. black hat usa (2016),'' 2011.
+  inputs with {FLUSH+RELOAD}. black hat usa (2016),'' 2011.
 
 \bibitem{10.1007/978-3-642-00596-1_21}
 G.~Smith, ``On the foundations of quantitative information flow,'' in
@@ -100,7 +100,7 @@ D.~Brumley, I.~Jager, T.~Avgerinos, and E.~J. Schwartz, ``Bap: A binary
 
 \bibitem{217563}
 \BIBentryALTinterwordspacing
-I.~Yun, S.~Lee, M.~Xu, Y.~Jang, and T.~Kim, ``{QSYM} : A practical concolic
+I.~Yun, S.~Lee, M.~Xu, Y.~Jang, and T.~Kim, ``{QSYM}: A practical concolic
   execution engine tailored for hybrid fuzzing,'' in \emph{27th {USENIX}
   Security Symposium ({USENIX} Security 18)}.\hskip 1em plus 0.5em minus
   0.4em\relax Baltimore, MD: {USENIX} Association, 2018, pp. 745--761.
