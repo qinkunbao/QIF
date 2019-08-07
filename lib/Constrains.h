@@ -12,6 +12,8 @@
 #include <vector>
 #include <map>
 #include "BitVector.h"
+#include "Function.h"
+#include "CallStack.h"
 
 
 namespace tana {
@@ -21,6 +23,7 @@ namespace tana {
     private:
         uint32_t inst_index;
         std::shared_ptr<BitVector> r;
+        std::vector<std::shared_ptr<CallLeakageSites>> callsites;
     public:
         Constrain() = default;
 
@@ -39,6 +42,8 @@ namespace tana {
         uint32_t getNumSymbols();
 
         std::vector<int> getInputKeys();
+
+        void updateCallSites(std::vector<std::shared_ptr<CallLeakageSites>> callsites);
     };
 
 }

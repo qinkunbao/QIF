@@ -33,11 +33,16 @@ namespace tana {
 		std::vector<tana::Routine> rtn_libraries;
 		std::set<tana_type::T_ADDRESS> existing_rtn;
 
+        std::vector<tana::Routine>::iterator ptr_cache;
 
-	public:
+
+
+    public:
 		explicit Function(std::ifstream *function_file);
 
 		std::string findTaintedRTN(tana::tana_type::T_ADDRESS addr);
+
+		std::string getFunName(tana::tana_type::T_ADDRESS addr);
 
 		~Function();
 	};

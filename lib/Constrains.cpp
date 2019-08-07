@@ -136,11 +136,21 @@ namespace tana {
         os << *num;
 
         os << " Input Symbol Number: " << con->symbol_num();
+        os << " Information Flow: " << "\n";
+        for (const auto &site : dt.callsites)
+        {
+            os << *site << "\n";
+        }
         return os;
     }
 
     std::vector<int> Constrain::getInputKeys() {
         return r->getInputSymbolVector();
+    }
+
+    void Constrain::updateCallSites(std::vector<std::shared_ptr<CallLeakageSites>> sites)
+    {
+        this->callsites = std::move(sites);
     }
 
 

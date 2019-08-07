@@ -53,6 +53,8 @@ namespace tana {
 
         int retStack(const std::string &fun_name);
 
+        std::shared_ptr<CallLeakageSites> clone();
+
 
     };
 

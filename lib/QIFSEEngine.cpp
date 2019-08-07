@@ -10,6 +10,7 @@
 #include <sstream>
 #include <cmath>
 #include <chrono>
+#include <vector>
 #include "ins_types.h"
 #include "QIFSEEngine.h"
 #include "error.h"
@@ -23,7 +24,7 @@ namespace tana {
     QIFSEEngine::QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi,
                              uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OF(nullptr), SF(nullptr),
                                                            ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0),
-                                                           stacks(nullptr){
+                                                           stacks(nullptr), func(nullptr){
 
         ctx["eax"] = std::make_shared<BitVector>(ValueType::CONCRETE, eax);
         ctx["ebx"] = std::make_shared<BitVector>(ValueType::CONCRETE, ebx);
@@ -36,6 +37,38 @@ namespace tana {
 
         eflags = true;
 
+    }
+
+    void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
+                           std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
+                           tana_type::T_ADDRESS address, tana_type::T_SIZE m_size,
+                           std::vector<uint8_t> key_value,
+                           std::shared_ptr<Function> function) {
+        this->start = it1;
+        this->end = it2;
+
+        std::shared_ptr<BitVector> v0;
+        std::stringstream ss;
+        std::vector<std::tuple<int, std::string>> key_value_set;
+
+
+        for (auto offset = 0; offset < m_size; offset = offset + 1) {
+            ss << "Key" << offset;
+            v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str(), T_BYTE_SIZE);
+            std::stringstream mem_addr;
+            mem_addr << std::hex << address + offset << std::dec;
+            std::string memoryAddr = mem_addr.str();
+            this->writeMem(memoryAddr, v0->size(), v0);
+            //this->printMemory();
+            key_value_map.insert(std::pair<int, uint32_t>(v0->id, key_value[offset]));
+            key_value_set.emplace_back(v0->id, ss.str());
+            ss.str("");
+
+        }
+        //this->printMemory();
+        this->func = function;
+
+        stacks = std::make_unique<CallStack>(func->getFunName(start->get()->addrn), key_value_set);
     }
 
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
@@ -59,8 +92,6 @@ namespace tana {
             //this->printMemory();
             key_value_map.insert(std::pair<int, uint32_t>(v0->id, key_value[offset]));
         }
-        //this->printMemory();
-
     }
 
     std::shared_ptr<BitVector>
@@ -312,6 +343,9 @@ namespace tana {
         std::shared_ptr<BitVector> v0, v1;
         uint32_t offset = memory_address % 4;
         //Debug
+
+        //this->printMemory();
+        //std::cout << std::endl;
         if (memory_find(memory_address - offset)) {
             std::shared_ptr<BitVector> v_test = memory.at(memory_address - offset);
             //debug_map(key_value_map);
@@ -503,6 +537,9 @@ namespace tana {
         for (auto inst = start; std::next(inst) != end;) {
             auto it = inst->get();
             current_eip = it;
+
+            //this->printMemory();
+
             ++inst;
             next_eip = inst->get();
 
@@ -512,6 +549,8 @@ namespace tana {
             checkMemoryAccess(it);
 
             bool status = it->symbolic_execution(this);
+            updateStacks(current_eip);
+
             std::vector<std::shared_ptr<BitVector>> sym_res;
 
             // Get symbolic register value after the SE
@@ -661,8 +700,6 @@ namespace tana {
     }
 
     void QIFSEEngine::updateCFConstrains(std::shared_ptr<Constrain> cons) {
-
-        auto res = std::make_tuple(this->eip, cons, LeakageType::CFLeakage);
         if(!cons->validate(this->key_value_map) && (cons->getNumSymbols() > 0))
         {
 
@@ -670,11 +707,23 @@ namespace tana {
             ERROR("Debug");
             exit(0);
         }
+
+        auto input_vector = cons->getInputKeys();
+        std::vector<std::shared_ptr<CallLeakageSites>> sites;
+        for(const int & key:input_vector)
+        {
+            auto site = stacks->cloneCallLeakageSites(key);
+            sites.push_back(site);
+        }
+
+        cons->updateCallSites(sites);
+
+        auto res = std::make_tuple(this->eip, cons, LeakageType::CFLeakage);
+
         constrains.push_back(res);
     }
 
     void QIFSEEngine::updateDAConstrains(std::shared_ptr<Constrain> cons) {
-        auto res = std::make_tuple(this->eip, cons, LeakageType::DALeakage);
         if(!cons->validate(this->key_value_map) && (cons->getNumSymbols() > 0))
         {
 
@@ -682,7 +731,22 @@ namespace tana {
             ERROR("Debug");
             exit(0);
         }
+
+        auto input_vector = cons->getInputKeys();
+        std::vector<std::shared_ptr<CallLeakageSites>> sites;
+        for(const int & key:input_vector)
+        {
+            auto site = stacks->cloneCallLeakageSites(key);
+            sites.push_back(site);
+        }
+
+        cons->updateCallSites(sites);
+
+        auto res = std::make_tuple(this->eip, cons, LeakageType::DALeakage);
+
         constrains.push_back(res);
+
+
     }
 
 
@@ -831,6 +895,9 @@ namespace tana {
         }
 
         if(oprd_num == 3)
+            return inputSyms;
+
+        if(vector_bitvector.empty() || vector_bitvector.front() == nullptr)
             return inputSyms;
 
         return (vector_bitvector.front())->getInputSymbolVector();
@@ -1005,11 +1072,11 @@ namespace tana {
     void QIFSEEngine::updateStacks(tana::Inst_Base *inst)
     {
         if(x86::isInstRet(inst->instruction_id))
-            stacks->ret("test");
+            stacks->ret(func->getFunName(inst->addrn));
 
         else
         {
-            stacks->proceed_inst(this->getInstSymbol(inst), "test");
+            stacks->proceed_inst(this->getInstSymbol(inst), func->getFunName(inst->addrn));
         }
     }
 
