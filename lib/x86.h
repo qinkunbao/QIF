@@ -3724,6 +3724,10 @@ namespace tana {
 
         uint32_t get_reg_size(x86_reg reg_id);
 
-        bool SymbolicExecutionNoEffect(x86::x86_insn insn);
+        bool SymbolicExecutionNoEffect(const x86::x86_insn &insn);
+
+        bool isInstCall(const x86::x86_insn &inst);
+
+        bool isInstRet(const x86::x86_insn &inst);
     }
 }
