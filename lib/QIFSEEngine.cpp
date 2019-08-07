@@ -879,6 +879,16 @@ namespace tana {
             {
                 vector_bitvector.push_back(this->readReg(inst->oprd[1]->field[0]));
             }
+
+            if(inst->oprd[0]->type == Operand::Mem)
+            {
+                vector_bitvector.push_back(this->readMem(inst->get_memory_address(), inst->oprd[0]->bit));
+            }
+
+            if(inst->oprd[0]->type == Operand::Reg)
+            {
+                vector_bitvector.push_back(this->readReg(inst->oprd[0]->field[0]));
+            }
         }
 
         if(oprd_num == 1)
