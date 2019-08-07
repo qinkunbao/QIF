@@ -14,13 +14,30 @@
 #include <stack>
 #include <map>
 #include <memory>
+#include "ins_types.h"
 
 namespace tana {
+
+    class CallLeakageSites{
+    public:
+        std::vector<std::tuple<std::string, int>> leakage_stack_sites;
+        const int key_id;
+        const std::string key_name;
+
+        friend std::ostream &operator<<(std::ostream &os, const CallLeakageSites &c);
+
+        CallLeakageSites(std::string key_name, int key_id);
+
+        std::shared_ptr<CallLeakageSites> clone();
+
+
+
+    };
 
     class CallStackKey {
 
     private:
-        std::vector<std::tuple<std::string, int>> leakage_stack_sites;
+        std::unique_ptr<CallLeakageSites> stack_sites;
         std::stack<std::string> stack_funs;
         const int key_id;
         const std::string key_name;
@@ -34,8 +51,6 @@ namespace tana {
 
         int updateStack(int key_id, const std::string &fun_name);
 
-        friend std::ostream &operator<<(std::ostream &os, const CallStackKey &c);
-
         int retStack(const std::string &fun_name);
 
 
@@ -48,6 +63,12 @@ namespace tana {
     public:
         CallStack(const std::string &start_fun_name,
                   const std::vector<std::tuple<int, std::string>> &key_value_set);
+
+        int proceed_inst(const std::vector<int> &vector_key_id, const std::string &function_name);
+
+        int ret(const std::string &function_name);
+
+        std::shared_ptr<CallLeakageSites> cloneCallLeakageSites(int key_id);
     };
 }
 
