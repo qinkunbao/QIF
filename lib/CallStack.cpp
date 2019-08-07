@@ -8,7 +8,10 @@
 
 #include <iostream>
 #include <tuple>
+#include <memory>
 #include "CallStack.h"
+
+
 
 using namespace std;
 
@@ -16,40 +19,12 @@ using namespace std;
 namespace tana {
 
 
-
-    CallStackKey::CallStackKey(string name, int key_id, const std::string &start_fun): key_id(key_id), key_name(name),
-                                                                                stack_depth(0)
+    CallLeakageSites::CallLeakageSites(std::string key_name, int key_id) : key_name(key_name), key_id(key_id)
     {
-        auto first_call = std::make_tuple(start_fun, stack_depth);
 
-        leakage_stack_sites.push_back(first_call);
     }
 
-    int CallStackKey::updateStack(int input_key_id, const std::string &fun_name)
-    {
-        if(input_key_id != key_id)
-            return 0;
-
-        tuple<string, int> current_stack = leakage_stack_sites.back();
-
-        string current_fun = get<0>(current_stack);
-        int current_stack_max = get<1>(current_stack);
-
-        if(current_fun == fun_name)
-        {
-            return current_stack_max;
-        }
-
-        ++stack_depth;
-        stack_funs.push(fun_name);
-
-        auto call = std::make_tuple(fun_name, stack_depth);
-        leakage_stack_sites.push_back(call);
-
-        return stack_depth;
-    }
-
-    std::ostream &operator<<(std::ostream &os, const CallStackKey &c)
+    std::ostream &operator<<(std::ostream &os, const CallLeakageSites &c)
     {
         os << c.key_name;
         for(const auto &call : c.leakage_stack_sites)
@@ -62,6 +37,50 @@ namespace tana {
 
         return os;
     }
+
+    std::shared_ptr<CallLeakageSites> CallLeakageSites::clone(){
+
+        std::shared_ptr<CallLeakageSites> obj(new CallLeakageSites(*this));
+        return obj;
+
+    }
+
+
+
+    CallStackKey::CallStackKey(string name, int key_id, const std::string &start_fun): key_id(key_id), key_name(name),
+                                                                                stack_depth(0)
+    {
+        auto first_call = std::make_tuple(start_fun, stack_depth);
+
+        stack_sites = std::make_unique<CallLeakageSites>(key_name, key_id);
+        stack_sites->leakage_stack_sites.push_back(first_call);
+        stack_funs.push(start_fun);
+    }
+
+    int CallStackKey::updateStack(int input_key_id, const std::string &fun_name)
+    {
+        if(input_key_id != key_id)
+            return 0;
+
+        tuple<string, int> current_stack = stack_sites->leakage_stack_sites.back();
+
+        string current_fun = stack_funs.top();
+        int current_stack_max = get<1>(current_stack);
+
+        if(current_fun == fun_name)
+        {
+            return current_stack_max;
+        }
+
+        ++stack_depth;
+        stack_funs.push(fun_name);
+
+        auto call = std::make_tuple(fun_name, stack_depth);
+        stack_sites->leakage_stack_sites.push_back(call);
+
+        return stack_depth;
+    }
+
 
     int CallStackKey::retStack(const std::string &fun_name)
     {
@@ -89,5 +108,31 @@ namespace tana {
             stacks[key_id] = std::move(element);
         }
 
+    }
+
+    int CallStack::proceed_inst(const std::vector<int> &vector_key_id, const std::string &function_name)
+    {
+        int count = 0;
+        for(const int &key_id : vector_key_id)
+        {
+            (stacks.at(key_id))->updateStack(key_id, function_name);
+            ++count;
+        }
+        return count;
+
+    }
+
+    int CallStack::ret(const std::string &function_name)
+    {
+        std::vector<int> key_vector;
+        for (auto &it : stacks)
+        {
+            key_vector.push_back(it.first);
+        }
+        for(const int &key_id : key_vector)
+        {
+            (stacks.at(key_id))->updateStack(key_id, function_name);
+        }
+        return key_vector.size();
     }
 }
