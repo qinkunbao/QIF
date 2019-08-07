@@ -68,7 +68,7 @@ namespace tana {
         }
 
 
-        bool SymbolicExecutionNoEffect(x86::x86_insn insn) {
+        bool SymbolicExecutionNoEffect(const x86::x86_insn &insn) {
             using namespace x86;
             std::set<x86::x86_insn> no_effect_inst{X86_INS_TEST, X86_INS_JMP, X86_INS_CMP,
                                                    X86_INS_NOP, X86_INS_INT, X86_INS_JA, X86_INS_JAE, X86_INS_JAE,
@@ -83,5 +83,22 @@ namespace tana {
             else
                 return false;
         }
+
+        bool isInstCall(const x86::x86_insn &inst)
+        {
+            if(inst == X86_INS_CALL)
+                return true;
+
+            return false;
+        }
+
+        bool isInstRet(const x86::x86_insn &inst)
+        {
+            if(inst == X86_INS_RET)
+                return true;
+
+            return false;
+        }
+
     }
 }

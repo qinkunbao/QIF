@@ -43,7 +43,6 @@ namespace tana {
         std::shared_ptr<tana::Constrain> getMemoryAccessConstrain(std::shared_ptr<BitVector> mem_address_symbol, \
                                                                   std::string mem_address_concrete);
 
-        std::vector<CallStack> call_stacks;
 
 
     public:
