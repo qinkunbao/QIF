@@ -55,13 +55,27 @@ namespace tana {
             }
             //std::cout << "112" << std::endl;
         }
+        ptr_cache = rtn_libraries.begin();
     }
 
     std::string Function::findTaintedRTN(tana_type::T_ADDRESS addr) {
-        for (auto iter = rtn_libraries.begin(); iter != rtn_libraries.end(); iter++) {
+        for (auto iter = rtn_libraries.begin(); iter != rtn_libraries.end(); ++iter) {
             if ((addr >= (iter->start_addr)) && (addr <= (iter->end_addr))) {
                 return "Function Name: " + iter->rtn_name + " Module Name: " + iter->module_name + " Offset: "
-                                      + std::to_string(addr - iter->start_addr);
+                                         + std::to_string(addr - iter->start_addr);
+            }
+        }
+        return "NOT Found";
+    }
+
+    std::string Function::getFunName(tana::tana_type::T_ADDRESS addr) {
+        if ((addr >= (ptr_cache->start_addr)) && (addr <= (ptr_cache->end_addr))) {
+            return "Function Name: " + ptr_cache->rtn_name;
+        }
+        for (auto iter = rtn_libraries.begin(); iter != rtn_libraries.end(); ++iter) {
+            if ((addr >= (iter->start_addr)) && (addr <= (iter->end_addr))) {
+                ptr_cache = iter;
+                return "Function Name: " + iter->rtn_name;
             }
         }
         return "NOT Found";

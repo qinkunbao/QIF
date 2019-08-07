@@ -26,13 +26,13 @@ float getEntropy(std::vector<uint8_t> key_value,  \
                  std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
                  constrains, \
                  std::string fileName, \
-                 std::unique_ptr<Function> func, \
+                 std::shared_ptr<Function> func, \
                  std::map<int, uint32_t> key_value_map) {
     using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
     const auto before = clock::now();
 
-    FastMonteCarlo res(MonteCarloTimes, constrains, key_value, std::move(func), key_value_map);
+    FastMonteCarlo res(MonteCarloTimes, constrains, key_value, func, key_value_map);
     res.verifyConstrain();
     res.run();
     res.run_addr_group();
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::unique_ptr<Function> func;
+    std::shared_ptr<Function> func;
 
 
     uint64_t MonteCarloTimes = 10000;
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
     if(argc == 4)
     {
         ifstream func_file(argv[3]);
-        func = std::make_unique<Function>(&func_file);
+        func = std::make_shared<Function>(&func_file);
     }
 
     ifstream trace_file(argv[1]);
@@ -124,7 +124,12 @@ int main(int argc, char* argv[]) {
     ebp = reg.gpr[7];
 
     auto *se = new QIFSEEngine(eax, ebx, ecx, edx, esi, edi, esp, ebp);
-    se->init(inst_list.begin(), inst_list.end(), start_addr, m_size/8, key_value);
+    if(argc == 4) {
+        se->init(inst_list.begin(), inst_list.end(), start_addr, m_size / 8, key_value, func);
+    } else{
+        se->init(inst_list.begin(), inst_list.end(), start_addr, m_size / 8, key_value);
+
+    }
     se->run();
     se->reduceConstrains();
     se->printConstrains();
@@ -133,7 +138,7 @@ int main(int argc, char* argv[]) {
     auto constrains = se->getConstrains();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName, std::move(func),
+    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName, func,
                                                      key_value_map)
     << std::endl;
 

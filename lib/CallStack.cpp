@@ -95,6 +95,11 @@ namespace tana {
 
     }
 
+    std::shared_ptr<CallLeakageSites> CallStackKey::clone()
+    {
+        return stack_sites->clone();
+    }
+
     CallStack::CallStack(const std::string &start_fun_name,
                          const std::vector<std::tuple<int, std::string>> &key_value_set)
     {
@@ -131,8 +136,13 @@ namespace tana {
         }
         for(const int &key_id : key_vector)
         {
-            (stacks.at(key_id))->updateStack(key_id, function_name);
+            (stacks.at(key_id))->retStack(function_name);
         }
         return key_vector.size();
+    }
+
+    std::shared_ptr<CallLeakageSites> CallStack::cloneCallLeakageSites(int key_id)
+    {
+        return stacks.at(key_id)->clone();
     }
 }
