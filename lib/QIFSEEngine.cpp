@@ -14,6 +14,7 @@
 #include "QIFSEEngine.h"
 #include "error.h"
 #include "Register.h"
+#include "x86.h"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
@@ -21,7 +22,8 @@
 namespace tana {
     QIFSEEngine::QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi,
                              uint32_t esp, uint32_t ebp) : SEEngine(false), CF(nullptr), OF(nullptr), SF(nullptr),
-                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0) {
+                                                           ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0),
+                                                           stacks(nullptr){
 
         ctx["eax"] = std::make_shared<BitVector>(ValueType::CONCRETE, eax);
         ctx["ebx"] = std::make_shared<BitVector>(ValueType::CONCRETE, ebx);
@@ -791,6 +793,50 @@ namespace tana {
 
     }
 
+    std::vector<int> QIFSEEngine::getInstSymbol(tana::Inst_Base *inst)
+    {
+        std::vector<int> inputSyms;
+        std::vector<std::shared_ptr<BitVector>> vector_bitvector;
+        int oprd_num = 0;
+        if (inst->oprd[0] != nullptr) ++oprd_num;
+        if (inst->oprd[1] != nullptr) ++oprd_num;
+        if (inst->oprd[2] != nullptr) ++oprd_num;
+
+        if (oprd_num == 0)
+            return inputSyms;
+        if(oprd_num == 2)
+        {
+            if(inst->oprd[1]->type == Operand::Mem)
+            {
+                vector_bitvector.push_back(this->readMem(inst->get_memory_address(), inst->oprd[1]->bit));
+            }
+
+            if(inst->oprd[1]->type == Operand::Reg)
+            {
+                vector_bitvector.push_back(this->readReg(inst->oprd[1]->field[0]));
+            }
+        }
+
+        if(oprd_num == 1)
+        {
+            if(inst->oprd[0]->type == Operand::Mem)
+            {
+                vector_bitvector.push_back(this->readMem(inst->get_memory_address(), inst->oprd[0]->bit));
+            }
+
+            if(inst->oprd[0]->type == Operand::Reg)
+            {
+                vector_bitvector.push_back(this->readReg(inst->oprd[0]->field[0]));
+            }
+        }
+
+        if(oprd_num == 3)
+            return inputSyms;
+
+        return (vector_bitvector.front())->getInputSymbolVector();
+
+    }
+
     void QIFSEEngine::checkOperand(const std::shared_ptr<tana::Operand> &opr, Inst_Base *inst) {
         assert(opr->type == Operand::Mem);
 
@@ -929,19 +975,7 @@ namespace tana {
         uint32_t mem_address_concrete = std::stoul(mem_address_str, nullptr, 16);
         uint32_t mem_address_concrete_L = mem_address_concrete >> L;
 
-        // check the address with the real address
-        /*
-        uint32_t mem_address_symbol_concrete = this->eval(mem_address_symbol, key_value_map);
-        if(mem_address_symbol_concrete != mem_address_concrete)
-        {
-            std::cout << "Memory Address Error: \n";
-            std::cout << "Current Inst: " << *current_eip << " "<<"\n";
-            std::cout << "Concrete Memory Address: " << std::hex << mem_address_concrete << "\n";
-            std::cout << "Symbol Memory Address: " << mem_address_symbol_concrete << std::endl;
-            std::cout << " " << *mem_address_symbol << std::endl;
-            return nullptr;
-        }
-        */
+
         std::shared_ptr<BitVector> mem_address_symbol_L = buildop2(BVOper::bvshr, mem_address_symbol, L);
 
         auto cons = std::make_shared<Constrain>(this->eip, mem_address_symbol_L, BVOper::equal, mem_address_concrete_L);
@@ -966,6 +1000,17 @@ namespace tana {
     std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
     QIFSEEngine::getConstrains(){
         return constrains;
+    }
+
+    void QIFSEEngine::updateStacks(tana::Inst_Base *inst)
+    {
+        if(x86::isInstRet(inst->instruction_id))
+            stacks->ret("test");
+
+        else
+        {
+            stacks->proceed_inst(this->getInstSymbol(inst), "test");
+        }
     }
 
 
