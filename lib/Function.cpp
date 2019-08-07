@@ -70,12 +70,12 @@ namespace tana {
 
     std::string Function::getFunName(tana::tana_type::T_ADDRESS addr) {
         if ((addr >= (ptr_cache->start_addr)) && (addr <= (ptr_cache->end_addr))) {
-            return "Function Name: " + ptr_cache->rtn_name;
+            return ptr_cache->rtn_name;
         }
         for (auto iter = rtn_libraries.begin(); iter != rtn_libraries.end(); ++iter) {
             if ((addr >= (iter->start_addr)) && (addr <= (iter->end_addr))) {
                 ptr_cache = iter;
-                return "Function Name: " + iter->rtn_name;
+                return iter->rtn_name;
             }
         }
         return "NOT Found";

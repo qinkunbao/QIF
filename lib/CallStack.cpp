@@ -118,7 +118,17 @@ namespace tana {
     int CallStack::proceed_inst(const std::vector<int> &vector_key_id, const std::string &function_name)
     {
         int count = 0;
-        for(const int &key_id : vector_key_id)
+        //for(const int &key_id : vector_key_id)
+        //{
+        //    (stacks.at(key_id))->updateStack(key_id, function_name);
+        //    ++count;
+        //}
+        std::vector<int> key_vector;
+        for (auto &it : stacks)
+        {
+            key_vector.push_back(it.first);
+        }
+        for(const int &key_id : key_vector)
         {
             (stacks.at(key_id))->updateStack(key_id, function_name);
             ++count;
