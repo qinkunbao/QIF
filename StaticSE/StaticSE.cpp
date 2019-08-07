@@ -108,7 +108,7 @@ int main(int argc, char **argv)
     std::string file_name2(argv[2]);
 
     std::string blocks_file_name1 = file_name1.substr(0, file_name1.size() - 4) + "_blocks.json";
-    std::string blocks_file_name2 = file_name2.substr(0, file_name1.size() - 4) + "_blocks.json";
+    std::string blocks_file_name2 = file_name2.substr(0, file_name2.size() - 4) + "_blocks.json";
 
     std::ifstream in_file1(file_name1), in_file1_block(blocks_file_name1);
     std::ifstream in_file2(file_name2), in_file2_block(blocks_file_name2);
