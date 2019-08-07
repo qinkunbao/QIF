@@ -48,11 +48,13 @@ namespace tana {
 
     std::ostream &operator<<(std::ostream &os, const CallStack &c)
     {
+        os << c.key_name;
         for(const auto &call : c.call_stack_sites)
         {
+            os << " -> ";
             const string& fun_name = get<0>(call);
             os << fun_name;
-            os << " -> ";
+
         }
 
         return os;
