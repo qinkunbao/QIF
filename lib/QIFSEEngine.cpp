@@ -871,7 +871,7 @@ namespace tana {
             return inputSyms;
         if(oprd_num == 2)
         {
-            if(inst->oprd[1]->type == Operand::Mem)
+            if(inst->oprd[1]->type == Operand::Mem && !(x86::isInstLEA(inst->instruction_id)))
             {
                 vector_bitvector.push_back(this->readMem(inst->get_memory_address(), inst->oprd[1]->bit));
             }
@@ -1074,6 +1074,7 @@ namespace tana {
 
     void QIFSEEngine::updateStacks(tana::Inst_Base *inst)
     {
+
         if(x86::isInstRet(inst->instruction_id)) {
             stacks->ret(func->getFunName(inst->addrn));
             stacks->proceed_inst(this->getInstSymbol(inst), func->getFunName(inst->addrn));

@@ -100,5 +100,13 @@ namespace tana {
             return false;
         }
 
+        bool isInstLEA(const x86::x86_insn &inst)
+        {
+            if(inst == X86_INS_LEA)
+                return true;
+
+            return false;
+        }
+
     }
 }
