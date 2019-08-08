@@ -19,11 +19,11 @@ and automatic detection methods are proposed recently~\cite{}.
 %% There are some detection methods but need a good assess method 
 In general, both static analysis and dynamic analysis
 can be used to detect software-based side-channel vulnerabilities.
-Statically, \fixme{XXXXXX}. And dynamically, \fixme{XXXXX}.
-These works help to find a list of hidden vulnerabilities in real-world software, 
+Statical methods include \fixme{xxx} and dynamic emthods include \fixme{xxx}.
+They help to find a list of hidden vulnerabilities in real-world software, 
 but fail to report how severe a potential leakage site could be. 
 Many of the reported vulnerabilities are typically hard to be exploited 
-and leak very little information (e.g., one bit of the length of the key~\cite{203878}).  
+and leak very little information, e.g., one bit of the length of the key~\cite{203878}.  
 For example, the vulnerabilities in OpenSSL library are assigned with low severity and not considered 
 in the threat model now~\cite{https://www.openssl.org/policies/secpolicy.html}. 
 It is worthwhile to have a tool to tell how much information is actually leaked and help to fix them.
@@ -36,10 +36,10 @@ The ``average'' information leakage assumes that the target program will have \t
 information when the attacker launches the attack.
 But for real-world attacks, an adversary may run the target problem again and over again 
 with \textbf{fixed} unknown sensitive information such as the key.
- 
-So the dynamic methods take another way with a concrete input and run the program actually. 
+The dynamic methods take another way with a concrete input and run the program actually. 
 Although they are very precise, they suffer from the incompleteness of testing 
-and trade-off of performance and accuracy~\cite{}. 
+and trade-off of performance and accuracy~\cite{}.
+\fixme{why DATA example is commented out below.}
 %For example, DATA~\cite{217537} reports more than 2000 potential leakage sites for the RSA implementation of OpenSSL.
 %But most of them were dismissed by the author after some manual inspections.
 
@@ -70,7 +70,8 @@ Every time the adversary observes one leakage site, he can eliminate some potent
 reduce the size of the input space. 
 %The smaller the input space is, the more information is actually gained. 
 In extreme cases, if the size of the input space reduces to one, 
-the adversary can determine the input information uniquely, which means all information is leaked. 
+the adversary can determine the input information uniquely, which means all information
+(e.g., the whole secret key) is leaked. 
 Further, we turn the quantification into a model counting problem~\cite{bibid} 
 and solve it by Markov Chain Monte Carlo approximate counting~\cite{bibid}. 
 In this way, we quantify the information leakage more precisely.
