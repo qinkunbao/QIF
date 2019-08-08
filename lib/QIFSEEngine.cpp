@@ -548,6 +548,7 @@ namespace tana {
 
             checkMemoryAccess(it);
 
+
             bool status = it->symbolic_execution(this);
             updateStacks(current_eip);
 
@@ -880,15 +881,7 @@ namespace tana {
                 vector_bitvector.push_back(this->readReg(inst->oprd[1]->field[0]));
             }
 
-            if(inst->oprd[0]->type == Operand::Mem)
-            {
-                vector_bitvector.push_back(this->readMem(inst->get_memory_address(), inst->oprd[0]->bit));
-            }
 
-            if(inst->oprd[0]->type == Operand::Reg)
-            {
-                vector_bitvector.push_back(this->readReg(inst->oprd[0]->field[0]));
-            }
         }
 
         if(oprd_num == 1)
@@ -1081,9 +1074,11 @@ namespace tana {
 
     void QIFSEEngine::updateStacks(tana::Inst_Base *inst)
     {
-        if(x86::isInstRet(inst->instruction_id))
+        if(x86::isInstRet(inst->instruction_id)) {
             stacks->ret(func->getFunName(inst->addrn));
+            stacks->proceed_inst(this->getInstSymbol(inst), func->getFunName(inst->addrn));
 
+        }
         else
         {
             stacks->proceed_inst(this->getInstSymbol(inst), func->getFunName(inst->addrn));
