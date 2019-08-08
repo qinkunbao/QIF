@@ -1,13 +1,13 @@
-\section{Chanllenges}
+\section{Challenges}
 
-In this section, we articulate several chanllenges and existing problems
+In this section, we articulate several challenges and existing problems
 in quantifying the side-channel vulnerability leakages. We describe the
-chanllenges and then briefly present the corresponding solution.
+challenges and then briefly present the corresponding solution.
 
 \subsection{Information Leakage Definition}
 Existing static-based side-channel quantification works~\cite{182946} define information leakage
 as the mutual information or the maximal leakage. These definitions provide a strong security guarantee
-when trying to prove a program is secure enough if the their methods calculate the program 
+when trying to prove a program is secure enough if their methods calculate the program 
 leaks zero bits of information.
 
 However, the above definition is less useful to justify the sensitive level of leakage sites. 
@@ -47,12 +47,12 @@ previous example, the existing static method doesn’t work well in those situat
 
 \textbf{Solution:}
 In the project, we hope to give a very precise definition of information leakages. 
-Suppose an attacker run the target program mutiple times with one fixed input, we
-want to know how much information he can infer by oberserving the memory access patterns.
+Suppose an attacker run the target program multiple times with one fixed input, we
+want to know how much information he can infer by observing the memory access patterns.
 We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} where the information
 leakage equals:
 
-\textbf{initial uncertainty - remaining uncertainty}
+\textbf{Initial uncertainty - remaining uncertainty}
 
 If an adversary has zero knowledge about the input before the attack. The initial uncertainty
 equals to the size the input. As for the remaining uncertainty, we come to the original definition
@@ -185,8 +185,8 @@ from the two following reasons.
 \end{itemize}
 \subsubsection{Symbolic Execution}
 Symbolic execution interprets each instruction and update the memory cells and registers with a 
-formula that captured the sementics of the exectution. Unfortunately, the number of machine instructions 
-are huge and the sementics of each instruction is complex. For example, the Intel Developer Manual~\cite{intelsys}
+formula that captured the semantics of the execution. Unfortunately, the number of machine instructions 
+are huge and the semantics of each instruction is complex. For example, the Intel Developer Manual~\cite{intelsys}
 introduces more than 1000 different X86 instructions. It is tedious to manually implement the
 rules for every instructions.
 
@@ -195,7 +195,7 @@ will translate machine instructions into intermediate languages (IR). The IR typ
 instructions compared to the original machine instructions. The IR layer designs, which significantly
 simplify the implementations, also introduce significant overhead as well~\cite{217563}.
 
-\textbf{Solution: }We adopt the similar approach from~\cite{217563} and implement the symbolic exectution 
+\textbf{Solution: }We adopt the similar approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions.
 
 \subsubsection{Monte Carlo Sampling}

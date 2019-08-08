@@ -1,20 +1,20 @@
 \section{Background}
 In this section, we first present a basic introduction to the 
-memory-based side-channel attacks. Those attacks 
+software-based side-channel attacks. Those attacks 
 are what we attempt to study in the paper. After that, we 
-will show existing methods on side-channel detections and quantifications.
+will show existing methods on side-channel detection and quantification.
 
-\subsection{Address-based Side-Channels}
-Address-based side-channels are information channels that can 
-leak sensitive information unintendedly through different 
-behaviors when the program accesses different memory addresses. 
+\subsection{Software-based Side-Channels}
+Software-based side-channels are information channels that can 
+leak sensitive information unconsciously through different 
+behaviors. %when the program accesses different memory addresses. 
 Fundamentally, those differences were caused by the memory hierarchy design 
 in modern computer systems. When the CPU fetches the data, it first searches
 the cache, which stores copies of the data that was 
 frequently used in main memory. If the data doesn't exist in the cache, 
 the CPU will read the data from the main memory (RAM). 
 According to the layer that causes the side-channels, we classify
-the address-based side channels into two categories: 
+the software-based side channels into two categories: 
 cache-based side-channel attacks and memory-based side-channel attacks.
 
 \subsubsection{Cache-based Attacks}
@@ -25,17 +25,17 @@ PRIME+PROBE, FLUSH+RELOAD.
 
 \textit{PRIME+PROBE} targets a single cache set. It has two phases. During the
 ``prime'' phase, the attacker fills the cache set with his data.
-In the second ``probe'' phase, the attacker reaccesses the cache set
+In the second ``probe'' phase, the attacker re-accesses the cache set
 again. If the victim accesses the cache set and evicts part of 
 the data, the attacker will experience a slow measurement. If not, 
-the measurement will be fast. By knowing which cache set the target
-program that accesses, the attacker can infer part of
+it will be fast. By knowing which cache set the target
+program that accesses, the attacker can infer parts of
 the sensitive information.
 
 \textit{FLUSH+RELOAD} targets a single cache line. 
 It requires the attacker and victim share the same memory.
-It also has two phases. During the "flush" stage, the attacker 
-flushes the ``monitered memory'' from the cache. Then the attacker
+It also has two phases. During the ``flush'' stage, the attacker 
+flushes the ``monitored memory'' from the cache. Then the attacker
 waits for the victim to access the memory. In the next phase, the 
 attacker reload the ``monitored memory''. If the time is short, which
 indicates there is a cache hit and the victim reloads the memory before. 
@@ -49,27 +49,28 @@ which works in the kernel space, can infer the sensitive data in the shielding s
 observing the page fault sequences after restricting some code and
 data pages. 
 
-After examing the memory-based side-channels attack. We believe the root
+After examining the memory-based side-channels attack, we believe the root
 cause of those attacks are secret-dependent memory access and control
 flow transfers.
 
-\lstinputlisting[language=c, 
-                 numbers=left,
-                 caption={Sample code shows secret-dependent memory access and 
-                          secret-dependent control-flow transfer.},
-                 captionpos=b,
-                 label={code:background},
-                 frame=single,
-                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
-                 {sample_code/background.c}
+%
+%\lstinputlisting[language=c, 
+%                 numbers=left,
+%                 caption={Sample code shows secret-dependent memory access and 
+%                          secret-dependent control-flow transfer.},
+%                 captionpos=b,
+%                 label={code:background},
+%                 frame=single,
+%                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
+%                 {sample_code/background.c}
 
-For example, the above code~\ref{code:background} show a simple encryption function that
-has the two kinds of side-channels. At line 11, depending on the value of a key,
-the code will access the different entry in the predefined table. At the
-line 13, the code will do a series of computation and determine if the code in the if
-branch is executed or not. Such vulnerabilities are called the memory-based 
-side-channles. We identify and quantify the leakage of the two kinds of vulnerabilities 
-in the paper.
+%For example, the above code~\ref{code:background} show a simple encryption function that
+%has the two kinds of side-channels. At line 11, depending on the value of a key,
+%the code will access the different entry in the predefined table. At the
+%line 13, the code will do a series of computation and determine if the code in the if
+%branch is executed or not. Such vulnerabilities are called the memory-based 
+%side-channles. We identify and quantify the leakage of the two kinds of vulnerabilities 
+%in the paper.
 
 \subsection{Information Leakage Quantification}
 Given an event $e$ which occurs with the probability $P(e)$, if the event $e$ happens, 
