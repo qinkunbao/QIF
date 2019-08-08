@@ -7,6 +7,9 @@
 \usepackage{url}
 \usepackage{cite}
 \usepackage{fancybox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
 \usepackage{amsthm}
 \usepackage{tikz}
 \usepackage{graphicx}
@@ -19,12 +22,13 @@
 \newcommand{\Qinkun}[1]{\highlight{Qinkun's Response:} \emph{#1}}
 
 \newcommand{\tool}{TANA}
+\renewcommand{\tool}{CleverHans}
 \newcommand{\tana}{\tool}
 
 \begin{document}
 
 \title{\tool{}: Precise Fine-grained Side-channel Information Leakage Quantification in Binaries}
-\author{Anonymous}
+\author{Anonymous, v9}
 
 \maketitle
 
@@ -38,15 +42,12 @@
     2) cannot accurately report
     the sum of multiple information leakages from various sites at one time.
        
-    
     To overcome the above limitations, we propose a novel method
     to quantify the information leakage more precisely.  
     %% The key insight is ...  --- Qinkun: complete this and i will revise. ----
     %%---FIXME: NEED A BETTER NAME---%%
-    The key insight is XXXXX.
-    We have developed a tool called \tool{},
-        ---\fixme{Need a better name probably. How about CleverHans?}---
-which can not only 
+    The key insight is \fixme{XXXXX}.
+    We have developed a tool called \tool{}, which can not only 
     find the side-channel vulnerabilities but also estimate how many bits are actually leaked. 
     \tool{} works in three steps. First, the application is executed to record the 
     trace. Second, \tool{} runs the instruction level symbolic execution on the top of the 

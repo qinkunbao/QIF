@@ -19,7 +19,7 @@ and automatic detection methods are proposed recently~\cite{}.
 %% There are some detection methods but need a good assess method 
 In general, both static analysis and dynamic analysis
 can be used to detect software-based side-channel vulnerabilities.
-Statically, XXXXXX. And dynamically, XXXXX.
+Statically, \fixme{XXXXXX}. And dynamically, \fixme{XXXXX}.
 These works help to find a list of hidden vulnerabilities in real-world software, 
 but fail to report how severe a potential leakage site could be. 
 Many of the reported vulnerabilities are typically hard to be exploited 
@@ -76,7 +76,9 @@ and solve it by Markov Chain Monte Carlo approximate counting~\cite{bibid}.
 In this way, we quantify the information leakage more precisely.
 
 
-More specifically, we build a tool called \tool{}, which could discover and estimate those potential information leakage sites 
+More specifically, we build a tool called \tool{},\footnote{Clever Hans is a horse that can ``count''.
+  Our tool uses an advanced method to count the number of leaked bits through side channel.}
+which could discover and estimate those potential information leakage sites 
 as well as how many bits they can leak. 
 We assume that adversaries can exploit different control-flow transfers and data-access patterns when 
 the program processes different sensitive data. 

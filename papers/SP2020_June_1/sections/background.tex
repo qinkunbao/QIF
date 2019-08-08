@@ -5,8 +5,8 @@ are what we attempt to study in the paper. After that, we
 will show existing methods on side-channel detection and quantification.
 
 \subsection{Software-based Side-Channels}
-Software-based side-channels are information channels that can 
-leak sensitive information unconsciously through different 
+Software-based side-channels % are information channels that can 
+leaks sensitive information unconsciously through different 
 behaviors. %when the program accesses different memory addresses. 
 Fundamentally, those differences were caused by the memory hierarchy design 
 in modern computer systems. When the CPU fetches the data, it first searches
@@ -21,7 +21,7 @@ cache-based side-channel attacks and memory-based side-channel attacks.
 In general, the cached-based side-channels seek 
 information relying on the time differences between the cache miss
 and the cache hit. Here we introduce two frequently used cache attacks:
-PRIME+PROBE, FLUSH+RELOAD.
+PRIME+PROBE and FLUSH+RELOAD.
 
 \textit{PRIME+PROBE} targets a single cache set. It has two phases. During the
 ``prime'' phase, the attacker fills the cache set with his data.
@@ -51,7 +51,9 @@ data pages.
 
 After examining the memory-based side-channels attack, we believe the root
 cause of those attacks are secret-dependent memory access and control
-flow transfers.
+flow transfers.  \fixme{This paragraph is confusing. Secret-dependent memory access and control
+  flow transfers can be cache-based side channels. We need further develop this so it is not a surprise
+when it is mentioned in the next subsection.}
 
 %
 %\lstinputlisting[language=c, 
@@ -73,6 +75,9 @@ flow transfers.
 %in the paper.
 
 \subsection{Information Leakage Quantification}
+
+\fixme{Clarify mutual information, min-entropy, and maximal leakage. How many types?}
+
 Given an event $e$ which occurs with the probability $P(e)$, if the event $e$ happens, 
 then we receive
 \begin{displaymath}
@@ -85,27 +90,28 @@ of one byte (8 bits). It ranges from 0 -- 255.  Assume
 equals $1$, the probability of this observation is $\frac{1}{256}$. So the information we get is 
 $-\log(\frac{1}{256}) = 8$ bits, which is exactly the size of the char variable in the C program.
 
-Existing works on information leakage quantification are based on mutual information or 
+Some existing work on information leakage quantification is based on mutual information or 
 min-entropy \cite{10.1007/978-3-642-00596-1_21}.
-In their frameworks, the input sensitive
+In these frameworks, the input sensitive
 information $K$ is viewed as a random variable. Let $k_i$ be one of the possible
-value of $K$. The Shannon entropy $H(K)$ is defined by
+value of $K$. The Shannon entropy $H(K)$ is defined as
 \begin{displaymath}
     H(K) = - \sum_{k_i {\in} K}P(k_i)\log_2P(k_i)
 \end{displaymath}
 
 The Shannon entropy can be used to quantify the initial uncertainty about the sensitive
-information. Suppose a program ($P$) with the $K$ as
-the sensitive input, an adversary has some observations (O) through the side-channels.
+information. Suppose a program with some
+sensitive input $K$, an adversary has some observations ($O$) through some side channel.
 In this work, the observations are referred as the secret-dependent control-flows and
-secret-dependent data-access patterns. The conditional entropy $H(K|O)$ is
+secret-dependent data-access patterns. \fixme{See the comment above, we need to explain these
+  patterns before this point.} The conditional entropy $H(K|O)$ is
 \begin{displaymath}
     H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)\log_2P(k_i|o_j)}}
 \end{displaymath}
 Intuitively, the conditional information marks the uncertainty about $K$ after the adversary
-has gained some observations (O). 
+has gained some observations ($O$). 
 
-Many previous works use the mutual information $I(K; O)$ to quantify the leakage which is defined 
+Some previous work uses the mutual information $I(K; O)$ to quantify the leakage which is defined 
 as follows:
 \begin{displaymath}
     \mathit{Leakage} = I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)\log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
