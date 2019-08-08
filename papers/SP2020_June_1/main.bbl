@@ -33,7 +33,7 @@ G.~Doychev, D.~Feld, B.~Kopf, L.~Mauborgne, and J.~Reineke, ``Cacheaudit: A
 
 \bibitem{203878}
 \BIBentryALTinterwordspacing
-S.~Wang, P.~Wang, X.~Liu, D.~Zhang, and D.~Wu, ``Cached: Identifying
+S.~Wang, P.~Wang, X.~Liu, D.~Zhang, and D.~Wu, ``{CacheD}: Identifying
   cache-based timing channels in production software,'' in \emph{26th {USENIX}
   Security Symposium ({USENIX} Security 17)}.\hskip 1em plus 0.5em minus
   0.4em\relax Vancouver, BC: {USENIX} Association, 2017, pp. 235--252.
