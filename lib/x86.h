@@ -3729,5 +3729,7 @@ namespace tana {
         bool isInstCall(const x86::x86_insn &inst);
 
         bool isInstRet(const x86::x86_insn &inst);
+
+        bool isInstLEA(const x86::x86_insn &inst);
     }
 }
