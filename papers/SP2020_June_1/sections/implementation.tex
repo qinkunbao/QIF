@@ -1,5 +1,5 @@
 \section{Implementation}
-We implement the \tool{} with 12K lines of code in C++11. It has three components, Intel
+We implement the \tool{} with \fixme{12K, be precise} lines of code in C++11. It has three components, Intel
 Pin tool that can collect the execution trace, the intruction-level symbolic execution
 engine and the backend that can estimate the information leakage. The tool can also report 
 the memory address of the leakage site. To assist the developers fix the bugs more easiliy,
@@ -12,11 +12,12 @@ appendix.
     \resizebox{.8\columnwidth}{!}{
     \begin{tabular}{ll}
     \hline
-    Component                            & Lines of code    \\ \hline
-    Trace Logging                        & 101 LoC of C++   \\ 
+    Component                            & Lines of code (LOC)    \\ \hline
+    Trace Logging                        & 101 LOC of C++   \\ 
     Symbolic Execution & 11547 LoC of C++ \\ 
-    Monte Carlo Sampling                 & 603 LoC of C++   \\ 
-    Others                               & LoC of Python    \\ \hline
+    Monte Carlo Sampling                 & 603 LOC of C++   \\ 
+    Others                               & \fixme{xxx} LOC of Python    \\ \hline
+    Total    & \fixme{xxx} LOC \\\hline
     \end{tabular}
     }
     \caption{\tool{}'s main components and their LoC}

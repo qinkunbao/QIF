@@ -4,7 +4,7 @@ In this section, we articulate several challenges and existing problems
 in quantifying the side-channel vulnerability leakages. We describe the
 challenges and then briefly present the corresponding solution.
 
-\subsection{Information Leakage Definition}
+\subsection{Challenge I: Information Leakage Definition}
 Existing static-based side-channel quantification works~\cite{182946} define information leakage
 as the mutual information or the maximal leakage. These definitions provide a strong security guarantee
 when trying to prove a program is secure enough if their methods calculate the program 
@@ -45,14 +45,19 @@ previous example, the existing static method doesn’t work well in those situat
 \caption{some caption here. \fixme{redraw the figure. i will give you the instruction.}}
 \end{figure}
 
-\textbf{Solution:}
+\textbf{Our Solution to Challenge I:}
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program multiple times with one fixed input, we
 want to know how much information he can infer by observing the memory access patterns.
-We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} where the information
-leakage equals:
+We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} %% where the information
+%% leakage equals:
+%% \textbf{Initial uncertainty - remaining uncertainty}
+that
+\begin{align*}
+ & \mathit{Information\ leakage} = \\
+ & ~~~~~~ \mathit{Initial}\ \mathit{uncertainty} - \mathit{Remaining\ uncertainty}. 
+\end{align*}
 
-\textbf{Initial uncertainty - remaining uncertainty}
 
 If an adversary has zero knowledge about the input before the attack. The initial uncertainty
 equals to the size the input. As for the remaining uncertainty, we come to the original definition
@@ -67,15 +72,15 @@ We quantify the information leakage with the following definition.
 Given a program $P$ with the input set $K$, 
 an adversary has the observation $o$ when the input $k{\in}K$. 
 We denote it as
-    $$P(k) = o$$
-The leakage $L_{Pko}$ based on the oberservation is
-    $$L_{Pko} = log_2{|K|} - log_2{|K^o|}$$
+    $$P(k) = o.$$
+The leakage $L_{P(k)=o}$ based on the oberservation is
+    $$L_{P(k)=o} = \log_2{|K|} - \log_2{|K^o|}$$
     where
-    $$K^o = \{k^{'} | k^{'}{\in}K \ and \ P(k^{'}) = o \}$$
+    $$K^o = \{k^{'} | k^{'}{\in}K \ \text{and} \ P(k^{'}) = o \}$$
 \end{mydef}
 
 With the new definition, if the attacker observes that the code~\ref{code::entropy} runs the branch 1, 
-then the $K^{o^{1}} = \{128\}$. Therefore, the information leakage $L_{Pko^{1}} = log_2{256} - log_2{1} = 8$
+then the $K^{o^{1}} = \{128\}$. Therefore, the information leakage $L_{P(k)=o^{1}} = log_2{256} - log_2{1} = 8$
 bits, which means the key is totally leaked. If the attacker observes the code runs other
 branches, the leaked information is shown in the following table.
 
@@ -86,7 +91,7 @@ branches, the leaked information is shown in the following table.
     \hline
     Branch & 1 & 2  & 3  & 4   \\ \hline
     $K^o$   & 1 & 64 & 64 & 127 \\ \hline
-    $L_{Pko}$(bits)   & 8 & 2  & 2  & 1   \\ \hline
+    $L_{P(k)=o}$(bits)   & 8 & 2  & 2  & 1   \\ \hline
     \end{tabular}
     }
     \caption{The leaked information by the definition~\ref{def}}
@@ -97,7 +102,7 @@ leakage will be 2 bits. The conclusion is consistent with the intuition. Because
 executed, we can know the key is less than 64. So we know the most and the second significant digits of 
 the value key equals to $128$.
 
-\subsection{Multiple Leak Sites}
+\subsection{Challenge II: How to Combine the Leakage Information from Multiple Leak Sites}
 Real-world software can have various side-channel vulnerabilities. Those vulnerabilities 
 may spread in the whole program. An adversary may exploit more than one side-channel vulnerabilities 
 to gain more information~\cite{7163052, 191010}. In order to precisely quantify the
@@ -151,7 +156,8 @@ can't simply add them up. Third, leakage sites are in the different blocks of th
 control-flow graph, which means that only one of the two leakages site may be executed
 during the exectution.
 
-\textbf{Solution: }Given a program $P$ with $k$ as the sensitive input, 
+\textbf{Our Solution to Challenge II:}
+Given a program $P$ with $k$ as the sensitive input, 
 we use $k_i$ to denote the sensitive information, where $i$ is the index of the byte in the original buffer.  
 We can represent each temporal
 values with a formula. There are two types of values in the formula: the concrete value and
@@ -169,7 +175,7 @@ represent the memory address and check if different sensitive inputs can lead to
 memory accesses. As long as we model each leakage with a formula. We can regard multiple leakges as the conjunction of
 those formulas. 
 
-\subsection{Scalability and Performance}
+\subsection{Challenge III: Scalability and Performance}
 
 After we transfer each potential leaks sites into formula. We can group several formulas together
 to estimate the total information leakage. One naive way is to use the Monte Carlo sampling  estimate the
@@ -180,9 +186,10 @@ to detect and quantify side-channel leakages in real-world applications.
 We systematically analyze the performance bottlenecks of the whole process. In general, the performance suffers
 from the two following reasons. 
 \begin{itemize}
-    \item Symbolic Execution. 
-    \item The Monte Carlo Sampling.
+    \item Symbolic Execution (Challenge III(a))
+    \item The Monte Carlo Sampling  (Challenge III(b))
 \end{itemize}
+
 \subsubsection{Symbolic Execution}
 Symbolic execution interprets each instruction and update the memory cells and registers with a 
 formula that captured the semantics of the execution. Unfortunately, the number of machine instructions 
@@ -195,7 +202,8 @@ will translate machine instructions into intermediate languages (IR). The IR typ
 instructions compared to the original machine instructions. The IR layer designs, which significantly
 simplify the implementations, also introduce significant overhead as well~\cite{217563}.
 
-\textbf{Solution: }We adopt the similar approach from~\cite{217563} and implement the symbolic execution 
+\textbf{Our Solution to Challenge III(a):}
+We adopt the similar approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions.
 
 \subsubsection{Monte Carlo Sampling}
@@ -217,7 +225,8 @@ the libjpeg libraries can transfer the image from one format into another format
 be 1kMB. If we take each byte in the original buffer as symbols, the formula can have at most
 1024 symbols. 
 
-\textbf{Solution: }We adopt the Markov Chain Monte Carlo to estimate the number of possible input
+\textbf{Our Solution to Challenge III(b):}
+We adopt the Markov Chain Monte Carlo to estimate the number of possible input
 that satisfies the logic formula groups. The key idea is that we have one group of input that satisfies
 the logic formula constrains.  We will
 introduce the method in the following sections.
