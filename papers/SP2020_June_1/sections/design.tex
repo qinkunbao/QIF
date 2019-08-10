@@ -178,6 +178,14 @@ The $L$ represents the minimum memory address granularity that an attacker
 can observe. For example, Flush and Reload can distinguish between different
 cache lines, which means the value of L is 6.
 
+\subsubsection{Information Flow Check}
+\tool{} is designed to help software developers find and understand the 
+side-channel vulnerabilities. To ease the procedure of fixing the bug,
+we also track the information flow for each byte of the input
+buffer. With the help of the symbolic execution, we can implement
+a relative simple but relatively precise information flow track.
+
+
 \subsection{Information Leakage Estimation}
 
 In this section, we present the alogorithm to calculate the information
@@ -261,7 +269,7 @@ one.
       \begin{enumerate}
             \item $C_{g1} \land C_{g2} \land ... \land C_{gm} = F_{c_1c_2...c_n}$
             \item $\forall \quad i, j \in \{1, 2, 3, ..., m\} \quad \textrm{and} \quad 
-                  i \neq j, \quad S(C_i) \cap S(C_j) = \emptyset $
+                  i \neq j, \quad S(C_{gi}) \cap S(C_{gj}) = \emptyset $
             \item For any other partitions  $C_{g1}, C_{g2}, ..., C_{gn}$ satisfy 1) and
                   2), $m \geq n$    
       \end{enumerate}
@@ -289,8 +297,17 @@ $$|K_{F_{c_1c_2...c_n}}| = |K_{C_{g1}}|*|K_{C_{g2}}|*...*|K_{C_{gn}}|$$
 With the~\ref{IndependentConstraint}, we can transfer the problem of counting the number of 
 solutions in a large constraint with high
 dimensions into counting solutions of 
-several small constraints.
+several small constraints. We apply the following algorithm to get the Maximum Independent Partition
+of the $F_{c_1c_2...c_n}$.
 
+\IncMargin{1em}
+\begin{algorithm}
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$F_{c_1c_2...c_n} = C_{g1} \land C_{g2} \land ... \land C_{gm}$}
+\Output{The Maximum Independent Partition of $F$}
+\caption{The Maximum Independent Partition}
+\end{algorithm}
+\DecMargin{1em}
 
 \subsubsection{Random Walk based Sampling}
 
@@ -300,27 +317,41 @@ space has been reduced greatly after the previous step, this is still a
 \#P problem. For our project, we apply the approximate counting instead of
 exact counting for two reasons. First, we don't need to have a very precise
 result of the exact number of total solutions. The information is defined with
-a logarithmic function. Second, as the constraint could be very complicated. The
-exact counting approach couldn't halt in a reasonable time.
+a logarithmic function. We don't need to distinguish between a formual having
+$10^{10}$ and $10^{10} + 10$ solutions.
+Second, as the constraint could be very complicated. The exact model counting
+approaches, like DPLL search, have difficulty scaling up to large problem sizes.
 
-We apply the "counting by sampling" method, which isn't a brand new idea~\cite{10.1007/11499107_24}. 
-We extend Wei's method to count the number of solutions for our constrains.
+We apply the "counting by sampling" method, which isn't a brand new idea~\cite{10.1007/11499107_24,Wei2004TowardsES}. 
+We implement and extend the \textit{SampleSAT}~\cite{10.1007/11499107_24} to count the number 
+of solutions for our constrains. The basic idea is as followed: if
+one can sample nearly uniformly from the solutions of $F$, then one
+get a good estimate of the number of solutions of $F$. 
 
-\textit{Random Walk}
-(RW) is a local search heuristic methods. We start the search from
+\textit{SampleSAT} interleaves
+the biased random walk and Monte Carlo Markov Chain Moves (MCMC). The hybrid
+approach makes \textit{SampleSAT} samples more uniformly to
+approximately count the number of solutions. Random walk (RW) is a 
+local search heuristic methods. We start the search from
 the one concrete sensitive input. If the constraint ($C_i$) is the conjunction
 of several small constraints, we feed the input into each small constraint. If 
 the input value doesn't satisfy the small constrains, we just choose one input 
 variable using the heuristic method and generate a new random value for the variable.
 
+The random walk move can reach the solutions from every domains.
+However, the sampling is biased with the biased random walk. Therefore,
+we also introduce the Metropolis moves with the random walk move.
+
 %% the algorithm
 \IncMargin{1em}
 \begin{algorithm}
+\SetAlgoLined
+\KwIn{{The constraint $C_i$}}    
+\KwOut{{The number of assignments that satisfy $C_i$ $|K_{Ci}|$}}
 
 \end{algorithm}
 \DecMargin{1em}
 
-\textit{Metropolis}
 
 %% the algorithm
 
