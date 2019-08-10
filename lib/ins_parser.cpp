@@ -14,13 +14,13 @@
 
 namespace tana {
 
-    std::shared_ptr<Operand> createAddrOperand(std::string s);
+    std::shared_ptr<Operand> createAddrOperand(const std::string &s);
 
-    std::shared_ptr<Operand> createDataOperand(std::string s, uint32_t addr);
+    std::shared_ptr<Operand> createDataOperand(const std::string &s, uint32_t addr);
 
-    std::shared_ptr<Operand> createOperand(std::string s, uint32_t addr);
+    std::shared_ptr<Operand> createOperand(const std::string &s, uint32_t addr);
 
-    std::shared_ptr<Operand> createAddrOperandStatic(std::string s) {
+    std::shared_ptr<Operand> createAddrOperandStatic(const std::string &s) {
         std::regex addr1("0x[[:xdigit:]]+");
         std::regex addr2("eax|ebx|ecx|edx|esi|edi|esp|ebp");
         std::regex addr3("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
@@ -118,7 +118,7 @@ namespace tana {
         return opr;
     }
 
-    std::shared_ptr<Operand> createAddrOperand(std::string s) {
+    std::shared_ptr<Operand> createAddrOperand(const std::string &s) {
         // regular expressions addresses
         std::regex addr1("0x[[:xdigit:]]+");
         std::regex addr2("eax|ebx|ecx|edx|esi|edi|esp|ebp");
@@ -146,6 +146,7 @@ namespace tana {
             opr->field[2] = m[3]; // 2
             opr->field[3] = m[4]; // +
             opr->field[4] = m[5]; // 0xfffff1
+            return opr;
         } else if (regex_search(s, m, addr4)) { // addr4: eax+0xfffff1
             // cout << "addr 4: " << s << endl;
             opr->type = Operand::Mem;
@@ -153,12 +154,14 @@ namespace tana {
             opr->field[0] = m[1];
             opr->field[1] = m[2];
             opr->field[2] = m[3];
+            return opr;
         } else if (regex_search(s, m, addr5)) { // addr5: eax+ebx*2
             opr->type = Operand::Mem;
             opr->tag = 5;
             opr->field[0] = m[1]; // eax
             opr->field[1] = m[2]; // ebx
             opr->field[2] = m[3]; // 2
+            return opr;
         } else if (regex_search(s, m, addr6)) { // addr6: eax*2+0xfffff1
             opr->type = Operand::Mem;
             opr->tag = 6;
@@ -166,20 +169,24 @@ namespace tana {
             opr->field[1] = m[2]; // 2
             opr->field[2] = m[3]; // +
             opr->field[3] = m[4]; // 0xfffff1
+            return opr;
         } else if (regex_search(s, m, addr3)) { // addr3: eax*2
             opr->type = Operand::Mem;
             opr->tag = 3;
             opr->field[0] = m[1];
             opr->field[1] = m[2];
+            return opr;
         } else if (regex_search(s, m, addr1)) { // addr1: Immdiate value address
             opr->type = Operand::Mem;
             opr->tag = 1;
             opr->field[0] = m[0];
+            return opr;
         } else if (regex_search(s, m, addr2)) { // addr2: 32 bit register address
             // cout << "addr 2: " << s << endl;
             opr->type = Operand::Mem;
             opr->tag = 2;
             opr->field[0] = m[0];
+            return opr;
         } else {
             std::cout << "Unknown addr operands: " << s << std::endl;
         }
@@ -187,7 +194,7 @@ namespace tana {
         return opr;
     }
 
-    std::shared_ptr<Operand> createDataOperand(std::string s, uint32_t addr) {
+    std::shared_ptr<Operand> createDataOperand(const std::string &s, uint32_t addr) {
         // Regular expressions for Immvalue and Registers
         std::regex immvalue("0x[[:xdigit:]]+");
         std::regex immvalue1("[[:xdigit:]]+");
@@ -233,7 +240,7 @@ namespace tana {
         return opr;
     }
 
-    std::shared_ptr<Operand> createOperandStatic(std::string s, uint32_t addr) {
+    std::shared_ptr<Operand> createOperandStatic(const std::string &s, uint32_t addr) {
         std::regex ptr("\\[(.*)\\]");
         std::regex byteptr("byte \\[(.*)\\]");
         std::regex wordptr("word \\[(.*)\\]");
@@ -273,7 +280,7 @@ namespace tana {
     }
 
 
-    std::shared_ptr<Operand> createOperand(std::string s, uint32_t addr) {
+    std::shared_ptr<Operand> createOperand(const std::string &s, uint32_t addr) {
         std::regex ptr("ptr \\[(.*)\\]");
         std::regex byteptr("byte ptr \\[(.*)\\]");
         std::regex wordptr("word ptr \\[(.*)\\]");
@@ -287,20 +294,30 @@ namespace tana {
             if (regex_search(s, m, byteptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 8;
+                return opr;
+
             } else if (regex_search(s, m, dwordptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 32;
+                return opr;
+
             } else if (regex_search(s, m, segptr)) {
                 opr = createAddrOperand(m[2]);
                 opr->issegaddr = true;
                 opr->bit = 32;
                 opr->segreg = m[1];
+                return opr;
+
             } else if (regex_search(s, m, wordptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 16;
+                return opr;
+
             } else if (regex_search(s, m, ptr)) {
                 opr = createAddrOperand(m[1]);
                 opr->bit = 0;
+                return opr;
+
             } else {
                 std::cout << "Unknown addr: " << s << std::endl;
             }
@@ -313,7 +330,7 @@ namespace tana {
     }
 
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Base>> &L) {
+    bool parse_trace(std::ifstream &trace_file, std::vector<std::unique_ptr<Inst_Base>> &L) {
         uint32_t batch_size = 1;
         uint32_t id = 1;
         bool finish_parse = parse_trace(trace_file, L, batch_size, id);
@@ -325,7 +342,7 @@ namespace tana {
     }
 
 
-    bool parse_trace(std::ifstream *trace_file, tana_type::T_ADDRESS &addr_taint, \
+    bool parse_trace(std::ifstream &trace_file, tana_type::T_ADDRESS &addr_taint, \
                      tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L) {
         uint32_t batch_size = 1000;
         uint32_t id = 1;
@@ -339,12 +356,51 @@ namespace tana {
 
     }
 
-    bool parse_trace_qif(std::ifstream *trace_file, tana_type::T_ADDRESS &addr_taint, \
+
+    namespace count_num{
+        uint64_t FileRead( std::istream & is, std::vector <char> & buff ) {
+            is.read( &buff[0], buff.size() );
+            return is.gcount();
+        }
+
+        uint64_t CountLines( const std::vector <char> & buff, int sz ) {
+            int newlines = 0;
+            const char * p = &buff[0];
+            for ( int i = 0; i < sz; i++ ) {
+                if ( p[i] == '\n' ) {
+                    newlines++;
+                }
+            }
+            return newlines;
+        }
+    }
+
+
+    uint64_t file_inst_num(std::ifstream &trace_file)
+    {
+        uint64_t total_line = 0;
+        const int SZ = 1024 * 1024;
+        std::vector <char> buff( SZ );
+
+        while( int cc = count_num::FileRead( trace_file, buff ) ) {
+            total_line += count_num::CountLines( buff, cc );
+        }
+
+
+        return total_line;
+
+    }
+
+
+    bool parse_trace_qif(std::ifstream &trace_file, tana_type::T_ADDRESS &addr_taint, \
                          tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L,
-                         std::vector<uint8_t> &key_value, int max_inst) {
+                         std::vector<uint8_t> &key_value, uint64_t max_inst, uint64_t instsize) {
         std::string line;
         uint32_t id_count = 1, num = 1;
-        getline(*trace_file, line);
+        getline(trace_file, line);
+
+        uint64_t size_inst_percent = instsize / 100;
+        int persent = 0;
         if (line.find("Start") != std::string::npos) {
             std::istringstream fun_buf(line);
             std::string start_taint, taint_len, temp_str;
@@ -355,7 +411,7 @@ namespace tana {
             size_taint = stoul(taint_len, nullptr, 10);
 
             // Get key value
-            getline(*trace_file, line);
+            getline(trace_file, line);
             std::istringstream strbuf(line);
             std::string key_temp;
             uint8_t key_concrete;
@@ -368,8 +424,8 @@ namespace tana {
             }
 
         }
-        while (trace_file->good()) {
-            getline(*trace_file, line);
+        while (trace_file.good()) {
+            getline(trace_file, line);
             if (line.empty()) {
                 break;
             }
@@ -382,7 +438,7 @@ namespace tana {
                 getline(fun_buf, taint_len, ';');
                 addr_taint = stoul(start_taint, nullptr, 16);
                 size_taint = stoul(taint_len, nullptr, 10);
-                getline(*trace_file, line);
+                getline(trace_file, line);
 
                 return false;
 
@@ -397,6 +453,13 @@ namespace tana {
 
             auto ins_index = num++;
             id_count++;
+
+            if((id_count / size_inst_percent) > persent)
+            {
+                persent = id_count / size_inst_percent;
+                std::cout << persent << "% parsing" << std::endl;
+            }
+
 
             // instruction address
             getline(strbuf, temp_addr, ';');
@@ -460,7 +523,7 @@ namespace tana {
             }
         }
 
-        if (trace_file->good())
+        if (trace_file.good())
             return false;
         else
             return true;
@@ -468,19 +531,19 @@ namespace tana {
     }
 
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Base>> &L, uint32_t max_instructions,
+    bool parse_trace(std::ifstream &trace_file, std::vector<std::unique_ptr<Inst_Base>> &L, uint32_t max_instructions,
                      uint32_t num) {
         tana_type::T_ADDRESS addr_taint = 0;
         tana_type::T_SIZE size_taint = 0;
         return parse_trace(trace_file, L, max_instructions, addr_taint, size_taint, num);
     }
 
-    bool parse_trace(std::ifstream *trace_file, std::vector<std::unique_ptr<Inst_Base>> &L, uint32_t max_instructions,
+    bool parse_trace(std::ifstream &trace_file, std::vector<std::unique_ptr<Inst_Base>> &L, uint32_t max_instructions,
                      tana_type::T_ADDRESS &addr_taint, tana_type::T_SIZE &size_taint, uint32_t num) {
         std::string line;
         uint32_t id_count = 1;
-        while (trace_file->good() && (id_count <= max_instructions)) {
-            getline(*trace_file, line);
+        while (trace_file.good() && (id_count <= max_instructions)) {
+            getline(trace_file, line);
             if (line.empty()) {
                 break;
             }
@@ -493,7 +556,7 @@ namespace tana {
                 getline(fun_buf, taint_len, ';');
                 addr_taint = stoul(start_taint, nullptr, 16);
                 size_taint = stoul(taint_len, nullptr, 10);
-                getline(*trace_file, line);
+                getline(trace_file, line);
 
                 return false;
 
@@ -567,7 +630,7 @@ namespace tana {
             L.push_back(std::move(ins));
 
         }
-        if (trace_file->good())
+        if (trace_file.good())
             return false;
         else
             return true;

@@ -26,7 +26,7 @@ namespace tana {
 
         friend std::ostream &operator<<(std::ostream &os, const CallLeakageSites &c);
 
-        CallLeakageSites(std::string key_name, int key_id);
+        CallLeakageSites(const std::string &key_name, int key_id);
 
         std::shared_ptr<CallLeakageSites> clone();
 
@@ -47,7 +47,7 @@ namespace tana {
 
     public:
 
-        CallStackKey(std::string key_name, int key_id, const std::string &start_fun);
+        CallStackKey(const std::string &key_name, int key_id, const std::string &start_fun);
 
         int updateStack(int key_id, const std::string &fun_name);
 

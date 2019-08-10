@@ -19,7 +19,8 @@ using namespace std;
 namespace tana {
 
 
-    CallLeakageSites::CallLeakageSites(std::string key_name, int key_id) : key_name(key_name), key_id(key_id)
+    CallLeakageSites::CallLeakageSites(const std::string &key_name, int key_id) : key_name(key_name),
+    key_id(key_id)
     {
 
     }
@@ -47,8 +48,9 @@ namespace tana {
 
 
 
-    CallStackKey::CallStackKey(string name, int key_id, const std::string &start_fun): key_id(key_id), key_name(name),
-                                                                                stack_depth(0)
+    CallStackKey::CallStackKey(const string &name, int key_id, const std::string &start_fun):
+    key_id(key_id), key_name(name),
+    stack_depth(0)
     {
         auto first_call = std::make_tuple(start_fun, stack_depth);
 
@@ -118,21 +120,21 @@ namespace tana {
     int CallStack::proceed_inst(const std::vector<int> &vector_key_id, const std::string &function_name)
     {
         int count = 0;
-        //for(const int &key_id : vector_key_id)
-        //{
-        //    (stacks.at(key_id))->updateStack(key_id, function_name);
-        //    ++count;
-        //}
-        std::vector<int> key_vector;
-        for (auto &it : stacks)
-        {
-            key_vector.push_back(it.first);
-        }
-        for(const int &key_id : key_vector)
+        for(const int &key_id : vector_key_id)
         {
             (stacks.at(key_id))->updateStack(key_id, function_name);
             ++count;
         }
+        //std::vector<int> key_vector;
+        //for (auto &it : stacks)
+        //{
+         //   key_vector.push_back(it.first);
+        //}
+        //for(const int &key_id : key_vector)
+        //{
+        //    (stacks.at(key_id))->updateStack(key_id, function_name);
+         //   ++count;
+       // }
         return count;
 
     }

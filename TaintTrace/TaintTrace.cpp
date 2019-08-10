@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 
 	uint32_t id = 1;
 	uint32_t batch_size = 1000;
-	parse_trace(&trace_file, inst_list, 1, start_addr, m_size, id);
+	parse_trace(trace_file, inst_list, 1, start_addr, m_size, id);
 	Tainter taint(start_addr, m_size);
 
 

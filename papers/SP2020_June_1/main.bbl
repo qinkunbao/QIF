@@ -108,6 +108,12 @@ I.~Yun, S.~Lee, M.~Xu, Y.~Jang, and T.~Kim, ``{QSYM}: A practical concolic
   \url{https://www.usenix.org/conference/usenixsecurity18/presentation/yun}
 \BIBentrySTDinterwordspacing
 
+\bibitem{10.1007/11499107_24}
+W.~Wei and B.~Selman, ``A new approach to model counting,'' in \emph{Theory and
+  Applications of Satisfiability Testing}, F.~Bacchus and T.~Walsh, Eds.\hskip
+  1em plus 0.5em minus 0.4em\relax Berlin, Heidelberg: Springer Berlin
+  Heidelberg, 2005, pp. 324--339.
+
 \bibitem{236338}
 \BIBentryALTinterwordspacing
 ``Identifying cache-based side channels through secret-augmented abstract
