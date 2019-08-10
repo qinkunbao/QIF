@@ -40,7 +40,7 @@ int printFormulas(char* filename)
 	}
 
 	std::vector<unique_ptr<Inst_Base>> inst_list;
-	parse_trace(&infile, inst_list);
+	parse_trace(infile, inst_list);
 	infile.close();
 
 	// Bit symbolic execution
@@ -99,8 +99,8 @@ int main(int argc, char **argv) {
 
 	std::vector<unique_ptr<Inst_Base>> inst_list1, inst_list2;
 
-	parse_trace(&infile1, inst_list1);
-	parse_trace(&infile2, inst_list2);
+	parse_trace(infile1, inst_list1);
+	parse_trace(infile2, inst_list2);
 
 	infile1.close();
 	infile2.close();

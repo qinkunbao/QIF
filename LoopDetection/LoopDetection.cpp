@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     uint32_t batch_size = 2000;
     uint32_t id = 1;
 
-    while (!parse_trace(&infile, inst_list, batch_size, id))
+    while (!parse_trace(infile, inst_list, batch_size, id))
     {
         id = id + batch_size;
     }

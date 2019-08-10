@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
     tana_type::T_ADDRESS m_addr;
     tana_type::T_SIZE  m_size;
 
-    parse_trace(&infile, m_addr, m_size, inst_list);
+    parse_trace(infile, m_addr, m_size, inst_list);
     infile.close();
     int inst_size = inst_list.size();
 
