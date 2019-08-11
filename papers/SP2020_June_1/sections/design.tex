@@ -77,8 +77,8 @@ The tool runs the symbolic execution on the top of the execution traces.
 At the beginning of the symbolic execution, the tool creates fresh 
 symbols for each byte in the sensitive buffer. For other data in the 
 register or memory at the beginning, we use concrete values from the 
-runtime information collected in
-the previous step. During the symbolic execution for each instruction, 
+runtime information collected during the runtime. 
+During the symbolic execution for each instruction, 
 the tool updates every variable in the memory and registers with a
 math formula. The formula is made up with concrete values and 
 the input key as the symbols accumulated through the symbolic execution.
@@ -182,9 +182,20 @@ cache lines, which means the value of L is 6.
 \tool{} is designed to help software developers find and understand the 
 side-channel vulnerabilities. To ease the procedure of fixing the bug,
 we also track the information flow for each byte of the input
-buffer. With the help of the symbolic execution, we can implement
+buffer. 
+The step can be seen as the mutiple-tag taint analysis.
+With the help of the information from symbolic execution, we can implement
 a relative simple but relatively precise information flow track.
-
+At the begining of the analysis, \tool{} keep a track for each byte 
+in the original buffer. When \tool{} symbolically executes each
+instruction in the trace, it will check every value read from
+registers or memory. If the value is concrete, it means the
+instruction has nothing to do with the original buffer.
+If the value is a formula, it means the orginal information
+pass through the instruction. Since each byte in the sensitive
+buffer is represented as a symbol with a unique ID, \tool{} can
+know which byte in the origin buffer actually goes through the
+instruction.
 
 \subsection{Information Leakage Estimation}
 
