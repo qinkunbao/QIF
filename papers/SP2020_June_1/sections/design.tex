@@ -314,10 +314,26 @@ several small constraints. We apply the following algorithm to get the Maximum I
 of the $F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$.
 
 \IncMargin{1em}
-\begin{algorithm}
+\begin{algorithm}[h]
+\DontPrintSemicolon
 \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-\Input{$F_{c_{addr_1},c_{addr_2},...,c_{addr_n}} = C_{{addr}_1} \land C_{{addr}_2} \land ,..., \land C_{{addr}_m}$}
-\Output{The Maximum Independent Partition of $F = C_{g1} \land C_{g2} \land , ..., \land C_{gm}$}
+\Input{$F_{c_{addr_1},c_{addr_2},...,c_{addr_n}} = C_{{addr}_1} \land C_{{addr}_2} \land ... \land C_{{addr}_m}$}
+\Output{The Maximum Independent Partition of $G = \{C_{g1}, C_{g2}  , ...,  C_{gm} \}$ }
+\For{$i\leftarrow 1$ \KwTo $n$}
+{
+   $S_i$ $\leftarrow$ $S(C_{addr_i})$ \;
+   \For{$C_{gi} \in G$} 
+   {
+   $S_{gi}$ $\leftarrow$ $S(C_{gi})$ \;
+   $s$ $\leftarrow$ $S_i \cap S_{gi}$  \;
+   \If{$s \neq \emptyset$}
+   {
+      $C_{gi} = C_{gi} \land C_{addr_i}$ \;
+      $break$ \;
+   }
+   Insert $C_{{addr}_i}$ to $G$
+   }
+}
 \caption{The Maximum Independent Partition}
 \end{algorithm}
 \DecMargin{1em}
@@ -346,7 +362,7 @@ the biased random walk and Monte Carlo Markov Chain Moves (MCMC). The hybrid
 approach makes \textit{SampleSAT} samples more uniformly to
 approximately count the number of solutions. Random walk (RW) is a 
 local search heuristic methods. We start the search from
-the one concrete sensitive input. If the constraint ($C_i$) is the conjunction
+the one concrete sensitive input. If the constraint ($C_gi$) is the conjunction
 of several small constraints, we feed the input into each small constraint. If 
 the input value doesn't satisfy the small constrains, we just choose one input 
 variable using the heuristic method and generate a new random value for the variable.
@@ -359,8 +375,27 @@ we also introduce the Metropolis moves with the random walk move.
 \IncMargin{1em}
 \begin{algorithm}
 \SetAlgoLined
+\DontPrintSemicolon
+
 \KwIn{{The constraint $C_i$}}    
 \KwOut{{The number of assignments that satisfy $C_i$ $|K_{Ci}|$}}
+
+\SetKwProg{RW}{RandomWalk}{}{end}
+\SetKwProg{MM}{MetropolisMove}{}{end}
+n: the number of sampling times \;
+P: a probability generator \;
+\For{$i\leftarrow 1$ \KwTo $n$} {
+      $p$ $\leftarrow$ $P$ \;
+      \If{$p \geq 0.5$}
+      {
+
+      }
+      \Else{
+            
+      }
+
+}
+
 \caption{SampleSAT sampling}
 \end{algorithm}
 \DecMargin{1em}
