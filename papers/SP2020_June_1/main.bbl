@@ -114,6 +114,10 @@ W.~Wei and B.~Selman, ``A new approach to model counting,'' in \emph{Theory and
   1em plus 0.5em minus 0.4em\relax Berlin, Heidelberg: Springer Berlin
   Heidelberg, 2005, pp. 324--339.
 
+\bibitem{Wei2004TowardsES}
+W.~Wei, J.~Erenrich, and B.~Selman, ``Towards efficient sampling: Exploiting
+  random walk strategies,'' in \emph{AAAI}, 2004.
+
 \bibitem{236338}
 \BIBentryALTinterwordspacing
 ``Identifying cache-based side channels through secret-augmented abstract
