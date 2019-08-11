@@ -206,21 +206,22 @@ leakage based on the definition~\ref{def}.
 From the above step~\ref{InstructionSE}, we can generate the constraint 
 for each unique leakage site on the execution trace.
 The only variables in those constraints are the sensitive data represented
-with $k_1, k_2, ... , k_n$. Suppose the address of the leakage site is $i$,
-we use $C_i$ to denote the constraint. For mutiple leakage sites, 
+with $k_1, k_2, ... , k_n$. Suppose the address of the leakage site is $addr_i$,
+we use $C_{addr_i}$ to denote the constraint. For multiple leakage sites, 
 as each leakage site has one constraint, we can 
 use the conjunction of those constraints to represent those leakage sites. 
 
 According to the definition~\ref{def}, to calculate the amount of leaked 
-information, the key is to calculate $\frac{|K|}{|K^o|}$. $|K^o|$ represents
+information, the key is to calculate $\frac{|K|}{|K^o|}$. $K^o$ represents
 the set that contains every input keys that satisfy the constraint. As the 
 cardinality of $K$ is known, the key problem is to know the cardinality of
 $K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site has
-the following constraints: $C_1, C_2, ..., C_n$ respectively. 
-The total leakage has the constraint $F_{c1c2...cn} = C_1 \land C_2 \land C_3
-\land ... \land C_n$. The problem of estimating the total leaked information 
-can be transfered into counting the number of different solutions that satisfies
-the constraint $F_{c1c2...cn}$. 
+the following constraints: $C_{addr_1}, C_{addr_2}, ..., C_{addr_n}$ respectively. 
+The total leakage has the constraint 
+$F_{c_{addr_1},c_{addr_2},...,c_{addr_n}} = C_{addr_1} \land C_{addr_2} \land C_{addr_3}
+\land ... \land C_{addr_n}$. The problem of estimating the total leaked information 
+can be transfered into the problem of counting the number of different solutions 
+that satisfies the constraint $F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$. 
 
 A native method for approximating 
 the result is to pick $k$ elements from $K$ and check how many of them are also
@@ -249,13 +250,13 @@ the above sampling method will typically fail in practice due to the following t
 \end{enumerate}
 
 In regard to the above problems, we present our methods. First, we split 
-$F_(c1...cn)$ into several independent constraint groups. After
+$F_(c_{addr_1},c_{addr_2},...,c_{addr_n})$ into several independent constraint groups. After
 that, we run random-walk based sampling method on each constraint.
 
 \subsubsection{Maximum Independent Partition}
 
-For a constraint $C_i$, we define a function $S$, mapping
-the constraint into a set of input symbols. For example, 
+For a constraint $C_i$, we define the function $S$, which maps
+the constraint into the set consisting of input symbols. For example, 
 $S(k1 + k2 > 128) = \{k1, k2\}$.
 
 \theoremstyle{definition}
@@ -267,18 +268,19 @@ $S(k1 + k2 > 128) = \{k1, k2\}$.
       $$S(C_m) \cap S(C_n) = \emptyset$$
 \end{definition}
 
-Based on the definition~\label{independentC}, the first step is to split
-the constraint $F_{c1c2...cn}$ into several independent constraints. There
-are many partitions. For our project, we are interested in the following
-one.
+Based on the definition~\label{independentC}, we can split
+the constraint $F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$ into several 
+independent constraints. There are many partitions. For our project, 
+we are interested in the following one.
 
 \begin{definition}
       \label{Goodpartition}
-      For the constraint $F_{c_1c_2...c_n}$ and the constraint group
+      For the constraint $F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$ and 
+      the constraint group
       $C_{g1}, C_{g2}, ..., C_{gm}$, we call  $C_{g1}, C_{g2}, ..., C_{gm}$
-      is the maximum independent partition of $F_{c_1c_2...c_n}$ iff
+      is the maximum independent partition of $F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$ iff
       \begin{enumerate}
-            \item $C_{g1} \land C_{g2} \land ... \land C_{gm} = F_{c_1c_2...c_n}$
+            \item $C_{g1} \land C_{g2} \land ... \land C_{gm} = F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$
             \item $\forall \quad i, j \in \{1, 2, 3, ..., m\} \quad \textrm{and} \quad 
                   i \neq j, \quad S(C_{gi}) \cap S(C_{gj}) = \emptyset $
             \item For any other partitions  $C_{g1}, C_{g2}, ..., C_{gn}$ satisfy 1) and
@@ -294,28 +296,28 @@ The good partition of $F$ would be
 $$C_{g1}: {k_1} = 1\quad C_{g2}: {k_2} = 2\quad C_{g3}: {k_3} = 3\quad C_{g4}: {k_4} = 4$$     
 So instead of sampling in the four dimension space, we can
 sample each constraint in the one dimension space and combine them
-together.
+together with~\ref{mip-theorem} .
 \newtheorem{theorem}{Theorem}[section]
-
+\label{mip-theorem}
 \begin{theorem}
       \label{IndependentConstraint}
 $C_{g1}, C_{g2}, ..., C_{gm}$ is a maximum independent partition of $F_{c_1c_2...c_n}$.
 $K_c$ is the input set that satisfies constrain $c$. We can have the following
 equation in regard to the size of $K_c$
-$$|K_{F_{c_1c_2...c_n}}| = |K_{C_{g1}}|*|K_{C_{g2}}|*...*|K_{C_{gn}}|$$
+$$|K_{F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}}| = |K_{C_{g1}}|*|K_{C_{g2}}|*...*|K_{C_{gn}}|$$
 \end{theorem}
 
 With the~\ref{IndependentConstraint}, we can transfer the problem of counting the number of 
 solutions in a large constraint with high
 dimensions into counting solutions of 
 several small constraints. We apply the following algorithm to get the Maximum Independent Partition
-of the $F_{c_1c_2...c_n}$.
+of the $F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$.
 
 \IncMargin{1em}
 \begin{algorithm}
 \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-\Input{$F_{c_1c_2...c_n} = C_{g1} \land C_{g2} \land ... \land C_{gm}$}
-\Output{The Maximum Independent Partition of $F$}
+\Input{$F_{c_{addr_1},c_{addr_2},...,c_{addr_n}} = C_{{addr}_1} \land C_{{addr}_2} \land ,..., \land C_{{addr}_m}$}
+\Output{The Maximum Independent Partition of $F = C_{g1} \land C_{g2} \land , ..., \land C_{gm}$}
 \caption{The Maximum Independent Partition}
 \end{algorithm}
 \DecMargin{1em}
@@ -359,7 +361,7 @@ we also introduce the Metropolis moves with the random walk move.
 \SetAlgoLined
 \KwIn{{The constraint $C_i$}}    
 \KwOut{{The number of assignments that satisfy $C_i$ $|K_{Ci}|$}}
-
+\caption{SampleSAT sampling}
 \end{algorithm}
 \DecMargin{1em}
 
