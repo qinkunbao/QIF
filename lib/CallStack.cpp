@@ -86,13 +86,14 @@ namespace tana {
 
     int CallStackKey::retStack(const std::string &fun_name)
     {
-        auto current_fun = stack_funs.top();
-        if (current_fun != fun_name)
-        {
-            return 0;
+        if(!stack_funs.empty()) {
+            auto current_fun = stack_funs.top();
+            if (current_fun != fun_name) {
+                return 0;
+            }
+            --stack_depth;
+            stack_funs.pop();
         }
-        --stack_depth;
-        stack_funs.pop();
         return stack_depth;
 
     }
