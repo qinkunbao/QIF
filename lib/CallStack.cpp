@@ -65,21 +65,21 @@ namespace tana {
             return 0;
 
         tuple<string, int> current_stack = stack_sites->leakage_stack_sites.back();
-
-        string current_fun = stack_funs.top();
-        int current_stack_max = get<1>(current_stack);
-
-        if(current_fun == fun_name)
+        if(!stack_funs.empty())
         {
-            return current_stack_max;
+            string current_fun = stack_funs.top();
+            int current_stack_max = get<1>(current_stack);
+
+            if (current_fun == fun_name) {
+                return current_stack_max;
+            }
+
+            ++stack_depth;
+            stack_funs.push(fun_name);
+
+            auto call = std::make_tuple(fun_name, stack_depth);
+            stack_sites->leakage_stack_sites.push_back(call);
         }
-
-        ++stack_depth;
-        stack_funs.push(fun_name);
-
-        auto call = std::make_tuple(fun_name, stack_depth);
-        stack_sites->leakage_stack_sites.push_back(call);
-
         return stack_depth;
     }
 
