@@ -9,12 +9,15 @@
 
 #include "BitVector.h"
 #include "ins_types.h"
+#include "Function.h"
 
 
 namespace tana {
 
     class Inst_Dyn_Factory {
     public:
+        static std::unique_ptr<Inst_Base> makeInst(x86::x86_insn id, bool isStatic, \
+                                          std::shared_ptr<Function> func, uint32_t addr);
         static std::unique_ptr<Inst_Base> makeInst(x86::x86_insn id, bool isStatic);
     };
 

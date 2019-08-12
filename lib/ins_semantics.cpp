@@ -148,8 +148,14 @@ namespace tana {
         se->updateFlags("CF", res);
     }
 
-
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic) {
+        return Inst_Dyn_Factory::makeInst(id, isStatic, nullptr, 0);
+    }
+
+
+    std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic,\
+                                                          std::shared_ptr<Function> func, \
+                                                          uint32_t addr) {
 
 
         switch (id) {
@@ -406,6 +412,15 @@ namespace tana {
                 return std::make_unique<INST_X86_INS_BSWAP>(isStatic);
 
             default: {
+                if(func != nullptr)
+                {
+                    std::string info = "unrecognized inst: " + func->getFunName(addr);
+                    WARN(info.c_str());
+                    std::cout << x86::insn_id2string(id) << std::endl;
+                    return std::make_unique<Inst_Base>(isStatic);
+
+                }
+
                 WARN("unrecognized instructions");
                 std::cout << x86::insn_id2string(id) << std::endl;
                 return std::make_unique<Inst_Base>(isStatic);
