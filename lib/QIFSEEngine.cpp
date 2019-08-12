@@ -548,7 +548,10 @@ namespace tana {
 
             checkMemoryAccess(it);
 
-
+            if(it->id == 67881)
+            {
+                std::cout << "Debug";
+            }
             bool status = it->symbolic_execution(this);
             updateStacks(current_eip);
 
