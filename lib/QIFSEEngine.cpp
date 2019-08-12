@@ -357,8 +357,48 @@ namespace tana {
                 calculate = QIFSEEngine::eval_cache(v_test, key_value_map);
             }
             con = mem_data;
-            auto con_t = BitVector::extract(con, size, 1);
-            auto calculate_t = BitVector::extract(calculate, size, 1);
+            uint32_t con_t, calculate_t;
+            if (size == T_BYTE_SIZE * T_BYTE)
+            {
+                if (offset == 0)
+                {
+                    con_t = BitVector::extract(con, 8, 1);
+                    calculate_t = BitVector::extract(calculate, 8, 1);
+                }
+                if (offset == 1)
+                {
+                    con_t = BitVector::extract(con, 16, 9);
+                    calculate_t = BitVector::extract(calculate, 16, 9);
+                }
+                if (offset == 2)
+                {
+                    con_t = BitVector::extract(con, 24, 17);
+                    calculate_t = BitVector::extract(calculate, 24, 17);
+                }
+                if (offset == 3)
+                {
+                    con_t = BitVector::extract(con, 32, 25);
+                    calculate_t = BitVector::extract(calculate, 32, 25);
+                }
+
+            }
+
+            if (size == T_BYTE_SIZE * T_WORD)
+            {
+                if (offset == 0) {
+                    con_t = BitVector::extract(con, 16, 1);
+                    calculate_t = BitVector::extract(calculate, 16, 1);
+                }
+                if (offset == 1) {
+                    con_t = BitVector::extract(con, 32, 17);
+                    calculate_t = BitVector::extract(calculate, 32, 17);
+                }
+            }
+            if (size == T_BYTE_SIZE * T_DWORD)
+            {
+                con_t = con;
+                calculate_t = calculate;
+            }
 
             if (con_t != calculate_t) {
 
