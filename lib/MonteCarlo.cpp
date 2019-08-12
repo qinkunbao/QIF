@@ -130,6 +130,10 @@ namespace tana {
         tests.reserve(sample_num);
         input_vector = MonteCarlo::getAllKeys(con);
         unsigned int input_dimensions = input_vector.size();
+        if(func == nullptr)
+        {
+            isFunctionInformationAvailable = false;
+        }
 
         int step = 0, step_size = sample_num / 10;
         spiltConstrainsByAddress();
