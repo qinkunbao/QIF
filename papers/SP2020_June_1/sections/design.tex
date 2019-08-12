@@ -377,23 +377,26 @@ we also introduce the Metropolis moves with the random walk move.
 \SetAlgoLined
 \DontPrintSemicolon
 
-\KwIn{{The constraint $C_i$}}    
-\KwOut{{The number of assignments that satisfy $C_i$ $|K_{Ci}|$}}
+\KwIn{{The constraint $C_{gi}$}}    
+\KwOut{{The number of assignments that satisfy $C_{gi}$ $|K_{Ci}|$}}
 
-\SetKwProg{RW}{RandomWalk}{}{end}
-\SetKwProg{MM}{MetropolisMove}{}{end}
-n: the number of sampling times \;
-P: a probability generator \;
+\SetKwProg{RW}{RandomWalk}{}{}
+\SetKwProg{MM}{MetropolisMove}{}{}
+$n$: the number of sampling times \;
+$P$: a probability generator \;
+$v$: the input assignment \;
+$n_{s}$: the number of satisfying assignments \;
 \For{$i\leftarrow 1$ \KwTo $n$} {
       $p$ $\leftarrow$ $P$ \;
       \If{$p \geq 0.5$}
       {
-
+        $v$ $\leftarrow$ \RW{$v$} {}
       }
       \Else{
-            
+            $v$ $\leftarrow$ \MM{$v$} {}
       }
-
+      \If{$v$ satisfies $C_{gi}$}
+      {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
 }
 
 \caption{SampleSAT sampling}
