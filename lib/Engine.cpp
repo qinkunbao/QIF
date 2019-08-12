@@ -255,6 +255,7 @@ namespace tana {
     uint32_t
     SEEngine::eval(const std::shared_ptr<BitVector> &v, const std::map<int, uint32_t> &inmap) {
         const std::unique_ptr<Operation> &op = v->opr;
+
         if (op == nullptr) {
             if (v->val_type == ValueType::CONCRETE)
                 return v->concrete_value;
