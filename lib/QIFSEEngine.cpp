@@ -385,6 +385,7 @@ namespace tana {
 
             if (size == T_BYTE_SIZE * T_WORD)
             {
+                offset = memory_address % 2;
                 if (offset == 0) {
                     con_t = BitVector::extract(con, 16, 1);
                     calculate_t = BitVector::extract(calculate, 16, 1);
