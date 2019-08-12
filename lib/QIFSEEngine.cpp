@@ -590,8 +590,9 @@ namespace tana {
             checkMemoryAccess(it);
 
             bool status = it->symbolic_execution(this);
-            updateStacks(current_eip);
-
+            if(func != nullptr) {
+                updateStacks(current_eip);
+            }
             std::vector<std::shared_ptr<BitVector>> sym_res;
 
             // Get symbolic register value after the SE
@@ -746,18 +747,19 @@ namespace tana {
 
             //std::cout << "Debug" << std::endl;
             ERROR("Debug");
-            exit(0);
         }
 
-        auto input_vector = cons->getInputKeys();
-        std::vector<std::shared_ptr<CallLeakageSites>> sites;
-        for(const int & key:input_vector)
-        {
-            auto site = stacks->cloneCallLeakageSites(key);
-            sites.push_back(site);
-        }
+        if(func!= nullptr) {
 
-        cons->updateCallSites(sites);
+            auto input_vector = cons->getInputKeys();
+            std::vector<std::shared_ptr<CallLeakageSites>> sites;
+            for (const int &key:input_vector) {
+                auto site = stacks->cloneCallLeakageSites(key);
+                sites.push_back(site);
+            }
+
+            cons->updateCallSites(sites);
+        }
 
         auto res = std::make_tuple(this->eip, cons, LeakageType::CFLeakage);
 
@@ -772,15 +774,17 @@ namespace tana {
             ERROR("Invalid Constrains");
         }
 
-        auto input_vector = cons->getInputKeys();
-        std::vector<std::shared_ptr<CallLeakageSites>> sites;
-        for(const int & key:input_vector)
-        {
-            auto site = stacks->cloneCallLeakageSites(key);
-            sites.push_back(site);
-        }
+        if(func != nullptr) {
 
-        cons->updateCallSites(sites);
+            auto input_vector = cons->getInputKeys();
+            std::vector<std::shared_ptr<CallLeakageSites>> sites;
+            for (const int &key:input_vector) {
+                auto site = stacks->cloneCallLeakageSites(key);
+                sites.push_back(site);
+            }
+
+            cons->updateCallSites(sites);
+        }
 
         auto res = std::make_tuple(this->eip, cons, LeakageType::DALeakage);
 
