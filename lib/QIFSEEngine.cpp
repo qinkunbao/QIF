@@ -354,7 +354,7 @@ namespace tana {
             if (v_test->symbol_num() == 0) {
                 calculate = QIFSEEngine::eval(v_test);
             } else {
-                calculate = QIFSEEngine::eval_cache(v_test, key_value_map);
+                calculate = QIFSEEngine::eval(v_test, key_value_map);
             }
             con = mem_data;
             uint32_t con_t, calculate_t;
@@ -589,10 +589,6 @@ namespace tana {
 
             checkMemoryAccess(it);
 
-            if(it->id == 67881)
-            {
-                std::cout << "Debug";
-            }
             bool status = it->symbolic_execution(this);
             updateStacks(current_eip);
 
@@ -773,8 +769,7 @@ namespace tana {
         {
 
             //std::cout << "Debug" << std::endl;
-            ERROR("Debug");
-            exit(0);
+            ERROR("Invalid Constrains");
         }
 
         auto input_vector = cons->getInputKeys();
