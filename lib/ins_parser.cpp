@@ -394,7 +394,8 @@ namespace tana {
 
     bool parse_trace_qif(std::ifstream &trace_file, tana_type::T_ADDRESS &addr_taint, \
                          tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L,
-                         std::vector<uint8_t> &key_value, uint64_t max_inst, uint64_t instsize) {
+                         std::vector<uint8_t> &key_value, uint64_t max_inst, uint64_t instsize,
+                         std::shared_ptr<Function> func) {
         std::string line;
         uint32_t id_count = 1, num = 1;
         getline(trace_file, line);
@@ -480,7 +481,7 @@ namespace tana {
                 ins_id = x86::insn_string2id(opcstr);
             }
 
-            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(ins_id, false);
+            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(ins_id, false, func, ins_addrn);
 
             ins->id = ins_index;
             ins->addrn = ins_addrn;

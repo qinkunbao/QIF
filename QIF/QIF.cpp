@@ -10,7 +10,7 @@
 #include <sstream>
 #include <chrono>
 #include <cmath>
-#include <string.h>
+#include <cstring>
 #include "MonteCarlo.h"
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::shared_ptr<Function> func;
+    std::shared_ptr<Function> func = nullptr;
 
 
     uint64_t MonteCarloTimes = 10000;
@@ -112,7 +112,7 @@ int main(int argc, char* argv[]) {
     trace_file.close();
     trace_file.open(argv[1]);
 
-    parse_trace_qif(trace_file, start_addr, m_size, inst_list, key_value, max_inst, inst_size);
+    parse_trace_qif(trace_file, start_addr, m_size, inst_list, key_value, max_inst, inst_size, func);
 
     std::cout << "Start Address: " << std::hex << start_addr << std::dec
               << " Length: " << m_size << std::endl;
