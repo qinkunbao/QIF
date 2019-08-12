@@ -378,7 +378,7 @@ we also introduce the Metropolis moves with the random walk move.
 \DontPrintSemicolon
 
 \KwIn{{The constraint $C_{gi}$}}    
-\KwOut{{The number of assignments that satisfy $C_{gi}$ $|K_{Ci}|$}}
+\KwOut{{The number of assignments that satisfy $C_{gi}$ $|K_{C_{gi}}|$}}
 
 \SetKwProg{RW}{RandomWalk}{}{}
 \SetKwProg{MM}{MetropolisMove}{}{}
@@ -398,7 +398,7 @@ $n_{s}$: the number of satisfying assignments \;
       \If{$v$ satisfies $C_{gi}$}
       {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
 }
-
+$|K_{C_{gi}}|$ $\leftarrow$ $n_s|K| / n$
 \caption{SampleSAT sampling}
 \end{algorithm}
 \DecMargin{1em}
