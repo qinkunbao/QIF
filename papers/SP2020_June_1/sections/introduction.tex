@@ -1,20 +1,20 @@
 \section{Introduction}
 %% side channels are important
-Side channels are hardly avoided in modern computer systems as the sensitive information 
-may be leaked by kinds of neglected behaviors, 
+Side channels are inevitable in modern computer systems as the sensitive information 
+may be leaked by many kinds of behaviors, 
 such as power, electromagnetic radiation and even sound~\cite{}. 
 Among them, software-based side-channel vulnerabilities are especially common and have been studied for years~\cite{}. 
-The vulnerability results from vulnerable software codes and shared hardware components.
-By observing the outputs or hardware behaviors, attackers could 
-infer the program execution flow with secrets and guess the secrets such as encryption keys~\cite{}.
+The vulnerabilities result from vulnerable software codes and shared hardware components.
+By observing the outputs or hardware behaviors, attackers 
+infer the program execution flow that manipulate secrets and 
+guess the secrets such as encryption keys~\cite{}.
 
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against 
-software-based side-channel attacks by reducing the shared resources
+software-based side-channel attacks by reducing shared resources
 and eliminating the leak paths~\cite{182946,203878,217537}. 
-In addition to runtime overheads, they are limited to specific hardwares. 
-So it is imperative to discover and fix side channel vulnerabilities in advance 
-and automatic detection methods are proposed recently~\cite{}.
+In addition to runtime overheads, those methods are limited to specific hardwares. 
+So it is imperative to discover and fix side channel vulnerabilities in advance.
 
 %% There are some detection methods but need a good assess method 
 In general, both static analysis and dynamic analysis
@@ -22,38 +22,43 @@ can be used to detect software-based side-channel vulnerabilities.
 Statical methods include \fixme{xxx} and dynamic emthods include \fixme{xxx}.
 They help to find a list of hidden vulnerabilities in real-world software, 
 but fail to report how severe a potential leakage site could be. 
-Many of the reported vulnerabilities are typically hard to be exploited 
+Many of the reported vulnerabilities are typically hard to exploit
 and leak very little information, e.g., one bit of the length of the key~\cite{203878}.  
-For example, the vulnerabilities in OpenSSL library are assigned with low severity and not considered 
+For example, the vulnerabilities in OpenSSL library are assigned with a low severity 
+and not considered 
 in the threat model now~\cite{https://www.openssl.org/policies/secpolicy.html}. 
-It is worthwhile to have a tool to tell how much information is actually leaked and help to fix them.
+It would be valuable to have a tool to tell how much information is actually leaked 
+at a vulnerability.
 
 To assess side-channel vulnerabilities, we need a proper quantification metric.
-Tools based on static analysis with abstract interpretation can give an upper bound, 
+Tools based on static analysis with abstract interpretation can provide an upper bound, 
 which is useful to justify whether the implementation is secure enough. 
-However, they can’t indicate the leakage is severe or not due to the over-approximation~\cite{}. 
-The ``average'' information leakage assumes that the target program will have \textbf{variable} sensitive 
-information when the attacker launches the attack.
+However, they cannot indicate the leakage is severe due to the over-approximation~\cite{}. 
+The ``average'' information leakage assumes that the target program will have 
+\textbf{different} sensitive 
+input when an attacker launches the attack.
 But for real-world attacks, an adversary may run the target problem again and over again 
 with \textbf{fixed} unknown sensitive information such as the key.
-The dynamic methods take another way with a concrete input and run the program actually. 
-Although they are very precise, they suffer from the incompleteness of testing 
-and trade-off of performance and accuracy~\cite{}.
+The dynamic methods take another way with a concrete input and run the program in real
+environment. 
+Although they are very precise in term of true leakages, no existing tool can
+assess the vulnerabilities they discover.
 \fixme{why DATA example is commented out below.}
 %For example, DATA~\cite{217537} reports more than 2000 potential leakage sites for the RSA implementation of OpenSSL.
 %But most of them were dismissed by the author after some manual inspections.
 
 Additionally, open source libraries may have multiple leakage sites, which can be exploited for attackers
-at one time~\cite{191010,7163052,hornby2011side}. 
-%The attacker may retrieve part of the sensitive information from one site, part of the sensitive
-%information from another site and combine them.
+at once~\cite{191010,7163052,hornby2011side}. 
+The attacker may retrieve part of the sensitive information from one site, part of the sensitive
+information from another site and combine them.
 It is necessary to know how much information is actually leaked in total, 
 but no existing tools can practically estimate multiple leakage sites in real-world libraries.
-Simply adding the results together gets a very rough upper bound of the total information leakage if those 
-leakages aren’t independent. 
+Simply adding the results for each leakgae sites together gets a very rough upper bound of 
+the total information leakage if those 
+leakages are not independent. 
 
 To overcome the above limitations, we propose a novel method
-to quantify the information leakage more precisely. 
+to quantify information leakage more precisely. 
 %Different from previous works, which only consider the
 %``average'' information leakage, we study the problem from real attack scenario.
 %The average information assumes that the target program will have \textbf{variable} sensitive 
@@ -65,7 +70,7 @@ to quantify the information leakage more precisely.
 %For our analysis, the input key is fixed. 
 In general, we quantify the leaked information as the uncertain input space based on attackers' observation.
 %It is interesting to notice that the definition is different from that in previous static analysis tools. 
-Before the attack, the adversary has a big but finite input space.
+Before an attack, an adversary has a big, but finite input space.
 Every time the adversary observes one leakage site, he can eliminate some potential input and
 reduce the size of the input space. 
 %The smaller the input space is, the more information is actually gained. 
@@ -78,7 +83,7 @@ In this way, we quantify the information leakage more precisely.
 
 
 More specifically, we build a tool called \tool{},\footnote{Clever Hans is a horse that can ``count''.
-  Our tool uses an advanced method to count the number of leaked bits through side channel.}
+Our tool uses an advanced method to count the number of leaked bits through side channel.}
 which could discover and estimate those potential information leakage sites 
 as well as how many bits they can leak. 
 We assume that adversaries can exploit different control-flow transfers and data-access patterns when 
