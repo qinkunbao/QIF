@@ -34,11 +34,11 @@
 \maketitle
 
 \begin{abstract}
-    Side-channel attacks allow attackers to infer some sensitive 
+    Side-channel attacks allow attackers to infer sensitive 
     information based on non-functional characteristics. 
-    Existing works on address-based side-channel detection 
+    Existing work on address-based side-channel detection 
     can provide a list of potential side-channel leakage sites. However, they 
-    1) only consider the ``average'' information leakage 
+    1) only consider the ``average'' information leakage, 
     which often neglect severe attack scenarios,
     2) cannot accurately report
     the sum of multiple information leakages from various sites at one time.
@@ -50,17 +50,19 @@
     The key insight is \fixme{XXXXX}.
     We have developed a tool called \tool{}, which can not only 
     find the side-channel vulnerabilities but also estimate how many bits are actually leaked. 
-    \tool{} works in three steps. First, the application is executed to record the 
-    trace. Second, \tool{} runs the instruction level symbolic execution on the top of the 
+    \tool{} works in three steps. First, the application is executed to record 
+    trace. Second, \tool{} runs the instruction level symbolic execution on the 
     execution trace. \tool{} will find side-channel information leakages and model each leakage 
-    as one unique math constraint. Finally, \tool{} will classify those constraints into 
-    independent multiple groups and run the Markov Chain Monte Carlo to estimate the 
+    as a unique math constraint. Finally, \tool{} will classify those constraints into 
+    independent multiple groups and run a Markov Chain Monte Carlo analysis to estimate the 
     information leakage. \tool{} can report a very fined-grained vulnerability result 
-    compared to the existing tools.
+    compared to existing tools.
     
-    We applied the tool on OpenSSL, MbedTLS and libjpeg and found several serious side-channel 
-    vulnerabilities. Compared with previous research, the results are surprisingly different 
-    that most of the reported vulnerabilities are hard to exploit in practice. 
+    We applied the tool to OpenSSL, MbedTLS and libjpeg and found several serious side-channel 
+    vulnerabilities. Compared with previous research, the results are surprisingly different. 
+    First, it shows most of the reported vulnerabilities are hard to exploit in practice. 
+    Second, we also find some several sensitive vulnerabilities which are neglected before with \tool{}. 
+    We confirmed those vulnerabilities with software developpers.
     %% which are confirmed with manual checks and software developpers. 
 
 \end{abstract}

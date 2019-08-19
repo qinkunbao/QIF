@@ -153,8 +153,8 @@ of the $F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$.
 
 \subsubsection{Random Walk based Sampling}
 
-After we split the constraints into several small constrainst, we count
-the number of solutions on each constraints. Even though the dimension
+After we split those constraints into several small constraints, we count
+the number of solutions for each constraint. Even though the dimension
 has been reduced greatly after the previous step, this is still a
 \#P problem. For our project, we apply the approximate counting instead of
 exact counting for two reasons. First, we don't need to have a very precise
@@ -164,23 +164,27 @@ $10^{10}$ and $10^{10} + 10$ solutions.
 Second, as the constraint could be very complicated. The exact model counting
 approaches, like DPLL search, have difficulty scaling up to large problem sizes.
 
-We apply the "counting by sampling" method. The basic idea is as follow: we 
-sample more pionts in those areas that are more likely to have satisfying
-points. In other words, we will sample from a probability distribution. 
+We apply the ``counting by sampling" method. The basic idea is as follow: we 
+sample more points in those areas that are more likely to have satisfying
+points. In other words, we will sample from a probability distribution. We 
+notice that for each constraint $C_{g_i}$, it is the conjunction of several
+small constraints $C_{i_j}$. Given one assignment, it is possible the assignment
+doesn't satisfy the constraint $C_{g_i}$ but satisfy some of the small constraints $C_{i_j}$.
+We define the satisfying number (SN) of the assignment as below.
 
-\textit{SampleSAT} interleaves
-the biased random walk and Monte Carlo Markov Chain Moves (MCMC). The hybrid
-approach makes \textit{SampleSAT} samples more uniformly to
-approximately count the number of solutions. Random walk (RW) is a 
-local search heuristic methods. We start the search from
-the one concrete sensitive input. If the constraint ($C_gi$) is the conjunction
-of several small constraints, we feed the input into each small constraint. If 
-the input value doesn't satisfy the small constrains, we just choose one input 
-variable using the heuristic method and generate a new random value for the variable.
+\begin{definition}[]
+      Let K be one of the assignment of the constraint $C_{g_i} = C_{i_1} \land C_{i_2}
+      \land ... \land C_{i_m}$. The satisfying number ${SR_{K_{i}}}$ of K with respect to $C_{g_i}$
+      is
+      $${SN_{K_{i}}} = \sum_{j=1}^{m}C_{i_j}$$
+\end{definition}
 
-The random walk move can reach the solutions from every domains.
-However, the sampling is biased with the biased random walk. Therefore,
-we also introduce the Metropolis moves with the random walk move.
+With ${SN_{K_{i}}}$, we can classify the whole assignment space of $C_{g_i} = C_{i_1} \land C_{i_2} \land ... \land C_{i_m}$ 
+into $m + 1$ different states according to the value of ${SR_{K_{i}}}$. The intuition is 
+that we can sample more points in those areas with high $SN$. Therefore, we define the sampling
+distribution as $p_{SN}(s) = \frac{SN_s}{(m+1)^2}$. Our next step is to sample from the 
+distribution $p_{SN}(s)$. Here we use the Metropolis-Hastings algorithm to sample from the
+distribution $p_{SN}(s)$.
 
 %% the algorithm
 \IncMargin{1em}
@@ -188,16 +192,20 @@ we also introduce the Metropolis moves with the random walk move.
 \SetAlgoLined
 \DontPrintSemicolon
 
-\KwIn{{The constraint $C_{gi}$}}    
+\KwIn{{The constraint $C_{gi}= C_{i_1} \land C_{i_2}
+\land ... \land C_{i_m}$}}    
 \KwOut{{The number of assignments that satisfy $C_{gi}$ $|K_{C_{gi}}|$}}
 
 \SetKwProg{RW}{RandomWalk}{}{}
 \SetKwProg{MM}{MetropolisMove}{}{}
 $n$: the number of sampling times \;
 $P$: a probability generator \;
-$v$: the input assignment \;
+$k$: the input assignment \;
 $n_{s}$: the number of satisfying assignments \;
-\For{$i\leftarrow 1$ \KwTo $n$} {
+$SN_k$: the satisfying number of k \; 
+Initialization: \;
+$SN_{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}C_{i_j}(k_0)$ \;
+\For{$t\leftarrow 1$ \KwTo $n$} {
       $p$ $\leftarrow$ $P$ \;
       \If{$p \geq 0.5$}
       {
@@ -210,6 +218,6 @@ $n_{s}$: the number of satisfying assignments \;
       {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
 }
 $|K_{C_{gi}}|$ $\leftarrow$ $n_s|K| / n$
-\caption{SampleSAT sampling}
+\caption{Metropolis Sampling}
 \end{algorithm}
 \DecMargin{1em}
