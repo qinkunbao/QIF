@@ -1,25 +1,25 @@
 \section{Background}
 In this section, we first present a basic introduction to the 
-software-based side-channel attacks. Those attacks 
-are what we attempt to study in the paper. After that, we 
-will show existing methods on side-channel detection and quantification.
+software-based side-channel attacks. These attacks 
+are what we study in the paper. After that, we 
+will discuss existing methods on side-channel detection and quantification.
 
 \subsection{Software-based Side-Channels}
 Software-based side-channels % are information channels that can 
-leaks sensitive information unconsciously through different 
+leak sensitive information unconsciously through different 
 behaviors. %when the program accesses different memory addresses. 
 Fundamentally, those differences were caused by the memory hierarchy design 
-in modern computer systems. When the CPU fetches the data, it first searches
-the cache, which stores copies of the data that was 
-frequently used in main memory. If the data doesn't exist in the cache, 
+in modern computer systems. When a CPU fetches data, it first searches
+the cache, which stores copies of data that was 
+frequently referenced in main memory. If the data doesn't exist in the cache, 
 the CPU will read the data from the main memory (RAM). 
 According to the layer that causes the side-channels, we classify
-the software-based side channels into two categories: 
+side channels into two categories: 
 cache-based side-channel attacks and memory-based side-channel attacks.
 
 \subsubsection{Cache-based Attacks}
-In general, the cached-based side-channels seek 
-information relying on the time differences between the cache miss
+In general, the cached-based side-channels rely on the time differences 
+between the cache miss
 and the cache hit. Here we introduce two frequently used cache attacks:
 PRIME+PROBE and FLUSH+RELOAD.
 
@@ -29,7 +29,7 @@ In the second ``probe'' phase, the attacker re-accesses the cache set
 again. If the victim accesses the cache set and evicts part of 
 the data, the attacker will experience a slow measurement. If not, 
 it will be fast. By knowing which cache set the target
-program that accesses, the attacker can infer parts of
+program accesses, the attacker can infer locations of
 the sensitive information.
 
 \textit{FLUSH+RELOAD} targets a single cache line. 
@@ -38,7 +38,7 @@ It also has two phases. During the ``flush'' stage, the attacker
 flushes the ``monitored memory'' from the cache. Then the attacker
 waits for the victim to access the memory. In the next phase, the 
 attacker reload the ``monitored memory''. If the time is short, which
-indicates there is a cache hit and the victim reloads the memory before. 
+indicates there is a cache hit and the victim loaded the memory before. 
 On the other hand, the time will be longer since the CPU need to reload
 the memory into the cache line. 
 
