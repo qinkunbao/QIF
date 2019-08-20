@@ -1,20 +1,19 @@
 \section{Evaluation}
 
-\begin{table*}[t]
+\begin{table*}[h]
     \begin{tabular}{c c c c c c c c l}
     \hline
-    Program                   & Implementation                     & Start Function         & Key Size (bits)     & CF                    & DA                    & Total Leakage     & Number of Instructions & Process Time (s) \\ \hline
-    AES                       & OpenSSL 0.9.7                      & AES\_set\_encrypt\_key &                       &                       &                       &                       &                        &                  \\
-    DES                       & OpenSSL 0.9.7                      & DES\_string\_to\_key   &                       &                       &                       &                       &                        &                  \\
-    RSA                       & OpenSSL 0.9.7                      &                        &                       &                       &                       &                       &                        &                  \\
-    AES                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
-    DES                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
-    RSA                       & OpenSSL 1.1.1                      &                        &                       &                       &                       &                       &                        &                  \\
-    AES                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
-    DES                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
-    RSA                       & mbed TLS 2.5                       &                        &                       &                       &                       &                       &                        &                  \\
-    AES                       & mbed TLS 2.15                      &                        &                       &                       &                       &                       &                        &                  \\
-    DES                       & mbed TLS 2.15                      &                        &                       &                       &                       &                       &                        &                  \\
+    Program                & Start Function             & Input Size (bits)   & CF   & DA     & Maximum Leakage (bits)& Number of Instructions & Process Time (s) \\ \hline
+    AES OpenSSL-0.9.7      & AES\_set\_encrypt\_key     &     128             &      &        &                       &                        &                  \\
+    DES OpenSSL-0.9.7      & DES\_string\_to\_key       &     64              &      &        &                       &                        &                  \\
+    AES OpenSSL-1.1.1      & AES\_set\_encrypt\_key     &     128             &      &        &                       &                        &                  \\
+    DES OpenSSL-1.1.1      & DES\_string\_to\_key       &     64              &      &        &                       &                        &                  \\
+    AES mbedTLS-2.5        & mbedtls\_aes\_setkey\_enc	&     128             &      &        &                       &                        &                  \\
+    DES mbedTLS-2.5        & mbedtls\_des\_setkey\_enc  &     64              &      &        &                       &                        &                  \\
+    RSA mbedTLS-2.5        & mbedtls\_pk\_parse\_key    &     1024            &      &        &                       &                        &                  \\
+    AES mbedTLS-2.15       & mbedtls\_aes\_setkey\_enc  &     128             &      &        &                       &                        &                  \\
+    DES mbedTLS-2.15       & mbedtls\_des\_setkey\_enc  &     64              &      &        &                       &                        &                  \\
+    wget-1.18              & sock\_read                 &     494             &      &        &                       &                        &                   \\
     \hline
     \end{tabular}
 \end{table*}
@@ -22,8 +21,8 @@ We evaluate \tool{} with the real-world crypto libraries and non-crypto.
 For crypto libraries, we choose OpenSSL and mbedTLS, two most commonly used
 crypto libraries in today's software. For OpenSSL, we compile it with the option \textit{no-asm} 
 to disable the assembly language routines. For non-crypto libraries, 
-we study the libjepg, a commonly used lossy library implemented by 
-the Independent JPEG Group. We build the source code into a 32 bit 
+we study the libjepg, a commonly used image compression library. 
+We build the source code into a 32 bit 
 ELF binary with the GCC 8.0 on Ubuntu 14.04. Although our tool can
 work on stripped binaries, we use the symbol information to trace
 back leakage sites into the source code. We use Intel Pin version 3.7 
