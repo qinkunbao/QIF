@@ -385,12 +385,11 @@ namespace tana {
 
             if (size == T_BYTE_SIZE * T_WORD)
             {
-                offset = memory_address % 2;
                 if (offset == 0) {
                     con_t = BitVector::extract(con, 16, 1);
                     calculate_t = BitVector::extract(calculate, 16, 1);
                 }
-                if (offset == 1) {
+                if (offset == 2) {
                     con_t = BitVector::extract(con, 32, 17);
                     calculate_t = BitVector::extract(calculate, 32, 17);
                 }
@@ -589,6 +588,7 @@ namespace tana {
 
             checkMemoryAccess(it);
 
+
             bool status = it->symbolic_execution(this);
             if(func != nullptr) {
                 updateStacks(current_eip);
@@ -653,13 +653,13 @@ namespace tana {
                         ERROR("ERROR");
                     }
 
-                    // If the length of formula exceeds 5000, the tool
+                    // If the length of formula exceeds 50000, the tool
                     // will use concrete value instead
-                    //if(sym_res[j]->length() > 5000)
-                    //{
-                    //    auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
-                    //    writeReg(Registers::convertRegID2RegName(j), reg_v);
-                    //}
+                    if(sym_res[j]->length() > 50000)
+                    {
+                        auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
+                        writeReg(Registers::convertRegID2RegName(j), reg_v);
+                    }
 
 
                 }

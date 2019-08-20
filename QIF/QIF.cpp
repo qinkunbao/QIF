@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
     std::shared_ptr<Function> func = nullptr;
 
 
-    uint64_t MonteCarloTimes = 1000;
+    uint64_t MonteCarloTimes = 100;
     if(argc == 3)
     {
       stringstream strValue;

@@ -716,6 +716,7 @@ namespace tana {
         std::shared_ptr<Operand> op1 = this->oprd[1];
         std::shared_ptr<BitVector> v0, v1, res;
 
+
         if (op1->type == Operand::Reg) {
             auto reg = Registers::convert2RegID(op1->field[0]);
             v1 = se->readReg(reg);
