@@ -165,12 +165,17 @@ Second, as the constraint could be very complicated. The exact model counting
 approaches, like DPLL search, have difficulty scaling up to large problem sizes.
 
 We apply the ``counting by sampling" method. The basic idea is as follows.
-For the constraint $C_{gi}= C_{i_1} \land C_{i_2} \land ... \land C_{i_m}$, 
+For the constraint $C_{gi}= C_{i_1} \land C_{i_2} \land ,..., \land C_{i_j} \land ,..., 
+\land C_{i_m}$, 
 if the solution satisfies $C_{gi}$, it also
-satisfies any constraint from $C_{i_1}$ to $C_{i_m}$. Also, the constraint
-$C_{i_k}$ usually has less input values compared to the constraint $C_{gi}$.
-
-
+satisfies any constraint from $C_{i_1}$ to $C_{i_m}$. In other words,
+$K_{C_gi}$ should be the subset of $K_{C_1}$, $K_{C_2}$, ... , $K_{C_m}$.
+We notice that $C_i$ usually has less numbers of input compared to $C_{gi}$.
+For example, if $C_{i_j}$ has only one input variable, we can find the exact
+solution set $K_{C_{i_j}}$ of $C_{i_j}$ by trying every possible 256 solutions. After that,
+we can only generate random input numbers for the rest input variables in 
+constraint $C_{gi}$. With the simple trick, we can reduce the number of input while
+still ensure the accuracy.
 
 %% the algorithm
 \IncMargin{1em}
@@ -209,3 +214,6 @@ $|K_{C_{gi}}|$ $\leftarrow$ $n_s|K| / n$
 \DecMargin{1em}
 
 \subsubsection{Error Estimation}
+In this section, we analyze the accuracy of Monte Carlo approximate
+result. We use central limit theorem and propagation of uncertainty 
+to estimate the error of the number of leaked bits for leaked sites.
