@@ -1,34 +1,36 @@
 \section{Introduction}
 %% side channels are important
 Side channels are inevitable in modern computer systems as the sensitive information 
-may be leaked by many kinds of behaviors, 
+may be leaked by many kinds of inadvertent behaviors, 
 such as power, electromagnetic radiation and even sound~\cite{}. 
-Among them, software-based side-channel vulnerabilities are especially common and have been studied for years~\cite{}. 
-The vulnerabilities result from vulnerable software codes and shared hardware components.
-By observing the outputs or hardware behaviors, attackers 
+Among them, software-based side-channel attacks are especially common 
+and have been studied for years~\cite{}. 
+Those vulnerabilities result from vulnerable software and shared hardware components.
+By observing the outputs or hardware behaviors, attackers can
 infer the program execution flow that manipulate secrets and 
 guess the secrets such as encryption keys~\cite{}.
 
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against 
-software-based side-channel attacks by reducing shared resources
-and eliminating the leak paths~\cite{182946,203878,217537}. 
-In addition to runtime overheads, those methods are limited to specific hardwares. 
-So it is imperative to discover and fix side channel vulnerabilities in advance.
+software-based side-channel attacks. In term of hardware level,
+those methods includes reducing shared resources, adopting oblivious RAM and 
+transactinal memory~\cite{182946,203878,217537}. 
+However, in addition to runtime overheads, those methods are limited to specific hardwares. 
+Therefore, a more promising and universal direction are software countermeasures, which
+detect and eliminate secret-dependent control-flwo transfers and data accesses.
 
 %% There are some detection methods but need a good assess method 
-In general, both static analysis and dynamic analysis
-can be used to detect software-based side-channel vulnerabilities.
-Statical methods include \fixme{xxx} and dynamic emthods include \fixme{xxx}.
-They help to find a list of hidden vulnerabilities in real-world software, 
-but fail to report how severe a potential leakage site could be. 
+In general, recent work~\cite{203878} adopts both static and dynamic analysis
+to detect side-channels.
+They can find a list of potential leak sites in real-world software, 
+but fail to report how severe a potential leakage could be. 
 Many of the reported vulnerabilities are typically hard to exploit
-and leak very little information, e.g., one bit of the length of the key~\cite{203878}.  
-For example, the vulnerabilities in OpenSSL library are assigned with a low severity 
+and leak very little information (e.g., one bit of the length of the key~\cite{203878}).  
+For example, many vulnerabilities in OpenSSL library are assigned with a low severity 
 and not considered 
-in the threat model now~\cite{https://www.openssl.org/policies/secpolicy.html}. 
+in the current threat model~\cite{https://www.openssl.org/policies/secpolicy.html}. 
 It would be valuable to have a tool to tell how much information is actually leaked 
-at a vulnerability.
+at one vulnerability.
 
 To assess side-channel vulnerabilities, we need a proper quantification metric.
 Tools based on static analysis with abstract interpretation can provide an upper bound, 
@@ -38,7 +40,7 @@ The ``average'' information leakage assumes that the target program will have
 \textbf{different} sensitive 
 input when an attacker launches the attack.
 But for real-world attacks, an adversary may run the target problem again and over again 
-with \textbf{fixed} unknown sensitive information such as the key.
+with \textbf{fixed} unknown sensitive information such as the input.
 The dynamic methods take another way with a concrete input and run the program in real
 environment. 
 Although they are very precise in term of true leakages, no existing tool can

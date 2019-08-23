@@ -151,7 +151,7 @@ of the $F_{c_{addr_1},c_{addr_2},...,c_{addr_n}}$.
 \end{algorithm}
 \DecMargin{1em}
 
-\subsubsection{Random Walk based Sampling}
+\subsubsection{Multiple Step Monte Carlo Sampling}
 
 After we split those constraints into several small constraints, we count
 the number of solutions for each constraint. Even though the dimension
@@ -159,32 +159,15 @@ has been reduced greatly after the previous step, this is still a
 \#P problem. For our project, we apply the approximate counting instead of
 exact counting for two reasons. First, we don't need to have a very precise
 result of the exact number of total solutions. The information is defined with
-a logarithmic function. We don't need to distinguish between a formual having
+a logarithmic function. We don't need to distinguish between a constraint having
 $10^{10}$ and $10^{10} + 10$ solutions.
 Second, as the constraint could be very complicated. The exact model counting
 approaches, like DPLL search, have difficulty scaling up to large problem sizes.
 
-We apply the ``counting by sampling" method. The basic idea is as follow: we 
-sample more points in those areas that are more likely to have satisfying
-points. In other words, we will sample from a probability distribution. We 
-notice that for each constraint $C_{g_i}$, it is the conjunction of several
-small constraints $C_{i_j}$. Given one assignment, it is possible the assignment
-doesn't satisfy the constraint $C_{g_i}$ but satisfy some of the small constraints $C_{i_j}$.
-We define the satisfying number (SN) of the assignment as below.
+We apply the ``counting by sampling" method. 
 
-\begin{definition}[]
-      Let K be one of the assignment of the constraint $C_{g_i} = C_{i_1} \land C_{i_2}
-      \land ... \land C_{i_m}$. The satisfying number ${SR_{K_{i}}}$ of K with respect to $C_{g_i}$
-      is
-      $${SN_{K_{i}}} = \sum_{j=1}^{m}C_{i_j}$$
-\end{definition}
 
-With ${SN_{K_{i}}}$, we can classify the whole assignment space of $C_{g_i} = C_{i_1} \land C_{i_2} \land ... \land C_{i_m}$ 
-into $m + 1$ different states according to the value of ${SR_{K_{i}}}$. The intuition is 
-that we can sample more points in those areas with high $SN$. Therefore, we define the sampling
-distribution as $p_{SN}(s) = \frac{SN_s}{(m+1)^2}$. Our next step is to sample from the 
-distribution $p_{SN}(s)$. Here we use the Metropolis-Hastings algorithm to sample from the
-distribution $p_{SN}(s)$.
+
 
 %% the algorithm
 \IncMargin{1em}
@@ -197,7 +180,7 @@ distribution $p_{SN}(s)$.
 \KwOut{{The number of assignments that satisfy $C_{gi}$ $|K_{C_{gi}}|$}}
 
 \SetKwProg{RW}{RandomWalk}{}{}
-\SetKwProg{MM}{MetropolisMove}{}{}
+\SetKwProg{MM}{MetropolisMove}{}{} 
 $n$: the number of sampling times \;
 $P$: a probability generator \;
 $k$: the input assignment \;
@@ -221,3 +204,5 @@ $|K_{C_{gi}}|$ $\leftarrow$ $n_s|K| / n$
 \caption{Metropolis Sampling}
 \end{algorithm}
 \DecMargin{1em}
+
+\subsubsection{Error Estimation}
