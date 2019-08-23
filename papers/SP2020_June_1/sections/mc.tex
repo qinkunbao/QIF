@@ -164,8 +164,11 @@ $10^{10}$ and $10^{10} + 10$ solutions.
 Second, as the constraint could be very complicated. The exact model counting
 approaches, like DPLL search, have difficulty scaling up to large problem sizes.
 
-We apply the ``counting by sampling" method. 
-
+We apply the ``counting by sampling" method. The basic idea is as follows.
+For the constraint $C_{gi}= C_{i_1} \land C_{i_2} \land ... \land C_{i_m}$, 
+if the solution satisfies $C_{gi}$, it also
+satisfies any constraint from $C_{i_1}$ to $C_{i_m}$. Also, the constraint
+$C_{i_k}$ usually has less input values compared to the constraint $C_{gi}$.
 
 
 
