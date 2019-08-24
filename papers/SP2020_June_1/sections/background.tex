@@ -53,7 +53,7 @@ After examining the memory-based side-channels attack, we believe the root
 cause of those attacks are secret-dependent memory access and control
 flow transfers.  \fixme{This paragraph is confusing. Secret-dependent memory access and control
   flow transfers can be cache-based side channels. We need further develop this so it is not a surprise
-when it is mentioned in the next subsection.}
+when it is mentioned in the next subsection. It is better to classify these into 'branch-taken-related' and 'data-accessed-related.'}
 
 %
 %\lstinputlisting[language=c, 
@@ -76,7 +76,7 @@ when it is mentioned in the next subsection.}
 
 \subsection{Information Leakage Quantification}
 
-\fixme{Section (II.B), this subsection: Clarify mutual information, min-entropy, and maximal leakage. How many types?}
+\fixme{Section (II.B), this subsection: Clarify mutual information, min-entropy, and maximal leakage. How many types? maybe use subsubsection}
 
 Given an event $e$ which occurs with the probability $P(e)$, if the event $e$ happens, 
 then we receive
@@ -142,47 +142,38 @@ information (Channel Capacity).
 \end{displaymath}
 Here $C(O)$ represents the number of different observations that an attacker can have. 
 
+%% put this example in next section
+%%\section{Running Example}
 
-\section{Running Example}
+%Now we provide a concrete example to show how the two types of quantification definition works and show that
+%how our method is different.
 
-Now we provide a concrete example to show how the two types of quantification definition works and show that
-how our method is different.
+%\vspace{3pt}
+%\textbf{Maximal Leakage.} 
+%Depending on the value of key, the code can run four different branches which corrosponding to 
+%four different observations. Therefore, by the maximal leakage definition, the leakage equals to 
+%$\log4 = 2$ bits.
 
-\vspace{3pt}
-\textbf{Maximal Leakage.} 
-Depending on the value of key, the code can run four different branches which corrosponding to 
-four different observations. Therefore, by the maximal leakage definition, the leakage equals to 
-$\log4 = 2$ bits.
+%\vspace{3pt}
+%\textbf{Mutual Information.}
+%If the key satisfies the uniform distribution, the probability of the code runs each branch
+%can be computed with the following result.  
 
-\lstinputlisting[language=c, 
-                 numbers=left,
-                 caption={A simple program},
-                 captionpos=b,
-                 frame=single,
-                 label={code::entropy},
-                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
-                 {sample_code/dependent.c}
+%\begin{table}[h]
+%\centering
+%\resizebox{\columnwidth}{!}{
+%\begin{tabular}{|c|c|c|c|c|}
+%\hline
+%Branch & A     & B      & C      & D       \\ \hline
+%Possibility      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
+%\end{tabular}
+%}
+%\caption{The distribution of observations}
+%\end{table}
 
-\vspace{3pt}
-\textbf{Mutual Information.}
-If the key satisfies the uniform distribution, the probability of the code runs each branch
-can be computed with the following result.  
+%Therefore, the leakage equals to 
+%$\frac{1}{256}\log\frac{1}{256} + \frac{1}{4}\log\frac{1}{4}*2 + \frac{127}{256}\log\frac{127}{256} = 1.7$ bits.
 
-\begin{table}[h]
-\centering
-\resizebox{\columnwidth}{!}{
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Branch & A     & B      & C      & D       \\ \hline
-Possibility      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
-\end{tabular}
-}
-\caption{The distribution of observations}
-\end{table}
-
-Therefore, the leakage equals to 
-$\frac{1}{256}\log\frac{1}{256} + \frac{1}{4}\log\frac{1}{4}*2 + \frac{127}{256}\log\frac{127}{256} = 1.7$ bits.
-
-\vspace{3pt}
-\textbf{\tool.}
-\fixme{What is out result here?}
+%\vspace{3pt}
+%\textbf{\tool.}
+%\fixme{What is out result here? Need explain}

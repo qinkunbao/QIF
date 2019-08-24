@@ -14,10 +14,10 @@ guess the secrets such as encryption keys~\cite{}.
 Various countermeasures have been proposed to defend against 
 software-based side-channel attacks. In term of hardware level,
 those methods includes reducing shared resources, adopting oblivious RAM and 
-transactinal memory~\cite{182946,203878,217537}. 
+transnational memory~\cite{182946,203878,217537}. 
 However, in addition to runtime overheads, those methods are limited to specific hardwares. 
 Therefore, a more promising and universal direction are software countermeasures, which
-detect and eliminate secret-dependent control-flwo transfers and data accesses.
+detect and eliminate secret-dependent control-flow transfers and data accesses.
 
 %% There are some detection methods but need a good assess method 
 In general, recent work~\cite{203878} adopts both static and dynamic analysis
@@ -55,7 +55,7 @@ The attacker may retrieve part of the sensitive information from one site, part 
 information from another site and combine them.
 It is necessary to know how much information is actually leaked in total, 
 but no existing tools can practically estimate multiple leakage sites in real-world libraries.
-Simply adding the results for each leakgae sites together gets a very rough upper bound of 
+Simply adding the results for each leakage sites together gets a very rough upper bound of 
 the total information leakage if those 
 leakages are not independent. 
 
@@ -72,8 +72,8 @@ to quantify information leakage more precisely.
 %For our analysis, the input key is fixed. 
 In general, we quantify the leaked information as the uncertain input space based on attackers' observation.
 %It is interesting to notice that the definition is different from that in previous static analysis tools. 
-Before an attack, an adversary has a big, but finite input space.
-Every time the adversary observes one leakage site, he can eliminate some potential input and
+Before an attack, an adversary has a big but finite input space.
+Every time the adversary observes one leakage site, he can eliminate some potential inputs and
 reduce the size of the input space. 
 %The smaller the input space is, the more information is actually gained. 
 In extreme cases, if the size of the input space reduces to one, 
