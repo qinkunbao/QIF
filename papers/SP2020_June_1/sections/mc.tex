@@ -227,14 +227,19 @@ central limit theorem, the sample mean $\bar{p}$ should
 satisfy normal distribution.
 $$ \frac{\bar{p}-E(p)}{\sigma\sqrt{n}} \rightarrow N(0,1) $$
 Here $E(p)$ is the mean value of $p$ and $\sigma$ is the standard 
-variance of $p$. If we use the observed value $\hat{p} = \bar{p} - E(p)$ 
+variance of $p$. If we use the observed value $\hat{p}$ 
 to the represent standard deviation.
 We can claim that we have 95\% confidence that the error 
-$\Delta p$ falls in the interval:
+$\Delta p= \bar{p} - E(p)$ falls in the interval:
 $$ |\Delta p| \leq 1.96\sqrt{\frac{ \hat{p} (1- \hat{p} )}{n}}$$
 
 Since we use $L = \log_{2}p$ to estimate the amount of leaked information,
 we can have the following error propagation formula $\Delta L = \frac{\Delta p}{pln2}$
-through 
+by differentiation. For \tool, we want the error of estimated leaked information ($\Delta L$) is 
+less than 1 bit. So we can get $\frac{\Delta p}{pln2} \leq 1$. As long as
+$ n \geq \frac{1.96^2(1-p)}{p(\ln2)^2}$, we have 95\% confidence the error of estimated 
+leaked information is less than 1 bit. During the simulation, if $n$ and $p$ satisfy
+the above equation, the Monte Carlo Simulation will terminate.
+
 
 
