@@ -214,6 +214,27 @@ $|K_{C_{gi}}|$ $\leftarrow$ $n_s|K| / n$
 \DecMargin{1em}
 
 \subsubsection{Error Estimation}
-In this section, we analyze the accuracy of Monte Carlo approximate
-result. We use central limit theorem and propagation of uncertainty 
-to estimate the error of the number of leaked bits for leaked sites.
+In this part, we analyze the accuracy of Monte Carlo approximate
+result. We use central limit theorem (CLT) and propagation of uncertainty 
+to estimate errors of the number of leaked bits for each site.
+
+Let $n$ be the number of samples and $n_s$ be the number of samples
+that satisfy the constraint $C$. Then we can get $\hat{p} = \frac{n_s}{n}$.
+If we run the same experiment multiple times, each time we can
+get a $p$. 
+As each experiment is independent from others, according to 
+central limit theorem, the sample mean $\bar{p}$ should 
+satisfy normal distribution.
+$$ \frac{\bar{p}-E(p)}{\sigma\sqrt{n}} \rightarrow N(0,1) $$
+Here $E(p)$ is the mean value of $p$ and $\sigma$ is the standard 
+variance of $p$. If we use the observed value $\hat{p} = \bar{p} - E(p)$ 
+to the represent standard deviation.
+We can claim that we have 95\% confidence that the error 
+$\Delta p$ falls in the interval:
+$$ |\Delta p| \leq 1.96\sqrt{\frac{ \hat{p} (1- \hat{p} )}{n}}$$
+
+Since we use $L = \log_{2}p$ to estimate the amount of leaked information,
+we can have the following error propagation formula $\Delta L = \frac{\Delta p}{pln2}$
+through 
+
+
