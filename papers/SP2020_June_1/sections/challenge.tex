@@ -5,20 +5,29 @@ in quantifying the side-channel vulnerability leakages. We describe the
 challenges and then briefly present the corresponding solution.
 
 \subsection{Challenge I: Information Leakage Definition}
+
 Existing static-based side-channel quantification works~\cite{182946} define information leakage
 as the mutual information or the maximal leakage. These definitions provide a strong security guarantee
 when trying to prove a program is secure enough if their methods calculate the program 
 leaks zero bits of information.
 
+\lstinputlisting[language=c, 
+numbers=left,
+caption={Side-channel leakage},
+captionpos=b,
+frame=single,
+label={code::entropy},
+basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
+{sample_code/dependent.c}
+
 However, the above definition is less useful to justify the sensitive level of leakage sites. 
-Considering the example code~\ref{code::entropy} in the previous section, if an attacker knows the
+Considering the example code~\ref{code::entropy}, if an attacker knows the
 code executes branch A by some observations, the attacker can know the key actually equals to 128. 
 Suppose it is a dummy password checker, in which case the attacker can fully retrieve the password.
 Therefore, the total information leakage should be 8 bits, which equals to the size
 of unsigned char. 
-According to the mutual definition, however, the leakage will be 1.7 bits. The maximal information
-leakage is 2 bits. Both approaches fail to tell how much information is actually leaked
-during the execution precisely.
+According to the mutual definition, however, the leakage will be 1.7 bits. \fixme{use footnote or list the calculation process}. The maximal information
+leakage is 2 bits. \fixme{the same with previous}. Both approaches fail to tell how much information is actually leaked during the execution precisely.
 
 The problem with the existing methods is that they are static-based and the 
 input values are neglected by the previous definition. 
@@ -62,7 +71,6 @@ that
 If an adversary has zero knowledge about the input before the attack. The initial uncertainty
 equals to the size the input. As for the remaining uncertainty, we come to the original definition
 of the information content.
-
 We quantify the information leakage with the following definition. 
 
 \newtheorem{mydef}{Definition}
@@ -142,8 +150,12 @@ If A and B are dependent leakages, the total information leakage will be:
 $$\max{\{L_A, L_B\}}  \leq L_{total} < L_A + L_B$$
 
 \subsubsection{Mutual Exclusive Leakages}
-If A and B are mutual exclusive leakges, then only A or B can be observed for one fixed input.
-The total information leakage will be $L_A$ or $L_B$.
+If A and B are mutual exclusive leakages, then only A or B can be observed for one fixed input.
+$$L_{total} = 
+\begin{cases}
+L_A & only A \\
+L_B & only B
+\end{cases}$$
 
 According to above definition, leakage 1, 2, 3 are independent leakages. Leakage 4, 5
 are mutual exclusive leakages. 
