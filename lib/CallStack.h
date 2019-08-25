@@ -44,6 +44,8 @@ namespace tana {
 
         int stack_depth;
 
+        std::string current_fun_name;
+
 
     public:
 
@@ -52,6 +54,8 @@ namespace tana {
         int updateStack(int key_id, const std::string &fun_name);
 
         int retStack(const std::string &fun_name);
+
+        void fastUpdate(const std::string &fun_name);
 
         std::shared_ptr<CallLeakageSites> clone();
 
@@ -71,6 +75,8 @@ namespace tana {
         int ret(const std::string &function_name);
 
         std::shared_ptr<CallLeakageSites> cloneCallLeakageSites(int key_id);
+
+        void fast_call_stack(const std::string &function_name);
     };
 }
 
