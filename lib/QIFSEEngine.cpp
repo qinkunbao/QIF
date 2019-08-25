@@ -589,10 +589,13 @@ namespace tana {
             checkMemoryAccess(it);
 
 
-            bool status = it->symbolic_execution(this);
             if(func != nullptr) {
-                updateStacks(current_eip);
+                std::string function_name = func->getFunName(current_eip->addrn);
+                stacks->fast_call_stack(function_name);
+                //updateStacks(current_eip);
             }
+            bool status = it->symbolic_execution(this);
+
             std::vector<std::shared_ptr<BitVector>> sym_res;
 
             // Get symbolic register value after the SE
@@ -745,16 +748,26 @@ namespace tana {
         if(!cons->validate(this->key_value_map) && (cons->getNumSymbols() > 0))
         {
 
-            //std::cout << "Debug" << std::endl;
             ERROR("Debug");
         }
 
-        if(func!= nullptr) {
+        if(cons->getNumSymbols() == 0)
+        {
+            return;
+        }
 
+
+        if(func!= nullptr) {
+            std::cout << *cons << std::endl;
+
+            std::cout << func->getFunName(this->eip) << std::endl;
+;
             auto input_vector = cons->getInputKeys();
             std::vector<std::shared_ptr<CallLeakageSites>> sites;
             for (const int &key:input_vector) {
                 auto site = stacks->cloneCallLeakageSites(key);
+                std::cout << *site <<std::endl;
+
                 sites.push_back(site);
             }
 

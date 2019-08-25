@@ -50,7 +50,7 @@ namespace tana {
 
     CallStackKey::CallStackKey(const string &name, int key_id, const std::string &start_fun):
     key_id(key_id), key_name(name),
-    stack_depth(0)
+    stack_depth(0), current_fun_name(start_fun)
     {
         auto first_call = std::make_tuple(start_fun, stack_depth);
 
@@ -98,6 +98,18 @@ namespace tana {
 
     }
 
+
+    void CallStackKey::fastUpdate(const std::string &fun_name)
+    {
+        if(fun_name == current_fun_name)
+            return;
+
+        auto info = std::make_tuple(fun_name, 0);
+        stack_sites->leakage_stack_sites.push_back(info);
+        current_fun_name = fun_name;
+
+    }
+
     std::shared_ptr<CallLeakageSites> CallStackKey::clone()
     {
         return stack_sites->clone();
@@ -138,6 +150,19 @@ namespace tana {
        // }
         return count;
 
+    }
+
+    void CallStack::fast_call_stack(const std::string &function_name)
+    {
+        std::vector<int> key_vector;
+        for (auto &it : stacks)
+        {
+           key_vector.push_back(it.first);
+        }
+        for(const int &key_id : key_vector)
+        {
+            (stacks.at(key_id))->fastUpdate(function_name);
+        }
     }
 
     int CallStack::ret(const std::string &function_name)

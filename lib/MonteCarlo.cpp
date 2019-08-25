@@ -348,7 +348,7 @@ namespace tana {
                        << " Leaked:" << leaked_information << " bits"
                        << " Num of Satisfied: " << num << std::endl;
                 if(isFunctionInformationAvailable) {
-                    myfile << func->findTaintedRTN(addr) << "\n" << std::endl;
+                    myfile << func->getFunName(addr) << "\n" << std::endl;
                 }
             } else {
                 myfile << "Address: " << std::hex << addr << std::dec;
