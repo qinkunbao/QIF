@@ -340,6 +340,7 @@ namespace tana {
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
+            myfile << "------------------------------------------------------------\n";
             if (num != 0) {
                 float portion =
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
@@ -348,7 +349,7 @@ namespace tana {
                        << " Leaked:" << leaked_information << " bits"
                        << " Num of Satisfied: " << num << std::endl;
                 if(isFunctionInformationAvailable) {
-                    myfile << func->getFunName(addr) << "\n" << std::endl;
+                    myfile << func->findTaintedRTN(addr) << "\n" << std::endl;
                 }
             } else {
                 myfile << "Address: " << std::hex << addr << std::dec;
@@ -357,15 +358,20 @@ namespace tana {
                     myfile << func->findTaintedRTN(addr) << "\n" <<std::endl;
                 }
             }
-            auto con = constrains_group_addr[constrain_index];
-            myfile <<"Number of constrains: "<< con.size();
-            for(auto &each_con : con)
-            {
-                myfile << "\n";
-                myfile << *(std::get<1>(each_con));
+
+            for (auto &con : constrains_group_addr) {
+                if(std::get<0>(con[0]) == addr) {
+                    myfile << "Number of constrains: " << con.size();
+
+                    for (auto &each_con : con) {
+                        myfile << "\n";
+                        myfile << *(std::get<1>(each_con));
+                    }
+                }
             }
+
             ++constrain_index;
-            myfile << "\n";
+            myfile << "------------------------------------------------------------\n";
         }
         myfile.close();
     }

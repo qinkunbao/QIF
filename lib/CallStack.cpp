@@ -32,7 +32,7 @@ namespace tana {
         {
             os << " -> ";
             const string& fun_name = get<0>(call);
-            os << fun_name;
+            os << "("<<fun_name << ")";
 
         }
 
@@ -91,9 +91,9 @@ namespace tana {
             if (current_fun != fun_name) {
                 return 0;
             }
-            --stack_depth;
             stack_funs.pop();
         }
+        --stack_depth;
         return stack_depth;
 
     }
@@ -133,21 +133,21 @@ namespace tana {
     int CallStack::proceed_inst(const std::vector<int> &vector_key_id, const std::string &function_name)
     {
         int count = 0;
-        for(const int &key_id : vector_key_id)
+        //for(const int &key_id : vector_key_id)
+        //{
+        //   (stacks.at(key_id))->updateStack(key_id, function_name);
+        //    ++count;
+        //}
+        std::vector<int> key_vector;
+        for (auto &it : stacks)
+        {
+            key_vector.push_back(it.first);
+        }
+        for(const int &key_id : key_vector)
         {
             (stacks.at(key_id))->updateStack(key_id, function_name);
             ++count;
         }
-        //std::vector<int> key_vector;
-        //for (auto &it : stacks)
-        //{
-         //   key_vector.push_back(it.first);
-        //}
-        //for(const int &key_id : key_vector)
-        //{
-        //    (stacks.at(key_id))->updateStack(key_id, function_name);
-         //   ++count;
-       // }
         return count;
 
     }
