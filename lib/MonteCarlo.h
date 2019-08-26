@@ -98,9 +98,9 @@ namespace tana {
 
         void run_addr_group();
 
-        void print_group_result(std::string resultFile);
+        void print_group_result(const std::string &resultFile);
 
-        void calculateConstrains();
+        void calculateConstrains(const std::string &resultFile);
 
     };
 }

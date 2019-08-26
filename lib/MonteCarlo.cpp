@@ -174,7 +174,7 @@ namespace tana {
         return true;
     }
 
-    void FastMonteCarlo::calculateConstrains() {
+    void FastMonteCarlo::calculateConstrains(const std::string &result) {
         int num_DA = 0, num_CF = 0;
         for (const auto &cons_vector :constrains_group_addr) {
             auto one_cons = cons_vector.front();
@@ -188,6 +188,13 @@ namespace tana {
         std::cout << "Total Constrains: " << constrains_group_addr.size() << std::endl;
         std::cout << "Control Transfer: " << num_CF << std::endl;
         std::cout << "Data Access: " << num_DA << std::endl;
+
+        std::ofstream myfile;
+        myfile.open (result);
+        myfile << "Total Constrains: " << constrains_group_addr.size() << std::endl;
+        myfile << "Control Transfer: " << num_CF << std::endl;
+        myfile << "Data Access: " << num_DA << std::endl;
+        myfile.close();
     }
 
     void FastMonteCarlo::testConstrain(
@@ -309,7 +316,7 @@ namespace tana {
         }
     }
 
-    void FastMonteCarlo::print_group_result(std::string result) {
+    void FastMonteCarlo::print_group_result(const std::string &result) {
         auto sample_num = tests.size();
         std::cout << "Information Leak for each address: \n";
         for (auto &it : num_satisfied_group) {
@@ -335,7 +342,7 @@ namespace tana {
         }
 
         std::ofstream myfile;
-        myfile.open (result);
+        myfile.open (result, std::ios_base::app);
         int constrain_index = 0;
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
