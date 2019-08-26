@@ -590,9 +590,9 @@ namespace tana {
 
 
             if(func != nullptr) {
-                std::string function_name = func->getFunName(current_eip->addrn);
-                stacks->fast_call_stack(function_name);
-                //updateStacks(current_eip);
+                //std::string function_name = func->getFunName(current_eip->addrn);
+                //stacks->fast_call_stack(function_name);
+                updateStacks(current_eip);
             }
             bool status = it->symbolic_execution(this);
 
@@ -632,28 +632,32 @@ namespace tana {
 
 
                     if (res != con_res[j]) {
-                        std::cout << "\n"
-                                  << "Error: " << std::hex << it->addrn
-                                  << "\n";
 
-                        std::cout << "Register: " << Registers::convertRegID2RegName(j)
-                                  << "\n";
+                        if(it->instruction_id != x86::X86_INS_JMP) {
+                            std::cout << "\n"
+                                      << "Error: " << std::hex << it->addrn
+                                      << "\n";
 
-                        std::cout << "Symbolic: " << res
-                                  << "\n";
+                            std::cout << "Register: " << Registers::convertRegID2RegName(j)
+                                      << "\n";
 
-                        std::cout << "Concrete: " << con_res[j] << std::dec
-                                  << "\n";
+                            std::cout << "Symbolic: " << res
+                                      << "\n";
 
-                        std::cout << "Previous: " << *it
-                                  << "\n";
+                            std::cout << "Concrete: " << con_res[j] << std::dec
+                                      << "\n";
 
-                        std::cout << "Present: " << *(inst->get())
-                                  << std::endl;
+                            std::cout << "Previous: " << *it
+                                      << "\n";
+
+                            std::cout << "Present: " << *(inst->get())
+                                      << std::endl;
+
+                            ERROR("ERROR");
+                        }
 
                         auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
                         writeReg(Registers::convertRegID2RegName(j), reg_v);
-                        ERROR("ERROR");
                     }
 
                     // If the length of formula exceeds 50000, the tool
@@ -758,15 +762,11 @@ namespace tana {
 
 
         if(func!= nullptr) {
-            std::cout << *cons << std::endl;
-
             std::cout << func->getFunName(this->eip) << std::endl;
-;
             auto input_vector = cons->getInputKeys();
             std::vector<std::shared_ptr<CallLeakageSites>> sites;
             for (const int &key:input_vector) {
                 auto site = stacks->cloneCallLeakageSites(key);
-                std::cout << *site <<std::endl;
 
                 sites.push_back(site);
             }
