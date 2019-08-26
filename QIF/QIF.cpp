@@ -36,7 +36,7 @@ float getEntropy(std::vector<uint8_t> key_value,  \
     res.verifyConstrain();
     res.run();
     res.run_addr_group();
-    res.calculateConstrains();
+    res.calculateConstrains(fileName);
     res.print_group_result(fileName);
     float MonteCarloResult = res.getResult();
 
