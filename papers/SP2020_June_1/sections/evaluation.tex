@@ -49,11 +49,29 @@ aspects:
 \end{enumerate}
 
 \subsection{Evaluation Result Overview}
-In this section, we present the overview of the evaluation result. \tool
-find xx leakages in total from real-world cryptosystems and open
+In this section, we present an overview of the evaluation result. 
+\tool find xx leakages in total from real-world cryptosystems and open
 source libraries. Among the xx leak points, xx of them are leaked due
-to secret-dependent control-flow transfers and xx of them are leaked  
+to secret-dependent control-flow transfers and xx of them are leaked 
 due to secret-dependent memory accesses. 
+
+For crypto libraries, \tool finds that secret-dependent memory accesses 
+cause most leakages. We think that secret-dependent
+control-flow transfers have been widely studied in recent years, 
+and crypto authors have patched those leakages.
+\tool also identifies that most side-channel vulnerabilities 
+leak very little information in practice, which confirms our initial
+assumptions. 
+However, we do find some sensitive leakages. 
+Some of them have been confirmed by existing research that those 
+vulnerabilities can be exploited
+to realize real attacks. 
+
+\tool find 8 leakage sites for both implementations of DES. Our tool
+indentifies Those sites can leak 8 bits from the total 64 bits 
+input key. We check the location of the leakage, it is turned out that
+those 8 bits are used for parity. Therefore, \tool can confirm that 
+the effective key lenfth of DES is 56 bits.
 
 \subsection{Information Leakage Quantification}
 \subsection{Analysis of Software Countermeasures}
