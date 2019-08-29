@@ -1,5 +1,5 @@
 \section{Evaluation}
-
+\label{res_overview}
 \begin{table*}[h]
     \begin{tabular}{c c c c c c c c l}
     \hline
@@ -13,42 +13,51 @@
     RSA mbedTLS-2.5        & mbedtls\_pk\_parse\_key    &     1024            &      &        &                       &                        &                  \\
     AES mbedTLS-2.15       & mbedtls\_aes\_setkey\_enc  &     128             &      &        &                       &                        &                  \\
     DES mbedTLS-2.15       & mbedtls\_des\_setkey\_enc  &     64              &      &        &                       &                        &                  \\
-    wget-1.18              & sock\_read                 &     494             &      &        &                       &                        &                   \\
+    wget-1.18              & sock\_read                 &     494             &      &        &                       &                        &                  \\
+    GTK                    &                            &                     &      &        &                       &                        &                  \\
     \hline
     \end{tabular}
 \end{table*}
-We evaluate \tool{} with the real-world crypto libraries and non-crypto. 
-For crypto libraries, we choose OpenSSL and mbedTLS, two most commonly used
-crypto libraries in today's software. For OpenSSL, we compile it with the option \textit{no-asm} 
-to disable the assembly language routines. For non-crypto libraries, 
-we study the libjepg, a commonly used image compression library. 
-We build the source code into a 32 bit 
-ELF binary with the GCC 8.0 on Ubuntu 14.04. Although our tool can
-work on stripped binaries, we use the symbol information to trace
-back leakage sites into the source code. We use Intel Pin version 3.7 
-to record the execution trace.
+We evaluate \tool{} with the real-world crypto libraries and non-crypto libraries. 
+For crypto libraries, we choose OpenSSL, mbedTLS and NaCl. 
+OpenSSL and mbedTLS are the two most commonly used
+crypto libraries in today's software. NaCl (pronounced "salt") is a 
+new software libreary for encryption, decryption and signatures, etc.
+NaCl is designed to have no data flow from secrets to load address and no data 
+flow from secrets to branch conditions. Therefore, NaCl should have no leakages
+under our attack model. We build OpenSSL with the option \textit{no-asm} 
+to disable the assembly language routines. 
 
-
-During the evaluate, we are interested in the following aspects:
+For non-crypto libraries, we study libjepg, GTK and wget.
+We build the source code into 32-bit x86 Linux executables with the 
+GCC 8.0 on Ubuntu 14.04. Although our tool can
+work on stripped binaries, we use symbol information to track
+back leakage sites in the source code. We use Intel Pin version 3.7 
+to record the execution trace. We run our experiemnts on a 2.90GHz
+Intel Xeon(R) E5-2690 CPU with 128GB memory.
+During the evaluation, we are interested in the following two
+aspects:
 \begin{enumerate}
-    \item \textbf{Finding Leakage Sites.} How effective is \tool{} in 
-    identifying the memory-based side-channels vulnerabilities?
-    How much performance overhead does the tool need to find the 
-    leakage?
-    \item \textbf{Leakage Sites Quantification.} Can \tool{} precisely
-    report the information leakage? Is the number of leaked bits reported 
-    by \tool{} useful to justify the sensitive level of the side-channel
-    vulnerability?
-    \item \textbf{Exsiting Leakage Sites.} Recent work has report a number
-    of leakage sites in open source crypto libraries. But the crypto
-    library authors don't fix them for some reasons. We use \tool{} to
-    study those vulnerabilities and try to explain the reason why the 
-    author fix or not fix the side channel vulnerabilities.
+    
+    \item \textbf{Leaked Sites Quantification.} Can \tool{} precisely
+    report the number of leaked bits in open source libraries?
+    \item \textbf{Existing Leakage Sites.} Recent work has reported a number
+    of side-channel vulnerabilities in open source libraries. 
+    Is the number of leaked bits reported by \tool{} useful to justify 
+    the sensitive level of side-channel vulnerabilities?
+   
 \end{enumerate}
 
+\subsection{Evaluation Result Overview}
+In this section, we present the overview of the evaluation result. \tool
+find xx leakages in total from real-world cryptosystems and open
+source libraries. Among the xx leak points, xx of them are leaked due
+to secret-dependent control-flow transfers and xx of them are leaked  
+due to secret-dependent memory accesses. 
 
-\subsection{Finding Leakage Sites}
-\subsection{Leakage Sites Quantifications}
-\subsection{Exsiting Leakage Sites}
+\subsection{Information Leakage Quantification}
+\subsection{Analysis of Software Countermeasures}
 \subsubsection{Bit-slicing}
 \subsubsection{Scatter and Gather}
+\subsection{Case Studies}
+
