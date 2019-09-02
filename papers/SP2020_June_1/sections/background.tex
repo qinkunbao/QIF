@@ -1,21 +1,25 @@
 \section{Background}
-In this section, we first present a basic introduction to the 
-software-based side-channel attacks. These attacks 
-are what we study in the paper. After that, we 
-will discuss existing methods on side-channel detection and quantification.
+In this section, we first present a basic introduction to the software-based 
+side-channel attacks. These attacks are what we study in the paper. 
+After that, we will discuss existing methods of side-channel detection 
+and quantification.
 
 \subsection{Software-based Side-Channels}
-Software-based side-channels % are information channels that can 
+Side-channels  are information channels that can 
 leak sensitive information unconsciously through different 
-behaviors. %when the program accesses different memory addresses. 
-Fundamentally, those differences were caused by the memory hierarchy design 
-in modern computer systems. When a CPU fetches data, it first searches
-the cache, which stores copies of data that was 
-frequently referenced in main memory. If the data doesn't exist in the cache, 
+behaviors.  
+
+Fundamentally, those differences were caused by the memory 
+hierarchy design in modern computer systems. When a CPU 
+fetches data, it first searches
+the cache, which stores copies of data that was frequently 
+referenced in main memory. If the data does not exist in the cache, 
 the CPU will read the data from the main memory (RAM). 
-According to the layer that causes the side-channels, we classify
+According to the layer that causes the side-channels, 
+we classify
 side channels into two categories: 
-cache-based side-channel attacks and memory-based side-channel attacks.
+cache-based side-channel attacks and memory-based 
+side-channel attacks.
 
 \subsubsection{Cache-based Attacks}
 In general, the cached-based side-channels rely on the time differences 

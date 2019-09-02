@@ -21,14 +21,14 @@ execution traces under various tests.
 \subsection{Quantification}
 Quantitative Information Flow (QIF) aims at providing an information leakage estimate for the
 sensitive information given the public output. If zero bits of the information is leaked, the 
-program is called non-interference. McCamant~\cite{McCamantE2008} quantify the information leaked
+program is called non-interference. McCamant~\cite{McCamantE2008} quantify the information leakage
 as the network flow capacity. Phan~\cite{Phan:2012:SQI:2382756.2382791} propose symbolic QIF. The
 goal of their work is to ensure the program is non-interference. They adopt an over
 approximation way of estimating the total information leakage and their method doesn't work for
 secret-dependent memory access side-channels. CHALICE~\cite{Chattopadhyay:2017:QIL:3127041.3127044}
-quantifies the information leakage based on Cache miss and Cache hit behaviours. But CHALICE can only 
-work on PICA code, which limits its usage to X86 bianry. Due to complexity of the Cache model and 
-Cartesian Bounding they use, CHALICE can only scale to small programs, which limits its usage in
+quantifies the information for a given cache behaviours. But CHALICE can only 
+work on PICA code (a MIPS like archiecture), which limits its usage to X86 bianry. 
+CHALICE can only scale to small programs, which limits its usage in
 real-world applications.
 
 
