@@ -1,20 +1,20 @@
 \section{Evaluation}
 \label{res_overview}
-\begin{table*}[h]
-    \begin{tabular}{c c c c c c c c l}
+\begin{table*}[]
+    \begin{tabular}{c c c c c c c l}
     \hline
-    Program                & Start Function             & Input Size (bits)   & CF   & DA     & Maximum Leakage (bits)& Number of Instructions & Process Time (s) \\ \hline
-    AES OpenSSL-0.9.7      & AES\_set\_encrypt\_key     &     128             &      &        &                       &                        &                  \\
-    DES OpenSSL-0.9.7      & DES\_string\_to\_key       &     64              &      &        &                       &                        &                  \\
-    AES OpenSSL-1.1.1      & AES\_set\_encrypt\_key     &     128             &      &        &                       &                        &                  \\
-    DES OpenSSL-1.1.1      & DES\_string\_to\_key       &     64              &      &        &                       &                        &                  \\
-    AES mbedTLS-2.5        & mbedtls\_aes\_setkey\_enc	&     128             &      &        &                       &                        &                  \\
-    DES mbedTLS-2.5        & mbedtls\_des\_setkey\_enc  &     64              &      &        &                       &                        &                  \\
-    RSA mbedTLS-2.5        & mbedtls\_pk\_parse\_key    &     1024            &      &        &                       &                        &                  \\
-    AES mbedTLS-2.15       & mbedtls\_aes\_setkey\_enc  &     128             &      &        &                       &                        &                  \\
-    DES mbedTLS-2.15       & mbedtls\_des\_setkey\_enc  &     64              &      &        &                       &                        &                  \\
-    wget-1.18              & sock\_read                 &     494             &      &        &                       &                        &                  \\
-    GTK                    &                            &                     &      &        &                       &                        &                  \\
+    Program                & Start Function             & Input Size (bits)   & CF   & DA     & Number of Instructions & Process Time (s) \\ \hline
+    AES OpenSSL-0.9.7      & AES\_set\_encrypt\_key     &     128             &      &        &                        &                  \\
+    DES OpenSSL-0.9.7      & DES\_string\_to\_key       &     64              &      &        &                        &                  \\
+    AES OpenSSL-1.1.1      & AES\_set\_encrypt\_key     &     128             &      &        &                        &                  \\
+    DES OpenSSL-1.1.1      & DES\_string\_to\_key       &     64              &      &        &                        &                  \\
+    AES mbedTLS-2.5        & mbedtls\_aes\_setkey\_enc	&     128             &      &        &                        &                  \\
+    DES mbedTLS-2.5        & mbedtls\_des\_setkey\_enc  &     64              &      &        &                        &                  \\
+    RSA mbedTLS-2.5        & mbedtls\_pk\_parse\_key    &     1024            &      &        &                        &                  \\
+    AES mbedTLS-2.15       & mbedtls\_aes\_setkey\_enc  &     128             &      &        &                        &                  \\
+    DES mbedTLS-2.15       & mbedtls\_des\_setkey\_enc  &     64              &      &        &                        &                  \\
+    wget-1.18              & sock\_read                 &     494             &      &        &                        &                  \\
+    GTK                    &                            &                     &      &        &                        &                  \\
     \hline
     \end{tabular}
 \end{table*}
@@ -28,12 +28,12 @@ flow from secrets to branch conditions. Therefore, NaCl should have no leakages
 under our attack model. We build OpenSSL with the option \textit{no-asm} 
 to disable the assembly language routines. 
 
-For non-crypto libraries, we study libjepg, GTK, and wget.
-JPEG is a commonly used lossy image compression standard, and
-libjpeg is a popular library for handling the JPEG image data
-format. Previously, researchers have introduced controlled-channel
-attacks, which allow attackers to retrieve outlines of JPEG images
-from applications. We also study GTK and wget with \tool{}. GTK 
+For non-crypto libraries, we study li bjepg, GTK, and wget.
+JPEG is a commonly used lossy image c ompression standard, and
+libjpeg is a popular library for hand ling the JPEG image data
+format. Previously, researchers have  introduced controlled-channel
+attacks, which allow attackers to ret rieve outlines of JPEG images
+from applications. We also study GTK  and wget with \tool{}. GTK 
 is a widely used cross-platform toolkit for creating graphical user
 interfaces. And wget is free software that can retrieve information
 via HTTPS, HTTP, and FTP.
@@ -48,9 +48,9 @@ During the evaluation, we are interested in the following two
 aspects:
 \begin{enumerate}
     
-    \item \textbf{Leaked Sites Quantification.} Can \tool{} precisely
+    \item  Can \tool{} precisely
     report the number of leaked bits in open source libraries?
-    \item \textbf{Existing Leakage Sites.} Recent work has reported a number
+    \item  Recent work has reported a number
     of side-channel vulnerabilities in open source libraries. 
     Is the number of leaked bits reported by \tool{} useful to justify 
     the sensitive level of side-channel vulnerabilities?
@@ -59,7 +59,7 @@ aspects:
 
 \subsection{Evaluation Result Overview}
 In this section, we present an overview of the evaluation result. 
-\tool find xx leakages in total from real-world cryptosystems and open
+\tool{} find xx leakages in total from real-world cryptosystems and open
 source libraries. Among the xx leak points, xx of them are leaked due
 to secret-dependent control-flow transfers and xx of them are leaked 
 due to secret-dependent memory accesses. 
@@ -76,15 +76,26 @@ Some of them have been confirmed by existing research that those
 vulnerabilities can be exploited
 to realize real attacks. 
 
-\tool{} find 8 leakage sites for both implementations of DES. Our tool
-indentifies Those sites can leak 8 bits from the total 64 bits 
-input key. We check the location of the leakage, it is turned out that
-those 8 bits are used for parity. Therefore, \tool{} can confirm that 
-the effective key lenfth of DES is 56 bits.
+All the symmetric key implementations in OpenSSL and mbedTLS all yield
+a significant leakage due to the implementation of the lookup table
+to speed up the computation. Every leakage found during the evaluation
+belongs to the type of secret-dependent memory accesses. We believe that
+the secret-dependent control-flow transfers have been wide studied in
+the past few years, and developers have patched most of those leakages. 
+
+\tool{} find eight leakage sites for the implementation of DES in OpenSSL.
+Each leakage can leak one bit of information from one byte. Also, our tool
+confirms those leakages are independent, so the total information leakage
+is 8 bits. We check the source code and find the least significant
+bit in each byte is used for the parity. Therefore, \tool{} can confirm
+that even the key length of DES is 64 bits. However, only 56 bits of the 
+DES key is valid.
+
 
 \subsection{Information Leakage Quantification}
 \subsection{Analysis of Software Countermeasures}
 \subsubsection{Bit-slicing}
 \subsubsection{Scatter and Gather}
 \subsection{Case Studies}
+\subsubsection{libjpeg}
 

@@ -81,7 +81,7 @@ namespace tana {
         std::shared_ptr<BitVector> v0;
         std::stringstream ss;
 
-        for (auto offset = 0; offset < m_size; offset = offset + 1) {
+        for (uint32_t offset = 0; offset < m_size; offset = offset + 1) {
             ss << "Key" << offset;
             v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str(), T_BYTE_SIZE);
             std::stringstream mem_addr;
@@ -357,7 +357,7 @@ namespace tana {
                 calculate = QIFSEEngine::eval(v_test, key_value_map);
             }
             con = mem_data;
-            uint32_t con_t, calculate_t;
+            uint32_t con_t = 1, calculate_t = 0;
             if (size == T_BYTE_SIZE * T_BYTE)
             {
                 if (offset == 0)
@@ -402,8 +402,13 @@ namespace tana {
 
             if (con_t != calculate_t) {
 
-                std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex << con << std::dec << std::endl;
-                std::cout << std::endl << memory_address_str << std::endl;
+                std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex << con << std::dec << "\n";
+                if(func != nullptr)
+                {
+                    std::cout << "Function name: "<< func->getFunName(memory_address) << "\n";
+                }
+
+                std::cout << "\n" << memory_address_str << std::endl;
                 ERROR("Memory Error");
                 memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
             }
