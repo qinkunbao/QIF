@@ -27,17 +27,18 @@ Suppose it is a dummy password checker, in which case the attacker can fully ret
 Therefore, the total information leakage should be 8 bits, which equals to the size
 of unsigned char. 
 According to the mutual definition, however, the leakage will be 1.7 bits. \fixme{use footnote or list the calculation process}. The maximal information
-leakage is 2 bits. \fixme{the same with previous}. Both approaches fail to tell how much information is actually leaked during the execution precisely.
+leakage is 2 bits. \fixme{the same with previous}. Both approaches fail to tell how 
+much information is leaked during the execution precisely.
 
 The problem with the existing methods is that they are static-based and the 
 input values are neglected by the previous definition. 
 They assume the attacker runs the program multiple times with many different sensitive 
 information as the input. Both the mutual information and the max-leakage give an ``average" 
-estimate of the information leakage. But it isn't the typical scenario for an adversary to 
-launch the side-channel attack. When a side-channel attack happens, the adversary wants 
+estimate of the information leakage. However, it isn't the typical scenario for an adversary to 
+launch an side-channel attack. When a side-channel attack happens, the adversary wants 
 to retrieve the sensitive information, in which case the sensitive information is fixed (e.g. AES keys). 
 The adversary will run the attack over and over again and guess the value bit by bit. Like the 
-previous example, the existing static method doesn’t work well in those situations.
+previous example, the existing static method does not work well in those situations.
 
 \begin{figure}
 \centering
