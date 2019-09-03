@@ -11,6 +11,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstring>
+#include <algorithm>
 #include "MonteCarlo.h"
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
@@ -19,6 +20,32 @@
 using namespace std::chrono;
 using namespace std;
 using namespace tana;
+
+
+class InputParser{
+public:
+    InputParser (int &argc, char **argv){
+        for (int i=1; i < argc; ++i)
+            this->tokens.push_back(std::string(argv[i]));
+    }
+    /// @author iain
+    const std::string& getCmdOption(const std::string &option) const{
+        std::vector<std::string>::const_iterator itr;
+        itr =  std::find(this->tokens.begin(), this->tokens.end(), option);
+        if (itr != this->tokens.end() && ++itr != this->tokens.end()){
+            return *itr;
+        }
+        static const std::string empty_string("");
+        return empty_string;
+    }
+    /// @author iain
+    bool cmdOptionExists(const std::string &option) const{
+        return std::find(this->tokens.begin(), this->tokens.end(), option)
+               != this->tokens.end();
+    }
+private:
+    std::vector <std::string> tokens;
+};
 
 
 float getEntropy(std::vector<uint8_t> key_value,  \
@@ -62,31 +89,42 @@ std::vector<std::string> split(std::string str,std::string sep){
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        cout << "Usage: " << argv[0] << " <traces.txt> " << " <Monte Carlo Times> "
-        << "\n";
-        cout << "or\n";
-        cout << "Usage: " << argv[0] << " <traces.txt> " << endl;
+        cout << "Usage: " << argv[0] << " <traces.txt> " << "<options>" << "\n";
+        cout << "Option one:   -t <Monte Carlo Times>\n";
+        cout << "Option two:   -t <Monte Carlo Times> -f <Function Name>\n";
+        cout << "Option three: -t <Monte Carlo Times> -f <Function Name> -d <Debug Info>\n";
         return 1;
     }
 
     std::shared_ptr<Function> func = nullptr;
-
-
     uint64_t MonteCarloTimes = 10000;
-    if(argc == 3)
+    InputParser input(argc, argv);
+
+
+    if(input.cmdOptionExists("-t"))
     {
-      stringstream strValue;
-      strValue << argv[2];
-      uint64_t temp;
-      strValue >> temp;
-      MonteCarloTimes = temp;
+        const std::string &mc_times = input.getCmdOption("-t");
+        stringstream strValue;
+        strValue << mc_times;
+        uint64_t temp;
+        strValue >> temp;
+        MonteCarloTimes = temp;
     }
 
-    if(argc == 4)
+    if(input.cmdOptionExists("-t") && input.cmdOptionExists("-f"))
     {
-        ifstream func_file(argv[3]);
+        const std::string &mc_times = input.getCmdOption("-t");
+        stringstream strValue;
+        strValue << mc_times;
+        uint64_t temp;
+        strValue >> temp;
+        MonteCarloTimes = temp;
+
+        const std::string &fun_name = input.getCmdOption("-f");
+        ifstream func_file(fun_name);
         func = std::make_shared<Function>(&func_file);
     }
+
 
     ifstream trace_file(argv[1]);
     if (!trace_file.is_open()) {
