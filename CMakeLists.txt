@@ -57,7 +57,8 @@ add_library(TraceLib
         lib/MonteCarlo.h
         lib/MonteCarlo.cpp
         lib/CallStack.h
-        lib/CallStack.cpp lib/DebugInfo.cpp lib/DebugInfo.h)
+        lib/CallStack.cpp lib/DebugInfo.cpp lib/DebugInfo.h
+        lib/cmd.cpp lib/cmd.h)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 
@@ -109,6 +110,9 @@ add_executable(StaticSE
 add_executable(QIF
         QIF/QIF.cpp)
 
+add_executable(testCMD
+        test/test_cmd.cpp)
+
 
 target_link_libraries(taintTrace TraceLib)
 target_link_libraries(SymbolicExecution TraceLib)
@@ -120,3 +124,5 @@ target_link_libraries(StaticSE TraceLib)
 target_link_libraries(TestConstrain TraceLib)
 target_link_libraries(QIF TraceLib)
 target_link_libraries(TestRandom TraceLib)
+target_link_libraries(testCMD TraceLib)
+
