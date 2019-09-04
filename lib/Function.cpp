@@ -81,7 +81,6 @@ namespace tana {
         return "NOT Found";
     }
 
-    Function::~Function() {
-    }
+
 
 }

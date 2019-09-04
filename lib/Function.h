@@ -44,7 +44,7 @@ namespace tana {
 
 		std::string getFunName(tana::tana_type::T_ADDRESS addr);
 
-		~Function();
+		~Function() = default;
 	};
 
 }
