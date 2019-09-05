@@ -57,7 +57,9 @@ add_library(TraceLib
         lib/MonteCarlo.h
         lib/MonteCarlo.cpp
         lib/CallStack.h
-        lib/CallStack.cpp lib/DebugInfo.cpp lib/DebugInfo.h)
+        lib/CallStack.cpp
+        lib/DebugInfo.h
+        lib/DebugInfo.cpp)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 
@@ -96,6 +98,9 @@ add_executable(TestQIF2
 add_executable(TestRandom
         test/test_random_num.cpp)
 
+add_executable(TestDebugInfo
+        test/test_debuginfo.cpp)
+
 add_executable(BitTaint
         BitTaint/BitTaint.cpp
         BitTaint/BitTaint.h
@@ -120,3 +125,4 @@ target_link_libraries(StaticSE TraceLib)
 target_link_libraries(TestConstrain TraceLib)
 target_link_libraries(QIF TraceLib)
 target_link_libraries(TestRandom TraceLib)
+target_link_libraries(TestDebugInfo TraceLib)
