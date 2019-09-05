@@ -100,6 +100,10 @@ int main(int argc, char* argv[]) {
     uint64_t MonteCarloTimes = 10000;
     InputParser input(argc, argv);
 
+    std::string traceFileName(argv[1]);
+    std::string sep("/");
+    auto fileSegment = split(traceFileName, sep);
+    auto fileName = "result_" + fileSegment.rbegin()[1] + fileSegment.back();
 
     if(input.cmdOptionExists("-t"))
     {
@@ -109,6 +113,13 @@ int main(int argc, char* argv[]) {
         uint64_t temp;
         strValue >> temp;
         MonteCarloTimes = temp;
+    }
+
+    if(input.cmdOptionExists("-f"))
+    {
+        const std::string &fun_name = input.getCmdOption("-f");
+        ifstream func_file(fun_name);
+        func = std::make_shared<Function>(&func_file);
     }
 
     if(input.cmdOptionExists("-t") && input.cmdOptionExists("-f"))
@@ -132,10 +143,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::string traceFileName(argv[1]);
-    std::string sep("/");
-    auto fileSegment = split(traceFileName, sep);
-    auto fileName = "result_" + fileSegment.rbegin()[1] + fileSegment.back();
 
     vector<std::unique_ptr<Inst_Base>> inst_list;
     tana_type::T_ADDRESS start_addr = 0;
