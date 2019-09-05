@@ -12,7 +12,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
-
+#include <memory>
 #include "ins_types.h"
 
 namespace tana {
@@ -26,23 +26,33 @@ namespace tana {
         tana_type::T_ADDRESS size;
 
         Routine() : start_addr(0), end_addr(0), rtn_name(), module_name(), size(0) {}
+
+        Routine(tana_type::T_ADDRESS p1, tana_type::T_ADDRESS p2, \
+                const std::string &p3, const std::string &p4, \
+                tana_type::T_ADDRESS p5): start_addr(p1), end_addr(p2), rtn_name(p3),
+                                          module_name(p4), size(p5)
+                {}
     };
 
 	class Function {
 	private:
-		std::vector<tana::Routine> rtn_libraries;
+		std::vector<std::shared_ptr<Routine>> fun_rtns;
 		std::set<tana_type::T_ADDRESS> existing_rtn;
 
-        std::vector<tana::Routine>::iterator ptr_cache;
+        std::shared_ptr<Routine> ptr_cache;
 
 
 
     public:
-		explicit Function(std::ifstream *function_file);
+		explicit Function(std::ifstream &function_file);
 
-		std::string findTaintedRTN(tana_type::T_ADDRESS addr);
+		explicit Function(const std::string& function_file);
+
+		std::string getFunctionAndLibrary(tana_type::T_ADDRESS addr);
 
 		std::string getFunName(tana_type::T_ADDRESS addr);
+
+		std::shared_ptr<Routine> pickOneRandomElement();
 
 		~Function() = default;
 	};

@@ -61,7 +61,8 @@ add_library(TraceLib
         lib/CallStack.h
         lib/CallStack.cpp lib/DebugInfo.cpp lib/DebugInfo.h
         lib/cmd.cpp lib/cmd.h
-        lib/ELFInfo.cpp lib/ELFInfo.h)
+        lib/ELFInfo.cpp lib/ELFInfo.h
+        lib/Trace2ELF.cpp lib/Trace2ELF.h)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 

@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <memory>
-#include <sstream>
 #include <chrono>
 #include <cmath>
 #include <cstring>
@@ -16,6 +15,7 @@
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
 #include "Function.h"
+
 
 using namespace std::chrono;
 using namespace std;
@@ -46,6 +46,7 @@ public:
 private:
     std::vector <std::string> tokens;
 };
+
 
 
 float getEntropy(std::vector<uint8_t> key_value,  \
@@ -119,7 +120,7 @@ int main(int argc, char* argv[]) {
     {
         const std::string &fun_name = input.getCmdOption("-f");
         ifstream func_file(fun_name);
-        func = std::make_shared<Function>(&func_file);
+        func = std::make_shared<Function>(func_file);
     }
 
     if(input.cmdOptionExists("-t") && input.cmdOptionExists("-f"))
@@ -133,7 +134,7 @@ int main(int argc, char* argv[]) {
 
         const std::string &fun_name = input.getCmdOption("-f");
         ifstream func_file(fun_name);
-        func = std::make_shared<Function>(&func_file);
+        func = std::make_shared<Function>(func_file);
     }
 
 
