@@ -32,6 +32,7 @@ namespace tana{
         std::vector<std::shared_ptr<DebugSymbol>> line_info;
     public:
         explicit DebugInfo(std::ifstream &debug_file);
+        explicit DebugInfo(std::string &debug_string);
         std::shared_ptr<DebugSymbol> locateSym(uint32_t addr);
         ~DebugInfo() = default;
     };

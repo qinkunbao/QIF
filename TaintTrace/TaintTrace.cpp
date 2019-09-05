@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 		cout << "Cann't open files" << endl;
 		return 1;
 	}
-	tana::Function func(&library_file);
+	tana::Function func(library_file);
 
 	vector<std::unique_ptr<Inst_Base>> inst_list;
 	tana_type::T_ADDRESS start_addr = 0;
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
 	list<tana_type::T_ADDRESS> taintedAddr;
 	taintedAddr = taint.getTaintedAddress();
 	for (auto addr : taintedAddr) {
-		string fun_name = func.findTaintedRTN(addr);
+		string fun_name = func.getFunctionAndLibrary(addr);
 		if (fun_name.find("NOT Found") == string::npos)
 			cout <<" Function Name: " << fun_name << " Address: " << std::hex << addr << std::dec << endl;
 	}

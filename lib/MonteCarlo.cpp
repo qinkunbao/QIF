@@ -164,7 +164,7 @@ namespace tana {
                 std::cout << *cons << std::endl;
                 cons->validate(key_value_map);
                 if(isFunctionInformationAvailable) {
-                    std::cout << func->findTaintedRTN(std::get<0>(*it)) <<"\n"<< std::endl;
+                    std::cout << func->getFunctionAndLibrary(std::get<0>(*it)) << "\n" << std::endl;
                 }
                 addr_set.insert(std::get<0>(*it));
                 it = constrains.erase(it);
@@ -330,13 +330,13 @@ namespace tana {
                           << " Leaked:" << leaked_information << " bits"
                           << " Num of Satisfied: " << num << std::endl;
                 if(isFunctionInformationAvailable) {
-                    std::cout << func->findTaintedRTN(addr) << "\n"<<std::endl;
+                    std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
                 std::cout << "Address: " << std::hex << addr << std::dec;
                 std::cout << " Monte Carlo Failed" << std::endl;
                 if(isFunctionInformationAvailable) {
-                    std::cout << func->findTaintedRTN(addr) << "\n" <<std::endl;
+                    std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             }
         }
@@ -356,13 +356,13 @@ namespace tana {
                        << " Leaked:" << leaked_information << " bits"
                        << " Num of Satisfied: " << num << std::endl;
                 if(isFunctionInformationAvailable) {
-                    myfile << func->findTaintedRTN(addr) << "\n" << std::endl;
+                    myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
                 myfile << "Address: " << std::hex << addr << std::dec;
                 myfile << " Monte Carlo Failed" << std::endl;
                 if(isFunctionInformationAvailable) {
-                    myfile << func->findTaintedRTN(addr) << "\n" <<std::endl;
+                    myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             }
 
