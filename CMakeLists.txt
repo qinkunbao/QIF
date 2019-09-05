@@ -10,6 +10,7 @@ set(JSON_BuildTests OFF CACHE INTERNAL "")
 
 
 include_directories(lib)
+
 include_directories(external)
 include_directories(TaintTrace)
 include_directories(SymbolicExecution)
@@ -59,7 +60,8 @@ add_library(TraceLib
         lib/MonteCarlo.cpp
         lib/CallStack.h
         lib/CallStack.cpp lib/DebugInfo.cpp lib/DebugInfo.h
-        lib/cmd.cpp lib/cmd.h)
+        lib/cmd.cpp lib/cmd.h
+        lib/ELFInfo.cpp lib/ELFInfo.h)
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 
