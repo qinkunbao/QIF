@@ -10,6 +10,7 @@ set(JSON_BuildTests OFF CACHE INTERNAL "")
 
 
 include_directories(lib)
+include_directories(external)
 include_directories(TaintTrace)
 include_directories(SymbolicExecution)
 include_directories(LoopDetection)
@@ -110,8 +111,11 @@ add_executable(StaticSE
 add_executable(QIF
         QIF/QIF.cpp)
 
-add_executable(testCMD
+add_executable(TestCMD
         test/test_cmd.cpp)
+
+add_executable(TestELF
+        test/test_elf.cpp)
 
 
 target_link_libraries(taintTrace TraceLib)
@@ -124,5 +128,5 @@ target_link_libraries(StaticSE TraceLib)
 target_link_libraries(TestConstrain TraceLib)
 target_link_libraries(QIF TraceLib)
 target_link_libraries(TestRandom TraceLib)
-target_link_libraries(testCMD TraceLib)
+target_link_libraries(TestCMD TraceLib)
 
