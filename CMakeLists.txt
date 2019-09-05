@@ -3,7 +3,7 @@ project(taintTrace)
 
 
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(JSON_BuildTests OFF CACHE INTERNAL "")
@@ -120,6 +120,10 @@ add_executable(TestELF
         test/test_elf.cpp)
 
 
+add_executable(TestELFSym
+        test/test_elf_sym.cpp)
+
+
 target_link_libraries(taintTrace TraceLib)
 target_link_libraries(SymbolicExecution TraceLib)
 target_link_libraries(LoopDetection TraceLib)
@@ -131,4 +135,5 @@ target_link_libraries(TestConstrain TraceLib)
 target_link_libraries(QIF TraceLib)
 target_link_libraries(TestRandom TraceLib)
 target_link_libraries(TestCMD TraceLib)
+target_link_libraries(TestELFSym TraceLib)
 
