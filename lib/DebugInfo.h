@@ -45,6 +45,7 @@ private:
 
 public:
     explicit DebugInfo(std::ifstream &debug_file);
+    explicit DebugInfo(std::string &debug_string);
     std::shared_ptr<DebugSymbol> locateSym(uint32_t addr);
     static struct _LessThan
     {
@@ -57,3 +58,4 @@ public:
 };
 
 } // namespace tana
+

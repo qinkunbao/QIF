@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <memory>
-#include <sstream>
 #include <chrono>
 #include <cmath>
 #include <cstring>
@@ -16,43 +15,47 @@
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
 #include "Function.h"
+#include "Trace2ELF.h"
+
 
 using namespace std::chrono;
 using namespace std;
 using namespace tana;
 
 
-class InputParser{
+class InputParser {
 public:
-    InputParser (int &argc, char **argv){
-        for (int i=1; i < argc; ++i)
+    InputParser(int &argc, char **argv) {
+        for (int i = 1; i < argc; ++i)
             this->tokens.push_back(std::string(argv[i]));
     }
+
     /// @author iain
-    const std::string& getCmdOption(const std::string &option) const{
+    const std::string &getCmdOption(const std::string &option) const {
         std::vector<std::string>::const_iterator itr;
-        itr =  std::find(this->tokens.begin(), this->tokens.end(), option);
-        if (itr != this->tokens.end() && ++itr != this->tokens.end()){
+        itr = std::find(this->tokens.begin(), this->tokens.end(), option);
+        if (itr != this->tokens.end() && ++itr != this->tokens.end()) {
             return *itr;
         }
         static const std::string empty_string("");
         return empty_string;
     }
+
     /// @author iain
-    bool cmdOptionExists(const std::string &option) const{
+    bool cmdOptionExists(const std::string &option) const {
         return std::find(this->tokens.begin(), this->tokens.end(), option)
                != this->tokens.end();
     }
+
 private:
-    std::vector <std::string> tokens;
+    std::vector<std::string> tokens;
 };
 
 
-float getEntropy(std::vector<uint8_t> key_value,  \
+float getEntropy(std::vector<uint8_t> key_value, \
                  uint64_t MonteCarloTimes, \
-                 std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
-                 constrains, \
-                 std::string fileName, \
+                 std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> constrains, \
+                 const std::string &fileName, \
                  std::shared_ptr<Function> func, \
                  std::map<int, uint32_t> key_value_map) {
     using clock = std::chrono::system_clock;
@@ -74,20 +77,20 @@ float getEntropy(std::vector<uint8_t> key_value,  \
     return abs(-log(MonteCarloResult) / log(2));
 }
 
-std::vector<std::string> split(std::string str,std::string sep){
-    char* cstr=const_cast<char*>(str.c_str());
-    char* current;
+std::vector<std::string> split(std::string str, std::string sep) {
+    char *cstr = const_cast<char *>(str.c_str());
+    char *current;
     std::vector<std::string> arr;
-    current=strtok(cstr,sep.c_str());
-    while(current!= nullptr){
+    current = strtok(cstr, sep.c_str());
+    while (current != nullptr) {
         arr.push_back(current);
-        current=strtok(nullptr, sep.c_str());
+        current = strtok(nullptr, sep.c_str());
     }
     return arr;
 }
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc < 2) {
         cout << "Usage: " << argv[0] << " <traces.txt> " << "<options>" << "\n";
         cout << "Option one:   -t <Monte Carlo Times>\n";
@@ -97,22 +100,33 @@ int main(int argc, char* argv[]) {
     }
 
     std::shared_ptr<Function> func = nullptr;
+    std::shared_ptr<Trace2ELF> t2e = nullptr;
     uint64_t MonteCarloTimes = 10000;
     InputParser input(argc, argv);
 
+    std::string traceFileName(argv[1]);
+    std::string sep("/");
+    auto fileSegment = split(traceFileName, sep);
+    auto fileName = "result_" + fileSegment.rbegin()[1] + fileSegment.back();
+    bool cmdStatus = false;
 
-    if(input.cmdOptionExists("-t"))
-    {
+    if (input.cmdOptionExists("-t")) {
         const std::string &mc_times = input.getCmdOption("-t");
         stringstream strValue;
         strValue << mc_times;
         uint64_t temp;
         strValue >> temp;
         MonteCarloTimes = temp;
+        cmdStatus = true;
     }
 
-    if(input.cmdOptionExists("-t") && input.cmdOptionExists("-f"))
-    {
+    if (input.cmdOptionExists("-f")) {
+        const std::string &fun_name = input.getCmdOption("-f");
+        func = std::make_shared<Function>(fun_name);
+        cmdStatus = true;
+    }
+
+    if (input.cmdOptionExists("-t") && input.cmdOptionExists("-f")) {
         const std::string &mc_times = input.getCmdOption("-t");
         stringstream strValue;
         strValue << mc_times;
@@ -122,22 +136,40 @@ int main(int argc, char* argv[]) {
 
         const std::string &fun_name = input.getCmdOption("-f");
         ifstream func_file(fun_name);
-        func = std::make_shared<Function>(&func_file);
+        func = std::make_shared<Function>(func_file);
+        cmdStatus = true;
     }
 
+    if (input.cmdOptionExists("-t")
+        && input.cmdOptionExists("-f")
+        && input.cmdOptionExists("-d")) {
+        const std::string &mc_times = input.getCmdOption("-t");
+        stringstream strValue;
+        strValue << mc_times;
+        uint64_t temp;
+        strValue >> temp;
+        MonteCarloTimes = temp;
 
+        const std::string &fun_name = input.getCmdOption("-f");
+        func = std::make_shared<Function>(fun_name);
+
+        const std::string &obj_name = input.getCmdOption("-f");
+        t2e = std::make_shared<Trace2ELF>(obj_name, fun_name);
+
+    }
     ifstream trace_file(argv[1]);
     if (!trace_file.is_open()) {
         cout << "Can't open files" << endl;
         return 1;
     }
 
-    std::string traceFileName(argv[1]);
-    std::string sep("/");
-    auto fileSegment = split(traceFileName, sep);
-    auto fileName = "result_" + fileSegment.rbegin()[1] + fileSegment.back();
+    if (!cmdStatus) {
+        cout << "Incorrect Input Option \n";
+        exit(0);
+    }
 
-    vector<std::unique_ptr<Inst_Base>> inst_list;
+
+    vector<unique_ptr<Inst_Base>> inst_list;
     tana_type::T_ADDRESS start_addr = 0;
     tana_type::T_SIZE m_size = 0;
     vector<uint8_t> key_value;
@@ -167,9 +199,9 @@ int main(int argc, char* argv[]) {
     ebp = reg.gpr[7];
 
     auto *se = new QIFSEEngine(eax, ebx, ecx, edx, esi, edi, esp, ebp);
-    if(argc == 4) {
+    if (argc == 4) {
         se->init(inst_list.begin(), inst_list.end(), start_addr, m_size / 8, key_value, func);
-    } else{
+    } else {
         se->init(inst_list.begin(), inst_list.end(), start_addr, m_size / 8, key_value);
 
     }
@@ -178,19 +210,19 @@ int main(int argc, char* argv[]) {
     se->printConstrains();
 
     auto key_value_map = se->return_key_value_map();
-    auto constrains = se->getConstrains();
+    auto constraints = se->getConstraints();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName, func,
-                                                     key_value_map)
-    << std::endl;
+    std::cout << "Total Leaked Bits = " << getEntropy(key_value, MonteCarloTimes, constraints, fileName, func,
+                                                      key_value_map)
+              << std::endl;
 
     auto stop = high_resolution_clock::now();
 
     auto duration = duration_cast<microseconds>(stop - start);
 
     cout << "Time taken by QIF: "
-         << duration.count()/1000000 << " seconds" << endl;
+         << duration.count() / 1000000 << " seconds" << endl;
 
 
     return 0;

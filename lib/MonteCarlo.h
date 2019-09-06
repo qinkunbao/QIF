@@ -66,7 +66,7 @@ namespace tana {
         std::vector<std::tuple<uint32_t , std::shared_ptr<tana::Constrain>, LeakageType>>* \
         internal_find_constrain_group_by_addr(uint32_t addr);
 
-        std::vector<std::tuple<uint32_t ,uint64_t> > num_satisfied_group;
+        std::vector<std::tuple<uint32_t, uint64_t, LeakageType> > num_satisfied_group;
 
         void reset_tests();
 
