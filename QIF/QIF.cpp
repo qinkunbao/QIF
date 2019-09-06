@@ -58,9 +58,6 @@ float getEntropy(std::vector<uint8_t> key_value, \
                  const std::string &fileName, \
                  std::shared_ptr<Function> func, \
                  std::map<int, uint32_t> key_value_map) {
-    using clock = std::chrono::system_clock;
-    using ms = std::chrono::milliseconds;
-    const auto before = clock::now();
 
     FastMonteCarlo res(MonteCarloTimes, constrains, key_value, func, key_value_map);
     res.verifyConstrain();
@@ -70,10 +67,7 @@ float getEntropy(std::vector<uint8_t> key_value, \
     res.print_group_result(fileName);
     float MonteCarloResult = res.getResult();
 
-    const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
 
-    std::cout << "It took " << duration.count() / 1000.0 << " ms"
-              << " to finish the monte carlo sampling" << std::endl;
     return abs(-log(MonteCarloResult) / log(2));
 }
 

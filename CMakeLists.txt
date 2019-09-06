@@ -18,7 +18,7 @@ include_directories(LoopDetection)
 include_directories(test)
 include_directories(BitTaint)
 include_directories(StaticSE)
-add_subdirectory(nlohmann_json)
+add_subdirectory(external/nlohmann_json)
 
 
 add_library(TraceLib

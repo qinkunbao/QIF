@@ -66,9 +66,11 @@ namespace tana {
 
         }
         //this->printMemory();
-        this->func = function;
+        if(function != nullptr) {
+            this->func = function;
 
-        stacks = std::make_unique<CallStack>(func->getFunName(start->get()->addrn), key_value_set);
+            stacks = std::make_unique<CallStack>(func->getFunName(start->get()->addrn), key_value_set);
+        }
     }
 
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
