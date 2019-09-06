@@ -105,6 +105,9 @@ add_executable(TestRandom
 add_executable(TestDebugInfo
         test/test_debuginfo.cpp)
 
+add_executable(TestDebugInfoStr
+        test/test_debuginfo_str.cpp)
+
 add_executable(BitTaint
         BitTaint/BitTaint.cpp
         BitTaint/BitTaint.h
@@ -140,6 +143,7 @@ target_link_libraries(TestConstrain TraceLib)
 target_link_libraries(QIF TraceLib)
 target_link_libraries(TestRandom TraceLib)
 target_link_libraries(TestDebugInfo TraceLib)
+target_link_libraries(TestDebugInfoStr TraceLib)
 target_link_libraries(TestCMD TraceLib)
 target_link_libraries(TestELFSym TraceLib)
 

@@ -7,8 +7,8 @@
 
 #include "DebugInfo.h"
 
-#include <string.h>
-
+#include <cstring>
+#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -76,7 +76,57 @@ DebugInfo::DebugInfo(std::ifstream &debug_file)
 }
 
 DebugInfo::DebugInfo(std::string &debug_string) {
-    // TODO
+    stringstream debug_info;
+    debug_info << debug_string;
+
+    char buffer[256];
+    string fPwd;
+    string fileName;
+    uint32_t binaryAddress;
+    int lineNumber;
+
+
+    // Find first line end with ':'
+    while (debug_info.getline(buffer, 256) &&
+           (buffer[strlen(buffer) - 1] != ':') &&
+           debug_info.good())
+    {
+    }
+
+    debug_info >> fileName;
+    // Read content
+    while (debug_info.good())
+    {
+        fPwd = fileName;
+        if (fPwd[0] == 'C')
+        {
+            // Skip 'CU:'
+            debug_info >> fPwd;
+            // Skip table header
+            debug_info.getline(buffer, 256);
+            debug_info.getline(buffer, 256);
+        }
+
+        if (fPwd[fPwd.length() - 1] == ':')
+        {
+            fPwd.pop_back();
+        }
+        else
+        {
+            fPwd.resize(fPwd.size() - 5);
+        }
+
+        debug_info >> fileName;
+        while (debug_info.good() && fileName[fileName.length() - 1] != ':' && fileName[fileName.length() - 1] != ']')
+        {
+            debug_info >> dec >> lineNumber >> hex >> binaryAddress;
+            auto ds = make_shared<DebugSymbol>(fPwd, fileName, binaryAddress, lineNumber);
+            line_info.insert(
+                    upper_bound(line_info.begin(), line_info.end(), ds, DebugSymbol::LessThan), ds);
+            ds.reset();
+            debug_info >> fileName;
+        }
+    }
 }
 
 shared_ptr<DebugSymbol> DebugInfo::locateSym(uint32_t addr)
