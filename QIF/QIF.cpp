@@ -53,7 +53,7 @@ float getEntropy(std::vector<uint8_t> key_value,  \
                  uint64_t MonteCarloTimes, \
                  std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
                  constrains, \
-                 std::string fileName, \
+                 const std::string& fileName, \
                  std::shared_ptr<Function> func, \
                  std::map<int, uint32_t> key_value_map) {
     using clock = std::chrono::system_clock;
@@ -119,8 +119,7 @@ int main(int argc, char* argv[]) {
     if(input.cmdOptionExists("-f"))
     {
         const std::string &fun_name = input.getCmdOption("-f");
-        ifstream func_file(fun_name);
-        func = std::make_shared<Function>(func_file);
+        func = std::make_shared<Function>(fun_name);
     }
 
     if(input.cmdOptionExists("-t") && input.cmdOptionExists("-f"))
@@ -145,7 +144,7 @@ int main(int argc, char* argv[]) {
     }
 
 
-    vector<std::unique_ptr<Inst_Base>> inst_list;
+    vector<unique_ptr<Inst_Base>> inst_list;
     tana_type::T_ADDRESS start_addr = 0;
     tana_type::T_SIZE m_size = 0;
     vector<uint8_t> key_value;
@@ -186,10 +185,10 @@ int main(int argc, char* argv[]) {
     se->printConstrains();
 
     auto key_value_map = se->return_key_value_map();
-    auto constrains = se->getConstrains();
+    auto constraints = se->getConstraints();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constrains, fileName, func,
+    std::cout << "Total Leaked Bits = "<< getEntropy(key_value, MonteCarloTimes, constraints, fileName, func,
                                                      key_value_map)
     << std::endl;
 

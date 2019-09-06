@@ -1129,7 +1129,7 @@ namespace tana {
     }
 
     std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
-    QIFSEEngine::getConstrains(){
+    QIFSEEngine::getConstraints(){
         return constrains;
     }
 
