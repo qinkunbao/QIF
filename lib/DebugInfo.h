@@ -1,4 +1,4 @@
-/*************************************************************************
+/************************ >->addressconst uint32_tconst std::shared_ptr<DebugSymbol> < LessThanLessThan
 	> File Name: DynSEEngine.cpp
 	> Author: Qinkun Bao & Zihao Wang
 	> Mail: qinkunbao@gmail.com
@@ -22,7 +22,20 @@ public:
     std::string file_name;
     uint32_t address;
     int line_number;
-    DebugSymbol(const std::string &fPwd, const std::string &fileName, uint32_t binaryAddress, int lineNumber) : pwd(fPwd), file_name(fileName), address(binaryAddress), line_number(lineNumber) {}
+    DebugSymbol(const std::string &fPwd,
+                const std::string &fileName,
+                uint32_t binaryAddress,
+                int lineNumber) : pwd(fPwd),
+                                  file_name(fileName),
+                                  address(binaryAddress),
+                                  line_number(lineNumber) {}
+    static struct _LessThan
+    {
+        bool operator()(const std::shared_ptr<DebugSymbol> &left, const std::shared_ptr<DebugSymbol> &right)
+        {
+            return left->address < right->address;
+        }
+    } LessThan;
 };
 
 class DebugInfo
@@ -33,6 +46,13 @@ private:
 public:
     explicit DebugInfo(std::ifstream &debug_file);
     std::shared_ptr<DebugSymbol> locateSym(uint32_t addr);
+    static struct _LessThan
+    {
+        bool operator()(const uint32_t &left, const std::shared_ptr<DebugSymbol> &right)
+        {
+            return left < right->address;
+        }
+    } LessThan;
     ~DebugInfo() = default;
 };
 

@@ -13,15 +13,13 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 using namespace tana;
 
 DebugInfo::DebugInfo(std::ifstream &debug_file)
 {
-    // TODO by Zihao
-    // TODO: Use string
-
     char buffer[256];
     string fPwd;
     string fileName;
@@ -34,7 +32,7 @@ DebugInfo::DebugInfo(std::ifstream &debug_file)
         exit(1);
     }
 
-    // Find first line begin with 'CU:'
+    // Find first line end with ':'
     while (debug_file.getline(buffer, 256) &&
            (buffer[strlen(buffer) - 1] != ':') &&
            debug_file.good())
@@ -63,15 +61,15 @@ DebugInfo::DebugInfo(std::ifstream &debug_file)
         {
             fPwd.resize(fPwd.size() - 5);
         }
-        cout << fPwd << endl;
 
         debug_file >> fileName;
         while (debug_file.good() && fileName[fileName.length() - 1] != ':' && fileName[fileName.length() - 1] != ']')
         {
-            debug_file >> dec >> binaryAddress >> hex >> lineNumber;
-            // DebugSymbol::DebugSymbol(fPwd, fileName, binaryAddress, lineNumber);
-            cout << fPwd << fileName << dec << binaryAddress << "0x" << hex
-                 << lineNumber << endl;
+            debug_file >> dec >> lineNumber >> hex >> binaryAddress;
+            auto ds = make_shared<DebugSymbol>(fPwd, fileName, binaryAddress, lineNumber);
+            line_info.insert(
+                upper_bound(line_info.begin(), line_info.end(), ds, DebugSymbol::LessThan), ds);
+            ds.reset();
             debug_file >> fileName;
         }
     }
@@ -79,6 +77,13 @@ DebugInfo::DebugInfo(std::ifstream &debug_file)
 
 shared_ptr<DebugSymbol> DebugInfo::locateSym(uint32_t addr)
 {
-    // TODO by Zihao
-    return nullptr;
+    const auto target = upper_bound(line_info.begin(), line_info.end(), addr, DebugInfo::LessThan);
+    if (target != line_info.begin())
+    {
+        return *(target - 1);
+    }
+    else
+    {
+        return nullptr;
+    }
 }
