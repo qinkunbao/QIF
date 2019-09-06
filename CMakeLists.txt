@@ -3,13 +3,15 @@ project(taintTrace)
 
 
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(JSON_BuildTests OFF CACHE INTERNAL "")
 
 
 include_directories(lib)
+
+include_directories(external)
 include_directories(TaintTrace)
 include_directories(SymbolicExecution)
 include_directories(LoopDetection)
@@ -57,9 +59,11 @@ add_library(TraceLib
         lib/MonteCarlo.h
         lib/MonteCarlo.cpp
         lib/CallStack.h
-        lib/CallStack.cpp
-        lib/DebugInfo.h
-        lib/DebugInfo.cpp)
+        lib/CallStack.cpp lib/DebugInfo.cpp lib/DebugInfo.h
+        lib/cmd.cpp lib/cmd.h
+        lib/ELFInfo.cpp lib/ELFInfo.h
+        lib/Trace2ELF.cpp lib/Trace2ELF.h)
+
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
 
@@ -114,6 +118,16 @@ add_executable(StaticSE
 add_executable(QIF
         QIF/QIF.cpp)
 
+add_executable(TestCMD
+        test/test_cmd.cpp)
+
+add_executable(TestELF
+        test/test_elf.cpp)
+
+
+add_executable(TestELFSym
+        test/test_elf_sym.cpp)
+
 
 target_link_libraries(taintTrace TraceLib)
 target_link_libraries(SymbolicExecution TraceLib)
@@ -126,3 +140,7 @@ target_link_libraries(TestConstrain TraceLib)
 target_link_libraries(QIF TraceLib)
 target_link_libraries(TestRandom TraceLib)
 target_link_libraries(TestDebugInfo TraceLib)
+target_link_libraries(TestCMD TraceLib)
+target_link_libraries(TestELFSym TraceLib)
+
+

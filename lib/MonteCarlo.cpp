@@ -8,7 +8,7 @@
 #include <random>
 #include <set>
 #include <iostream>
-#include <fstream>
+#include <string>
 #include "MonteCarlo.h"
 #include "error.h"
 
@@ -159,18 +159,18 @@ namespace tana {
             if (flag) {
                 ++it;
             } else {
-                std::cout << "Failed Constrains: " << std::endl;
+                std::cout << "Failed Constraints: " << "\n";
                 std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
-                std::cout << *cons << std::endl;
+                std::cout << *cons << "\n";
                 cons->validate(key_value_map);
                 if(isFunctionInformationAvailable) {
-                    std::cout << func->findTaintedRTN(std::get<0>(*it)) <<"\n"<< std::endl;
+                    std::cout << func->getFunctionAndLibrary(std::get<0>(*it)) << "\n" << std::endl;
                 }
                 addr_set.insert(std::get<0>(*it));
                 it = constrains.erase(it);
             }
         }
-        std::cout << "\n Number of Failed Constrains: " << addr_set.size() <<"\n"<< std::endl;
+        std::cout << "\n Number of Failed Constraints: " << addr_set.size() <<"\n"<< std::endl;
         return true;
     }
 
@@ -185,7 +185,7 @@ namespace tana {
                 ++num_DA;
             }
         }
-        std::cout << "Total Constrains: " << constrains_group_addr.size() << std::endl;
+        std::cout << "Total Constraints: " << constrains_group_addr.size() << std::endl;
         std::cout << "Control Transfer: " << num_CF << std::endl;
         std::cout << "Data Access: " << num_DA << std::endl;
 
@@ -249,11 +249,14 @@ namespace tana {
                 ++it;
                 continue;
             }
+
+            // It means the constraints are always satisfied
             if ((this->num_sample / num_satisfied_for_group) == 1) {
                 it = constrains_group_addr.erase(it);
             } else {
                 uint32_t addr = std::get<0>((*it).front());
-                auto result = std::make_tuple(addr, num_satisfied_for_group);
+                LeakageType type = std::get<2>((*it).front());
+                auto result = std::make_tuple(addr, num_satisfied_for_group, type);
                 num_satisfied_group.push_back(result);
                 ++it;
             }
@@ -322,21 +325,24 @@ namespace tana {
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
+            LeakageType type = std::get<2>(it);
+            std::string type_str = (type == LeakageType::CFLeakage) ? "CF" : "DA";
             if (num != 0) {
                 float portion =
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
                 float leaked_information = abs(-log(portion) / log(2));
                 std::cout << "Address: " << std::hex << addr << std::dec
                           << " Leaked:" << leaked_information << " bits"
+                          << " Type: " << type_str << " "
                           << " Num of Satisfied: " << num << std::endl;
                 if(isFunctionInformationAvailable) {
-                    std::cout << func->findTaintedRTN(addr) << "\n"<<std::endl;
+                    std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
                 std::cout << "Address: " << std::hex << addr << std::dec;
                 std::cout << " Monte Carlo Failed" << std::endl;
                 if(isFunctionInformationAvailable) {
-                    std::cout << func->findTaintedRTN(addr) << "\n" <<std::endl;
+                    std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             }
         }
@@ -347,6 +353,8 @@ namespace tana {
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
+            LeakageType type = std::get<2>(it);
+            std::string type_str = (type == LeakageType::CFLeakage) ? "CF" : "DA";
             myfile << "------------------------------------------------------------\n";
             if (num != 0) {
                 float portion =
@@ -354,15 +362,16 @@ namespace tana {
                 float leaked_information = abs(-log(portion) / log(2));
                 myfile << "Address: " << std::hex << addr << std::dec
                        << " Leaked:" << leaked_information << " bits"
+                       << " Type: " << type_str << " "
                        << " Num of Satisfied: " << num << std::endl;
                 if(isFunctionInformationAvailable) {
-                    myfile << func->findTaintedRTN(addr) << "\n" << std::endl;
+                    myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
                 myfile << "Address: " << std::hex << addr << std::dec;
                 myfile << " Monte Carlo Failed" << std::endl;
                 if(isFunctionInformationAvailable) {
-                    myfile << func->findTaintedRTN(addr) << "\n" <<std::endl;
+                    myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             }
 

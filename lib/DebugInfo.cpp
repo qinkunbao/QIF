@@ -75,6 +75,10 @@ DebugInfo::DebugInfo(std::ifstream &debug_file)
     }
 }
 
+DebugInfo::DebugInfo(std::string &debug_string) {
+    // TODO
+}
+
 shared_ptr<DebugSymbol> DebugInfo::locateSym(uint32_t addr)
 {
     const auto target = upper_bound(line_info.begin(), line_info.end(), addr, DebugInfo::LessThan);
