@@ -40,6 +40,11 @@ namespace tana {
 
 
             auto func = std::make_shared<Routine>();
+            if(function_name.front() == ' ')
+            {
+                function_name.erase(0,1);
+            }
+
             func->rtn_name = function_name;
             func->module_name = module_name;
             func->start_addr = stoul(addr, nullptr, 16);

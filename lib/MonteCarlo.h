@@ -15,6 +15,7 @@
 #include "Constrains.h"
 #include "Engine.h"
 #include "Function.h"
+#include "Trace2ELF.h"
 
 
 namespace tana {
@@ -98,7 +99,7 @@ namespace tana {
 
         void run_addr_group();
 
-        void print_group_result(const std::string &resultFile);
+        void print_group_result(const std::string &resultFile, std::shared_ptr<Trace2ELF> t2e);
 
         void calculateConstrains(const std::string &resultFile);
 

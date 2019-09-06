@@ -11,6 +11,7 @@
 #include <string>
 #include "MonteCarlo.h"
 #include "error.h"
+#include "Trace2ELF.h"
 
 namespace tana {
     std::vector<uint8_t> MonteCarlo::getRandomVector(unsigned int size) {
@@ -319,7 +320,7 @@ namespace tana {
         }
     }
 
-    void FastMonteCarlo::print_group_result(const std::string &result) {
+    void FastMonteCarlo::print_group_result(const std::string &result, std::shared_ptr<Trace2ELF> t2e) {
         auto sample_num = tests.size();
         std::cout << "Information Leak for each address: \n";
         for (auto &it : num_satisfied_group) {
@@ -335,12 +336,24 @@ namespace tana {
                           << " Leaked:" << leaked_information << " bits"
                           << " Type: " << type_str << " "
                           << " Num of Satisfied: " << num << std::endl;
+                if(t2e != nullptr)
+                {
+                    std::cout << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                              << t2e->locateSym(addr)->file_name << " line number: "
+                              << t2e->locateSym(addr)->line_number << std::endl;
+                }
                 if(isFunctionInformationAvailable) {
                     std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
                 std::cout << "Address: " << std::hex << addr << std::dec;
                 std::cout << " Monte Carlo Failed" << std::endl;
+                if(t2e != nullptr)
+                {
+                    std::cout << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                              << t2e->locateSym(addr)->file_name << " line number: "
+                              << t2e->locateSym(addr)->line_number << std::endl;
+                }
                 if(isFunctionInformationAvailable) {
                     std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
@@ -364,12 +377,24 @@ namespace tana {
                        << " Leaked:" << leaked_information << " bits"
                        << " Type: " << type_str << " "
                        << " Num of Satisfied: " << num << std::endl;
+                if(t2e != nullptr)
+                {
+                    myfile << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                              << t2e->locateSym(addr)->file_name << " line number: "
+                              << t2e->locateSym(addr)->line_number << std::endl;
+                }
                 if(isFunctionInformationAvailable) {
                     myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
                 myfile << "Address: " << std::hex << addr << std::dec;
                 myfile << " Monte Carlo Failed" << std::endl;
+                if(t2e != nullptr)
+                {
+                    myfile << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                              << t2e->locateSym(addr)->file_name << " line number: "
+                              << t2e->locateSym(addr)->line_number << std::endl;
+                }
                 if(isFunctionInformationAvailable) {
                     myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
