@@ -12,9 +12,14 @@
 #include <random>
 #include "Function.h"
 #include "ins_types.h"
+#include "error.h"
+
 
 
 using namespace std;
+
+#define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
+
 
 namespace tana {
     Function::Function(ifstream &function_file) {
@@ -51,7 +56,6 @@ namespace tana {
             if (!(num_fun % 1000)) {
                 std::cout << "Parsing Functions: " << num_fun << std::endl;
             }
-            //std::cout << "112" << std::endl;
         }
         ptr_cache = fun_rtns.front();
     }
@@ -59,6 +63,12 @@ namespace tana {
     Function::Function(const std::string &function_file_name)
     {
         ifstream function_file(function_file_name);
+        if(!function_file.is_open())
+        {
+            ERROR("Open file failed!");
+            exit(0);
+        }
+
         string line;
         uint32_t num_fun = 0;
         while (function_file.good()) {

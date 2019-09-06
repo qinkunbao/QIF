@@ -110,7 +110,7 @@ namespace tana {
 
 
         std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
-        getConstrains();
+        getConstraints();
 
         std::map<int, uint32_t> return_key_value_map()
         {

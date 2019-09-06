@@ -159,9 +159,9 @@ namespace tana {
             if (flag) {
                 ++it;
             } else {
-                std::cout << "Failed Constrains: " << std::endl;
+                std::cout << "Failed Constraints: " << "\n";
                 std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
-                std::cout << *cons << std::endl;
+                std::cout << *cons << "\n";
                 cons->validate(key_value_map);
                 if(isFunctionInformationAvailable) {
                     std::cout << func->getFunctionAndLibrary(std::get<0>(*it)) << "\n" << std::endl;
@@ -170,7 +170,7 @@ namespace tana {
                 it = constrains.erase(it);
             }
         }
-        std::cout << "\n Number of Failed Constrains: " << addr_set.size() <<"\n"<< std::endl;
+        std::cout << "\n Number of Failed Constraints: " << addr_set.size() <<"\n"<< std::endl;
         return true;
     }
 
@@ -185,7 +185,7 @@ namespace tana {
                 ++num_DA;
             }
         }
-        std::cout << "Total Constrains: " << constrains_group_addr.size() << std::endl;
+        std::cout << "Total Constraints: " << constrains_group_addr.size() << std::endl;
         std::cout << "Control Transfer: " << num_CF << std::endl;
         std::cout << "Data Access: " << num_DA << std::endl;
 
