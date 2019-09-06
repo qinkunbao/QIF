@@ -8,7 +8,7 @@
 #include <random>
 #include <set>
 #include <iostream>
-#include <fstream>
+#include <string>
 #include "MonteCarlo.h"
 #include "error.h"
 
@@ -249,11 +249,14 @@ namespace tana {
                 ++it;
                 continue;
             }
+
+            // It means the constraints are always satisfied
             if ((this->num_sample / num_satisfied_for_group) == 1) {
                 it = constrains_group_addr.erase(it);
             } else {
                 uint32_t addr = std::get<0>((*it).front());
-                auto result = std::make_tuple(addr, num_satisfied_for_group);
+                LeakageType type = std::get<2>((*it).front());
+                auto result = std::make_tuple(addr, num_satisfied_for_group, type);
                 num_satisfied_group.push_back(result);
                 ++it;
             }
@@ -322,12 +325,15 @@ namespace tana {
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
+            LeakageType type = std::get<2>(it);
+            std::string type_str = (type == LeakageType::CFLeakage) ? "CF" : "DA";
             if (num != 0) {
                 float portion =
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
                 float leaked_information = abs(-log(portion) / log(2));
                 std::cout << "Address: " << std::hex << addr << std::dec
                           << " Leaked:" << leaked_information << " bits"
+                          << " Type: " << type_str << " "
                           << " Num of Satisfied: " << num << std::endl;
                 if(isFunctionInformationAvailable) {
                     std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
@@ -347,6 +353,8 @@ namespace tana {
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
+            LeakageType type = std::get<2>(it);
+            std::string type_str = (type == LeakageType::CFLeakage) ? "CF" : "DA";
             myfile << "------------------------------------------------------------\n";
             if (num != 0) {
                 float portion =
@@ -354,6 +362,7 @@ namespace tana {
                 float leaked_information = abs(-log(portion) / log(2));
                 myfile << "Address: " << std::hex << addr << std::dec
                        << " Leaked:" << leaked_information << " bits"
+                       << " Type: " << type_str << " "
                        << " Num of Satisfied: " << num << std::endl;
                 if(isFunctionInformationAvailable) {
                     myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
