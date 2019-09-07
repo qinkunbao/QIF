@@ -72,6 +72,7 @@ float getEntropy(std::vector<uint8_t> key_value, \
     return abs(-log(MonteCarloResult) / log(2));
 }
 
+
 std::vector<std::string> split(std::string str, std::string sep) {
     char *cstr = const_cast<char *>(str.c_str());
     char *current;

@@ -1050,6 +1050,10 @@ namespace tana {
             case 6: {
                 // eax*2+0xffffff
                 auto reg = opr->field[0];
+
+                auto esi = this->readReg("esi");
+                uint32_t esi_symbol = eval_cache(esi, key_value_map);
+
                 auto regV = this->readReg(reg);
                 auto regV_num = regV->symbol_num();
 
@@ -1062,8 +1066,9 @@ namespace tana {
                 auto symbol = opr->field[2];
 
                 auto res1 = buildop2(BVOper::bvimul, regV, temp_concrete1);
+
                 auto bvopr = symbol == "+" ? BVOper::bvadd : BVOper::bvsub;
-                auto res = buildop2(bvopr, regV, temp_concrete2);
+                auto res = buildop2(bvopr, res1, temp_concrete2);
                 this->getMemoryAccessConstrain(res, inst->get_memory_address());
 
                 return;
