@@ -101,7 +101,8 @@ namespace tana {
     FastMonteCarlo::FastMonteCarlo(
             uint64_t sample_num,
             std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
-            std::vector<uint8_t> key_value, std::map<int, uint32_t> key_value_map_c)
+            std::vector<uint8_t> key_value,
+            const std::map<int, uint32_t> &key_value_map_c)
             : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
               input_seed(key_value), isFunctionInformationAvailable(false), func(nullptr),
               key_value_map(key_value_map_c){
@@ -124,7 +125,8 @@ namespace tana {
     FastMonteCarlo::FastMonteCarlo(
             uint64_t sample_num,
             std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
-            std::vector<uint8_t> key_value, std::shared_ptr<Function> fun, std::map<int, uint32_t> key_value_map_c)
+            std::vector<uint8_t> key_value, std::shared_ptr<Function> fun,
+            const std::map<int, uint32_t> &key_value_map_c)
             : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
               input_seed(key_value), isFunctionInformationAvailable(true), func(fun),
               key_value_map(key_value_map_c){
@@ -215,7 +217,7 @@ namespace tana {
     void FastMonteCarlo::run() {
 
         std::cout << "Start Computing "
-                  << "Constrain: " << constrains.size() << std::endl;
+                  << "Constraints by Address: " << constrains_group_addr.size() << std::endl;
         this->reset_tests();
         for (const auto &element : constrains) {
             auto &cons = std::get<1>(element);
@@ -244,11 +246,6 @@ namespace tana {
                 if (test->second) {
                     ++num_satisfied_for_group;
                 }
-            }
-            if(num_satisfied_for_group == 0)
-            {
-                ++it;
-                continue;
             }
 
             // It means the constraints are always satisfied
@@ -362,7 +359,6 @@ namespace tana {
 
         std::ofstream myfile;
         myfile.open (result, std::ios_base::app);
-        int constrain_index = 0;
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
@@ -411,7 +407,6 @@ namespace tana {
                 }
             }
 
-            ++constrain_index;
             myfile << "------------------------------------------------------------\n";
         }
         myfile.close();

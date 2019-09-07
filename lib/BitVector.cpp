@@ -128,7 +128,7 @@ namespace tana {
 
     int BitVector::idseed = 0;
 
-    BitVector::BitVector(ValueType vty, std::string s_info) : opr(nullptr), val_type(vty), info(s_info),
+    BitVector::BitVector(ValueType vty, const std::string &s_info) : opr(nullptr), val_type(vty), info(s_info),
                                                               concrete_value(0),
                                                               formula_cache_concrete_value(0),
                                                               flag_formula_cache_concrete(false){
@@ -164,7 +164,7 @@ namespace tana {
         opr = std::move(oper);
     }
 
-    BitVector::BitVector(ValueType vty, std::string symbol_info, uint32_t size) : concrete_value(0), val_type(vty),
+    BitVector::BitVector(ValueType vty, const std::string &symbol_info, uint32_t size) : concrete_value(0), val_type(vty),
                                                                                   info(symbol_info),
                                                                                   low_bit(1), high_bit(size),
                                                                                   formula_cache_concrete_value(0),
@@ -268,7 +268,6 @@ namespace tana {
         assert(high > low);
         //assert(high <= REGISTER_SIZE);
         assert(low > 0);
-        std::bitset<REGISTER_SIZE> bset(op1);
         uint32_t tmp = op1 << (REGISTER_SIZE - high);
         uint32_t res = tmp >> (REGISTER_SIZE - high + low - 1);
         return res;

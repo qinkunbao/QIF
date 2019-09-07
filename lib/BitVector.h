@@ -81,7 +81,7 @@ namespace tana {
 
         BitVector() = delete;
 
-        explicit BitVector(ValueType vty, std::string symbol_info);
+        explicit BitVector(ValueType vty, const std::string &symbol_info);
 
         explicit BitVector(ValueType vty, uint32_t concrete, bool Imm2SymState);    // constructor for concrete value
         explicit BitVector(ValueType vty, uint32_t concrete, bool Imm2SymState,
@@ -90,7 +90,7 @@ namespace tana {
 
         explicit BitVector(ValueType vty, uint32_t con);
 
-        explicit BitVector(ValueType vty, std::string symbol_info, uint32_t size);
+        explicit BitVector(ValueType vty, const std::string &symbol_info, uint32_t size);
 
         std::vector<int> getInputSymbolVector();
 

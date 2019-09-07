@@ -174,7 +174,7 @@ namespace tana {
             auto &v0 = ref_opr->val[0];
             auto &v1 = ref_opr->val[1];
             auto &v2 = ref_opr->val[2];
-            uint32_t v0_size = 0, v1_size = 0, v2_size = 0;
+            uint32_t v1_size = 0, v2_size = 0;
 
 
             if (ref_opr->opty == BVOper::bvconcat) {
@@ -687,7 +687,7 @@ namespace tana {
         return true;
     }
 
-    void QIFSEEngine::updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons) {
+    void QIFSEEngine::updateFlags(const std::string &flag_name, std::shared_ptr<BitVector> cons) {
         if (flag_name == "CF") {
             this->CF = cons;
             return;
@@ -721,12 +721,12 @@ namespace tana {
         ERROR("Not recognized flag_name");
     }
 
-    void QIFSEEngine::clearFlags(std::string flag_name) {
+    void QIFSEEngine::clearFlags(const std::string &flag_name) {
         std::shared_ptr<BitVector> con = std::make_shared<BitVector>(ValueType::CONCRETE, 0);
         this->updateFlags(flag_name, con);
     }
 
-    std::shared_ptr<tana::BitVector> QIFSEEngine::getFlags(std::string flag_name) {
+    std::shared_ptr<tana::BitVector> QIFSEEngine::getFlags(const std::string &flag_name) {
         if (flag_name == "CF") {
             return CF;
         }
@@ -1052,7 +1052,6 @@ namespace tana {
                 auto reg = opr->field[0];
 
                 auto esi = this->readReg("esi");
-                uint32_t esi_symbol = eval_cache(esi, key_value_map);
 
                 auto regV = this->readReg(reg);
                 auto regV_num = regV->symbol_num();

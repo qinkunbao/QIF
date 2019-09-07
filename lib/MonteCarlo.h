@@ -81,13 +81,13 @@ namespace tana {
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
                        std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
                        std::vector<uint8_t> key_value,
-                       std::map<int, uint32_t> key_value_map);
+                       const std::map<int, uint32_t> &key_value_map);
 
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
                        std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
                        std::vector<uint8_t> key_value,
                        std::shared_ptr<Function> func,
-                       std::map<int, uint32_t> key_value_map);
+                       const std::map<int, uint32_t> &key_value_map);
 
         void run();
 
