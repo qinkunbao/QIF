@@ -156,7 +156,10 @@ namespace tana {
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic,\
                                                           std::shared_ptr<Function> func, \
                                                           uint32_t addr) {
-
+        if(x86::isSSE(id))
+        {
+            return std::make_unique<INST_X86_INS_SSE>(isStatic);
+        }
 
         switch (id) {
             case x86::x86_insn::X86_INS_NOP:
@@ -415,6 +418,8 @@ namespace tana {
             case x86::x86_insn::X86_INS_SETNBE:
                 return std::make_unique<INST_X86_INS_SETNBE>(isStatic);
 
+            case x86::x86_insn::X86_INS_LODSD:
+                return std::make_unique<INST_X86_INS_LODSD>(isStatic);
 
             default: {
                 if(func != nullptr)
@@ -2918,6 +2923,38 @@ namespace tana {
 
         return true;
 
+    }
+
+
+    bool INST_X86_INS_LODSD::symbolic_execution(tana::SEEngine *se)
+    {
+        auto op0 = this->oprd[0];
+        assert(op0->type == Operand::Mem);
+
+        auto v_mem = se->readMem(this->get_memory_address(), op0->bit);
+
+        se->writeReg("eax", v_mem);
+
+        return true;
+
+    }
+
+    std::map<std::string, int> INST_X86_INS_SSE::sse_map;
+
+    bool INST_X86_INS_SSE::symbolic_execution(tana::SEEngine *se)
+    {
+
+        std::string inst_name = x86::insn_id2string(this->instruction_id);
+        if(sse_map.find(inst_name) == sse_map.end())
+        {
+            sse_map[inst_name] = 1;
+            return false;
+        }
+        else
+        {
+            sse_map[inst_name] = sse_map[inst_name] + 1;
+            return true;
+        }
     }
 
 }

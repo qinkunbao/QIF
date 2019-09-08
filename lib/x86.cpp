@@ -78,10 +78,7 @@ namespace tana {
                                                    X86_INS_DATA16, X86_INS_JLE, X86_INS_JL};
             const bool found = no_effect_inst.find(insn) != no_effect_inst.end();
 
-            if (found)
-                return true;
-            else
-                return false;
+            return found != 0;
         }
 
         bool isInstCall(const x86::x86_insn &inst)
@@ -99,6 +96,18 @@ namespace tana {
         bool isInstLEA(const x86::x86_insn &inst)
         {
             return inst == X86_INS_LEA;
+
+        }
+
+        bool isSSE(const x86::x86_insn &inst)
+        {
+            using namespace x86;
+            std::set<x86::x86_insn> sse_inst{
+                X86_INS_MOVDQU, X86_INS_MOVD, X86_INS_PSHUFD
+            };
+            const bool found = sse_inst.find(inst) != sse_inst.end();
+
+            return found != 0;
 
         }
 
