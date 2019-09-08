@@ -455,14 +455,15 @@ namespace tana {
             auto ins_index = num++;
             id_count++;
 
-            if((id_count / size_inst_percent) > percent)
-            {
-                percent = id_count / size_inst_percent;
-                if(percent % 5 == 0) {
-                    std::cout << percent << "% parsing" << std::endl;
+            if(size_inst_percent) {
+
+                if ((id_count / size_inst_percent) > percent) {
+                    percent = id_count / size_inst_percent;
+                    if (percent % 5 == 0) {
+                        std::cout << percent << "% parsing" << std::endl;
+                    }
                 }
             }
-
 
             // instruction address
             getline(strbuf, temp_addr, ';');

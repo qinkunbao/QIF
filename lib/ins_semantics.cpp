@@ -2896,13 +2896,12 @@ namespace tana {
             return true;
 
         auto CF = se->getFlags("CF");
-        auto notCF = buildop1(BVOper::bvnot, CF);
+        auto notCF = buildop1(BVOper::bvbitnot, CF);
 
         auto ZF = se->getFlags("ZF");
-        auto notZF = buildop1(BVOper::bvnot, ZF);
+        auto notZF = buildop1(BVOper::bvbitnot, ZF);
 
         auto notZFandnotCF = buildop2(BVOper::bvand, notZF, notCF);
-
         notZFandnotCF->high_bit = T_BYTE_SIZE;
 
         auto op0 = this->oprd[0];
