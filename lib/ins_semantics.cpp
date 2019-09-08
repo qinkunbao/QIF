@@ -421,6 +421,9 @@ namespace tana {
             case x86::x86_insn::X86_INS_LODSD:
                 return std::make_unique<INST_X86_INS_LODSD>(isStatic);
 
+            case x86::x86_insn::X86_INS_CMOVNBE:
+                return std::make_unique<INST_X86_INS_CMOVNBE>(isStatic);
+
             default: {
                 if(func != nullptr)
                 {
