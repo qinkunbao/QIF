@@ -249,7 +249,7 @@ namespace tana {
             }
 
             // It means the constraints are always satisfied
-            if ((this->num_sample / num_satisfied_for_group) == 1) {
+            if (num_satisfied_for_group == this->num_sample) {
                 it = constrains_group_addr.erase(it);
             } else {
                 uint32_t addr = std::get<0>((*it).front());
