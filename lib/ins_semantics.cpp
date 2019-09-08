@@ -412,6 +412,10 @@ namespace tana {
             case x86::x86_insn::X86_INS_CMOVNZ:
                 return std::make_unique<INST_X86_INS_CMOVNZ>(isStatic);
 
+            case x86::x86_insn::X86_INS_SETNBE:
+                return std::make_unique<INST_X86_INS_SETNBE>(isStatic);
+
+
             default: {
                 if(func != nullptr)
                 {
@@ -2882,6 +2886,38 @@ namespace tana {
         se->writeReg(regName, res);
         return true;
 
+    }
+
+    // set byte if CF = 0 and ZF =0
+
+    bool INST_X86_INS_SETNBE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        auto CF = se->getFlags("CF");
+        auto notCF = buildop1(BVOper::bvnot, CF);
+
+        auto ZF = se->getFlags("ZF");
+        auto notZF = buildop1(BVOper::bvnot, ZF);
+
+        auto notZFandnotCF = buildop2(BVOper::bvand, notZF, notCF);
+
+        notZFandnotCF->high_bit = T_BYTE_SIZE;
+
+        auto op0 = this->oprd[0];
+
+        if(op0->type == Operand::Reg)
+        {
+            se->writeReg(op0->field[0], notZFandnotCF);
+        }
+
+        if(op0->type == Operand::Mem)
+        {
+            se->writeMem(this->get_memory_address(), T_BYTE_SIZE, notZFandnotCF);
+        }
+
+        return true;
 
     }
 

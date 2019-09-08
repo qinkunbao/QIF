@@ -86,26 +86,20 @@ namespace tana {
 
         bool isInstCall(const x86::x86_insn &inst)
         {
-            if(inst == X86_INS_CALL)
-                return true;
+            return inst == X86_INS_CALL;
 
-            return false;
         }
 
         bool isInstRet(const x86::x86_insn &inst)
         {
-            if(inst == X86_INS_RET)
-                return true;
+            return inst == X86_INS_RET;
 
-            return false;
         }
 
         bool isInstLEA(const x86::x86_insn &inst)
         {
-            if(inst == X86_INS_LEA)
-                return true;
+            return inst == X86_INS_LEA;
 
-            return false;
         }
 
     }
