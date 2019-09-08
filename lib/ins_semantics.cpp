@@ -2207,14 +2207,6 @@ namespace tana {
         std::shared_ptr<BitVector> ZF = se->getFlags("ZF");
         std::shared_ptr<Constrain> constrains;
 
-        if(this->id == 1459) {
-            std::cout << *this << std::endl;
-
-            std::cout << "ZF: " << *ZF << std::endl;
-            std::cout << "ZF: " << se->debugEval(ZF) << std::endl;
-            std::cout << "eax: " << std::hex << se->debugEval(se->readReg("eax")) << std::dec << std::endl;
-            std::cout << "EPFLAGS: " << vcpu.ZF() << std::endl;
-        }
 
         constrains = std::make_shared<Constrain>(this->id, ZF, BVOper::equal, vcpu.ZF());
 
@@ -2955,6 +2947,65 @@ namespace tana {
             sse_map[inst_name] = sse_map[inst_name] + 1;
             return true;
         }
+    }
+
+
+    // Mov if CF = 0 and ZF = 0
+    bool INST_X86_INS_CMOVNBE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        if(this->vcpu.CF() || this->vcpu.ZF())
+            return true;
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> v0, v1, res;
+
+        if (op0->type == Operand::Reg) {
+            if (op1->type == Operand::ImmValue) { // mov reg, 0x1111
+                uint32_t temp_concrete = stoul(op1->field[0], nullptr, 16);
+                v1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete),
+                                                 op0->bit);
+                se->writeReg(op0->field[0], v1);
+                return true;
+            }
+            if (op1->type == Operand::Reg) { // mov reg, reg
+                v1 = se->readReg(op1->field[0]);
+                se->writeReg(op0->field[0], v1);
+                return true;
+            }
+            if (op1->type == Operand::Mem) { // mov reg, dword ptr [ebp+0x1]
+                /* 1. Get mem address
+                2. check whether the mem address has been accessed
+                3. if not, create a new value
+                4. else load the value in that memory
+                */
+                v1 = se->readMem(this->get_memory_address(), op1->bit);
+                se->writeReg(op0->field[0], v1);
+                return true;
+            }
+
+            ERROR("op1 is not ImmValue, Reg or Mem");
+            return false;
+        }
+        if (op0->type == Operand::Mem) {
+            if (op1->type == Operand::ImmValue) { // mov dword ptr [ebp+0x1], 0x1111
+                uint32_t temp_concrete = stoul(op1->field[0], 0, 16);
+                se->writeMem(this->get_memory_address(), op0->bit,
+                             std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete,
+                                                         se->isImmSym(temp_concrete), op0->bit));
+                return true;
+            } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
+                //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
+                v1 = se->readReg(op1->field[0]);
+                se->writeMem(this->get_memory_address(), op1->bit, v1);
+                return true;
+            }
+        }
+        ERROR("Error: The first operand in MOV is not Reg or Mem!");
+        return false;
     }
 
 }
