@@ -427,6 +427,10 @@ namespace tana {
             case x86::x86_insn::X86_INS_CMOVNBE:
                 return std::make_unique<INST_X86_INS_CMOVNBE>(isStatic);
 
+            case x86::x86_insn::X86_INS_BSF:
+                return std::make_unique<INST_X86_INS_BSF>(isStatic);
+
+
             default: {
                 if(func != nullptr)
                 {
@@ -2973,7 +2977,7 @@ namespace tana {
         if(sse_map.find(inst_name) == sse_map.end())
         {
             sse_map[inst_name] = 1;
-            return false;
+            return true;
         }
         else
         {
@@ -3039,6 +3043,28 @@ namespace tana {
         }
         ERROR("Error: The first operand in MOV is not Reg or Mem!");
         return false;
+    }
+
+    bool INST_X86_INS_BSF::symbolic_execution(tana::SEEngine *se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+        std::shared_ptr<Operand> op1 = this->oprd[1];
+        std::shared_ptr<BitVector> bv1;
+        if(op1->type == Operand::Mem)
+        {
+            bv1 = se->readMem(this->get_memory_address(), op1->bit);
+        }
+        if(op1->type == Operand::Reg)
+        {
+            bv1 = se->readReg(op1->field[0]);
+        }
+
+        auto res = buildop1(BVOper::bvbsf, bv1);
+
+        se->writeReg(op0->field[0], res);
+
+        return true;
+
     }
 
 }

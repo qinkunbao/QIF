@@ -98,6 +98,9 @@ namespace tana {
 
             case BVOper::bvbitnot:
                 return os << "!";
+
+            case BVOper::bvbsf:
+                return os << "bsf";
                 //omit default case to triger compiler warning for missing cases
         };
 
@@ -274,6 +277,26 @@ namespace tana {
 
     }
 
+
+    uint32_t BitVector::bsf(uint32_t op)
+    {
+        if(op == 0)
+            return 0;
+
+        std::bitset<REGISTER_SIZE> bit(op);
+        int index = 0;
+        for(int i = REGISTER_SIZE-1; i>=0; --i)
+        {
+            if(bit[i])
+            {
+                return index;
+            }
+            ++index;
+        }
+
+        return 0;
+    }
+
     uint32_t BitVector::concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size) {
         std::bitset<REGISTER_SIZE> bit1(op1);
         std::bitset<REGISTER_SIZE> bit2(op2);
@@ -322,7 +345,7 @@ namespace tana {
     }
 
     bool BitVector::isSymbol() const {
-        return (val_type == ValueType::SYMBOL) ? true : false;
+        return val_type == ValueType::SYMBOL;
 
     }
 

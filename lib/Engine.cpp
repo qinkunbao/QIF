@@ -239,8 +239,7 @@ namespace tana {
     }
 
     uint32_t
-    SEEngine::debugEval(const std::shared_ptr<BitVector> &v)
-    {
+    SEEngine::debugEval(const std::shared_ptr<BitVector> &v) {
         return SEEngine::eval(v, this->key_value_map);
     }
 
@@ -347,6 +346,10 @@ namespace tana {
 
                 case BVOper::bvbitnot:
                     return op0 ? 0 : 1;
+
+                case BVOper::bvbsf:
+                    return BitVector::bsf(op0);
+
             }
 
 

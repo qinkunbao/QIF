@@ -43,6 +43,7 @@ namespace tana {
         bvquo,
         bvrem,
         bvbit,
+        bvbsf,
         equal,
         noequal,
         greater,
@@ -113,6 +114,8 @@ namespace tana {
         static uint32_t zeroext(uint32_t op1);
 
         static uint32_t signext(uint32_t op1, uint32_t origin_size, uint32_t new_size);
+
+        static uint32_t bsf(uint32_t op);
 
         static bool bit(uint32_t op0, uint32_t op1);
 
