@@ -430,6 +430,9 @@ namespace tana {
             case x86::x86_insn::X86_INS_BSF:
                 return std::make_unique<INST_X86_INS_BSF>(isStatic);
 
+            case x86::x86_insn::X86_INS_SETLE:
+                return std::make_unique<INST_X86_INS_SETLE>(isStatic);
+
 
             default: {
                 if(func != nullptr)
@@ -2954,6 +2957,34 @@ namespace tana {
     }
 
 
+    // ZF = 1 SF != OF
+    bool INST_X86_INS_SETLE::symbolic_execution(tana::SEEngine *se)
+    {
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+
+        auto ZF = se->getFlags("ZF");
+
+        auto SF = se->getFlags("SF");
+        auto OF = se->getFlags("OF");
+
+        auto SFnonequalOF = buildop2(BVOper::noequal, SF, OF);
+        auto ZForSFnonequalOF = buildop2(BVOper::bvor, ZF, SFnonequalOF);
+        ZForSFnonequalOF->high_bit = T_BYTE_SIZE;
+        if(op0->type == Operand::Reg)
+        {
+            se->writeReg(op0->field[0], ZForSFnonequalOF);
+        }
+
+        if(op0->type == Operand::Mem)
+        {
+            se->writeMem(this->get_memory_address(), T_BYTE_SIZE, ZForSFnonequalOF);
+        }
+
+        return true;
+
+    }
+
+
 
     bool INST_X86_INS_LODSD::symbolic_execution(tana::SEEngine *se)
     {
@@ -3060,11 +3091,11 @@ namespace tana {
         }
 
         auto res = buildop1(BVOper::bvbsf, bv1);
-
         se->writeReg(op0->field[0], res);
-
         return true;
 
     }
+
+
 
 }
