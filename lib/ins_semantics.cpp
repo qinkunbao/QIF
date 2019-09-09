@@ -418,6 +418,9 @@ namespace tana {
             case x86::x86_insn::X86_INS_SETNBE:
                 return std::make_unique<INST_X86_INS_SETNBE>(isStatic);
 
+            case x86::x86_insn::X86_INS_SETBE:
+                return std::make_unique<INST_X86_INS_SETBE>(isStatic);
+
             case x86::x86_insn::X86_INS_LODSD:
                 return std::make_unique<INST_X86_INS_LODSD>(isStatic);
 
@@ -2888,8 +2891,7 @@ namespace tana {
 
     }
 
-    // set byte if CF = 0 and ZF =0
-
+    // setnbe: set byte if CF = 0 and ZF = 0
     bool INST_X86_INS_SETNBE::symbolic_execution(tana::SEEngine *se)
     {
         if(this->is_static)
@@ -2919,6 +2921,34 @@ namespace tana {
         return true;
 
     }
+
+    // setbe: set byte if CF = 1 or ZF = 1
+    bool INST_X86_INS_SETBE::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static)
+            return true;
+
+        auto CF = se->getFlags("CF");
+        auto ZF = se->getFlags("ZF");
+
+        auto CForZF = buildop2(BVOper::bvor, CF, ZF);
+        CForZF->high_bit = T_BYTE_SIZE;
+        auto op0 = this->oprd[0];
+
+        if(op0->type == Operand::Reg)
+        {
+            se->writeReg(op0->field[0], CForZF);
+        }
+
+        if(op0->type == Operand::Mem)
+        {
+            se->writeMem(this->get_memory_address(), T_BYTE_SIZE, CForZF);
+        }
+
+        return true;
+
+    }
+
 
 
     bool INST_X86_INS_LODSD::symbolic_execution(tana::SEEngine *se)

@@ -632,6 +632,12 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
+    class INST_X86_INS_SETBE : public Inst_Base{
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
     class INST_X86_INS_SSE : public Inst_Base{
     public:
         static std::map<std::string, int> sse_map;
