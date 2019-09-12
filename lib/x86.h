@@ -94,6 +94,7 @@ namespace tana {
             X86_INS_CMOVAE,
             X86_INS_CMOVB,
             X86_INS_CMOVBE,
+            X86_INS_CMOVNBE,
             X86_INS_FCMOVBE,
             X86_INS_FCMOVB,
             X86_INS_CMOVE,
@@ -662,6 +663,7 @@ namespace tana {
             X86_INS_SETAE,
             X86_INS_SETA,
             X86_INS_SETBE,
+            X86_INS_SETNBE,
             X86_INS_SETB,
             X86_INS_SETE,
             X86_INS_SETGE,
@@ -2272,6 +2274,7 @@ namespace tana {
                 {X86_INS_CMOVLE,           "cmovle"},
                 {X86_INS_CMOVZ,            "cmovz"},
                 {X86_INS_CMOVNZ,           "cmovnz"},
+                {X86_INS_CMOVNBE,          "cmovnbe"},
                 {X86_INS_FCMOVNBE,         "fcmovnbe"},
                 {X86_INS_FCMOVNB,          "fcmovnb"},
                 {X86_INS_CMOVNB,           "cmovnb"},
@@ -2830,6 +2833,7 @@ namespace tana {
                 {X86_INS_SETAE,            "setae"},
                 {X86_INS_SETA,             "seta"},
                 {X86_INS_SETBE,            "setbe"},
+                {X86_INS_SETNBE,           "setnbe"},
                 {X86_INS_SETB,             "setb"},
                 {X86_INS_SETE,             "sete"},
                 {X86_INS_SETGE,            "setge"},
@@ -3733,5 +3737,7 @@ namespace tana {
         bool isInstRet(const x86::x86_insn &inst);
 
         bool isInstLEA(const x86::x86_insn &inst);
+
+        bool isSSE(const x86::x86_insn &inst);
     }
 }

@@ -11,6 +11,7 @@
 #include <string>
 #include "MonteCarlo.h"
 #include "error.h"
+#include "Trace2ELF.h"
 
 namespace tana {
     std::vector<uint8_t> MonteCarlo::getRandomVector(unsigned int size) {
@@ -100,7 +101,8 @@ namespace tana {
     FastMonteCarlo::FastMonteCarlo(
             uint64_t sample_num,
             std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
-            std::vector<uint8_t> key_value, std::map<int, uint32_t> key_value_map_c)
+            std::vector<uint8_t> key_value,
+            const std::map<int, uint32_t> &key_value_map_c)
             : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
               input_seed(key_value), isFunctionInformationAvailable(false), func(nullptr),
               key_value_map(key_value_map_c){
@@ -123,7 +125,8 @@ namespace tana {
     FastMonteCarlo::FastMonteCarlo(
             uint64_t sample_num,
             std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> con,
-            std::vector<uint8_t> key_value, std::shared_ptr<Function> fun, std::map<int, uint32_t> key_value_map_c)
+            std::vector<uint8_t> key_value, std::shared_ptr<Function> fun,
+            const std::map<int, uint32_t> &key_value_map_c)
             : num_sample(sample_num), constrains(con), num_satisfied(0), dist(0, 255),
               input_seed(key_value), isFunctionInformationAvailable(true), func(fun),
               key_value_map(key_value_map_c){
@@ -214,7 +217,7 @@ namespace tana {
     void FastMonteCarlo::run() {
 
         std::cout << "Start Computing "
-                  << "Constrain: " << constrains.size() << std::endl;
+                  << "Constraints by Address: " << constrains_group_addr.size() << std::endl;
         this->reset_tests();
         for (const auto &element : constrains) {
             auto &cons = std::get<1>(element);
@@ -244,14 +247,9 @@ namespace tana {
                     ++num_satisfied_for_group;
                 }
             }
-            if(num_satisfied_for_group == 0)
-            {
-                ++it;
-                continue;
-            }
 
             // It means the constraints are always satisfied
-            if ((this->num_sample / num_satisfied_for_group) == 1) {
+            if (num_satisfied_for_group == this->num_sample) {
                 it = constrains_group_addr.erase(it);
             } else {
                 uint32_t addr = std::get<0>((*it).front());
@@ -319,7 +317,7 @@ namespace tana {
         }
     }
 
-    void FastMonteCarlo::print_group_result(const std::string &result) {
+    void FastMonteCarlo::print_group_result(const std::string &result, std::shared_ptr<Trace2ELF> t2e) {
         auto sample_num = tests.size();
         std::cout << "Information Leak for each address: \n";
         for (auto &it : num_satisfied_group) {
@@ -335,12 +333,24 @@ namespace tana {
                           << " Leaked:" << leaked_information << " bits"
                           << " Type: " << type_str << " "
                           << " Num of Satisfied: " << num << std::endl;
+                if(t2e != nullptr)
+                {
+                    std::cout << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                              << t2e->locateSym(addr)->file_name << " line number: "
+                              << t2e->locateSym(addr)->line_number << std::endl;
+                }
                 if(isFunctionInformationAvailable) {
                     std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
                 std::cout << "Address: " << std::hex << addr << std::dec;
                 std::cout << " Monte Carlo Failed" << std::endl;
+                if(t2e != nullptr)
+                {
+                    std::cout << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                              << t2e->locateSym(addr)->file_name << " line number: "
+                              << t2e->locateSym(addr)->line_number << std::endl;
+                }
                 if(isFunctionInformationAvailable) {
                     std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
@@ -349,7 +359,6 @@ namespace tana {
 
         std::ofstream myfile;
         myfile.open (result, std::ios_base::app);
-        int constrain_index = 0;
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
@@ -364,12 +373,24 @@ namespace tana {
                        << " Leaked:" << leaked_information << " bits"
                        << " Type: " << type_str << " "
                        << " Num of Satisfied: " << num << std::endl;
+                if(t2e != nullptr)
+                {
+                    myfile << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                              << t2e->locateSym(addr)->file_name << " line number: "
+                              << t2e->locateSym(addr)->line_number << std::endl;
+                }
                 if(isFunctionInformationAvailable) {
                     myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
                 myfile << "Address: " << std::hex << addr << std::dec;
                 myfile << " Monte Carlo Failed" << std::endl;
+                if(t2e != nullptr)
+                {
+                    myfile << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                              << t2e->locateSym(addr)->file_name << " line number: "
+                              << t2e->locateSym(addr)->line_number << std::endl;
+                }
                 if(isFunctionInformationAvailable) {
                     myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
@@ -386,7 +407,6 @@ namespace tana {
                 }
             }
 
-            ++constrain_index;
             myfile << "------------------------------------------------------------\n";
         }
         myfile.close();

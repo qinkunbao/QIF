@@ -9,6 +9,7 @@
 #include <iostream>
 #include <memory>
 #include <cassert>
+#include <algorithm>
 #include <elfio/elfio.hpp>
 #include "ELFInfo.h"
 #include "error.h"
@@ -20,6 +21,32 @@ using namespace ELFIO;
 
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
+
+
+std::string& ltrim(std::string& s)
+{
+    auto it = std::find_if(s.begin(), s.end(),
+                           [](char c) {
+                               return !std::isspace<char>(c, std::locale::classic());
+                           });
+    s.erase(s.begin(), it);
+    return s;
+}
+
+std::string& rtrim(std::string& s)
+{
+    auto it = std::find_if(s.rbegin(), s.rend(),
+                           [](char c) {
+                               return !std::isspace<char>(c, std::locale::classic());
+                           });
+    s.erase(it.base(), s.end());
+    return s;
+}
+
+std::string& trim(std::string& s)
+{
+    return ltrim(rtrim(s));
+}
 
 
 ELF_Symbols::ELF_Symbols(const std::string &filePWD)
@@ -105,11 +132,20 @@ std::shared_ptr<Symbol> ELF_Symbols::findSymbol(uint32_t addr)
     return nullptr;
 }
 
+
+
+
 std::shared_ptr<Symbol> ELF_Symbols::findSymbol(const std::string &name)
 {
     for(auto &s : elf_s)
     {
-        if(s->name == name)
+        string s1, s2;
+        s1 = s->name;
+        s2 = name;
+        s1 = trim(s1);
+        s2 = trim(s2);
+
+        if(s1 == s2)
         {
             return s;
         }

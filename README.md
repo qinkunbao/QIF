@@ -4,12 +4,12 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39bde068886343179a4d82c9cc50e100)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=qinkunbao/QIF&amp;utm_campaign=Badge_Grade)
 
 This repo contains five useful tools for trace analysis.
-- A Pin Tool
-- CryptoHunt
-- TaintTrace
-- QIF
-- Dissambler
-- CryptoHunt (Static Version)
+-  A Pin Tool
+-  CryptoHunt
+-  TaintTrace
+-  QIF
+-  Dissambler
+-  CryptoHunt (Static Version)
 
 The pin tool is used to collect the execution trace. CryptoHunt, TaintTrace and QIF process the trace file and output the corresponding result. 
 
@@ -17,31 +17,31 @@ The dissambler can analyze the ELF/PE file and output the function and the basic
 
 ## Paper Draft
 
-PDF version (Latest): https://github.com/qinkunbao/QIF/blob/master/papers/SP2020_June_1/main.pdf
+PDF version (Latest): <https://github.com/qinkunbao/QIF/blob/master/papers/SP2020_June_1/main.pdf>
 
-QIF-DATA: https://github.com/qinkunbao/QIF-data
+QIF-DATA: <https://github.com/qinkunbao/QIF-data>
 
 QIF Google Document (No update until July 1): 
-https://docs.google.com/document/d/1c0Ahiz9vz4jomn_zgYAkRgElKiWANoOlg_HD-i66af4/edit?usp=sharing
+<https://docs.google.com/document/d/1c0Ahiz9vz4jomn_zgYAkRgElKiWANoOlg_HD-i66af4/edit?usp=sharing>
 
 Slides:
-https://github.com/qinkunbao/QIF/blob/master/slides/Side%20Channel.pdf
+<https://github.com/qinkunbao/QIF/blob/master/slides/Side%20Channel.pdf>
 
-## Prerequisites:
-- Ensure that you have one of the following systems  
-    * Windows 10
-    * Ubuntu 16.04 LTS 32bits
-    * macOS Mojave
-    * Other systems may work but haven't been tested
-- Ensure that you have one of the following compilers   
-    * Clang 3.3 or newer
-    * Microsoft Visual Studio 2017
-- Cmake 3.10 or newer 
-- Radare2 3.0.1
-- R2-pipe
+## Prerequisites
+-  Ensure that you have one of the following systems  
+    *  Windows 10
+    *  Ubuntu 16.04 LTS 32bits
+    *  macOS Mojave
+    *  Other systems may work but haven't been tested
+-  Ensure that you have one of the following compilers   
+    *  Clang 3.3 or newer
+    *  Microsoft Visual Studio 2017
+-  Cmake 3.10 or newer 
+-  Radare2 3.0.1
+-  R2-pipe
 
 ## Build
-To Build the Pin Tool, please refer https://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool
+To Build the Pin Tool, please refer <https://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool>
 
 To Build CryptoHunt and TaintTrace with CMake
 ~~~~{.sh}
@@ -51,13 +51,12 @@ $ cd build
 & make all
 ~~~~
 
-
 ## Analysis Workflow
-1. Collect execution traces for the malware using the Pin Tool. The traces here inlcudes the following information.
-    * The memory address of each instruction
-    * The Opcode
-    * Register Values
-    * Source and destination operands
+1.  Collect execution traces for the malware using the Pin Tool. The traces here inlcudes the following information.
+  *  The memory address of each instruction
+  *  The Opcode
+  *  Register Values
+  *  Source and destination operands
 ~~~~{.sh}
 $ .\pin -t MyPinTools -- <Your programs>
 ~~~~
@@ -76,7 +75,7 @@ information in the correct format.  The repo also contains a PinTool that can
 collect traces and split them every time the program reads data from a network
 socket.   
 
-2. Run CryptoHunt
+2.  Run CryptoHunt
 ~~~~{.sh}
 $ cd build
 $ ./LoopDetection <The Trace File> // Outputs potential loops
@@ -94,7 +93,7 @@ it, then run CryptoHunt.
 - If you need to kill all start.py (sub)processes, use `pkill -f ".*start.py.*"
   The `SymbolicExecution` proceses can be killed similarly. `
 
-3. Run TaintAnalysis  
+3.  Run TaintAnalysis  
 TaintTrace is a small tool to mark those code that actually touches the Network packet. It can be
 used to analyze the usage of crypto functions.
 - Clone the reposity

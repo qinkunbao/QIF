@@ -78,34 +78,38 @@ namespace tana {
                                                    X86_INS_DATA16, X86_INS_JLE, X86_INS_JL};
             const bool found = no_effect_inst.find(insn) != no_effect_inst.end();
 
-            if (found)
-                return true;
-            else
-                return false;
+            return found != 0;
         }
 
         bool isInstCall(const x86::x86_insn &inst)
         {
-            if(inst == X86_INS_CALL)
-                return true;
+            return inst == X86_INS_CALL;
 
-            return false;
         }
 
         bool isInstRet(const x86::x86_insn &inst)
         {
-            if(inst == X86_INS_RET)
-                return true;
+            return inst == X86_INS_RET;
 
-            return false;
         }
 
         bool isInstLEA(const x86::x86_insn &inst)
         {
-            if(inst == X86_INS_LEA)
-                return true;
+            return inst == X86_INS_LEA;
 
-            return false;
+        }
+
+        bool isSSE(const x86::x86_insn &inst)
+        {
+            using namespace x86;
+            std::set<x86::x86_insn> sse_inst{
+                X86_INS_MOVDQU, X86_INS_MOVD, X86_INS_PSHUFD, X86_INS_PXOR, X86_INS_PTEST, X86_INS_MOVDQA,
+                X86_INS_MOVQ, X86_INS_PMOVMSKB, X86_INS_PCMPEQB
+            };
+            const bool found = sse_inst.find(inst) != sse_inst.end();
+
+            return found != 0;
+
         }
 
     }

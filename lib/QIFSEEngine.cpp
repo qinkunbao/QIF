@@ -66,9 +66,11 @@ namespace tana {
 
         }
         //this->printMemory();
-        this->func = function;
+        if(function != nullptr) {
+            this->func = function;
 
-        stacks = std::make_unique<CallStack>(func->getFunName(start->get()->addrn), key_value_set);
+            stacks = std::make_unique<CallStack>(func->getFunName(start->get()->addrn), key_value_set);
+        }
     }
 
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
@@ -172,7 +174,7 @@ namespace tana {
             auto &v0 = ref_opr->val[0];
             auto &v1 = ref_opr->val[1];
             auto &v2 = ref_opr->val[2];
-            uint32_t v0_size = 0, v1_size = 0, v2_size = 0;
+            uint32_t v1_size = 0, v2_size = 0;
 
 
             if (ref_opr->opty == BVOper::bvconcat) {
@@ -685,7 +687,7 @@ namespace tana {
         return true;
     }
 
-    void QIFSEEngine::updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons) {
+    void QIFSEEngine::updateFlags(const std::string &flag_name, std::shared_ptr<BitVector> cons) {
         if (flag_name == "CF") {
             this->CF = cons;
             return;
@@ -719,12 +721,12 @@ namespace tana {
         ERROR("Not recognized flag_name");
     }
 
-    void QIFSEEngine::clearFlags(std::string flag_name) {
+    void QIFSEEngine::clearFlags(const std::string &flag_name) {
         std::shared_ptr<BitVector> con = std::make_shared<BitVector>(ValueType::CONCRETE, 0);
         this->updateFlags(flag_name, con);
     }
 
-    std::shared_ptr<tana::BitVector> QIFSEEngine::getFlags(std::string flag_name) {
+    std::shared_ptr<tana::BitVector> QIFSEEngine::getFlags(const std::string &flag_name) {
         if (flag_name == "CF") {
             return CF;
         }
@@ -1048,6 +1050,9 @@ namespace tana {
             case 6: {
                 // eax*2+0xffffff
                 auto reg = opr->field[0];
+
+                auto esi = this->readReg("esi");
+
                 auto regV = this->readReg(reg);
                 auto regV_num = regV->symbol_num();
 
@@ -1060,8 +1065,9 @@ namespace tana {
                 auto symbol = opr->field[2];
 
                 auto res1 = buildop2(BVOper::bvimul, regV, temp_concrete1);
+
                 auto bvopr = symbol == "+" ? BVOper::bvadd : BVOper::bvsub;
-                auto res = buildop2(bvopr, regV, temp_concrete2);
+                auto res = buildop2(bvopr, res1, temp_concrete2);
                 this->getMemoryAccessConstrain(res, inst->get_memory_address());
 
                 return;

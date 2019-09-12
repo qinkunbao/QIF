@@ -15,6 +15,7 @@
 #include "Constrains.h"
 #include "Engine.h"
 #include "Function.h"
+#include "Trace2ELF.h"
 
 
 namespace tana {
@@ -80,13 +81,13 @@ namespace tana {
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
                        std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
                        std::vector<uint8_t> key_value,
-                       std::map<int, uint32_t> key_value_map);
+                       const std::map<int, uint32_t> &key_value_map);
 
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
                        std::shared_ptr<tana::Constrain>, LeakageType>> constrains,
                        std::vector<uint8_t> key_value,
                        std::shared_ptr<Function> func,
-                       std::map<int, uint32_t> key_value_map);
+                       const std::map<int, uint32_t> &key_value_map);
 
         void run();
 
@@ -98,7 +99,7 @@ namespace tana {
 
         void run_addr_group();
 
-        void print_group_result(const std::string &resultFile);
+        void print_group_result(const std::string &resultFile, std::shared_ptr<Trace2ELF> t2e);
 
         void calculateConstrains(const std::string &resultFile);
 

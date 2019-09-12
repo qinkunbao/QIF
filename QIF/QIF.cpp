@@ -32,25 +32,21 @@ float getEntropy(std::vector<uint8_t> key_value, \
                  std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> constrains, \
                  const std::string &fileName, \
                  std::shared_ptr<Function> func, \
-                 std::map<int, uint32_t> key_value_map) {
-    using clock = std::chrono::system_clock;
-    using ms = std::chrono::milliseconds;
-    const auto before = clock::now();
+                 std::map<int, uint32_t> key_value_map, \
+                 std::shared_ptr<Trace2ELF> t2e) {
 
     FastMonteCarlo res(MonteCarloTimes, constrains, key_value, func, key_value_map);
     res.verifyConstrain();
     res.run();
     res.run_addr_group();
     res.calculateConstrains(fileName);
-    res.print_group_result(fileName);
+    res.print_group_result(fileName, t2e);
     float MonteCarloResult = res.getResult();
 
-    const auto duration = std::chrono::duration_cast<ms>(clock::now() - before);
 
-    std::cout << "It took " << duration.count() / 1000.0 << " ms"
-              << " to finish the monte carlo sampling" << std::endl;
     return abs(-log(MonteCarloResult) / log(2));
 }
+
 
 std::vector<std::string> split(std::string str, std::string sep) {
     char *cstr = const_cast<char *>(str.c_str());
@@ -128,7 +124,7 @@ int main(int argc, char *argv[]) {
         const std::string &fun_name = input.getCmdOption("-f");
         func = std::make_shared<Function>(fun_name);
 
-        const std::string &obj_name = input.getCmdOption("-f");
+        const std::string &obj_name = input.getCmdOption("-d");
         t2e = std::make_shared<Trace2ELF>(obj_name, fun_name);
 
     }
@@ -189,7 +185,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "Start Monte Carlo:" << std::endl;
     std::cout << "Total Leaked Bits = " << getEntropy(key_value, MonteCarloTimes, constraints, fileName, func,
-                                                      key_value_map)
+                                                      key_value_map, t2e)
               << std::endl;
 
     auto stop = high_resolution_clock::now();

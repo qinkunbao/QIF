@@ -91,15 +91,15 @@ namespace tana {
 
         std::shared_ptr<BitVector> formula_simplfy(std::shared_ptr<BitVector> v);
 
-        virtual void updateFlags(std::string flag_name, std::shared_ptr<BitVector> cons) {
+        virtual void updateFlags(const std::string &flag_name, std::shared_ptr<BitVector> cons) {
             return;
         }
 
-        virtual void clearFlags(std::string flag_name) {
+        virtual void clearFlags(const std::string &flag_name) {
             return;
         }
 
-        virtual std::shared_ptr<BitVector> getFlags(std::string) {
+        virtual std::shared_ptr<BitVector> getFlags(const std::string&) {
             return nullptr;
         }
 

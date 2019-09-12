@@ -43,6 +43,7 @@ namespace tana {
         bvquo,
         bvrem,
         bvbit,
+        bvbsf,
         equal,
         noequal,
         greater,
@@ -81,7 +82,7 @@ namespace tana {
 
         BitVector() = delete;
 
-        explicit BitVector(ValueType vty, std::string symbol_info);
+        explicit BitVector(ValueType vty, const std::string &symbol_info);
 
         explicit BitVector(ValueType vty, uint32_t concrete, bool Imm2SymState);    // constructor for concrete value
         explicit BitVector(ValueType vty, uint32_t concrete, bool Imm2SymState,
@@ -90,7 +91,7 @@ namespace tana {
 
         explicit BitVector(ValueType vty, uint32_t con);
 
-        explicit BitVector(ValueType vty, std::string symbol_info, uint32_t size);
+        explicit BitVector(ValueType vty, const std::string &symbol_info, uint32_t size);
 
         std::vector<int> getInputSymbolVector();
 
@@ -113,6 +114,8 @@ namespace tana {
         static uint32_t zeroext(uint32_t op1);
 
         static uint32_t signext(uint32_t op1, uint32_t origin_size, uint32_t new_size);
+
+        static uint32_t bsf(uint32_t op);
 
         static bool bit(uint32_t op0, uint32_t op1);
 

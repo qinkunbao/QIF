@@ -87,11 +87,11 @@ namespace tana {
 
         int run() override;
 
-        void updateFlags(std::string, std::shared_ptr<BitVector>) override;
+        void updateFlags(const std::string&, std::shared_ptr<BitVector>) override;
 
-        void clearFlags(std::string) override;
+        void clearFlags(const std::string&) override;
 
-        std::shared_ptr<tana::BitVector> getFlags(std::string) override;
+        std::shared_ptr<tana::BitVector> getFlags(const std::string&) override;
 
         void updateCFConstrains(std::shared_ptr<Constrain> cons) override;  //Update the control-flow transfer constrain
 

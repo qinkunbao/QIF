@@ -4,6 +4,7 @@
 	> Mail: qinkunbao@gmail.com
 	> Created Time: Thu Sep  5 13:08:04 EDT 2019
  ************************************************************************/
+#pragma once
 
 #include <iostream>
 #include <memory>

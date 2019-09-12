@@ -401,7 +401,7 @@ namespace tana {
         getline(trace_file, line);
 
         uint64_t size_inst_percent = instsize / 100;
-        int persent = 0;
+        int percent = 0;
         if (line.find("Start") != std::string::npos) {
             std::istringstream fun_buf(line);
             std::string start_taint, taint_len, temp_str;
@@ -455,12 +455,15 @@ namespace tana {
             auto ins_index = num++;
             id_count++;
 
-            if((id_count / size_inst_percent) > persent)
-            {
-                persent = id_count / size_inst_percent;
-                std::cout << persent << "% parsing" << std::endl;
-            }
+            if(size_inst_percent) {
 
+                if ((id_count / size_inst_percent) > percent) {
+                    percent = id_count / size_inst_percent;
+                    if (percent % 5 == 0) {
+                        std::cout << percent << "% parsing" << std::endl;
+                    }
+                }
+            }
 
             // instruction address
             getline(strbuf, temp_addr, ';');
@@ -472,7 +475,6 @@ namespace tana {
 
             std::string opcstr;
             getline(disasbuf, opcstr, ' ');
-            //ins->opcstr = opcstr;
             auto ins_id = x86::insn_string2id(opcstr);
 
             //Remove prefix
