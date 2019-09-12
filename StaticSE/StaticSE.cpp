@@ -16,9 +16,14 @@ class block_result{
     shared_ptr<Block> block;
 };
 
+const char *get_cmd(const string &elf){
+    string cmd = "python ../disassembler/disassembler.py " + elf;
+    return cmd.c_str();
+}
+
 std::string random_string(size_t length)
 {
-    srand(time(NULL));
+    srand(time(nullptr));
     auto randchar = []() -> char
     {
         const char charset[] =
@@ -32,6 +37,8 @@ std::string random_string(size_t length)
     generate_n(str.begin(), length, randchar);
     return str;
 }
+
+
 
 int printFormulas(char* filename)
 {
@@ -124,7 +131,9 @@ int main(int argc, char **argv)
 
     if (input.cmdOptionExists("-b"))
     {
-        //TODO
+        std::string binary_file_name1(argv[1]);
+        std::string binary_file_name2(argv[2]);
+
     }
 
     std::string blocks_file_name1 = file_name1.substr(0, file_name1.size() - 4) + "_blocks.json";
