@@ -5,6 +5,7 @@
 #include "ins_parser.h"
 #include "StaticSEEngine.h"
 #include "VarMap.h"
+#include "InputParser.h"
 
 using namespace tana;
 using namespace std;
@@ -86,6 +87,15 @@ int printFormulas(char* filename)
 int main(int argc, char **argv)
 {
 
+    if(argc == 1)
+    {
+        cout << "Usage: " << argv[0] << " <Binary> or <Instruction File>"<< "\n";
+        cout << "Option one:" << argv[0] << " -b ELF1 ELF2\n";
+        cout << "Option two:" << argv[0] << " -f Instruction_Folder_One Instruction_Folder_Two\n";
+        cout << "Option three:" << argv[0] << " InstructionFile\n";
+        return 1;
+    }
+
     if(argc == 2)
     {
         printFormulas(argv[1]);
@@ -95,17 +105,27 @@ int main(int argc, char **argv)
 
     if(argc != 3)
     {
-        std::cout << "Usage:" << std::endl;
-        std::cout << argv[0] <<" <reference> <target> " << std::endl;
-        std::cout << "or" << std::endl;
-        std::cout << argv[0] <<" <file> " << std::endl;
-        std::cout << "The first case will compare <reference> and <target> and output any matches" << std::endl;
-        std::cout << "The second case will output the formulas in the trace <file>" << std::endl;
+        cout << "Usage: " << argv[0] << " <Binary> or <Instruction File>"<< "\n";
+        cout << "Option one:" << argv[0] << " -b ELF1 ELF2\n";
+        cout << "Option two:" << argv[0] << " -f Instruction_Folder_One Instruction_Folder_Two\n";
+        cout << "Option three:" << argv[0] << " InstructionFile\n";
         return 1;
     }
 
-    std::string file_name1(argv[1]);
-    std::string file_name2(argv[2]);
+    InputParser input(argc, argv);
+
+    std::string file_name1;
+    std::string file_name2;
+
+    if (input.cmdOptionExists("-f")) {
+        file_name1 = argv[1];
+        file_name2 = argv[2];
+    }
+
+    if (input.cmdOptionExists("-b"))
+    {
+        //TODO
+    }
 
     std::string blocks_file_name1 = file_name1.substr(0, file_name1.size() - 4) + "_blocks.json";
     std::string blocks_file_name2 = file_name2.substr(0, file_name2.size() - 4) + "_blocks.json";
