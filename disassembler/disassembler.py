@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import sys
 import r2pipe
@@ -6,8 +6,8 @@ import json
 import os
 
 ## This script will disassemble the malweare, and find possible functions that actually do the encryption
-FUN_SIZE_THRESHOLD = 100
-BLOCK_SIZE_THRESHOLD = 40
+FUN_SIZE_THRESHOLD = 1
+BLOCK_SIZE_THRESHOLD = 1
 CALL_THRESHOLD = 2
 
 TMP_DIRECTORIES = './target/'
@@ -32,8 +32,8 @@ if not os.path.exists(TMP_DIRECTORIES):
 
 ## Analyze the binary and get the fucntion information
 if len(sys.argv) != 2:
-    print "Usage python " + sys.argv[0] + " <Target>"
-    print "Make sure you run this from the working directory"
+    print("Usage python " + sys.argv[0] + " <Target>")
+    print("Make sure you run this from the working directory")
     exit(-1)
 
 file_name = str(sys.argv[1])
