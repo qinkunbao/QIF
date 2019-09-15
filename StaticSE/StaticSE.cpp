@@ -133,7 +133,8 @@ int main(int argc, char **argv)
     {
         std::string binary_file_name1(argv[1]);
         std::string binary_file_name2(argv[2]);
-
+        file_name1 = get_cmd(binary_file_name1);
+        file_name1 = get_cmd(binary_file_name2);
     }
 
     std::string blocks_file_name1 = file_name1.substr(0, file_name1.size() - 4) + "_blocks.json";
