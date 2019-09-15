@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
-#include <filesystem>
+//#include <filesystem>
 #include "ins_parser.h"
 #include "StaticSEEngine.h"
 #include "VarMap.h"
@@ -22,7 +22,7 @@ string disassemble_cmd(const string &elf){
     return cmd::exec(cmd.c_str());
 }
 
-
+/*
 vector<string> return_all_files(const string &path){
     vector<string> file_name;
     for (const auto & entry : filesystem::directory_iterator(path)) {
@@ -30,6 +30,7 @@ vector<string> return_all_files(const string &path){
         file_name.push_back(entry.path());
     }
 }
+*/
 
 std::string random_string(size_t length)
 {
