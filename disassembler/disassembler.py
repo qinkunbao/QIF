@@ -10,8 +10,6 @@ FUN_SIZE_THRESHOLD = 1
 BLOCK_SIZE_THRESHOLD = 1
 CALL_THRESHOLD = 2
 
-TMP_DIRECTORIES = './target/'
-
 
 def serialize(data):
     _data = []
@@ -27,9 +25,6 @@ def serialize(data):
     return _data
 
 
-if not os.path.exists(TMP_DIRECTORIES):
-    os.makedirs(TMP_DIRECTORIES)
-
 ## Analyze the binary and get the fucntion information
 if len(sys.argv) != 2:
     print("Usage python " + sys.argv[0] + " <Target>")
@@ -37,6 +32,12 @@ if len(sys.argv) != 2:
     exit(-1)
 
 file_name = str(sys.argv[1])
+TMP_DIRECTORIES = "target_" + file_name +'/'
+
+if not os.path.exists(TMP_DIRECTORIES):
+    os.makedirs(TMP_DIRECTORIES)
+
+
 
 r = r2pipe.open(file_name)
 r.cmd('aaaa')
@@ -59,7 +60,7 @@ for fun in data:
     fun_name = fun['name']
     fun_cmd = "s " + str(hex(addr))
     r.cmd(fun_cmd)
-    disa_fun_cmd = "pdf  > " + TMP_DIRECTORIES + fun_name + '.txt'
+    disa_fun_cmd = "pdr  > " + TMP_DIRECTORIES + fun_name + '.txt'
     r.cmd(disa_fun_cmd)
     r.cmd('abj~{} > ' + TMP_DIRECTORIES + 'blocks_tmp.json')
 
