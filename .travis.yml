@@ -2,15 +2,19 @@ language: cpp
 
 compiler:
   - gcc
-  addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        - llvm-toolchain-trusty-6.0
-        packages: 
-          - libstdc++-7-dev
+addons:
+   apt:
+     sources:
+     - ubuntu-toolchain-r-test
+     - llvm-toolchain-trusty-6.0
+     packages: 
+     - g++-7
+     - libstdc++-7-dev
+env:
+  - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
 before_script:
+  - eval "${MATRIX_EVAL}"
   - mkdir build
   - cd build
   - cmake ..
