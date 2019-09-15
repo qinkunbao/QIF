@@ -24,8 +24,11 @@ string disassemble_cmd(const string &elf){
 
 
 vector<string> return_all_files(const string &path){
-    for (const auto & entry : filesystem::directory_iterator(path))
+    vector<string> file_name;
+    for (const auto & entry : filesystem::directory_iterator(path)) {
         std::cout << entry.path() << std::endl;
+        file_name.push_back(entry.path());
+    }
 }
 
 std::string random_string(size_t length)
