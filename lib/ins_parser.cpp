@@ -35,6 +35,8 @@ namespace tana {
 
         std::regex addr8("arg(.*)");
         std::regex addr9("local(.*)");
+        std::regex addr10("var(.*)");
+
 
         //Operand *opr = new Operand();
         std::shared_ptr<Operand> opr(new Operand());
@@ -52,6 +54,13 @@ namespace tana {
         if (regex_search(s, m, addr9)) { // addr9: local_1ch
             opr->type = Operand::Mem;
             opr->tag = 9;
+            opr->field[0] = s;
+            return opr;
+        }
+
+        if (regex_search(s, m, addr10)) { // addr9: var_1ch
+            opr->type = Operand::Mem;
+            opr->tag = 10;
             opr->field[0] = s;
             return opr;
         }
@@ -666,7 +675,7 @@ namespace tana {
             uint32_t block_ninstr = std::stoul(str_ninstr, nullptr, 16);
             uint32_t block_outputs = std::stoul(str_outputs, nullptr, 16);
             uint32_t block_size = std::stoul(str_size, nullptr, 16);
-            uint32_t block_traced = std::stoul(str_traced, nullptr, 16);
+            uint32_t block_traced = (str_traced == "true");
 
             Block block(block_addr, block_end_addr, block_inputs, block_ninstr, \
                         block_outputs, block_size, block_traced);
@@ -743,7 +752,7 @@ namespace tana {
         for (auto &block : blocks) {
             bool res = block.init(fun_inst);
             if (!res) {
-                std::cout << "Block Parse Error" << std::endl;
+                //std::cout << "Block Parse Error" << std::endl;
             }
         }
 

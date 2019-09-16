@@ -110,7 +110,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    if(argc != 3)
+    if(argc <= 3)
     {
         cout << "Usage: " << argv[0] << " <Binary> or <Instruction File>"<< "\n";
         cout << "Option one:" << argv[0] << " -b ELF1 ELF2\n";
@@ -125,14 +125,14 @@ int main(int argc, char **argv)
     std::string file_name2;
 
     if (input.cmdOptionExists("-f")) {
-        file_name1 = argv[1];
-        file_name2 = argv[2];
+        file_name1 = argv[2];
+        file_name2 = argv[3];
     }
 
     if (input.cmdOptionExists("-b"))
     {
-        std::string binary_file_name1(argv[1]);
-        std::string binary_file_name2(argv[2]);
+        std::string binary_file_name1(argv[2]);
+        std::string binary_file_name2(argv[3]);
         file_name1 = get_cmd(binary_file_name1);
         file_name1 = get_cmd(binary_file_name2);
     }
@@ -198,8 +198,8 @@ int main(int argc, char **argv)
             if(!result.empty())
             {
                 cout << "Found " << result.size() << " possible matches" << std::endl;
-                cout << argv[1] << endl;
                 cout << argv[2] << endl;
+                cout << argv[3] << endl;
 
                 match_info << "The number of formulas in the reference: " << res1.size() << "\n";
                 match_info << "The number of formulas in the target: " << res2.size() << "\n";
