@@ -1,11 +1,12 @@
 #include <iostream>
-#include <sstream>
-#include <fstream>
 #include <algorithm>
+#include <string>
+//#include <filesystem>
 #include "ins_parser.h"
 #include "StaticSEEngine.h"
 #include "VarMap.h"
 #include "InputParser.h"
+#include "cmd.h"
 
 using namespace tana;
 using namespace std;
@@ -16,10 +17,20 @@ class block_result{
     shared_ptr<Block> block;
 };
 
-const char *get_cmd(const string &elf){
+string disassemble_cmd(const string &elf){
     string cmd = "python ../disassembler/disassembler.py " + elf;
-    return cmd.c_str();
+    return cmd::exec(cmd.c_str());
 }
+
+/*
+vector<string> return_all_files(const string &path){
+    vector<string> file_name;
+    for (const auto & entry : filesystem::directory_iterator(path)) {
+        std::cout << entry.path() << std::endl;
+        file_name.push_back(entry.path());
+    }
+}
+*/
 
 std::string random_string(size_t length)
 {
@@ -131,10 +142,12 @@ int main(int argc, char **argv)
 
     if (input.cmdOptionExists("-b"))
     {
-        std::string binary_file_name1(argv[2]);
-        std::string binary_file_name2(argv[3]);
-        file_name1 = get_cmd(binary_file_name1);
-        file_name1 = get_cmd(binary_file_name2);
+
+        std::string binary_file_name1(argv[1]);
+        std::string binary_file_name2(argv[2]);
+        disassemble_cmd(binary_file_name1);
+        disassemble_cmd(binary_file_name2);
+
     }
 
     std::string blocks_file_name1 = file_name1.substr(0, file_name1.size() - 4) + "_blocks.json";
