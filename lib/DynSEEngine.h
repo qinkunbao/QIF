@@ -27,11 +27,11 @@ namespace tana {
     class DynSEEngine : public SEEngine {
     private:
 
-        std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
+        std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > m_memory;
 
         bool memory_find(uint32_t addr);
 
-        std::map<std::string, std::shared_ptr<BitVector>> ctx;
+        std::map<std::string, std::shared_ptr<BitVector>> m_ctx;
 
 
     public:

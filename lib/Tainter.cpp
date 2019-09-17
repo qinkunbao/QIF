@@ -112,7 +112,7 @@ namespace tana {
         }
     }
 
-//Memory to memory
+//Memory to m_memory
     void
     Tainter::spreadTaintMemory2Memory(tana_type::T_ADDRESS ip_addr, tana_type::T_ADDRESS src, tana_type::T_ADDRESS dest,
                                       tana_type::T_SIZE m_size) {
@@ -126,7 +126,7 @@ namespace tana {
         }
     }
 
-//Register to memory
+//Register to m_memory
     void
     Tainter::spreadTaintRegister2Memory(tana_type::T_ADDRESS ip_addr, x86::x86_reg reg, tana_type::T_ADDRESS addr) {
         tana_type::RegPart reg_size = Registers::getRegSize(reg);

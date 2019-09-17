@@ -29,13 +29,13 @@ namespace tana {
     class QIFSEEngine : public SEEngine {
     private:
 
-        std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > memory;
+        std::map<tana_type::T_ADDRESS, std::shared_ptr<BitVector> > m_memory;
 
         bool memory_find(uint32_t addr);
 
-        std::map<std::string, std::shared_ptr<BitVector>> ctx;
+        std::map<std::string, std::shared_ptr<BitVector>> m_ctx;
         std::shared_ptr<BitVector> CF, OF, SF, ZF, AF, PF;
-        std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> constrains;
+        std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> m_constrains;
         uint32_t eip;
         uint32_t mem_data;
 

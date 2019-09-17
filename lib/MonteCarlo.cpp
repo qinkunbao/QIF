@@ -398,7 +398,7 @@ namespace tana {
 
             for (auto &con : constrains_group_addr) {
                 if(std::get<0>(con[0]) == addr) {
-                    myfile << "Number of constrains: " << con.size();
+                    myfile << "Number of m_constrains: " << con.size();
 
                     for (auto &each_con : con) {
                         myfile << "\n";

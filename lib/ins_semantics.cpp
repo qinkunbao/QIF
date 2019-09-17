@@ -642,7 +642,7 @@ namespace tana {
         }
 
         if (op0->type == Operand::Mem) {
-            //memory[it->memory_address] = res;
+            //m_memory[it->memory_address] = res;
             se->writeMem(this->get_memory_address(), op0->bit, res);
         }
 
@@ -834,7 +834,7 @@ namespace tana {
                 /* 1. Get mem address
                 2. check whether the mem address has been accessed
                 3. if not, create a new value
-                4. else load the value in that memory
+                4. else load the value in that m_memory
                 */
                 v1 = se->readMem(this->get_memory_address(), op1->bit);
                 se->writeReg(op0->field[0], v1);
@@ -852,7 +852,7 @@ namespace tana {
                                                          se->isImmSym(temp_concrete), op0->bit));
                 return true;
             } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
-                //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
+                //m_memory[it->memory_address] = m_ctx[getRegName(op1->field[0])];
                 v1 = se->readReg(op1->field[0]);
                 se->writeMem(this->get_memory_address(), op1->bit, v1);
                 return true;
@@ -883,7 +883,7 @@ namespace tana {
                 f1 = se->readReg(op1->field[1]);
                 if (op1->field[2] == "1") {
                     res = buildop2(BVOper::bvadd, f0, f1);
-                    //ctx[getRegName(op0->field[0])] = res;
+                    //m_ctx[getRegName(op0->field[0])] = res;
                     se->writeReg(op0->field[0], res);
                     return true;
                 }
@@ -896,8 +896,8 @@ namespace tana {
             }
             case 7: {
                 std::shared_ptr<BitVector> f0, f1, f2, f3; // addr7: eax+ebx*2+0xfffff1
-                //f0 = ctx[getRegName(op1->field[0])];       //eax
-                //f1 = ctx[getRegName(op1->field[1])];       //ebx
+                //f0 = m_ctx[getRegName(op1->field[0])];       //eax
+                //f1 = m_ctx[getRegName(op1->field[1])];       //ebx
 
                 f0 = se->readReg(op1->field[0]);
                 f1 = se->readReg(op1->field[1]);
@@ -920,7 +920,7 @@ namespace tana {
                     res = buildop2(BVOper::bvadd, res, f3);
                 else
                     res = buildop2(BVOper::bvsub, res, f3);
-                //ctx[getRegName(op0->field[0])] = res;
+                //m_ctx[getRegName(op0->field[0])] = res;
 
                 se->writeReg(op0->field[0], res);
 
@@ -928,7 +928,7 @@ namespace tana {
             }
             case 4: {
                 std::shared_ptr<BitVector> f0, f1; // addr4: eax+0xfffff1
-                //f0 = ctx[getRegName(op1->field[0])];       //eax
+                //f0 = m_ctx[getRegName(op1->field[0])];       //eax
                 f0 = se->readReg(op1->field[0]);
                 uint32_t temp_concrete = stoul(op1->field[2], nullptr, 16);
                 f1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete,
@@ -938,14 +938,14 @@ namespace tana {
                     res = buildop2(BVOper::bvadd, f0, f1);
                 else
                     res = buildop2(BVOper::bvsub, f0, f1);
-                //ctx[getRegName(op0->field[0])] = res;
+                //m_ctx[getRegName(op0->field[0])] = res;
 
                 se->writeReg(op0->field[0], res);
                 return true;
             }
             case 6: {
                 std::shared_ptr<BitVector> f0, f1, f2; // addr6: eax*2+0xfffff1
-                //f0 = ctx[getRegName(op1->field[0])];
+                //f0 = m_ctx[getRegName(op1->field[0])];
                 f0 = se->readReg(op1->field[0]);
                 uint32_t temp_concrete1 = stoul(op1->field[1], nullptr, 16);
                 uint32_t temp_concrete2 = stoul(op1->field[3], nullptr, 16);
@@ -967,13 +967,13 @@ namespace tana {
             }
             case 3: {
                 std::shared_ptr<BitVector> f0, f1;          // addr3: eax*2
-                //f0 = ctx[getRegName(op1->field[0])];
+                //f0 = m_ctx[getRegName(op1->field[0])];
                 f0 = se->readReg(op1->field[0]);
 
                 uint32_t temp_concrete = stoul(op1->field[1], nullptr, 16);
                 f1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
                 res = buildop2(BVOper::bvimul, f0, f1);
-                //ctx[getRegName(op0->field[0])] = res;
+                //m_ctx[getRegName(op0->field[0])] = res;
                 se->writeReg(op0->field[0], res);
                 return true;
             }
@@ -1020,8 +1020,8 @@ namespace tana {
                 v0 = se->readMem(this->get_memory_address(), op0->bit);
                 v1 = se->readReg(op1->field[0]);
 
-                //ctx[getRegName(op1->field[0])] = v0; // xchg mem, reg
-                //memory[it->memory_address] = v1;
+                //m_ctx[getRegName(op1->field[0])] = v0; // xchg mem, reg
+                //m_memory[it->memory_address] = v1;
                 se->writeReg(op1->field[0], v0);
                 se->writeMem(this->get_memory_address(), op0->bit, v1);
 
@@ -2256,7 +2256,7 @@ namespace tana {
             v_reg = buildop2(BVOper::bvadd, v_reg, 4);
             se->writeReg(oprd[0]->field[0], v_reg);
         }
-        // Store the contents of eax into the memory
+        // Store the contents of eax into the m_memory
         auto v_eax = se->readReg("eax");
         se->writeMem(this->get_memory_address(), oprd[0]->bit, v_eax);
 
@@ -2309,7 +2309,7 @@ namespace tana {
             se->writeReg(oprd[0]->field[0], v_reg);
         }
 
-        // Store the contents of eax into the memory
+        // Store the contents of eax into the m_memory
         auto v_al = se->readReg("al");
         se->writeMem(this->get_memory_address(), oprd[0]->bit, v_al);
         return true;
@@ -2607,7 +2607,7 @@ namespace tana {
                 /* 1. Get mem address
                 2. check whether the mem address has been accessed
                 3. if not, create a new value
-                4. else load the value in that memory
+                4. else load the value in that m_memory
                 */
                 v1 = se->readMem(this->get_memory_address(), op1->bit);
                 se->writeReg(op0->field[0], v1);
@@ -2625,7 +2625,7 @@ namespace tana {
                                                          se->isImmSym(temp_concrete), op0->bit));
                 return true;
             } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
-                //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
+                //m_memory[it->memory_address] = m_ctx[getRegName(op1->field[0])];
                 v1 = se->readReg(op1->field[0]);
                 se->writeMem(this->get_memory_address(), op1->bit, v1);
                 return true;
@@ -2665,7 +2665,7 @@ namespace tana {
                 /* 1. Get mem address
                 2. check whether the mem address has been accessed
                 3. if not, create a new value
-                4. else load the value in that memory
+                4. else load the value in that m_memory
                 */
                 v1 = se->readMem(this->get_memory_address(), op1->bit);
                 se->writeReg(op0->field[0], v1);
@@ -2683,7 +2683,7 @@ namespace tana {
                                                          se->isImmSym(temp_concrete), op0->bit));
                 return true;
             } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
-                //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
+                //m_memory[it->memory_address] = m_ctx[getRegName(op1->field[0])];
                 v1 = se->readReg(op1->field[0]);
                 se->writeMem(this->get_memory_address(), op1->bit, v1);
                 return true;
@@ -3048,7 +3048,7 @@ namespace tana {
                 /* 1. Get mem address
                 2. check whether the mem address has been accessed
                 3. if not, create a new value
-                4. else load the value in that memory
+                4. else load the value in that m_memory
                 */
                 v1 = se->readMem(this->get_memory_address(), op1->bit);
                 se->writeReg(op0->field[0], v1);
@@ -3066,7 +3066,7 @@ namespace tana {
                                                          se->isImmSym(temp_concrete), op0->bit));
                 return true;
             } else if (op1->type == Operand::Reg) { // mov dword ptr [ebp+0x1], reg
-                //memory[it->memory_address] = ctx[getRegName(op1->field[0])];
+                //m_memory[it->memory_address] = m_ctx[getRegName(op1->field[0])];
                 v1 = se->readReg(op1->field[0]);
                 se->writeMem(this->get_memory_address(), op1->bit, v1);
                 return true;

@@ -208,7 +208,7 @@ namespace tana {
 
     uint32_t Inst_Base::read_mem_data() const {
         if (!mem_data_available) {
-            ERROR("memory data not available");
+            ERROR("m_memory data not available");
             return 0;
         }
 

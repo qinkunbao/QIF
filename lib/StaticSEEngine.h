@@ -25,11 +25,11 @@ namespace tana {
     class StaticSEEngine : public SEEngine {
     private:
 
-        std::map<std::string, std::shared_ptr<BitVector> > memory;
+        std::map<std::string, std::shared_ptr<BitVector> > m_memory;
 
         bool memory_find(std::string);
 
-        std::map<std::string, std::shared_ptr<BitVector>> ctx;
+        std::map<std::string, std::shared_ptr<BitVector>> m_ctx;
 
 
     public:

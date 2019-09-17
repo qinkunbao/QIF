@@ -51,7 +51,7 @@ namespace tana {
         // Register to Register
         void spreadTaintRegister2Register(x86::x86_reg dest, x86::x86_reg src);
 
-        // Memory to memory
+        // Memory to m_memory
         void spreadTaintMemory2Memory(tana_type::T_ADDRESS ip_addr, tana_type::T_ADDRESS src, tana_type::T_ADDRESS dest,
                                       tana_type::T_SIZE m_size);
 

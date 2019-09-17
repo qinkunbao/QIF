@@ -26,14 +26,14 @@ namespace tana {
                                                            ZF(nullptr), AF(nullptr), PF(nullptr), eip(0), mem_data(0),
                                                            stacks(nullptr), func(nullptr){
 
-        ctx["eax"] = std::make_shared<BitVector>(ValueType::CONCRETE, eax);
-        ctx["ebx"] = std::make_shared<BitVector>(ValueType::CONCRETE, ebx);
-        ctx["ecx"] = std::make_shared<BitVector>(ValueType::CONCRETE, ecx);
-        ctx["edx"] = std::make_shared<BitVector>(ValueType::CONCRETE, edx);
-        ctx["esi"] = std::make_shared<BitVector>(ValueType::CONCRETE, esi);
-        ctx["edi"] = std::make_shared<BitVector>(ValueType::CONCRETE, edi);
-        ctx["esp"] = std::make_shared<BitVector>(ValueType::CONCRETE, esp);
-        ctx["ebp"] = std::make_shared<BitVector>(ValueType::CONCRETE, ebp);
+        m_ctx["eax"] = std::make_shared<BitVector>(ValueType::CONCRETE, eax);
+        m_ctx["ebx"] = std::make_shared<BitVector>(ValueType::CONCRETE, ebx);
+        m_ctx["ecx"] = std::make_shared<BitVector>(ValueType::CONCRETE, ecx);
+        m_ctx["edx"] = std::make_shared<BitVector>(ValueType::CONCRETE, edx);
+        m_ctx["esi"] = std::make_shared<BitVector>(ValueType::CONCRETE, esi);
+        m_ctx["edi"] = std::make_shared<BitVector>(ValueType::CONCRETE, edi);
+        m_ctx["esp"] = std::make_shared<BitVector>(ValueType::CONCRETE, esp);
+        m_ctx["ebp"] = std::make_shared<BitVector>(ValueType::CONCRETE, ebp);
 
         eflags = true;
 
@@ -251,14 +251,14 @@ namespace tana {
         if (type == FULL) {
             auto index = Registers::getRegIndex(reg);
             std::string strName = Registers::convertRegID2RegName(index);
-            std::shared_ptr<BitVector> res = ctx[strName];
+            std::shared_ptr<BitVector> res = m_ctx[strName];
             return res;
         }
 
         if (type == HALF) {
             auto index = Registers::getRegIndex(reg);
             std::string strName = Registers::convertRegID2RegName(index);
-            std::shared_ptr<BitVector> origin = ctx[strName];
+            std::shared_ptr<BitVector> origin = m_ctx[strName];
             std::shared_ptr<BitVector> res = QIFSEEngine::Extract(origin, 1, 16);
             return res;
         }
@@ -266,7 +266,7 @@ namespace tana {
         if (type == QLOW) {
             auto index = Registers::getRegIndex(reg);
             std::string strName = Registers::convertRegID2RegName(index);
-            std::shared_ptr<BitVector> origin = ctx[strName];
+            std::shared_ptr<BitVector> origin = m_ctx[strName];
             std::shared_ptr<BitVector> res = QIFSEEngine::Extract(origin, 1, 8);
             return res;
         }
@@ -274,7 +274,7 @@ namespace tana {
         if (type == QHIGH) {
             auto index = Registers::getRegIndex(reg);
             std::string strName = Registers::convertRegID2RegName(index);
-            std::shared_ptr<BitVector> origin = ctx[strName];
+            std::shared_ptr<BitVector> origin = m_ctx[strName];
             std::shared_ptr<BitVector> res = QIFSEEngine::Extract(origin, 9, 16);
             return res;
         }
@@ -289,36 +289,36 @@ namespace tana {
         std::string index_name = Registers::convertRegID2RegName(reg_index);
         if (type == FULL) {
             assert(v->size() == REGISTER_SIZE);
-            ctx[index_name] = v;
+            m_ctx[index_name] = v;
             return true;
         }
         if (type == HALF) {
-            auto origin = ctx[index_name];
+            auto origin = m_ctx[index_name];
             auto reg_part = QIFSEEngine::Extract(origin, 17, 32);
             assert(v->size() == (REGISTER_SIZE / 2));
             auto v_reg = QIFSEEngine::Concat(reg_part, v);
             assert(v_reg->size() == REGISTER_SIZE);
-            ctx[index_name] = v_reg;
+            m_ctx[index_name] = v_reg;
             return true;
         }
         if (type == QLOW) {
-            auto origin = ctx[index_name];
+            auto origin = m_ctx[index_name];
             auto reg_part = QIFSEEngine::Extract(origin, 9, 32);
             assert(v->size() == (REGISTER_SIZE / 4));
             auto v_reg = QIFSEEngine::Concat(reg_part, v);
             assert(v_reg->size() == REGISTER_SIZE);
-            ctx[index_name] = v_reg;
+            m_ctx[index_name] = v_reg;
             return true;
         }
 
         if (type == QHIGH) {
-            auto origin = ctx[index_name];
+            auto origin = m_ctx[index_name];
             auto reg_part1 = QIFSEEngine::Extract(origin, 1, 8);
             auto reg_part2 = QIFSEEngine::Extract(origin, 17, 32);
             assert(v->size() == (REGISTER_SIZE / 4));
             auto v_reg = QIFSEEngine::Concat(reg_part2, v, reg_part1);
             assert(v_reg->size() == REGISTER_SIZE);
-            ctx[index_name] = v_reg;
+            m_ctx[index_name] = v_reg;
             return true;
         }
         ERROR("Unknown reg type");
@@ -332,8 +332,8 @@ namespace tana {
     }
 
     bool QIFSEEngine::memory_find(uint32_t addr) {
-        auto ii = memory.find(addr);
-        if (ii == memory.end())
+        auto ii = m_memory.find(addr);
+        if (ii == m_memory.end())
             return false;
         else
             return true;
@@ -349,7 +349,7 @@ namespace tana {
         //this->printMemory();
         //std::cout << std::endl;
         if (memory_find(memory_address - offset)) {
-            std::shared_ptr<BitVector> v_test = memory.at(memory_address - offset);
+            std::shared_ptr<BitVector> v_test = m_memory.at(memory_address - offset);
             //debug_map(key_value_map);
             //std::cout << *v_test << std::endl;
             uint32_t calculate = 0, con = 0;
@@ -412,7 +412,7 @@ namespace tana {
 
                 std::cout << "\n" << memory_address_str << std::endl;
                 ERROR("Memory Error");
-                memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
+                m_memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
             }
 
         }
@@ -422,12 +422,12 @@ namespace tana {
         if (size == T_BYTE_SIZE * T_DWORD) {
             //assert(memory_address % 4 == 0);
             if (memory_find(memory_address)) {
-                v0 = memory[memory_address];
+                v0 = m_memory[memory_address];
             } else {
                 std::stringstream ss;
                 ss << "Environment data: " << memory_address_str << std::dec;
                 v0 = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
-                memory[memory_address] = v0;
+                m_memory[memory_address] = v0;
                 assert(v0 != nullptr);
             }
             return v0;
@@ -435,12 +435,12 @@ namespace tana {
 
         if (size == T_BYTE_SIZE * T_WORD) {
             if (memory_find(memory_address - offset)) {
-                v0 = memory[memory_address - offset];
+                v0 = m_memory[memory_address - offset];
             } else {
                 std::stringstream ss;
                 ss << "Environment data: " << memory_address_str << std::dec;
                 v0 = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
-                memory[memory_address - offset] = v0;
+                m_memory[memory_address - offset] = v0;
                 assert(v0 != nullptr);
             }
             if (offset == 0) {
@@ -454,12 +454,12 @@ namespace tana {
 
         if (size == T_BYTE_SIZE * T_BYTE) {
             if (memory_find(memory_address - offset)) {
-                v0 = memory[memory_address - offset];
+                v0 = m_memory[memory_address - offset];
             } else {
                 std::stringstream ss;
                 ss << "Environment data: " << memory_address_str << std::dec;
                 v0 = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
-                memory[memory_address - offset] = v0;
+                m_memory[memory_address - offset] = v0;
                 assert(v0 != nullptr);
             }
             if (offset == 0) {
@@ -495,20 +495,20 @@ namespace tana {
 
         if (addr_size == T_BYTE_SIZE * T_DWORD) {
             //assert(memory_address % 4 == 0);
-            memory[memory_address] = v;
+            m_memory[memory_address] = v;
             assert(v != nullptr);
             return true;
         }
 
         if (addr_size == T_BYTE_SIZE * T_WORD) {
             if (memory_find(memory_address - offset)) {
-                v_mem_origin = memory[memory_address - offset];
+                v_mem_origin = m_memory[memory_address - offset];
             } else {
                 std::stringstream ss;
                 ss << "Mem:" << std::hex << memory_address << std::dec;
                 v_mem_origin = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
                 assert(v_mem_origin != nullptr);
-                memory[memory_address - offset] = v_mem_origin;
+                m_memory[memory_address - offset] = v_mem_origin;
             }
 
             if (offset == 0) {
@@ -524,20 +524,20 @@ namespace tana {
                 }
                 v_mem = QIFSEEngine::Concat(v, v1);
             }
-            memory[memory_address - offset] = v_mem;
+            m_memory[memory_address - offset] = v_mem;
             assert(v_mem != nullptr);
             return true;
         }
 
         if (addr_size == T_BYTE_SIZE * T_BYTE) {
             if (memory_find(memory_address - offset)) {
-                v_mem_origin = memory[memory_address - offset];
+                v_mem_origin = m_memory[memory_address - offset];
             } else {
                 std::stringstream ss;
                 ss << "Mem:" << std::hex << memory_address << std::dec;
                 v_mem_origin = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
                 assert(v_mem_origin != nullptr);
-                memory[memory_address - offset] = v_mem_origin;
+                m_memory[memory_address - offset] = v_mem_origin;
             }
 
             if (offset == 0) {
@@ -571,7 +571,7 @@ namespace tana {
             }
 
             assert(v_mem->size() == REGISTER_SIZE);
-            memory[memory_address - offset] = v_mem;
+            m_memory[memory_address - offset] = v_mem;
             //std::cout << std::endl << "Debug: " << *v_mem <<std::endl;
             assert(v_mem != nullptr);
             return true;
@@ -606,14 +606,14 @@ namespace tana {
             std::vector<std::shared_ptr<BitVector>> sym_res;
 
             // Get symbolic register value after the SE
-            sym_res.push_back(ctx["eax"]);
-            sym_res.push_back(ctx["ebx"]);
-            sym_res.push_back(ctx["ecx"]);
-            sym_res.push_back(ctx["edx"]);
-            sym_res.push_back(ctx["esi"]);
-            sym_res.push_back(ctx["edi"]);
-            sym_res.push_back(ctx["esp"]);
-            sym_res.push_back(ctx["ebp"]);
+            sym_res.push_back(m_ctx["eax"]);
+            sym_res.push_back(m_ctx["ebx"]);
+            sym_res.push_back(m_ctx["ecx"]);
+            sym_res.push_back(m_ctx["edx"]);
+            sym_res.push_back(m_ctx["esi"]);
+            sym_res.push_back(m_ctx["edi"]);
+            sym_res.push_back(m_ctx["esp"]);
+            sym_res.push_back(m_ctx["ebp"]);
             std::vector<uint32_t> con_res;
 
             // Get the  concrete register value after the SE
@@ -783,7 +783,7 @@ namespace tana {
 
         auto res = std::make_tuple(this->eip, cons, LeakageType::CFLeakage);
 
-        constrains.push_back(res);
+        m_constrains.push_back(res);
     }
 
     void QIFSEEngine::updateDAConstrains(std::shared_ptr<Constrain> cons) {
@@ -808,7 +808,7 @@ namespace tana {
 
         auto res = std::make_tuple(this->eip, cons, LeakageType::DALeakage);
 
-        constrains.push_back(res);
+        m_constrains.push_back(res);
 
 
     }
@@ -816,7 +816,7 @@ namespace tana {
 
     void QIFSEEngine::printConstrains() {
         std::cout << "\n";
-        for (const auto &element : constrains) {
+        for (const auto &element : m_constrains) {
             auto addr = std::get<0>(element);
             auto &con = std::get<1>(element);
             LeakageType type = std::get<2>(element);
@@ -832,10 +832,10 @@ namespace tana {
         }
     }
 
-    // Reduce constrains that don't have symbols
+    // Reduce m_constrains that don't have symbols
     void QIFSEEngine::reduceConstrains() {
-        auto con = constrains.begin();
-        while (con != constrains.end()) {
+        auto con = m_constrains.begin();
+        while (con != m_constrains.end()) {
             std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType> con_tuple = *con;
             std::shared_ptr<Constrain> constrain = std::get<1>(con_tuple);
             if (constrain->getNumSymbols() == 0) {
@@ -843,7 +843,7 @@ namespace tana {
                 {
                     ERROR("Invalid constrain");
                 }
-                con = constrains.erase(con);
+                con = m_constrains.erase(con);
 
             } else
                 ++con;
@@ -853,7 +853,7 @@ namespace tana {
     }
 
     void QIFSEEngine::printMemory() {
-        for (auto const &x : memory) {
+        for (auto const &x : m_memory) {
             std::cout << std::hex << x.first << std::dec  // string (key)
                       << ':'
                       << *(x.second) // string's value
@@ -865,8 +865,8 @@ namespace tana {
 
     void QIFSEEngine::checkMemoryAccess(tana::Inst_Base *inst) {
 
-        // LEA, the only instruction that performs memory addressing
-        // calculations but doesn't actually address memory.
+        // LEA, the only instruction that performs m_memory addressing
+        // calculations but doesn't actually address m_memory.
         if(inst->instruction_id == x86::X86_INS_LEA)
         {
             return;
@@ -1097,7 +1097,7 @@ namespace tana {
                 return;
             }
             default:
-                ERROR("Invalid memory address mode");
+                ERROR("Invalid m_memory address mode");
         }
 
         return;
@@ -1136,7 +1136,7 @@ namespace tana {
 
     std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
     QIFSEEngine::getConstraints(){
-        return constrains;
+        return m_constrains;
     }
 
     void QIFSEEngine::updateStacks(tana::Inst_Base *inst)
