@@ -111,10 +111,10 @@ add_executable(TestDebugInfoStr
 
 add_executable(BitTaint
         BitTaint/BitTaint.cpp
-        BitTaint/BitTaint.h
+        BitTaint/BitTaint.hpp
         BitTaint/Dataflow.cpp
         BitTaint/Memory.cpp
-        BitTaint/Memory.h)
+        BitTaint/Memory.hpp)
 
 add_executable(StaticSE
         StaticSE/StaticSE.cpp)
