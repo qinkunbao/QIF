@@ -9,7 +9,7 @@
 #include <bitset>
 #include <algorithm>
 #include <sstream>
-#include "VarMap.h"
+#include "VarMap.hpp"
 
 
 namespace tana {

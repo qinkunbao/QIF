@@ -12,7 +12,7 @@
 #include <memory>
 #include <string>
 #include <set>
-#include "ins_types.h"
+#include "ins_types.hpp"
 
 namespace tana {
 

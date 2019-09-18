@@ -6,13 +6,13 @@
  ************************************************************************/
 
 #include <sstream>
-#include "ins_semantics.h"
-#include "ins_types.h"
-#include "error.h"
-#include "BitVector.h"
-#include "Engine.h"
-#include "Register.h"
-#include "Constrains.h"
+#include "ins_semantics.hpp"
+#include "ins_types.hpp"
+#include "error.hpp"
+#include "BitVector.hpp"
+#include "Engine.hpp"
+#include "Register.hpp"
+#include "Constrains.hpp"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 #define WARN(MESSAGE) tana::default_warn_handler(__FILE__, __LINE__, MESSAGE)

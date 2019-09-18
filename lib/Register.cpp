@@ -5,8 +5,8 @@
 	> Created Time: Mon Apr 22 21:56:51 2019
  ************************************************************************/
 
-#include "Register.h"
-#include "error.h"
+#include "Register.hpp"
+#include "error.hpp"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 

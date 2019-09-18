@@ -9,9 +9,9 @@
 
 #include <vector>
 #include <string>
-#include "ins_parser.h"
+#include "ins_parser.hpp"
 
-#include "Memory.h"
+#include "Memory.hpp"
 
   namespace tana {
       namespace bittaint {

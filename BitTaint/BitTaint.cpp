@@ -6,10 +6,10 @@
 6  ************************************************************************/
 
 
-#include <Register.h>
-#include "ins_parser.h"
-#include "BitTaint.h"
-#include "error.h"
+#include "Register.hpp"
+#include "ins_parser.hpp"
+#include "BitTaint.hpp"
+#include "error.hpp"
 
 #include <bitset>
 

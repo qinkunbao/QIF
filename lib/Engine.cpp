@@ -6,9 +6,9 @@
  ************************************************************************/
 
 #include <algorithm>
-#include "Engine.h"
-#include "error.h"
-#include "VarMap.h"
+#include "Engine.hpp"
+#include "error.hpp"
+#include "VarMap.hpp"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 

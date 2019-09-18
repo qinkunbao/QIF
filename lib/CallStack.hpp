@@ -14,7 +14,7 @@
 #include <stack>
 #include <map>
 #include <memory>
-#include "ins_types.h"
+#include "ins_types.hpp"
 
 namespace tana {
 

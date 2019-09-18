@@ -6,9 +6,9 @@
 #include <sstream>
 #include <regex>
 #include <memory>
-#include "Tainter.h"
-#include "Function.h"
-#include "ins_parser.h"
+#include "Tainter.hpp"
+#include "Function.hpp"
+#include "ins_parser.hpp"
 
 using namespace std;
 using namespace tana;

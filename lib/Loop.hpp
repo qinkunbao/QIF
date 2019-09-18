@@ -10,8 +10,8 @@
 #include <list>
 #include <unordered_map>
 #include <deque>
-#include "ins_types.h"
-#include "ins_parser.h"
+#include "ins_types.hpp"
+#include "ins_parser.hpp"
 
 namespace tana {
     namespace loop {

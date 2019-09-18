@@ -7,12 +7,12 @@
 
 #include <string>
 #include <memory>
-#include "ins_types.h"
-#include "ins_parser.h"
-#include "x86.h"
-#include "error.h"
-#include "Register.h"
-#include "BitVector.h"
+#include "ins_types.hpp"
+#include "ins_parser.hpp"
+#include "x86.hpp"
+#include "error.hpp"
+#include "Register.hpp"
+#include "BitVector.hpp"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 

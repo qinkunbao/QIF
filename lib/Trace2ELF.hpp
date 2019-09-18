@@ -4,10 +4,10 @@
 #pragma once
 
 #include <memory>
-#include "cmd.h"
-#include "DebugInfo.h"
-#include "ELFInfo.h"
-#include "Function.h"
+#include "cmd.hpp"
+#include "DebugInfo.hpp"
+#include "ELFInfo.hpp"
+#include "Function.hpp"
 
 
 namespace tana {

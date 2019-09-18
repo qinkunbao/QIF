@@ -11,8 +11,8 @@
 #include <cassert>
 #include <algorithm>
 #include <elfio/elfio.hpp>
-#include "ELFInfo.h"
-#include "error.h"
+#include "ELFInfo.hpp"
+#include "error.hpp"
 
 
 using namespace std;

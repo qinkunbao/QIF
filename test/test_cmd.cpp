@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include "cmd.h"
+#include "cmd.hpp"
 
 int main()
 {

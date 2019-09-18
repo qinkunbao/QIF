@@ -11,12 +11,12 @@
 #include <cmath>
 #include <cstring>
 #include <tuple>
-#include "MonteCarlo.h"
-#include "ins_parser.h"
-#include "QIFSEEngine.h"
-#include "Function.h"
-#include "Trace2ELF.h"
-#include "InputParser.h"
+#include "MonteCarlo.hpp"
+#include "ins_parser.hpp"
+#include "QIFSEEngine.hpp"
+#include "Function.hpp"
+#include "Trace2ELF.hpp"
+#include "InputParser.hpp"
 
 
 using namespace std::chrono;

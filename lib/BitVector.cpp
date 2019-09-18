@@ -11,7 +11,7 @@
 #include <climits>
 #include <set>
 #include <queue>
-#include "BitVector.h"
+#include "BitVector.hpp"
 
 
 namespace tana {

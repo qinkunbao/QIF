@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "BitVector.h"
-#include "ins_types.h"
-#include "Constrains.h"
+#include "BitVector.hpp"
+#include "ins_types.hpp"
+#include "Constrains.hpp"
 
 
 namespace tana {

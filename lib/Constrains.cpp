@@ -6,9 +6,9 @@
  ************************************************************************/
 
 #include <iostream>
-#include "Constrains.h"
-#include "Engine.h"
-#include "error.h"
+#include "Constrains.hpp"
+#include "Engine.hpp"
+#include "error.hpp"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 

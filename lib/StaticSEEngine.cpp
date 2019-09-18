@@ -10,10 +10,10 @@
 #include <algorithm>
 #include <limits.h>
 #include <sstream>
-#include "ins_types.h"
-#include "VarMap.h"
-#include "error.h"
-#include "StaticSEEngine.h"
+#include "ins_types.hpp"
+#include "VarMap.hpp"
+#include "error.hpp"
+#include "StaticSEEngine.hpp"
 
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)

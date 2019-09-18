@@ -11,9 +11,9 @@
 #include <memory>
 #include <vector>
 #include <map>
-#include "BitVector.h"
-#include "Function.h"
-#include "CallStack.h"
+#include "BitVector.hpp"
+#include "Function.hpp"
+#include "CallStack.hpp"
 
 
 namespace tana {

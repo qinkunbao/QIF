@@ -1,6 +1,6 @@
 #include <random>
 #include <iostream>
-#include "MonteCarlo.h"
+#include "MonteCarlo.hpp"
 
 int main()
 {

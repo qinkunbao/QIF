@@ -13,10 +13,10 @@
 #include <sstream>
 #include <memory>
 #include <tuple>
-#include "ins_types.h"
-#include "Blocks.h"
-#include "ins_semantics.h"
-#include "Function.h"
+#include "ins_types.hpp"
+#include "Blocks.hpp"
+#include "ins_semantics.hpp"
+#include "Function.hpp"
 
 namespace tana {
 

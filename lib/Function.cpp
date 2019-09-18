@@ -10,9 +10,9 @@
 #include <string>
 #include <list>
 #include <random>
-#include "Function.h"
-#include "ins_types.h"
-#include "error.h"
+#include "Function.hpp"
+#include "ins_types.hpp"
+#include "error.hpp"
 
 
 

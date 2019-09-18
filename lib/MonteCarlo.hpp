@@ -11,11 +11,11 @@
 #include <map>
 #include <memory>
 #include <random>
-#include "BitVector.h"
-#include "Constrains.h"
-#include "Engine.h"
-#include "Function.h"
-#include "Trace2ELF.h"
+#include "BitVector.hpp"
+#include "Constrains.hpp"
+#include "Engine.hpp"
+#include "Function.hpp"
+#include "Trace2ELF.hpp"
 
 
 namespace tana {

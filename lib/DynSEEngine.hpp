@@ -11,10 +11,10 @@
 #include <map>
 #include <memory>
 #include <string>
-#include "ins_types.h"
-#include "Register.h"
-#include "Engine.h"
-#include "BitVector.h"
+#include "ins_types.hpp"
+#include "Register.hpp"
+#include "Engine.hpp"
+#include "BitVector.hpp"
 
 namespace tana {
     class BitVector;

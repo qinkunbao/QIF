@@ -7,11 +7,11 @@
 
 #include <sstream>
 #include <fstream>
-#include "ins_types.h"
-#include "Loop.h"
-#include "Register.h"
-#include "Tainter.h"
-#include "VarMap.h"
+#include "ins_types.hpp"
+#include "Loop.hpp"
+#include "Register.hpp"
+#include "Tainter.hpp"
+#include "VarMap.hpp"
 
 
 namespace tana {

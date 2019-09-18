@@ -15,7 +15,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "x86.h"
+#include "x86.hpp"
 
 namespace tana {
 

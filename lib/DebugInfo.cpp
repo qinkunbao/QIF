@@ -5,7 +5,7 @@
     > Created Time: Tue Sep  3 17:19:02 EDT 2019
  ************************************************************************/
 
-#include "DebugInfo.h"
+#include "DebugInfo.hpp"
 
 #include <cstring>
 #include <sstream>

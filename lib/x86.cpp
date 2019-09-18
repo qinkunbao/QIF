@@ -6,8 +6,8 @@
  ************************************************************************/
 
 #include <set>
-#include "x86.h"
-#include "error.h"
+#include "x86.hpp"
+#include "error.hpp"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 

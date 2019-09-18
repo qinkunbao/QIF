@@ -11,8 +11,8 @@
 #include <map>
 #include <iostream>
 
-#include "ins_types.h"
-#include "x86.h"
+#include "ins_types.hpp"
+#include "x86.hpp"
 
 namespace tana {
 

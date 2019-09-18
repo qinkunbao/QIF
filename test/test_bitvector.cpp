@@ -1,6 +1,6 @@
 #include <iostream>
 #include <bitset>
-#include "BitVector.h"
+#include "BitVector.hpp"
 
 using namespace tana;
 

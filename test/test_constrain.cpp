@@ -6,8 +6,8 @@
  ************************************************************************/
 
 #include<iostream>
-#include "BitVector.h"
-#include "Constrains.h"
+#include "BitVector.hpp"
+#include "Constrains.hpp"
 
 using namespace std;
 using namespace tana;

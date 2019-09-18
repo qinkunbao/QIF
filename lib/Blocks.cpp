@@ -5,8 +5,8 @@
 	> Created Time: Mon Apr 22 21:56:51 2019
  ************************************************************************/
 
-#include "Blocks.h"
-#include "ins_types.h"
+#include "Blocks.hpp"
+#include "ins_types.hpp"
 
 
 namespace tana {

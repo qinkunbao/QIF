@@ -2,11 +2,11 @@
 #include <algorithm>
 #include <string>
 //#include <filesystem>
-#include "ins_parser.h"
-#include "StaticSEEngine.h"
-#include "VarMap.h"
-#include "InputParser.h"
-#include "cmd.h"
+#include "ins_parser.hpp"
+#include "StaticSEEngine.hpp"
+#include "VarMap.hpp"
+#include "InputParser.hpp"
+#include "cmd.hpp"
 
 using namespace tana;
 using namespace std;

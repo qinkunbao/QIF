@@ -8,8 +8,8 @@
 #include <vector>
 #include <set>
 #include <memory>
-#include "ins_parser.h"
-#include "Loop.h"
+#include "ins_parser.hpp"
+#include "Loop.hpp"
 
 using namespace std;
 using namespace tana;

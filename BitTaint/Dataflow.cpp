@@ -12,8 +12,8 @@
 #include <algorithm>
 #include <string>
 #include <memory>
-#include "ins_parser.h"
-#include "BitTaint.h"
+#include "ins_parser.hpp"
+#include "BitTaint.hpp"
 
 using namespace tana;
 using namespace std;

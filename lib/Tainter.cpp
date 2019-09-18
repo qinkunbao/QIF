@@ -6,8 +6,8 @@
  ************************************************************************/
 
 #include <cassert>
-#include "Tainter.h"
-#include "ins_types.h"
+#include "Tainter.hpp"
+#include "ins_types.hpp"
 
 namespace tana {
 

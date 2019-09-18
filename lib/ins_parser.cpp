@@ -9,8 +9,8 @@
 #include <nlohmann/json.hpp>
 
 
-#include "ins_parser.h"
-#include "ins_types.h"
+#include "ins_parser.hpp"
+#include "ins_types.hpp"
 
 namespace tana {
 

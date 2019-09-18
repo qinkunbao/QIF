@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "DebugInfo.h"
+#include "DebugInfo.hpp"
 
 using namespace std;
 using namespace tana;

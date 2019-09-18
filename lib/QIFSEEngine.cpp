@@ -12,11 +12,11 @@
 #include <chrono>
 #include <vector>
 #include <tuple>
-#include "ins_types.h"
-#include "QIFSEEngine.h"
-#include "error.h"
-#include "Register.h"
-#include "x86.h"
+#include "ins_types.hpp"
+#include "QIFSEEngine.hpp"
+#include "error.hpp"
+#include "Register.hpp"
+#include "x86.hpp"
 
 #define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
 
@@ -43,7 +43,7 @@ namespace tana {
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                            std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                            std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
-                           std::vector<uint8_t> key_value){
+                           const std::vector<uint8_t> &key_value){
         this->init(it1, it2, key_symbol, key_value, nullptr);
 
     }
@@ -51,7 +51,7 @@ namespace tana {
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                                 std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                                 std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
-                                std::vector<uint8_t> key_value,
+                                const std::vector<uint8_t> &key_value,
                                 std::shared_ptr<Function> function){
         this->start = it1;
         this->end = it2;
@@ -92,7 +92,7 @@ namespace tana {
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                            std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                            tana_type::T_ADDRESS address, tana_type::T_SIZE m_size,
-                           std::vector<uint8_t> key_value,
+                           const std::vector<uint8_t> &key_value,
                            std::shared_ptr<Function> function) {
         this->start = it1;
         this->end = it2;
@@ -126,24 +126,8 @@ namespace tana {
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                            std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                            tana_type::T_ADDRESS address, tana_type::T_SIZE m_size,
-                           std::vector<uint8_t> key_value) {
-        this->start = it1;
-        this->end = it2;
-
-        std::shared_ptr<BitVector> v0;
-        std::stringstream ss;
-
-        for (uint32_t offset = 0; offset < m_size / T_BYTE_SIZE; offset = offset + 1) {
-            ss << "Key" << offset;
-            v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str(), T_BYTE_SIZE);
-            std::stringstream mem_addr;
-            mem_addr << std::hex << address + offset << std::dec;
-            std::string memoryAddr = mem_addr.str();
-            this->writeMem(memoryAddr, v0->size(), v0);
-            ss.str("");
-            //this->printMemory();
-            key_value_map.insert(std::pair<int, uint32_t>(v0->id, key_value[offset]));
-        }
+                           const std::vector<uint8_t> &key_value) {
+        this->init(it1, it2, address, m_size, key_value, nullptr);
     }
 
     std::shared_ptr<BitVector>

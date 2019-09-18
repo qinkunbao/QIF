@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <unordered_set>
-#include "Memory.h"
+#include "Memory.hpp"
 
 
 namespace tana {

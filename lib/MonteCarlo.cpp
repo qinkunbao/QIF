@@ -9,9 +9,9 @@
 #include <set>
 #include <iostream>
 #include <string>
-#include "MonteCarlo.h"
-#include "error.h"
-#include "Trace2ELF.h"
+#include "MonteCarlo.hpp"
+#include "error.hpp"
+#include "Trace2ELF.hpp"
 
 namespace tana {
     std::vector<uint8_t> MonteCarlo::getRandomVector(unsigned int size) {

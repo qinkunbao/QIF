@@ -15,8 +15,8 @@
 #include <queue>
 #include <memory>
 #include <iterator>
-#include "ins_types.h"
-#include "DynSEEngine.h"
+#include "ins_types.hpp"
+#include "DynSEEngine.hpp"
 
 
 namespace tana {

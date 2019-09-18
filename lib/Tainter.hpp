@@ -11,8 +11,8 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
-#include "ins_types.h"
-#include "Register.h"
+#include "ins_types.hpp"
+#include "Register.hpp"
 
 namespace tana {
     class Tainter {

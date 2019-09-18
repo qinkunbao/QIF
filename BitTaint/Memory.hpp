@@ -2,7 +2,7 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "x86.h"
+#include "x86.hpp"
 
 
 namespace tana {

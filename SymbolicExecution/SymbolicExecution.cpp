@@ -3,9 +3,9 @@
 #include <fstream>
 #include <algorithm>
 #include <memory>
-#include "ins_parser.h"
-#include "DynSEEngine.h"
-#include "VarMap.h"
+#include "ins_parser.hpp"
+#include "DynSEEngine.hpp"
+#include "VarMap.hpp"
 
 using namespace tana;
 using namespace std;

@@ -12,13 +12,13 @@
 #include <memory>
 #include <string>
 #include <tuple>
-#include "ins_types.h"
-#include "Register.h"
-#include "Engine.h"
-#include "BitVector.h"
-#include "Constrains.h"
-#include "CallStack.h"
-#include "Function.h"
+#include "ins_types.hpp"
+#include "Register.hpp"
+#include "Engine.hpp"
+#include "BitVector.hpp"
+#include "Constrains.hpp"
+#include "CallStack.hpp"
+#include "Function.hpp"
 
 namespace tana {
     class BitVector;
@@ -58,24 +58,24 @@ namespace tana {
         void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                   std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                   tana_type::T_ADDRESS, tana_type::T_SIZE m_size,
-                  std::vector<uint8_t> key_value,
+                  const std::vector<uint8_t> &key_value,
                   std::shared_ptr<Function> function);
 
         void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                   std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                   std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
-                  std::vector<uint8_t> key_value,
+                  const std::vector<uint8_t> &key_value,
                   std::shared_ptr<Function> function);
 
         void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                   std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                   std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
-                  std::vector<uint8_t> key_value);
+                  const std::vector<uint8_t> &key_value);
 
         void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                   std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                   tana_type::T_ADDRESS, tana_type::T_SIZE m_size,
-                  std::vector<uint8_t> key_value);
+                  const std::vector<uint8_t> &key_value);
 
         QIFSEEngine(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx,
                     uint32_t esi, uint32_t edi, uint32_t esp, uint32_t ebp);

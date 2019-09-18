@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 #include <map>
-#include "error.h"
+#include "error.hpp"
 
 namespace tana {
     void default_error_handler(const char *file, int line, const char *message) {

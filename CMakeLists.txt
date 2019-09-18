@@ -22,48 +22,48 @@ add_subdirectory(external/nlohmann_json)
 
 
 add_library(TraceLib
-        lib/error.h
+        lib/error.hpp
         lib/error.cpp
         lib/x86.cpp
-        lib/x86.h
+        lib/x86.hpp
         lib/ins_parser.cpp
-        lib/ins_parser.h
-        lib/ins_types.h
+        lib/ins_parser.hpp
+        lib/ins_types.hpp
         lib/ins_types.cpp
-        lib/ins_semantics.h
+        lib/ins_semantics.hpp
         lib/ins_semantics.cpp
-        lib/Engine.h
+        lib/Engine.hpp
         lib/Engine.cpp
         lib/Register.cpp
-        lib/Register.h
+        lib/Register.hpp
         lib/DynSEEngine.cpp
-        lib/DynSEEngine.h
-        lib/VarMap.h
+        lib/DynSEEngine.hpp
+        lib/VarMap.hpp
         lib/VarMap.cpp
         lib/Tainter.cpp
-        lib/Tainter.h
+        lib/Tainter.hpp
         lib/Loop.cpp
-        lib/Loop.h
+        lib/Loop.hpp
         lib/Function.cpp
-        lib/Function.h
+        lib/Function.hpp
         lib/Blocks.cpp
-        lib/Blocks.h
-        lib/BitVector.h
+        lib/Blocks.hpp
+        lib/BitVector.hpp
         lib/BitVector.cpp
         lib/StaticSEEngine.cpp
-        lib/StaticSEEngine.h
-        lib/QIFSEEngine.h
+        lib/StaticSEEngine.hpp
+        lib/QIFSEEngine.hpp
         lib/QIFSEEngine.cpp
-        lib/Constrains.h
+        lib/Constrains.hpp
         lib/Constrains.cpp
-        lib/MonteCarlo.h
+        lib/MonteCarlo.hpp
         lib/MonteCarlo.cpp
-        lib/CallStack.h
-        lib/CallStack.cpp lib/DebugInfo.cpp lib/DebugInfo.h
-        lib/cmd.cpp lib/cmd.h
-        lib/ELFInfo.cpp lib/ELFInfo.h
-        lib/Trace2ELF.cpp lib/Trace2ELF.h
-        lib/InputParser.h)
+        lib/CallStack.hpp
+        lib/CallStack.cpp lib/DebugInfo.cpp lib/DebugInfo.hpp
+        lib/cmd.cpp lib/cmd.hpp
+        lib/ELFInfo.cpp lib/ELFInfo.hpp
+        lib/Trace2ELF.cpp lib/Trace2ELF.hpp
+        lib/InputParser.hpp)
 
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)
