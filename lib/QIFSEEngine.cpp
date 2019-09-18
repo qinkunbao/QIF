@@ -11,6 +11,7 @@
 #include <cmath>
 #include <chrono>
 #include <vector>
+#include <tuple>
 #include "ins_types.h"
 #include "QIFSEEngine.h"
 #include "error.h"
@@ -41,6 +42,55 @@ namespace tana {
 
     void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                            std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
+                           std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
+                           std::vector<uint8_t> key_value){
+        this->init(it1, it2, key_symbol, key_value, nullptr);
+
+    }
+
+    void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
+                                std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
+                                std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
+                                std::vector<uint8_t> key_value,
+                                std::shared_ptr<Function> function){
+        this->start = it1;
+        this->end = it2;
+
+        std::shared_ptr<BitVector> v0;
+        std::stringstream ss;
+        std::vector<std::tuple<int, std::string>> key_value_set;
+
+        uint32_t address, m_size, key_index = 0;
+
+        for(const auto & key:key_symbol)
+        {
+            address = std::get<0>(key);
+            m_size = std::get<1>(key);
+            for (uint32_t offset = 0; offset < m_size/T_BYTE_SIZE; offset = offset + 1) {
+                ss << "Key" << key_index;
+                v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str(), T_BYTE_SIZE);
+                std::stringstream mem_addr;
+                mem_addr << std::hex << address + offset << std::dec;
+                std::string memoryAddr = mem_addr.str();
+                this->writeMem(memoryAddr, v0->size(), v0);
+                //this->printMemory();
+                key_value_map.insert(std::pair<int, uint32_t>(v0->id, key_value[offset]));
+                key_value_set.emplace_back(v0->id, ss.str());
+                ss.str("");
+                ++key_index;
+            }
+        }
+
+        if(function != nullptr) {
+            this->func = function;
+
+            stacks = std::make_unique<CallStack>(func->getFunName(start->get()->addrn), key_value_set);
+        }
+
+    }
+
+    void QIFSEEngine::init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
+                           std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                            tana_type::T_ADDRESS address, tana_type::T_SIZE m_size,
                            std::vector<uint8_t> key_value,
                            std::shared_ptr<Function> function) {
@@ -52,7 +102,7 @@ namespace tana {
         std::vector<std::tuple<int, std::string>> key_value_set;
 
 
-        for (auto offset = 0; offset < m_size; offset = offset + 1) {
+        for (uint32_t offset = 0; offset < m_size / T_BYTE_SIZE; offset = offset + 1) {
             ss << "Key" << offset;
             v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str(), T_BYTE_SIZE);
             std::stringstream mem_addr;
@@ -83,7 +133,7 @@ namespace tana {
         std::shared_ptr<BitVector> v0;
         std::stringstream ss;
 
-        for (uint32_t offset = 0; offset < m_size; offset = offset + 1) {
+        for (uint32_t offset = 0; offset < m_size / T_BYTE_SIZE; offset = offset + 1) {
             ss << "Key" << offset;
             v0 = std::make_shared<BitVector>(ValueType::SYMBOL, ss.str(), T_BYTE_SIZE);
             std::stringstream mem_addr;

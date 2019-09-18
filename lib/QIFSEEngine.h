@@ -63,6 +63,17 @@ namespace tana {
 
         void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
                   std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
+                  std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
+                  std::vector<uint8_t> key_value,
+                  std::shared_ptr<Function> function);
+
+        void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
+                  std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
+                  std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
+                  std::vector<uint8_t> key_value);
+
+        void init(std::vector<std::unique_ptr<Inst_Base>>::iterator it1,
+                  std::vector<std::unique_ptr<Inst_Base>>::iterator it2,
                   tana_type::T_ADDRESS, tana_type::T_SIZE m_size,
                   std::vector<uint8_t> key_value);
 

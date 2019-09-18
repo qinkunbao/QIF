@@ -10,7 +10,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstring>
-#include <algorithm>
+#include <tuple>
 #include "MonteCarlo.h"
 #include "ins_parser.h"
 #include "QIFSEEngine.h"
@@ -73,6 +73,7 @@ int main(int argc, char *argv[]) {
     std::shared_ptr<Function> func = nullptr;
     std::shared_ptr<Trace2ELF> t2e = nullptr;
     uint64_t MonteCarloTimes = 10000;
+    std::vector<std::tuple<uint32_t , uint32_t >> key_symbol;
     InputParser input(argc, argv);
 
     std::string traceFileName(argv[1]);
@@ -153,10 +154,13 @@ int main(int argc, char *argv[]) {
     trace_file.close();
     trace_file.open(argv[1]);
 
-    parse_trace_qif(trace_file, start_addr, m_size, inst_list, key_value, max_inst, inst_size, func);
+    parse_trace_qif(trace_file, key_symbol, inst_list, key_value, max_inst, inst_size, func);
 
-    std::cout << "Start Address: " << std::hex << start_addr << std::dec
-              << " Length: " << m_size << std::endl;
+    for(const auto &key_item : key_symbol) {
+
+        std::cout << "Key Start Address: " << std::hex << get<0>(key_item) << std::dec
+                  << " Length: " << get<1>(key_item) << std::endl;
+    }
 
     uint32_t eax, ebx, ecx, edx, esi, edi, esp, ebp;
     auto reg = (inst_list.front())->vcpu;
@@ -171,9 +175,9 @@ int main(int argc, char *argv[]) {
 
     auto *se = new QIFSEEngine(eax, ebx, ecx, edx, esi, edi, esp, ebp);
     if (argc == 4) {
-        se->init(inst_list.begin(), inst_list.end(), start_addr, m_size / 8, key_value, func);
+        se->init(inst_list.begin(), inst_list.end(), key_symbol, key_value, func);
     } else {
-        se->init(inst_list.begin(), inst_list.end(), start_addr, m_size / 8, key_value);
+        se->init(inst_list.begin(), inst_list.end(), key_symbol, key_value);
 
     }
     se->run();
