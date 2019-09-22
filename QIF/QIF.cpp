@@ -148,13 +148,12 @@ int main(int argc, char *argv[]) {
 
     auto start = high_resolution_clock::now();
 
-    int max_inst = 90000000;
     auto inst_size = file_inst_num(trace_file);
     std::cout << "Total Instructions:: " << inst_size << std::endl;
     trace_file.close();
     trace_file.open(argv[1]);
 
-    parse_trace_qif(trace_file, key_symbol, inst_list, key_value, max_inst, inst_size, func);
+    parse_trace_qif(trace_file, key_symbol, inst_list, key_value, inst_size, func);
 
     for(const auto &key_item : key_symbol) {
 

@@ -1,8 +1,8 @@
 /*************************************************************************
-	> File Name: LibcModel.cpp
-	> Author: 
-	> Mail: 
-	> Created Time: Wed Sep 18 15:02:14 2019
+	> File Name: LibcModel.hpp
+	> Author: Qinkun Bao
+	> Mail: qinkunbao@gmail.com
+	> Created Time: Sun Sep 22 16:30:10 EDT 2019
  ************************************************************************/
 
 #include<iostream>

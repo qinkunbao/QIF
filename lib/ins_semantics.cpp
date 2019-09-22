@@ -154,7 +154,7 @@ namespace tana {
 
 
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic,\
-                                                          std::shared_ptr<Function> func, \
+                                                          const std::shared_ptr<Function> &func, \
                                                           uint32_t addr) {
         if(x86::isSSE(id))
         {

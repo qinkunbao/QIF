@@ -402,8 +402,8 @@ namespace tana {
 
     bool parse_trace_qif(std::ifstream &trace_file, std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
                          std::vector<std::unique_ptr<Inst_Base>> &L,
-                         std::vector<uint8_t> &key_value, uint64_t max_inst, uint64_t instsize, \
-                         std::shared_ptr<Function> fun){
+                         std::vector<uint8_t> &key_value, uint64_t instsize, \
+                         const std::shared_ptr<Function> &fun){
         std::string line;
         uint32_t id_count = 1, num = 1;
         getline(trace_file, line);
@@ -521,10 +521,7 @@ namespace tana {
             ins->parseOperand();
 
             L.push_back(std::move(ins));
-            if(id_count > max_inst)
-            {
-                break;
-            }
+
             getline(trace_file, line);
         }
 
@@ -534,141 +531,15 @@ namespace tana {
 
     bool parse_trace_qif(std::ifstream &trace_file, tana_type::T_ADDRESS &addr_taint, \
                          tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L,
-                         std::vector<uint8_t> &key_value, uint64_t max_inst, uint64_t instsize,
-                         std::shared_ptr<Function> func) {
-        std::string line;
-        uint32_t id_count = 1, num = 1;
-        getline(trace_file, line);
+                         std::vector<uint8_t> &key_value, uint64_t instsize,
+                         const std::shared_ptr<Function> &func) {
+        std::vector<std::tuple<uint32_t , uint32_t >> key_symbol;
+        bool status = parse_trace_qif(trace_file, key_symbol, L, key_value,  \
+                                     instsize, func);
+        addr_taint = std::get<0>(key_symbol[0]);
+        size_taint = std::get<1>(key_symbol[0]);
 
-        uint64_t size_inst_percent = instsize / 100;
-        int percent = 0;
-
-        if (line.find("Start") != std::string::npos) {
-            std::istringstream fun_buf(line);
-            std::string start_taint, taint_len, temp_str;
-            getline(fun_buf, temp_str, ';');
-            getline(fun_buf, start_taint, ';');
-            getline(fun_buf, taint_len, ';');
-            addr_taint = stoul(start_taint, nullptr, 16);
-            size_taint = stoul(taint_len, nullptr, 10);
-
-            // Get key value
-            getline(trace_file, line);
-            std::istringstream strbuf(line);
-            std::string key_temp;
-            uint8_t key_concrete;
-            uint32_t index;
-
-            for (index = 0; index < (size_taint / 8); ++index) {
-                getline(strbuf, key_temp, ';');
-                key_concrete = std::stoul(key_temp, nullptr, 16);
-                key_value.push_back(key_concrete);
-            }
-
-        }
-        while (trace_file.good()) {
-            getline(trace_file, line);
-            if (line.empty()) {
-                break;
-            }
-
-            if (line.find("Start") != std::string::npos) {
-                std::istringstream fun_buf(line);
-                std::string start_taint, taint_len, temp_str;
-                getline(fun_buf, temp_str, ';');
-                getline(fun_buf, start_taint, ';');
-                getline(fun_buf, taint_len, ';');
-                addr_taint = stoul(start_taint, nullptr, 16);
-                size_taint = stoul(taint_len, nullptr, 10);
-                getline(trace_file, line);
-
-                return false;
-
-            }
-
-            if (line.find("END") != std::string::npos) {
-                return true;
-            }
-
-            std::istringstream strbuf(line);
-            std::string temp, disasstr, temp_addr;
-
-            auto ins_index = num++;
-            id_count++;
-
-            if(size_inst_percent) {
-
-                if ((id_count / size_inst_percent) > percent) {
-                    percent = id_count / size_inst_percent;
-                    if (percent % 5 == 0) {
-                        std::cout << percent << "% parsing" << std::endl;
-                    }
-                }
-            }
-
-            // instruction address
-            getline(strbuf, temp_addr, ';');
-            auto ins_addrn = std::stoul(temp_addr, nullptr, 16);
-
-            // get dissassemble string
-            getline(strbuf, disasstr, ';');
-            std::istringstream disasbuf(disasstr);
-
-            std::string opcstr;
-            getline(disasbuf, opcstr, ' ');
-            auto ins_id = x86::insn_string2id(opcstr);
-
-            //Remove prefix
-            if (ins_id == x86::X86_INS_REP || ins_id == x86::X86_INS_DATA16) {
-                getline(disasbuf, opcstr, ' ');
-                ins_id = x86::insn_string2id(opcstr);
-            }
-
-            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(ins_id, false, func, ins_addrn);
-
-            ins->id = ins_index;
-            ins->addrn = ins_addrn;
-            ins->instruction_id = ins_id;
-
-            while (disasbuf.good()) {
-                getline(disasbuf, temp, ',');
-                if (temp.find_first_not_of(' ') != std::string::npos)
-                    ins->oprs.push_back(temp);
-            }
-
-            // get 8 register value
-            for (int i = 0; i < GPR_NUM; ++i) {
-                getline(strbuf, temp, ',');
-                ins->vcpu.gpr[i] = std::stoul(temp, nullptr, 16);
-            }
-
-            getline(strbuf, temp, ',');
-            ins->memory_address = std::stoul(temp, nullptr, 16);
-
-            //Get EPFLAGS
-            getline(strbuf, temp, ',');
-            if (!temp.empty()) {
-                ins->vcpu.set_eflags(std::stoul(temp, nullptr, 16));
-                ins->vcpu.eflags_state = true;
-            }
-
-            //Get Mem Data
-            getline(strbuf, temp, ',');
-            if (!temp.empty()) {
-                ins->set_mem_data(std::stoul(temp, nullptr, 16));
-            }
-
-            ins->parseOperand();
-
-            L.push_back(std::move(ins));
-            if(id_count > max_inst)
-            {
-                break;
-            }
-        }
-
-        return trace_file.good();
-
+        return status;
     }
 
 

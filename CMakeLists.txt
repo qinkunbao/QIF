@@ -63,7 +63,8 @@ add_library(TraceLib
         lib/cmd.cpp lib/cmd.hpp
         lib/ELFInfo.cpp lib/ELFInfo.hpp
         lib/Trace2ELF.cpp lib/Trace2ELF.hpp
-        lib/InputParser.hpp)
+        lib/InputParser.hpp
+        lib/LibcModel.hpp lib/LibcModel.cpp)
 
 
 target_link_libraries(TraceLib PRIVATE nlohmann_json::nlohmann_json)

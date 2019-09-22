@@ -44,12 +44,12 @@ namespace tana {
 
     bool parse_trace_qif(std::ifstream &trace_file, tana_type::T_ADDRESS &addr_taint, \
                          tana_type::T_SIZE &size_taint, std::vector<std::unique_ptr<Inst_Base>> &L,
-                         std::vector<uint8_t> &key_value, uint64_t max_inst, uint64_t inst_size, \
-                         std::shared_ptr<Function> fun);
+                         std::vector<uint8_t> &key_value,  uint64_t inst_size, \
+                         const std::shared_ptr<Function> &fun);
 
     bool parse_trace_qif(std::ifstream &trace_file, std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
                          std::vector<std::unique_ptr<Inst_Base>> &L,
-                         std::vector<uint8_t> &key_value, uint64_t max_inst, uint64_t inst_size, \
-                         std::shared_ptr<Function> fun);
+                         std::vector<uint8_t> &key_value, uint64_t inst_size, \
+                         const std::shared_ptr<Function> &fun);
 
 }
