@@ -78,3 +78,7 @@ def disassemble(file_name):
     with open(blocks_name, 'w') as f:
         blocks = serialize(blocks)
         json.dump(blocks, f, indent=4, sort_keys=True)
+
+
+if __name__ == '__main__':
+    disassemble(sys.argv[1])
