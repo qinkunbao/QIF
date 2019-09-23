@@ -459,7 +459,7 @@ namespace tana {
 
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(const std::string &line, bool isStatic,
                                                           const std::shared_ptr<Function> &fun) {
-        if(isStatic == false) {
+        if(!isStatic) {
             std::istringstream strbuf(line);
             std::string temp, disasstr, temp_addr;
 

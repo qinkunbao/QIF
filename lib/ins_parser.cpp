@@ -524,74 +524,17 @@ namespace tana {
                 return true;
             }
 
-            std::istringstream strbuf(line);
-            std::string temp, disasstr, temp_addr;
-
             auto ins_index = num++;
             id_count++;
 
-            // instruction address
-            getline(strbuf, temp_addr, ';');
-            auto ins_addrn = std::stoul(temp_addr, nullptr, 16);
-
-            // get dissassemble string
-            getline(strbuf, disasstr, ';');
-            std::istringstream disasbuf(disasstr);
-
-            std::string opcstr;
-            getline(disasbuf, opcstr, ' ');
-            //ins->opcstr = opcstr;
-            auto ins_id = x86::insn_string2id(opcstr);
-
-            //Remove prefix
-            if (ins_id == x86::X86_INS_REP || ins_id == x86::X86_INS_DATA16) {
-                getline(disasbuf, opcstr, ' ');
-                ins_id = x86::insn_string2id(opcstr);
-            }
-
-            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(ins_id, false);
-
+            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(line, false, nullptr);
             ins->id = ins_index;
-            ins->addrn = ins_addrn;
-            ins->instruction_id = ins_id;
 
-            while (disasbuf.good()) {
-                getline(disasbuf, temp, ',');
-                if (temp.find_first_not_of(' ') != std::string::npos)
-                    ins->oprs.push_back(temp);
-            }
-
-            // get 8 register value
-            for (int i = 0; i < GPR_NUM; ++i) {
-                getline(strbuf, temp, ',');
-                ins->vcpu.gpr[i] = std::stoul(temp, nullptr, 16);
-            }
-
-            getline(strbuf, temp, ',');
-            ins->memory_address = std::stoul(temp, nullptr, 16);
-
-            //Get EPFLAGS
-            getline(strbuf, temp, ',');
-            if (!temp.empty()) {
-                ins->vcpu.set_eflags(std::stoul(temp, nullptr, 16));
-                ins->vcpu.eflags_state = true;
-            }
-
-            //Get Mem Data
-            getline(strbuf, temp, ',');
-            if (!temp.empty()) {
-                ins->set_mem_data(std::stoul(temp, nullptr, 16));
-            }
-
-            ins->parseOperand();
 
             L.push_back(std::move(ins));
 
         }
-        if (trace_file.good())
-            return false;
-        else
-            return true;
+        return trace_file.good();
     }
 
 
@@ -637,7 +580,7 @@ namespace tana {
 
             getline(trace_file, line);
 
-            if (line.find(";") != std::string::npos) {
+            if (line.find(';') != std::string::npos) {
                 continue;
             }
 
