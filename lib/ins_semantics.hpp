@@ -21,6 +21,9 @@ namespace tana {
                                           uint32_t addr);
 
         static std::unique_ptr<Inst_Base> makeInst(x86::x86_insn id, bool isStatic);
+
+        static std::unique_ptr<Inst_Base> makeInst(const std::string &ins, bool isStatic, \
+                                          const std::shared_ptr<Function> &fun);
     };
 
     namespace inst_dyn_details {

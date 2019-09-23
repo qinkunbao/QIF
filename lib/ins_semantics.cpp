@@ -156,10 +156,13 @@ namespace tana {
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic,\
                                                           const std::shared_ptr<Function> &func, \
                                                           uint32_t addr) {
+
+        /*
         if(x86::isSSE(id))
         {
             return std::make_unique<INST_X86_INS_SSE>(isStatic);
         }
+         */
 
         switch (id) {
             case x86::x86_insn::X86_INS_NOP:
@@ -451,6 +454,75 @@ namespace tana {
 
 
         }
+
+    }
+
+    std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(const std::string &line, bool isStatic,
+                                                          const std::shared_ptr<Function> &fun) {
+        if(isStatic == false) {
+            std::istringstream strbuf(line);
+            std::string temp, disasstr, temp_addr;
+
+            // instruction address
+            getline(strbuf, temp_addr, ';');
+            auto ins_addrn = std::stoul(temp_addr, nullptr, 16);
+
+            // get dissassemble string
+            getline(strbuf, disasstr, ';');
+            std::istringstream disasbuf(disasstr);
+
+            std::string opcstr;
+            getline(disasbuf, opcstr, ' ');
+            auto ins_id = x86::insn_string2id(opcstr);
+
+            //Remove prefix
+            if (ins_id == x86::X86_INS_REP || ins_id == x86::X86_INS_DATA16) {
+                getline(disasbuf, opcstr, ' ');
+                ins_id = x86::insn_string2id(opcstr);
+            }
+
+            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(ins_id, false, fun, ins_addrn);
+
+            ins->addrn = ins_addrn;
+            ins->instruction_id = ins_id;
+
+            while (disasbuf.good()) {
+                getline(disasbuf, temp, ',');
+                if (temp.find_first_not_of(' ') != std::string::npos)
+                    ins->oprs.push_back(temp);
+            }
+
+            // get 8 register value
+            for (int i = 0; i < GPR_NUM; ++i) {
+                getline(strbuf, temp, ',');
+                ins->vcpu.gpr[i] = std::stoul(temp, nullptr, 16);
+            }
+
+            getline(strbuf, temp, ',');
+            ins->memory_address = std::stoul(temp, nullptr, 16);
+
+            //Get EPFLAGS
+            getline(strbuf, temp, ',');
+            if (!temp.empty()) {
+                ins->vcpu.set_eflags(std::stoul(temp, nullptr, 16));
+                ins->vcpu.eflags_state = true;
+            }
+
+            //Get Mem Data
+            getline(strbuf, temp, ',');
+            if (!temp.empty()) {
+                ins->set_mem_data(std::stoul(temp, nullptr, 16));
+            }
+
+            ins->parseOperand();
+
+            return std::move(ins);
+        }
+
+
+        //TODO Support Static version
+        return nullptr;
+
 
     }
 
