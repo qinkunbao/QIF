@@ -3067,6 +3067,12 @@ namespace tana {
 
         se->writeReg("eax", v_mem);
 
+        uint32_t esi = se->getRegisterConcreteValue("esi");
+
+        auto esi_v = std::make_shared<BitVector>(ValueType::CONCRETE, esi);
+
+        se->writeReg("esi", esi_v);
+
         return true;
 
     }

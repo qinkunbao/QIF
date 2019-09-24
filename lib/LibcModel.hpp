@@ -39,6 +39,7 @@ namespace tana{
             m_num = num;
             m_size = size;
             m_ret_value = ret_value;
+            is_function = true;
         }
         bool symbolic_execution(SEEngine *se) final;
 
@@ -54,6 +55,7 @@ namespace tana{
         {
             m_size = size;
             m_ret_value = ret_value;
+            is_function = true;
         }
         bool symbolic_execution(SEEngine *se) final;
 
@@ -71,6 +73,7 @@ namespace tana{
             m_source = source;
             m_num = num;
             m_ret_value = ret_value;
+            is_function = true;
         }
         bool symbolic_execution(SEEngine *se) final;
 
@@ -88,6 +91,7 @@ namespace tana{
             m_source = source;
             m_num = num;
             m_ret_value = ret_value;
+            is_function = true;
         }
         bool symbolic_execution(SEEngine *se) final;
     };
@@ -104,6 +108,7 @@ namespace tana{
             m_value = value;
             m_num = num;
             m_ret_value = ret_value;
+            is_function = true;
         }
         bool symbolic_execution(SEEngine *se) final;
 

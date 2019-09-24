@@ -120,6 +120,7 @@ namespace tana {
         uint32_t mem_data;
     public:
         bool is_static = false;
+        bool is_function = false;
         tana_type::index id;  //instruction ID
         tana_type::T_ADDRESS addrn; //Instruction address
         x86::x86_insn instruction_id;

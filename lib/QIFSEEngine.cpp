@@ -650,6 +650,11 @@ namespace tana {
             sym_res.push_back(m_ctx["ebp"]);
             std::vector<uint32_t> con_res;
 
+            if(it->is_function)
+            {
+                continue;
+            }
+
             // Get the  concrete register value after the SE
             if (inst != end) {
                 for (uint32_t i = 0; i < 8; ++i) {
