@@ -13,9 +13,12 @@
 #include "BitVector.hpp"
 #include "ins_types.hpp"
 #include "Engine.hpp"
+#include "error.hpp"
 
 using namespace std;
 using namespace tana;
+#define ERROR(MESSAGE) tana::default_error_handler(__FILE__, __LINE__, MESSAGE)
+
 
 
 
@@ -94,6 +97,7 @@ unique_ptr<Inst_Base> LibC_Factory::makeInst(const std::string &line)
 
         }
         case LibcID::X86_Malloc: {
+            //TODO
             break;
         }
         case LibcID::X86_Memcpy: {
@@ -108,7 +112,7 @@ unique_ptr<Inst_Base> LibC_Factory::makeInst(const std::string &line)
             uint32_t destination = std::stoul(result[2], nullptr, 16);
             uint32_t source = std::stoul(result[3], nullptr, 16);
             uint32_t num = std::stoul(result[4], nullptr, 16);
-            uint32_t ret = std::stoul(result[7], nullptr, 16);
+            uint32_t ret = std::stoul(result[6], nullptr, 16);
 
             return std::make_unique<LIBC_X86_Mempcpy>(destination, source, num, ret);
         }
@@ -121,7 +125,8 @@ unique_ptr<Inst_Base> LibC_Factory::makeInst(const std::string &line)
             return std::make_unique<LIBC_X86_Memset>(ptr, value, num, ret);
         }
         case LibcID::Invalid: {
-            break;
+            ERROR("Invalid libc functions");
+            exit(0);
         }
 
     }
