@@ -18,7 +18,13 @@ namespace tana{
         X86_Malloc,
         X86_Memcpy,
         X86_Mempcpy,
-        X86_Memset
+        X86_Memset,
+        Invalid
+    };
+
+    class LibC_Factory{
+    public:
+        static std::unique_ptr<Inst_Base> makeInst(const std::string &ins);
     };
 
     class LIBC_X86_Calloc : public Inst_Base{

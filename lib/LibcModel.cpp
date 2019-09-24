@@ -7,6 +7,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 #include "LibcModel.hpp"
 #include "BitVector.hpp"
 #include "ins_types.hpp"
@@ -16,11 +17,58 @@ using namespace std;
 using namespace tana;
 
 
-string uint32ToStr(uint32_t addr)
+
+namespace libc {
+
+    LibcID stringToLibcID(const string &libc)
+    {
+        if(libc.rfind("libc") == string::npos)
+        {
+            return LibcID ::Invalid;
+        }
+
+        if(libc.rfind("calloc") != string::npos)
+        {
+            return LibcID ::X86_Calloc;
+        }
+
+        if(libc.rfind("malloc") != string::npos)
+        {
+            return LibcID ::X86_Malloc;
+        }
+
+        if(libc.rfind("memcpy") != string::npos)
+        {
+            return LibcID ::X86_Memcpy;
+        }
+
+        if(libc.rfind("mempcpy") != string::npos)
+        {
+            return LibcID ::X86_Mempcpy;
+        }
+
+        if(libc.rfind("memset") != string::npos)
+        {
+            return LibcID ::X86_Memset;
+        }
+
+        return LibcID ::Invalid;
+    }
+
+    string uint32ToStr(uint32_t addr)
+    {
+        stringstream sstream;
+        sstream << hex << addr << dec;
+        return sstream.str();
+    }
+
+}
+
+
+unique_ptr<Inst_Base> LibC_Factory::makeInst(const std::string &line)
 {
-    stringstream sstream;
-    sstream << hex << addr << dec;
-    return sstream.str();
+    istringstream strbuf(line);
+    return nullptr;
 }
 
 
@@ -32,14 +80,15 @@ bool LIBC_X86_Calloc::symbolic_execution(tana::SEEngine *se)
     size = this->m_size;
     ret = this->m_ret_value;
     uint32_t num_bytes = size * num;
+
     assert(ret % 4 ==0);
     string addr_str;
-    for(uint32_t i = 0; i < num_bytes; ++i)
+    for(uint32_t i = 0; i < num_bytes / T_DWORD; ++i)
     {
         auto data = std::make_shared<BitVector>(ValueType::CONCRETE, 0);
         uint32_t addr = ret + i * T_DWORD;
-        addr_str = uint32ToStr(addr);
-        se->writeMem(addr_str, T_BYTE, data);
+        addr_str = libc::uint32ToStr(addr);
+        se->writeMem(addr_str, T_BYTE_SIZE * T_DWORD, data);
     }
 
     // We think eax register store the return value
@@ -67,17 +116,18 @@ bool LIBC_X86_Memcpy::symbolic_execution(tana::SEEngine *se)
     source = m_source;
     num = m_num;
     ret = m_ret_value;
+
+    assert(num % 4 == 0);
     uint32_t index;
     shared_ptr<BitVector> data;
     string source_addr_str, dest_addr_str;
-    for(index = 0; index < num; ++index)
+    for(index = 0; index < num / T_DWORD; ++index)
     {
-        source_addr_str = uint32ToStr(source + index );
-        dest_addr_str = uint32ToStr(destination + index);
+        source_addr_str = libc::uint32ToStr(source + index * T_DWORD );
+        dest_addr_str = libc::uint32ToStr(destination + index * T_DWORD);
 
-        data = se->readMem(source_addr_str, T_DWORD);
-
-        se->writeMem(dest_addr_str, T_DWORD, data);
+        data = se->readMem(source_addr_str, T_DWORD * T_BYTE_SIZE);
+        se->writeMem(dest_addr_str, T_DWORD * T_BYTE_SIZE, data);
     }
 
     auto rev_v = std::make_shared<BitVector>(ValueType ::CONCRETE, destination);
@@ -96,14 +146,14 @@ bool LIBC_X86_Mempcpy::symbolic_execution(tana::SEEngine *se)
     uint32_t index;
     shared_ptr<BitVector> data;
     string source_addr_str, dest_addr_str;
-    for(index = 0; index < num; ++index)
+    assert(num % 4 == 0);
+    for(index = 0; index < num / T_DWORD; ++index)
     {
-        source_addr_str = uint32ToStr(source + index);
-        dest_addr_str = uint32ToStr(destination + index);
+        source_addr_str = libc::uint32ToStr(source + index * T_DWORD);
+        dest_addr_str = libc::uint32ToStr(destination + index * T_DWORD);
 
-        data = se->readMem(source_addr_str, T_DWORD);
-
-        se->writeMem(dest_addr_str, T_DWORD, data);
+        data = se->readMem(source_addr_str, T_DWORD * T_BYTE_SIZE);
+        se->writeMem(dest_addr_str, T_DWORD * T_BYTE_SIZE, data);
     }
 
     auto rev_v = std::make_shared<BitVector>(ValueType ::CONCRETE, destination + index * T_DWORD);
@@ -123,11 +173,12 @@ bool LIBC_X86_Memset::symbolic_execution(tana::SEEngine *se)
     uint32_t index;
     string addr_str;
     shared_ptr<BitVector> data;
-    for(index = 0; index < num; ++index)
+    assert(num % 4 == 0);
+    for(index = 0; index < num / T_DWORD; ++index)
     {
         data = make_shared<BitVector>(ValueType::CONCRETE, value);
-        addr_str = uint32ToStr(ptr + index);
-        se->writeMem(addr_str, T_BYTE_SIZE, data);
+        addr_str = libc::uint32ToStr(ptr + index * T_DWORD);
+        se->writeMem(addr_str, T_DWORD * T_BYTE_SIZE, data);
     }
 
     auto rev_v = std::make_shared<BitVector>(ValueType ::CONCRETE, ret);
