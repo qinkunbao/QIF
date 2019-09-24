@@ -1679,7 +1679,45 @@ namespace tana {
         }
         esp = buildop2(BVOper::bvadd, esp, add_size);
         se->writeReg("esp", esp);
+
+
+        if(this->is_static)
+            return true;
+
+        auto ecx_v = se->readReg("ecx");
+        if(ecx_v->symbol_num() == 0)
+        {
+            auto ecx_c = se->getRegisterConcreteValue("ecx");
+            ecx_v = std::make_shared<BitVector>(ValueType::CONCRETE, ecx_c);
+            se->writeReg("ecx", ecx_v);
+        }
+
+        auto edx_v = se->readReg("edx");
+        if(edx_v->symbol_num() == 0)
+        {
+            auto edx_c = se->getRegisterConcreteValue("edx");
+            edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
+            se->writeReg("edx", edx_v);
+        }
+
+        auto esi_v = se->readReg("esi");
+        if(esi_v->symbol_num() == 0)
+        {
+            auto esi_c = se->getRegisterConcreteValue("esi");
+            esi_v = std::make_shared<BitVector>(ValueType::CONCRETE, esi_c);
+            se->writeReg("esi", esi_v);
+        }
+
+        auto edi_v = se->readReg("edi");
+        if(edi_v->symbol_num() == 0)
+        {
+            auto edi_c = se->getRegisterConcreteValue("edi");
+            edi_v = std::make_shared<BitVector>(ValueType::CONCRETE, edi_c);
+            se->writeReg("edi", edi_v);
+        }
+
         return true;
+
     }
 
     bool INST_X86_INS_LEAVE::symbolic_execution(SEEngine *se) {

@@ -625,16 +625,24 @@ namespace tana {
             next_eip = inst->get();
 
             eip = it->addrn;
-            mem_data = it->read_mem_data();
 
-            checkMemoryAccess(it);
+            if(!it->is_function) {
+                mem_data = it->read_mem_data();
 
+                checkMemoryAccess(it);
+            }
 
             if(func != nullptr) {
                 //std::string function_name = func->getFunName(current_eip->addrn);
                 //stacks->fast_call_stack(function_name);
                 updateStacks(current_eip);
             }
+
+            if(it->id == 285)
+            {
+                std::cout << "Debug" << std::endl;
+            }
+
             bool status = it->symbolic_execution(this);
 
             std::vector<std::shared_ptr<BitVector>> sym_res;
@@ -650,7 +658,7 @@ namespace tana {
             sym_res.push_back(m_ctx["ebp"]);
             std::vector<uint32_t> con_res;
 
-            if(it->is_function)
+            if((inst->get())->is_function || it->is_function)
             {
                 continue;
             }
