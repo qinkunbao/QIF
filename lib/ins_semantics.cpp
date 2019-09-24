@@ -157,7 +157,7 @@ namespace tana {
                                                           const std::shared_ptr<Function> &func, \
                                                           uint32_t addr) {
 
-        
+
         if(x86::isSSE(id))
         {
             return std::make_unique<INST_X86_INS_SSE>(isStatic);

@@ -22,15 +22,15 @@ namespace tana {
     std::shared_ptr<Operand> createOperand(const std::string &s, uint32_t addr);
 
     std::shared_ptr<Operand> createAddrOperandStatic(const std::string &s) {
-        std::regex addr1("0x[[:xdigit:]]+");
-        std::regex addr2("eax|ebx|ecx|edx|esi|edi|esp|ebp");
-        std::regex addr3("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
+        static std::regex addr1("0x[[:xdigit:]]+");
+        static std::regex addr2("eax|ebx|ecx|edx|esi|edi|esp|ebp");
+        static std::regex addr3("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
 
-        std::regex addr4("(eax|ebx|ecx|edx|esi|edi|esp|ebp)(\\+|-)(0x[[:xdigit:]]+)");
-        std::regex addr5("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\+(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
-        std::regex addr6("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])(\\+|-)(0x[[:xdigit:]]+)");
+        static std::regex addr4("(eax|ebx|ecx|edx|esi|edi|esp|ebp)(\\+|-)(0x[[:xdigit:]]+)");
+        static std::regex addr5("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\+(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
+        static std::regex addr6("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])(\\+|-)(0x[[:xdigit:]]+)");
 
-        std::regex addr7(
+        static std::regex addr7(
                 "(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\+(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])(\\+|-)(0x[[:xdigit:]]+)");
 
 
@@ -128,15 +128,15 @@ namespace tana {
 
     std::shared_ptr<Operand> createAddrOperand(const std::string &s) {
         // regular expressions addresses
-        std::regex addr1("0x[[:xdigit:]]+");
-        std::regex addr2("eax|ebx|ecx|edx|esi|edi|esp|ebp");
-        std::regex addr3("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
+        static std::regex addr1("0x[[:xdigit:]]+");
+        static std::regex addr2("eax|ebx|ecx|edx|esi|edi|esp|ebp");
+        static std::regex addr3("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
 
-        std::regex addr4("(eax|ebx|ecx|edx|esi|edi|esp|ebp)(\\+|-)(0x[[:xdigit:]]+)");
-        std::regex addr5("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\+(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
-        std::regex addr6("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])(\\+|-)(0x[[:xdigit:]]+)");
+        static std::regex addr4("(eax|ebx|ecx|edx|esi|edi|esp|ebp)(\\+|-)(0x[[:xdigit:]]+)");
+        static std::regex addr5("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\+(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])");
+        static std::regex addr6("(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])(\\+|-)(0x[[:xdigit:]]+)");
 
-        std::regex addr7(
+        static std::regex addr7(
                 "(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\+(eax|ebx|ecx|edx|esi|edi|esp|ebp)\\*([[:digit:]])(\\+|-)(0x[[:xdigit:]]+)");
 
 
@@ -204,12 +204,12 @@ namespace tana {
 
     std::shared_ptr<Operand> createDataOperand(const std::string &s, uint32_t addr) {
         // Regular expressions for Immvalue and Registers
-        std::regex immvalue("0x[[:xdigit:]]+");
-        std::regex immvalue1("[[:xdigit:]]+");
+        static std::regex immvalue("0x[[:xdigit:]]+");
+        static std::regex immvalue1("[[:xdigit:]]+");
 
-        std::regex reg8("al|ah|bl|bh|cl|ch|dl|dh");
-        std::regex reg16("ax|bx|cx|dx|si|di|bp|cs|ds|es|fs|gs|ss");
-        std::regex reg32("eax|ebx|ecx|edx|esi|edi|esp|ebp|st0|st1|st2|st3|st4|st5");
+        static std::regex reg8("al|ah|bl|bh|cl|ch|dl|dh");
+        static std::regex reg16("ax|bx|cx|dx|si|di|bp|cs|ds|es|fs|gs|ss");
+        static std::regex reg32("eax|ebx|ecx|edx|esi|edi|esp|ebp|st0|st1|st2|st3|st4|st5");
 
         //Operand *opr = new Operand();
         std::shared_ptr<Operand> opr(new Operand());
@@ -249,12 +249,12 @@ namespace tana {
     }
 
     std::shared_ptr<Operand> createOperandStatic(const std::string &s, uint32_t addr) {
-        std::regex ptr("\\[(.*)\\]");
-        std::regex byteptr("byte \\[(.*)\\]");
-        std::regex wordptr("word \\[(.*)\\]");
-        std::regex dwordptr("dword \\[(.*)\\]");
-        std::regex segptr("dword (fs|gs):\\[(.*)\\]");
-        std::smatch m;
+        static std::regex ptr("\\[(.*)\\]");
+        static std::regex byteptr("byte \\[(.*)\\]");
+        static std::regex wordptr("word \\[(.*)\\]");
+        static std::regex dwordptr("dword \\[(.*)\\]");
+        static std::regex segptr("dword (fs|gs):\\[(.*)\\]");
+        static std::smatch m;
 
         std::shared_ptr<Operand> opr;
 
@@ -289,12 +289,12 @@ namespace tana {
 
 
     std::shared_ptr<Operand> createOperand(const std::string &s, uint32_t addr) {
-        std::regex ptr("ptr \\[(.*)\\]");
-        std::regex byteptr("byte ptr \\[(.*)\\]");
-        std::regex wordptr("word ptr \\[(.*)\\]");
-        std::regex dwordptr("dword ptr \\[(.*)\\]");
-        std::regex segptr("dword ptr (fs|gs):\\[(.*)\\]");
-        std::smatch m;
+        static std::regex ptr("ptr \\[(.*)\\]");
+        static std::regex byteptr("byte ptr \\[(.*)\\]");
+        static std::regex wordptr("word ptr \\[(.*)\\]");
+        static std::regex dwordptr("dword ptr \\[(.*)\\]");
+        static std::regex segptr("dword ptr (fs|gs):\\[(.*)\\]");
+        static std::smatch m;
 
         std::shared_ptr<Operand> opr;
 
