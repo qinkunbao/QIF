@@ -11,6 +11,7 @@
 
 #include "ins_parser.hpp"
 #include "ins_types.hpp"
+#include "LibcModel.hpp"
 
 namespace tana {
 
@@ -461,7 +462,17 @@ namespace tana {
                 }
             }
 
-            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(line, false, fun);
+            std::unique_ptr<Inst_Base> ins = nullptr;
+
+            if(line.find("libc") != std::string::npos){
+                std::string line2;
+                getline(trace_file, line2);
+                ins = LibC_Factory::makeInst(line + "; " + line2);
+            }
+
+            else {
+                ins = Inst_Dyn_Factory::makeInst(line, false, fun);
+            }
 
             ins->id = ins_index;
 

@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <memory>
 #include "LibcModel.hpp"
 #include "BitVector.hpp"
 #include "ins_types.hpp"
@@ -22,10 +23,6 @@ namespace libc {
 
     LibcID stringToLibcID(const string &libc)
     {
-        if(libc.rfind("libc") == string::npos)
-        {
-            return LibcID ::Invalid;
-        }
 
         if(libc.rfind("calloc") != string::npos)
         {
@@ -62,12 +59,72 @@ namespace libc {
         return sstream.str();
     }
 
+    vector<string> split(string str, string token){
+        vector<string>result;
+        while(str.size()){
+            int index = str.find(token);
+            if(index!=string::npos){
+                result.push_back(str.substr(0,index));
+                str = str.substr(index+token.size());
+                if(str.size()==0)result.push_back(str);
+            }else{
+                result.push_back(str);
+                str = "";
+            }
+        }
+        return result;
+    }
+
 }
 
 
 unique_ptr<Inst_Base> LibC_Factory::makeInst(const std::string &line)
 {
     istringstream strbuf(line);
+    vector<string> result = libc::split(line, ";");
+    LibcID libc_id = libc::stringToLibcID(result[1]);
+    switch (libc_id)
+    {
+        case LibcID::X86_Calloc: {
+            uint32_t num = std::stoul(result[2], nullptr, 16);
+            uint32_t size = std::stoul(result[3], nullptr, 16);
+            uint32_t ret = std::stoul(result[6], nullptr, 16);
+
+            return std::make_unique<LIBC_X86_Calloc>(num, size, ret);
+
+        }
+        case LibcID::X86_Malloc: {
+            break;
+        }
+        case LibcID::X86_Memcpy: {
+            uint32_t destination = std::stoul(result[2], nullptr, 16);
+            uint32_t source = std::stoul(result[3], nullptr, 16);
+            uint32_t num = std::stoul(result[4], nullptr, 16);
+            uint32_t ret = std::stoul(result[7], nullptr, 16);
+
+            return std::make_unique<LIBC_X86_Memcpy>(destination, source, num, ret);
+        }
+        case LibcID::X86_Mempcpy: {
+            uint32_t destination = std::stoul(result[2], nullptr, 16);
+            uint32_t source = std::stoul(result[3], nullptr, 16);
+            uint32_t num = std::stoul(result[4], nullptr, 16);
+            uint32_t ret = std::stoul(result[7], nullptr, 16);
+
+            return std::make_unique<LIBC_X86_Mempcpy>(destination, source, num, ret);
+        }
+        case LibcID::X86_Memset: {
+            uint32_t ptr = std::stoul(result[2], nullptr, 16);
+            uint32_t value = std::stoul(result[3], nullptr, 16);
+            uint32_t num = std::stoul(result[4], nullptr, 16);
+            uint32_t ret = std::stoul(result[7], nullptr, 16);
+
+            return std::make_unique<LIBC_X86_Memset>(ptr, value, num, ret);
+        }
+        case LibcID::Invalid: {
+            break;
+        }
+
+    }
     return nullptr;
 }
 
