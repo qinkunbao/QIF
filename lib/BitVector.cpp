@@ -11,6 +11,7 @@
 #include <set>
 #include <queue>
 #include <cstdint>
+#include <climits>
 #include "BitVector.hpp"
 
 
