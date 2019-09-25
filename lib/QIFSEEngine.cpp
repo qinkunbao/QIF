@@ -909,7 +909,7 @@ namespace tana {
 
         // LEA, the only instruction that performs m_memory addressing
         // calculations but doesn't actually address m_memory.
-        if(inst->instruction_id == x86::X86_INS_LEA)
+        if(inst->instruction_id == x86::X86_INS_LEA || inst->instruction_id == x86::X86_INS_NOP)
         {
             return;
         }

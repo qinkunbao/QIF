@@ -2619,7 +2619,7 @@ namespace tana {
 
     bool INST_X86_INS_MUL::symbolic_execution(tana::SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
-        assert(op0->type == Operand::Reg);
+        assert(op0->type == Operand::Reg || op0->type == Operand::Mem);
 
         if (op0->bit == 32) {
             auto eax_v = se->readReg("eax");
@@ -2923,8 +2923,9 @@ namespace tana {
         }
 
         auto con_v = std::make_shared<BitVector>(ValueType::CONCRETE, con);
-
         auto op0 = this->oprd[0];
+        con_v->high_bit = op0->bit;
+
         if(op0->type == Operand::Mem)
         {
             se->writeMem(this->get_memory_address(), op0->bit, con_v);
