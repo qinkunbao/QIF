@@ -117,6 +117,20 @@ namespace tana {
 
         static uint32_t bsf(uint32_t op);
 
+        static uint32_t bvimul32_l(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvimul32_h(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvimul16_l(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvimul16_h(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvimul8_l(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvimul8_h(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvmul32(uint32_t op1, uint32_t op2);
+
         static bool bit(uint32_t op0, uint32_t op1);
 
         bool isSymbol() const;

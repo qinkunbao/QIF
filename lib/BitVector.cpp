@@ -8,9 +8,9 @@
 #include <sstream>
 #include <bitset>
 #include <string>
-#include <climits>
 #include <set>
 #include <queue>
+#include <cstdint>
 #include "BitVector.hpp"
 
 
@@ -296,6 +296,19 @@ namespace tana {
 
         return 0;
     }
+
+    uint32_t BitVector::bvimul32_l(uint32_t op1, uint32_t op2)
+    {
+       //TODO
+        return 0;
+    }
+
+    uint32_t BitVector::bvimul32_h(uint32_t op1, uint32_t op2)
+    {
+        //TODO
+        return 0;
+    }
+
 
     uint32_t BitVector::concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size) {
         std::bitset<REGISTER_SIZE> bit1(op1);

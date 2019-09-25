@@ -638,11 +638,6 @@ namespace tana {
                 updateStacks(current_eip);
             }
 
-            if(it->id == 285)
-            {
-                std::cout << "Debug" << std::endl;
-            }
-
             bool status = it->symbolic_execution(this);
 
             std::vector<std::shared_ptr<BitVector>> sym_res;

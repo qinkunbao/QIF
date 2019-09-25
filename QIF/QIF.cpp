@@ -187,7 +187,7 @@ int main(int argc, char *argv[]) {
     auto constraints = se->getConstraints();
 
     std::cout << "Start Monte Carlo:" << std::endl;
-    std::cout << "Total Leaked Bits = " << getEntropy(key_value, MonteCarloTimes, constraints, fileName, func,
+    std::cout << getEntropy(key_value, MonteCarloTimes, constraints, fileName, func,
                                                       key_value_map, t2e)
               << std::endl;
 
