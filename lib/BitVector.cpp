@@ -102,7 +102,18 @@ namespace tana {
 
             case BVOper::bvbsf:
                 return os << "bsf";
+
+            case BVOper::bvmul32_h:
+                return os << "bvmul32_h";
+
+            case BVOper::bvmul32_l:
+                return os << "bvmul32_l";
+
+            case BVOper::bvmul16_8:
+                return os << "bvmul16_8";
+
                 //omit default case to triger compiler warning for missing cases
+
         };
 
         return os << static_cast<uint32_t>(bvop);
@@ -308,6 +319,28 @@ namespace tana {
     {
         //TODO
         return 0;
+    }
+
+    uint32_t BitVector::bvmul32_l(uint32_t op1, uint32_t op2)
+    {
+        uint64_t t_op1 = op1;
+        uint64_t t_op2 = op2;
+        uint64_t res = t_op1 * t_op2;
+        return static_cast<uint32_t>(res);
+    }
+
+    uint32_t BitVector::bvmul32_h(uint32_t op1, uint32_t op2)
+    {
+        uint64_t t_op1 = op1;
+        uint64_t t_op2 = op2;
+        uint64_t res = t_op1 * t_op2;
+        uint64_t res_h = res >> 32u;
+        return static_cast<uint32_t>(res_h);
+    }
+
+    uint32_t BitVector::bvmul16_8(uint32_t op1, uint32_t op2)
+    {
+        return op1*op2;
     }
 
 

@@ -2617,46 +2617,83 @@ namespace tana {
         return true;
     }
 
+
+    // ref: https://c9x.me/x86/html/file_module_x86_id_210.html
     bool INST_X86_INS_MUL::symbolic_execution(tana::SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         assert(op0->type == Operand::Reg || op0->type == Operand::Mem);
 
         if (op0->bit == 32) {
-            auto eax_v = se->readReg("eax");
-            std::shared_ptr<BitVector> src_v;
+            std::shared_ptr<BitVector> eax_v, edx_v, src_v;
+
+            eax_v = se->readReg("eax");
             if (op0->type == Operand::Reg) {
                 src_v = se->readReg(op0->field[0]);
             }
-            if (op0->type == Operand::Mem) {
-                src_v = std::make_shared<BitVector>(ValueType::CONCRETE, op0->field[0]);
+
+
+            if(op0->type == Operand::Mem) {
+                src_v = se->readMem(this->get_memory_address(), op0->bit);
             }
 
             if(eax_v->symbol_num() == 0 && src_v->symbol_num() == 0 && (!this->is_static))
             {
                 uint32_t eax_c = se->getRegisterConcreteValue("eax");
                 uint32_t edx_c = se->getRegisterConcreteValue("edx");
-                auto eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax_c);
-                auto edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
+                eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax_c);
+                edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
 
                 se->writeReg("edx", edx_v);
                 se->writeReg("eax", eax_v);
                 return true;
             }
 
-            auto result = buildop2(BVOper::bvimul, eax_v, src_v);
-            auto high = se->Extract(result, 33, 64);
-            auto low = se->Extract(result, 1, 32);
-
-
-            /*
-            auto eax_value = se->eval(eax_v);
-            auto srv_value = se->eval(src_v);
-            auto high_value = se->eval(high);
-            auto low_value = se->eval(low);
-             */
+            auto high = buildop2(BVOper::bvmul32_h, eax_v, src_v);
+            auto low = buildop2(BVOper::bvmul32_l, eax_v, src_v);
 
             se->writeReg("edx", high);
             se->writeReg("eax", low);
+            return true;
+
+        }
+
+        if (op0->bit == 16){
+            std::shared_ptr<BitVector> ax_v, dx_v, src_v;
+            ax_v = se->readReg("ax");
+
+            if(op0->type == Operand::Reg){
+                src_v = se->readReg(op0->field[0]);
+            }
+
+            if(op0->type == Operand::Mem) {
+                src_v = se->readMem(this->get_memory_address(), op0->bit);
+            }
+
+            auto res = buildop2(BVOper::bvmul16_8, ax_v, src_v);
+            res->high_bit = 32;
+            auto high = se->Extract(res, 17, 32);
+            auto low = se->Extract(res, 1, 16);
+
+            se->writeReg("dx", high);
+            se->writeReg("ax", low);
+            return true;
+        }
+
+        if (op0->bit == 8){
+            std::shared_ptr<BitVector> ax_v, al_v, src_v;
+            al_v = se->readReg("al");
+            if(op0->type == Operand::Reg){
+                src_v = se->readReg(op0->field[0]);
+            }
+
+            if(op0->type == Operand::Mem) {
+                src_v = se->readMem(this->get_memory_address(), op0->bit);
+            }
+
+            auto res = buildop2(BVOper::bvmul16_8, ax_v, src_v);
+            res->high_bit = 16;
+
+            se->writeReg("ax", res);
             return true;
 
         }

@@ -52,7 +52,10 @@ namespace tana {
         bvextract,
         bvconcat,
         bvsignext,
-        bvbitnot
+        bvbitnot,
+        bvmul32_h,
+        bvmul32_l,
+        bvmul16_8
     };
 
     class BitVector {
@@ -129,7 +132,11 @@ namespace tana {
 
         static uint32_t bvimul8_h(uint32_t op1, uint32_t op2);
 
-        static uint32_t bvmul32(uint32_t op1, uint32_t op2);
+        static uint32_t bvmul32_h(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvmul32_l(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvmul16_8(uint32_t op1, uint32_t op2);
 
         static bool bit(uint32_t op0, uint32_t op1);
 

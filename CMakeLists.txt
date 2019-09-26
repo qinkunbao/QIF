@@ -110,6 +110,9 @@ add_executable(TestDebugInfo
 add_executable(TestDebugInfoStr
         test/test_debuginfo_str.cpp)
 
+add_executable(TestBvMul
+        test/test_bvmul.cpp)
+
 add_executable(BitTaint
         BitTaint/BitTaint.cpp
         BitTaint/BitTaint.hpp
@@ -148,5 +151,9 @@ target_link_libraries(TestDebugInfo TraceLib)
 target_link_libraries(TestDebugInfoStr TraceLib)
 target_link_libraries(TestCMD TraceLib)
 target_link_libraries(TestELFSym TraceLib)
+target_link_libraries(TestBit TraceLib)
+target_link_libraries(TestBvMul TraceLib)
+
+
 
 
