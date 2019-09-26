@@ -309,6 +309,17 @@ namespace tana {
         return 0;
     }
 
+    uint32_t BitVector::bvimul(uint32_t op1, uint32_t op2)
+    {
+        int32_t t_op1, t_op2, res;
+        t_op1 = static_cast<int32_t >(op1);
+        t_op2 = static_cast<int32_t >(op2);
+
+        res = (t_op1 * t_op2);
+
+        return static_cast<uint32_t >(res);
+    }
+
     uint32_t BitVector::bvimul32_l(uint32_t op1, uint32_t op2)
     {
        //TODO

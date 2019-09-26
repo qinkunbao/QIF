@@ -292,7 +292,7 @@ namespace tana {
                 case BVOper::bvsub:
                     return op0 - op1;
                 case BVOper::bvimul:
-                    return op0 * op1;
+                    return BitVector::bvimul(op0, op1);
                 case BVOper::bvshld:
                     return BitVector::shld32(op0, op1, op2);
                 case BVOper::bvshrd:

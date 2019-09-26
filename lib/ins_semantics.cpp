@@ -1209,7 +1209,19 @@ namespace tana {
         }
 
         if (this->get_operand_number() == 2) {
-            //TODO
+            assert(op0->type == Operand::Reg);
+            v1 = se->readReg(op0->field[0]);
+            if(op1->type == Operand::Reg)
+            {
+                v2 = se->readReg(op1->field[0]);
+            }
+            else
+            {
+                v2 = se->readMem(this->get_memory_address(), op1->bit);
+            }
+
+            res = buildop2(BVOper::bvimul, v1, v2);
+            se->writeReg(op0->field[0], res);
             return true;
         }
 
