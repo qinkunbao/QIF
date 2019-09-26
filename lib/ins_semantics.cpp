@@ -961,7 +961,7 @@ namespace tana {
                 }
                 uint32_t temp_concrete = stoul(op1->field[2], nullptr, 16);
                 f2 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-                res = buildop2(BVOper::bvimul, f1, f2);
+                res = buildop2(BVOper::bvmul, f1, f2);
                 res = buildop2(BVOper::bvadd, f0, res);
                 se->writeReg(op0->field[0], res);
                 return true;
@@ -985,7 +985,7 @@ namespace tana {
                 if (op1->field[2] == "1") {
                     res = buildop2(BVOper::bvadd, f0, f1);
                 } else {
-                    res = buildop2(BVOper::bvimul, f1, f2);
+                    res = buildop2(BVOper::bvmul, f1, f2);
                     res = buildop2(BVOper::bvadd, f0, res);
                 }
                 if (sign == "+")
@@ -1028,7 +1028,7 @@ namespace tana {
                 if (op1->field[1] == "1") {
                     res = f0;
                 } else {
-                    res = buildop2(BVOper::bvimul, f0, f1);
+                    res = buildop2(BVOper::bvmul, f0, f1);
                 }
                 if (sign == "+")
                     res = buildop2(BVOper::bvadd, res, f2);
@@ -1044,7 +1044,7 @@ namespace tana {
 
                 uint32_t temp_concrete = stoul(op1->field[1], nullptr, 16);
                 f1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-                res = buildop2(BVOper::bvimul, f0, f1);
+                res = buildop2(BVOper::bvmul, f0, f1);
                 //m_ctx[getRegName(op0->field[0])] = res;
                 se->writeReg(op0->field[0], res);
                 return true;
@@ -2669,7 +2669,7 @@ namespace tana {
                 src_v = se->readMem(this->get_memory_address(), op0->bit);
             }
 
-            auto res = buildop2(BVOper::bvmul16_8, ax_v, src_v);
+            auto res = buildop2(BVOper::bvmul, ax_v, src_v);
             res->high_bit = 32;
             auto high = se->Extract(res, 17, 32);
             auto low = se->Extract(res, 1, 16);
@@ -2690,7 +2690,7 @@ namespace tana {
                 src_v = se->readMem(this->get_memory_address(), op0->bit);
             }
 
-            auto res = buildop2(BVOper::bvmul16_8, ax_v, src_v);
+            auto res = buildop2(BVOper::bvmul, ax_v, src_v);
             res->high_bit = 16;
 
             se->writeReg("ax", res);

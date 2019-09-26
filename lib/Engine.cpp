@@ -356,7 +356,7 @@ namespace tana {
                 case BVOper::bvmul32_l:
                     return BitVector::bvmul32_l(op1, op2);
 
-                case BVOper::bvmul16_8:
+                case BVOper::bvmul:
                     return BitVector::bvmul16_8(op1, op2);
 
             }

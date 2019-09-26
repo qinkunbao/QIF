@@ -109,8 +109,8 @@ namespace tana {
             case BVOper::bvmul32_l:
                 return os << "bvmul32_l";
 
-            case BVOper::bvmul16_8:
-                return os << "bvmul16_8";
+            case BVOper::bvmul:
+                return os << "bvmul";
 
                 //omit default case to triger compiler warning for missing cases
 

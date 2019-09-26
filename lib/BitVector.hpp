@@ -55,7 +55,7 @@ namespace tana {
         bvbitnot,
         bvmul32_h,
         bvmul32_l,
-        bvmul16_8
+        bvmul
     };
 
     class BitVector {

@@ -1046,7 +1046,7 @@ namespace tana {
                 }
 
                 uint32_t temp_concrete = stoul(opr->field[1], nullptr, 16);
-                auto res = buildop2(BVOper::bvimul, regV, temp_concrete);
+                auto res = buildop2(BVOper::bvmul, regV, temp_concrete);
                 this->getMemoryAccessConstrain(res, inst->get_memory_address());
 
                 return;
@@ -1083,7 +1083,7 @@ namespace tana {
                 }
 
                 uint32_t temp_concrete = stoul(opr->field[2], nullptr, 16);
-                auto res1 = buildop2(BVOper::bvimul, regV2, temp_concrete);
+                auto res1 = buildop2(BVOper::bvmul, regV2, temp_concrete);
                 auto res = buildop2(BVOper::bvadd, regV1, res1);
                 this->getMemoryAccessConstrain(res, inst->get_memory_address());
 
@@ -1106,7 +1106,7 @@ namespace tana {
                 uint32_t temp_concrete1 = stoul(opr->field[1], nullptr, 16);
                 auto symbol = opr->field[2];
 
-                auto res1 = buildop2(BVOper::bvimul, regV, temp_concrete1);
+                auto res1 = buildop2(BVOper::bvmul, regV, temp_concrete1);
 
                 auto bvopr = symbol == "+" ? BVOper::bvadd : BVOper::bvsub;
                 auto res = buildop2(bvopr, res1, temp_concrete2);
@@ -1131,7 +1131,7 @@ namespace tana {
                 uint32_t imm_value = stoul(opr->field[4], nullptr, 16);
                 auto symbol = opr->field[3];
 
-                auto res1 = buildop2(BVOper::bvimul, regV2, mul_value);
+                auto res1 = buildop2(BVOper::bvmul, regV2, mul_value);
                 auto res2 = buildop2(BVOper::bvadd, regV1, res1);
                 auto bvopr = symbol == "+" ? BVOper::bvadd : BVOper::bvsub;
                 auto res = buildop2(bvopr, res2, imm_value);
