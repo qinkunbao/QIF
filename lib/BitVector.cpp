@@ -375,26 +375,51 @@ namespace tana {
 
     uint32_t BitVector::bvimul16_l(uint32_t op1, uint32_t op2)
     {
-        //TODO
-        return 0;
+        int32_t t_op1, t_op2;
+        t_op1 = static_cast<int32_t >(op1);
+        t_op2 = static_cast<int32_t >(op2);
+        int32_t res;
+        res = t_op1 * t_op2;
+
+        auto l_res = static_cast<int16_t >(res);
+        return l_res;
     }
 
     uint32_t BitVector::bvimul16_h(uint32_t op1, uint32_t op2)
     {
-        //TODO
-        return 0;
+        int32_t t_op1, t_op2;
+        t_op1 = static_cast<int32_t >(op1);
+        t_op2 = static_cast<int32_t >(op2);
+        int32_t res;
+        res = t_op1 * t_op2;
+
+        auto l_res = static_cast<int16_t >(res >> 16u);
+        return l_res;
     }
 
     uint32_t BitVector::bvimul8_l(uint32_t op1, uint32_t op2)
     {
-        //TODO
-        return 0;
+        int32_t t_op1, t_op2;
+        t_op1 = static_cast<int32_t >(op1);
+        t_op2 = static_cast<int32_t >(op2);
+        int32_t res;
+        res = t_op1 * t_op2;
+
+        auto l_res = static_cast<int8_t >(res);
+        return l_res;
     }
 
     uint32_t BitVector::bvimul8_h(uint32_t op1, uint32_t op2)
     {
-        //TODO
-        return 0;
+        int32_t t_op1, t_op2;
+        t_op1 = static_cast<int32_t >(op1);
+        t_op2 = static_cast<int32_t >(op2);
+        int32_t res;
+        res = t_op1 * t_op2;
+
+        auto l_res = static_cast<int8_t >(res >> 8u);
+        return l_res;
+
     }
 
 
