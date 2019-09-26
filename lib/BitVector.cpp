@@ -112,6 +112,24 @@ namespace tana {
             case BVOper::bvmul:
                 return os << "bvmul";
 
+            case BVOper::bvimul32_h:
+                return os << "bvimul32_h";
+
+            case BVOper::bvimul32_l:
+                return os << "bvimul32_l";
+
+            case BVOper::bvimul16_h:
+                return os << "bvimul16_h";
+
+            case BVOper::bvimul16_l:
+                return os << "bvimul16_l";
+
+            case BVOper::bvimul8_h:
+                return os << "bvimul8_h";
+
+            case BVOper::bvimul8_l:
+                return os << "bvimul8_l";
+
                 //omit default case to triger compiler warning for missing cases
 
         };
@@ -311,7 +329,8 @@ namespace tana {
 
     uint32_t BitVector::bvimul(uint32_t op1, uint32_t op2)
     {
-        int32_t t_op1, t_op2, res;
+        int32_t t_op1, t_op2;
+        int64_t res;
         t_op1 = static_cast<int32_t >(op1);
         t_op2 = static_cast<int32_t >(op2);
 
@@ -322,15 +341,62 @@ namespace tana {
 
     uint32_t BitVector::bvimul32_l(uint32_t op1, uint32_t op2)
     {
-       //TODO
-        return 0;
+        int32_t t_op1, t_op2;
+        t_op1 = static_cast<int32_t >(op1);
+        t_op2 = static_cast<int32_t >(op2);
+
+        int64_t w_op1, w_op2, w_res;
+        w_op1 = t_op1;
+        w_op2 = t_op2;
+        w_res = w_op1 * w_op2;
+
+        auto u_res = static_cast<uint64_t >(w_res);
+
+        return static_cast<uint32_t >(u_res);
     }
 
     uint32_t BitVector::bvimul32_h(uint32_t op1, uint32_t op2)
     {
+
+        int32_t t_op1, t_op2;
+        t_op1 = static_cast<int32_t >(op1);
+        t_op2 = static_cast<int32_t >(op2);
+
+        int64_t w_op1, w_op2, w_res;
+        w_op1 = t_op1;
+        w_op2 = t_op2;
+        w_res = w_op1 * w_op2;
+
+        auto u_res = static_cast<uint64_t >(w_res);
+        u_res = u_res >> 32u;
+
+        return static_cast<uint32_t >(u_res);
+    }
+
+    uint32_t BitVector::bvimul16_l(uint32_t op1, uint32_t op2)
+    {
         //TODO
         return 0;
     }
+
+    uint32_t BitVector::bvimul16_h(uint32_t op1, uint32_t op2)
+    {
+        //TODO
+        return 0;
+    }
+
+    uint32_t BitVector::bvimul8_l(uint32_t op1, uint32_t op2)
+    {
+        //TODO
+        return 0;
+    }
+
+    uint32_t BitVector::bvimul8_h(uint32_t op1, uint32_t op2)
+    {
+        //TODO
+        return 0;
+    }
+
 
     uint32_t BitVector::bvmul32_l(uint32_t op1, uint32_t op2)
     {
