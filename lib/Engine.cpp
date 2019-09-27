@@ -23,11 +23,7 @@ namespace tana {
         }
         std::vector<uint32_t> common = {0xff, 0xfff, 0xffff, 0xfffff, 0xffffff, 0xffffffff, 0xff00, 0xffff0000};
         auto find_result = std::find(common.begin(), common.end(), num);
-        if (find_result != common.end()) {
-            return false;
-        }
-
-        return true;
+        return !(find_result != common.end());
 
     }
 
@@ -196,7 +192,7 @@ namespace tana {
                 }
                 if (*values[i] == *values[j]) {
                     //std::cout << "i = " << i << "j = " << j << std::endl;
-                    if (redundancy_table[i] == false) {
+                    if (!redundancy_table[i]) {
                         redundancy_table[j] = true;
                     }
                 }
@@ -205,7 +201,7 @@ namespace tana {
 
 
         for (uint32_t i = 0; i < values_size; ++i) {
-            if (redundancy_table[i] == false) {
+            if (!redundancy_table[i]) {
                 ++values_size_after_reduction;
             }
         }
@@ -213,7 +209,7 @@ namespace tana {
         std::vector<std::shared_ptr<BitVector> > values_reduced(values_size_after_reduction);
         uint32_t index = 0;
         for (uint32_t i = 0; i < values_size; ++i) {
-            if (redundancy_table[i] == false) {
+            if (!redundancy_table[i]) {
                 values_reduced[index] = values[i];
                 ++index;
             }
@@ -351,13 +347,31 @@ namespace tana {
                     return BitVector::bsf(op0);
 
                 case BVOper::bvmul32_h:
-                    return BitVector::bvmul32_h(op1, op2);
+                    return BitVector::bvmul32_h(op0, op1);
 
                 case BVOper::bvmul32_l:
-                    return BitVector::bvmul32_l(op1, op2);
+                    return BitVector::bvmul32_l(op0, op1);
 
                 case BVOper::bvmul:
-                    return BitVector::bvmul16_8(op1, op2);
+                    return BitVector::bvmul16_8(op0, op1);
+
+                case BVOper::bvimul32_l:
+                    return BitVector::bvimul32_l(op0, op1);
+
+                case BVOper::bvimul32_h:
+                    return BitVector::bvimul32_h(op0, op1);
+
+                case BVOper::bvimul16_l:
+                    return BitVector::bvimul16_l(op0, op1);
+
+                case BVOper::bvimul16_h:
+                    return BitVector::bvimul16_h(op0, op1);
+
+                case BVOper::bvimul8_l:
+                    return BitVector::bvimul8_l(op0, op1);
+
+                case BVOper::bvimul8_h:
+                    return BitVector::bvimul8_h(op0, op1);
 
             }
 

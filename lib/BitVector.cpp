@@ -12,6 +12,7 @@
 #include <queue>
 #include <cstdint>
 #include <climits>
+#include <utility>
 #include "BitVector.hpp"
 
 
@@ -139,24 +140,24 @@ namespace tana {
 
     Operation::Operation(BVOper opt, std::shared_ptr<BitVector> v1) {
         opty = opt;
-        val[0] = v1;
+        val[0] = std::move(v1);
         val[1] = nullptr;
         val[2] = nullptr;
     }
 
     Operation::Operation(BVOper opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2) {
         opty = opt;
-        val[0] = v1;
-        val[1] = v2;
+        val[0] = std::move(v1);
+        val[1] = std::move(v2);
         val[2] = nullptr;
     }
 
     Operation::Operation(BVOper opt, std::shared_ptr<BitVector> v1, std::shared_ptr<BitVector> v2,
                          std::shared_ptr<BitVector> v3) {
         opty = opt;
-        val[0] = v1;
-        val[1] = v2;
-        val[2] = v3;
+        val[0] = std::move(v1);
+        val[1] = std::move(v2);
+        val[2] = std::move(v3);
     }
 
     int BitVector::idseed = 0;
@@ -392,8 +393,9 @@ namespace tana {
         t_op2 = static_cast<int32_t >(op2);
         int32_t res;
         res = t_op1 * t_op2;
+        uint32_t u_res = static_cast<uint32_t >(res);
+        auto l_res = static_cast<int16_t >(u_res >> 16u);
 
-        auto l_res = static_cast<int16_t >(res >> 16u);
         return l_res;
     }
 
@@ -416,11 +418,14 @@ namespace tana {
         t_op2 = static_cast<int32_t >(op2);
         int32_t res;
         res = t_op1 * t_op2;
+        uint32_t u_res = static_cast<int32_t >(res);
 
-        auto l_res = static_cast<int8_t >(res >> 8u);
+        auto l_res = static_cast<int8_t >(u_res >> 8u);
         return l_res;
 
     }
+
+
 
 
     uint32_t BitVector::bvmul32_l(uint32_t op1, uint32_t op2)

@@ -961,7 +961,7 @@ namespace tana {
                 }
                 uint32_t temp_concrete = stoul(op1->field[2], nullptr, 16);
                 f2 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-                res = buildop2(BVOper::bvmul, f1, f2);
+                res = buildop2(BVOper::bvimul, f1, f2);
                 res = buildop2(BVOper::bvadd, f0, res);
                 se->writeReg(op0->field[0], res);
                 return true;
@@ -985,7 +985,7 @@ namespace tana {
                 if (op1->field[2] == "1") {
                     res = buildop2(BVOper::bvadd, f0, f1);
                 } else {
-                    res = buildop2(BVOper::bvmul, f1, f2);
+                    res = buildop2(BVOper::bvimul, f1, f2);
                     res = buildop2(BVOper::bvadd, f0, res);
                 }
                 if (sign == "+")
@@ -1028,7 +1028,7 @@ namespace tana {
                 if (op1->field[1] == "1") {
                     res = f0;
                 } else {
-                    res = buildop2(BVOper::bvmul, f0, f1);
+                    res = buildop2(BVOper::bvimul, f0, f1);
                 }
                 if (sign == "+")
                     res = buildop2(BVOper::bvadd, res, f2);
@@ -1044,7 +1044,7 @@ namespace tana {
 
                 uint32_t temp_concrete = stoul(op1->field[1], nullptr, 16);
                 f1 = std::make_shared<BitVector>(ValueType::CONCRETE, temp_concrete, se->isImmSym(temp_concrete));
-                res = buildop2(BVOper::bvmul, f0, f1);
+                res = buildop2(BVOper::bvimul, f0, f1);
                 //m_ctx[getRegName(op0->field[0])] = res;
                 se->writeReg(op0->field[0], res);
                 return true;
@@ -1182,10 +1182,8 @@ namespace tana {
             updateOFsub(se, v0, v1, op0->bit);
         }
 
-        if (flags)
-            return true;
+        return flags;
 
-        return false;
     }
 
 
@@ -2635,6 +2633,11 @@ namespace tana {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         assert(op0->type == Operand::Reg || op0->type == Operand::Mem);
 
+        if(this->id == 7064)
+        {
+            std::cout << "debug" << std::endl;
+        }
+
         if (op0->bit == 32) {
             std::shared_ptr<BitVector> eax_v, edx_v, src_v;
 
@@ -2874,7 +2877,6 @@ namespace tana {
     bool INST_X86_INS_CMOVBE::symbolic_execution(tana::SEEngine *se)
     {
         if(this->is_static)
-            return true;
 
         if(this->vcpu.ZF() == 0 && this->vcpu.CF() == 0)
             return true;

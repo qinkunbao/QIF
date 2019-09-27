@@ -445,7 +445,9 @@ namespace tana {
                 }
 
                 std::cout << "\n" << memory_address_str << std::endl;
-                ERROR("Memory Error");
+                if(v_test->symbol_num() != 0) {
+                    ERROR("Memory Error");
+                }
                 m_memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
             }
 
