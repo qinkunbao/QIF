@@ -37,9 +37,9 @@ float getEntropy(std::vector<uint8_t> key_value, \
 
     FastMonteCarlo res(MonteCarloTimes, constrains, key_value, func, key_value_map);
     res.verifyConstrain();
+    res.infoConstrains(fileName);
     res.run();
     res.run_addr_group();
-    res.calculateConstrains(fileName);
     res.print_group_result(fileName, t2e);
     float MonteCarloResult = res.getResult();
 
@@ -54,7 +54,7 @@ std::vector<std::string> split(std::string str, std::string sep) {
     std::vector<std::string> arr;
     current = strtok(cstr, sep.c_str());
     while (current != nullptr) {
-        arr.push_back(current);
+        arr.emplace_back(current);
         current = strtok(nullptr, sep.c_str());
     }
     return arr;
@@ -127,6 +127,7 @@ int main(int argc, char *argv[]) {
 
         const std::string &obj_name = input.getCmdOption("-d");
         t2e = std::make_shared<Trace2ELF>(obj_name, fun_name);
+        cmdStatus = true;
 
     }
     ifstream trace_file(argv[1]);

@@ -29,6 +29,8 @@ namespace tana {
         std::vector<int>
         getAllKeys(const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>> &constrains);
 
+
+
         bool
         constrainSatisfy(
                 const std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType >> &constrains,
@@ -53,6 +55,10 @@ namespace tana {
 
         void testConstrain(const std::shared_ptr<tana::Constrain> &con);
 
+        void testConstrain(const std::shared_ptr<tana::Constrain> &con,
+                           std::vector<std::unique_ptr<std::pair<std::vector<uint8_t>, bool>>> &cons_tests,
+                           std::vector<int> con_vector_int);
+
         std::vector<uint8_t> getRandomVector(unsigned int size);
 
         std::random_device rd;
@@ -67,7 +73,7 @@ namespace tana {
         std::vector<std::tuple<uint32_t , std::shared_ptr<tana::Constrain>, LeakageType>>* \
         internal_find_constrain_group_by_addr(uint32_t addr);
 
-        std::vector<std::tuple<uint32_t, uint64_t, LeakageType> > num_satisfied_group;
+        std::vector<std::tuple<uint32_t, uint64_t, LeakageType, uint64_t >> num_satisfied_group;
 
         void reset_tests();
 
@@ -76,6 +82,10 @@ namespace tana {
         std::shared_ptr<Function> func;
 
         std::map<int, uint32_t> key_value_map;
+
+        std::vector<std::unique_ptr<std::pair<std::vector<uint8_t >, bool>>>
+        generate_random_tests(uint32_t dim, uint64_t size);
+
 
     public:
         FastMonteCarlo(uint64_t sample_num, std::vector<std::tuple<uint32_t,
@@ -101,7 +111,7 @@ namespace tana {
 
         void print_group_result(const std::string &resultFile, std::shared_ptr<Trace2ELF> t2e);
 
-        void calculateConstrains(const std::string &resultFile);
+        void infoConstrains(const std::string &result);
 
     };
 }

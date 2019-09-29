@@ -165,7 +165,6 @@ namespace tana {
                 std::cout << "Failed Constraints: " << "\n";
                 std::cout << std::hex << std::get<0>(*it) << std::dec << " : ";
                 std::cout << *cons << "\n";
-                cons->validate(key_value_map);
                 if(isFunctionInformationAvailable) {
                     std::cout << func->getFunctionAndLibrary(std::get<0>(*it)) << "\n" << std::endl;
                 }
@@ -177,7 +176,7 @@ namespace tana {
         return true;
     }
 
-    void FastMonteCarlo::calculateConstrains(const std::string &result) {
+    void FastMonteCarlo::infoConstrains(const std::string &result) {
         int num_DA = 0, num_CF = 0;
         for (const auto &cons_vector :constrains_group_addr) {
             auto one_cons = cons_vector.front();
@@ -207,9 +206,25 @@ namespace tana {
             if (one_test.second) {
                 auto random_vector_map =
                         MonteCarlo::input2val(one_test.first, input_vector);
+
                 bool flag = con->validate(random_vector_map);
                 one_test.second = flag;
 
+            }
+        }
+    }
+
+    void FastMonteCarlo::testConstrain(const std::shared_ptr<tana::Constrain> &con,
+                                       std::vector<std::unique_ptr<std::pair<std::vector<uint8_t>, bool>>> &cons_tests,
+                                       std::vector<int> input_vector_con){
+
+
+        for (auto &it : cons_tests) {
+            std::pair<std::vector<uint8_t>, bool> &one_test = *it;
+            if (one_test.second) {
+                auto random_vector_map = MonteCarlo::input2val(one_test.first, input_vector_con);
+                bool flag = con->validate(random_vector_map);
+                one_test.second = flag;
             }
         }
     }
@@ -235,26 +250,38 @@ namespace tana {
 
         auto it = constrains_group_addr.begin();
         while (it != constrains_group_addr.end()) {
+
+            std::vector<int> con_input_vector = MonteCarlo::getAllKeys(*it);
             uint64_t num_satisfied_for_group = 0;
-            this->reset_tests();
-            for (const auto &element : (*it)) {
-                auto &cons = std::get<1>(element);
-                this->testConstrain(cons);
-                // std::cout << "finishing one constrain";
-            }
-            for (const auto &test : tests) {
-                if (test->second) {
-                    ++num_satisfied_for_group;
+            uint32_t dim = con_input_vector.size();
+            uint32_t sample_size = 1000;
+            uint32_t test_round = 0;
+            uint32_t min_satisfied_cons = 5;
+
+            while (num_satisfied_for_group < min_satisfied_cons) {
+
+                auto sample_test = generate_random_tests(dim, sample_size);
+                for (const auto &element : (*it)) {
+                    auto &cons = std::get<1>(element);
+                    this->testConstrain(cons, sample_test, con_input_vector);
                 }
+                for (const auto &test : sample_test) {
+                    if (test->second) {
+                        ++num_satisfied_for_group;
+                    }
+                }
+
+                ++test_round;
             }
 
             // It means the constraints are always satisfied
-            if (num_satisfied_for_group == this->num_sample) {
+            if (num_satisfied_for_group == test_round * sample_size) {
                 it = constrains_group_addr.erase(it);
             } else {
                 uint32_t addr = std::get<0>((*it).front());
                 LeakageType type = std::get<2>((*it).front());
-                auto result = std::make_tuple(addr, num_satisfied_for_group, type);
+                uint64_t total_sample_num = test_round*sample_size;
+                auto result = std::make_tuple(addr, num_satisfied_for_group, type, total_sample_num);
                 num_satisfied_group.push_back(result);
                 ++it;
             }
@@ -287,9 +314,9 @@ namespace tana {
                     internal_find_constrain_group_by_addr(addr);
 
             if (constrain_group == nullptr) {
-                std::vector<
-                        std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
+                std::vector<std::tuple<uint32_t, std::shared_ptr<tana::Constrain>, LeakageType>>
                         constrains_group;
+
                 constrains_group.push_back(constrain);
                 constrains_group_addr.push_back(constrains_group);
 
@@ -318,12 +345,13 @@ namespace tana {
     }
 
     void FastMonteCarlo::print_group_result(const std::string &result, std::shared_ptr<Trace2ELF> t2e) {
-        auto sample_num = tests.size();
         std::cout << "Information Leak for each address: \n";
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
             LeakageType type = std::get<2>(it);
+            auto sample_num = std::get<3>(it);
+
             std::string type_str = (type == LeakageType::CFLeakage) ? "CF" : "DA";
             if (num != 0) {
                 float portion =
@@ -363,6 +391,7 @@ namespace tana {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
             LeakageType type = std::get<2>(it);
+            auto sample_num = std::get<3>(it);
             std::string type_str = (type == LeakageType::CFLeakage) ? "CF" : "DA";
             myfile << "------------------------------------------------------------\n";
             if (num != 0) {
@@ -410,6 +439,21 @@ namespace tana {
             myfile << "------------------------------------------------------------\n";
         }
         myfile.close();
+    }
+
+    std::vector<std::unique_ptr<std::pair<std::vector<uint8_t >, bool>>>
+    FastMonteCarlo::generate_random_tests(uint32_t dim, uint64_t sample_size){
+
+        std::vector<std::unique_ptr<std::pair<std::vector<uint8_t >, bool>>> result(sample_size);
+        for(uint64_t i = 0; i < sample_size; ++i)
+        {
+            std::unique_ptr<std::pair<std::vector<uint8_t >, bool>> data =
+                    std::make_unique<std::pair<std::vector<uint8_t >, bool>>(getRandomVector(dim), true);
+            result[i] = std::move(data);
+        }
+
+        return result;
+
     }
 
 } // namespace tana
