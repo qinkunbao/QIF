@@ -272,6 +272,9 @@ namespace tana {
                 }
 
                 ++test_round;
+
+                if(test_round > 20)
+                    break;
             }
 
             uint64_t total_sample_numbers = test_round * sample_size;
@@ -362,7 +365,9 @@ namespace tana {
                 std::cout << "Address: " << std::hex << addr << std::dec
                           << " Leaked:" << leaked_information << " bits"
                           << " Type: " << type_str << " "
-                          << " Num of Satisfied: " << num << std::endl;
+                          << " Num of Satisfied: " << num
+                          << " Total Sampling Numbers: " << sample_num
+                          << std::endl;
                 if(t2e != nullptr)
                 {
                     std::cout << "Source code: " << t2e->locateSym(addr)->pwd << ": "
@@ -403,7 +408,10 @@ namespace tana {
                 myfile << "Address: " << std::hex << addr << std::dec
                        << " Leaked:" << leaked_information << " bits"
                        << " Type: " << type_str << " "
-                       << " Num of Satisfied: " << num << std::endl;
+                       << " Num of Satisfied: " << num
+                       << " Total Sampling Numbers: " << sample_num
+                       << std::endl;
+
                 if(t2e != nullptr)
                 {
                     myfile << "Source code: " << t2e->locateSym(addr)->pwd << ": "
