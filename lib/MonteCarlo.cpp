@@ -274,14 +274,16 @@ namespace tana {
                 ++test_round;
             }
 
+            uint64_t total_sample_numbers = test_round * sample_size;
+
             // It means the constraints are always satisfied
-            if (num_satisfied_for_group == test_round * sample_size) {
+            if (num_satisfied_for_group == total_sample_numbers) {
                 it = constrains_group_addr.erase(it);
             } else {
                 uint32_t addr = std::get<0>((*it).front());
                 LeakageType type = std::get<2>((*it).front());
-                uint64_t total_sample_num = test_round*sample_size;
-                auto result = std::make_tuple(addr, num_satisfied_for_group, type, total_sample_num);
+
+                auto result = std::make_tuple(addr, num_satisfied_for_group, type, total_sample_numbers);
                 num_satisfied_group.push_back(result);
                 ++it;
             }
