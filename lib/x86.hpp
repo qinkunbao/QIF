@@ -3720,9 +3720,9 @@ namespace tana {
                 {X86_INS_ENDBR64,          "endbr64"},
         };
 
-        x86_insn insn_string2id(std::string name);
+        x86_insn insn_string2id(const std::string &name);
 
-        x86_reg reg_string2id(std::string name);
+        x86_reg reg_string2id(const std::string &name);
 
         std::string insn_id2string(x86_insn insn_id);
 

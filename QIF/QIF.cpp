@@ -143,8 +143,6 @@ int main(int argc, char *argv[]) {
 
 
     vector<unique_ptr<Inst_Base>> inst_list;
-    tana_type::T_ADDRESS start_addr = 0;
-    tana_type::T_SIZE m_size = 0;
     vector<uint8_t> key_value;
 
     auto start = high_resolution_clock::now();
@@ -174,7 +172,7 @@ int main(int argc, char *argv[]) {
     ebp = reg.gpr[7];
 
     auto *se = new QIFSEEngine(eax, ebx, ecx, edx, esi, edi, esp, ebp);
-    if (argc == 4) {
+    if (func != nullptr) {
         se->init(inst_list.begin(), inst_list.end(), key_symbol, key_value, func);
     } else {
         se->init(inst_list.begin(), inst_list.end(), key_symbol, key_value);

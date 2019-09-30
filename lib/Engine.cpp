@@ -28,7 +28,7 @@ namespace tana {
     }
 
 
-    SEEngine::SEEngine(bool state_type) : next_eip(nullptr) {
+    SEEngine::SEEngine(bool state_type) : next_eip(nullptr), current_eip(nullptr) {
         imm2sym = state_type;
         eflags = false;
     }

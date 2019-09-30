@@ -430,9 +430,10 @@ namespace tana {
 
             if (con_t != calculate_t) {
 
-                std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex << con << std::dec << "\n";
+                //std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex << con << std::dec << "\n";
                 if (func != nullptr) {
-                    std::cout << "Function name: " << func->getFunName(memory_address) << "\n";
+                    std::cout << "Memory Error: Function name: "
+                              << func->getFunName(memory_address) << "\n";
                 }
 
                 std::cout << "\n" << memory_address_str << std::endl;

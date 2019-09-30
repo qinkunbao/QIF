@@ -32,9 +32,9 @@ namespace tana {
 
         static uint32_t getRegSize(x86::x86_reg name);
 
-        static uint32_t getRegSize(std::string name);
+        static uint32_t getRegSize(const std::string &name);
 
-        static x86::x86_reg convert2RegID(std::string reg_name);
+        static x86::x86_reg convert2RegID(const std::string &reg_name);
 
         static void printTaintedRegs(bool taintedRegisters[GPR_NUM][REGISTER_SIZE]);
 
@@ -42,7 +42,7 @@ namespace tana {
 
         static RegType getRegType(x86::x86_reg reg);
 
-        static RegType getRegType(std::string reg);
+        static RegType getRegType(const std::string &reg);
 
     };
 

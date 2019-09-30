@@ -14,25 +14,25 @@
 
 namespace tana {
     namespace x86 {
-        x86_insn insn_string2id(std::string insn_name) {
+        x86_insn insn_string2id(const std::string &insn_name) {
             x86_insn insn_id = X86_INS_INVALID;
             for (const auto &inst_map : insn_name_maps) {
                 if (inst_map.name == insn_name) {
                     insn_id = inst_map.id;
+                    return insn_id;
                 }
             }
-            if (insn_id == X86_INS_INVALID) {
-                ERROR(insn_name.c_str());
-            }
+            ERROR(insn_name.c_str());
             return insn_id;
 
         }
 
-        x86_reg reg_string2id(std::string reg_name) {
+        x86_reg reg_string2id(const std::string &reg_name) {
             x86_reg reg_id = X86_REG_INVALID;
             for (const auto &reg_map : reg_name_maps) {
                 if (reg_map.name == reg_name) {
                     reg_id = reg_map.id;
+                    return reg_id;
                 }
             }
 
