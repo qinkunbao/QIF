@@ -3303,6 +3303,19 @@ namespace tana {
 
     bool INST_X86_INS_STOSD::symbolic_execution(tana::SEEngine *se)
     {
+
+        auto v_reg = se->readReg(oprd[0]->field[0]);
+        if(v_reg->symbol_num() == 0)
+        {
+            uint32_t reg_concrete = se->getRegisterConcreteValue(oprd[0]->field[0]);
+            auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, reg_concrete);
+            se->writeReg(oprd[0]->field[0], reg_v);
+        }
+        else {
+            v_reg = buildop2(BVOper::bvadd, v_reg, 4);
+            se->writeReg(oprd[0]->field[0], v_reg);
+        }
+
         auto v_eax = se->readReg("eax");
         se->writeMem(this->get_memory_address(), oprd[0]->bit, v_eax);
         return true;
