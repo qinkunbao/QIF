@@ -104,7 +104,7 @@ namespace tana {
             using namespace x86;
             std::set<x86::x86_insn> sse_inst{
                 X86_INS_MOVDQU, X86_INS_MOVD, X86_INS_PSHUFD, X86_INS_PXOR, X86_INS_PTEST, X86_INS_MOVDQA,
-                X86_INS_MOVQ, X86_INS_PMOVMSKB, X86_INS_PCMPEQB
+                X86_INS_MOVQ, X86_INS_PMOVMSKB, X86_INS_PCMPEQB, X86_INS_MOVSD
             };
             const bool found = sse_inst.find(inst) != sse_inst.end();
 
