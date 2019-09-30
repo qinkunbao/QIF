@@ -702,7 +702,12 @@ namespace tana {
                                       << "\n";
 
                             std::cout << "Present: " << *(inst->get())
-                                      << std::endl;
+                                      << "\n";
+
+                            if(func != nullptr)
+                            {
+                                std::cout << "Current Function: " << func->getFunName(it->addrn) << "\n";
+                            }
 
                             ERROR("ERROR");
                         }
