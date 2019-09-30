@@ -164,6 +164,9 @@ namespace tana {
             case x86::x86_insn::X86_INS_STOSD:
                 return std::make_unique<INST_X86_INS_REP_STOSD>(isStatic);
 
+            case x86::x86_insn::X86_INS_NOP:
+                return std::make_unique<INST_X86_INS_NOP>(isStatic);
+
             default: {
                 if(fun != nullptr)
                 {
