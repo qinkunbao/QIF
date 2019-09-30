@@ -684,7 +684,7 @@ namespace tana {
 
                     if (res != con_res[j]) {
 
-                        if(it->instruction_id != x86::X86_INS_JMP || !(x86::isSSE(it->instruction_id))) {
+                        if(it->instruction_id != x86::X86_INS_JMP && !(x86::isSSE(it->instruction_id))) {
                             std::cout << "\n"
                                       << "Error: " << std::hex << it->addrn
                                       << "\n";
