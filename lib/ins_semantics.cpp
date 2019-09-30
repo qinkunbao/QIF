@@ -155,6 +155,11 @@ namespace tana {
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeRepInst(tana::x86::x86_insn id, bool isStatic,
                                                              const std::shared_ptr<Function> &fun,
                                                              uint32_t addr){
+        if(x86::isSSE(id))
+        {
+            return std::make_unique<INST_X86_INS_SSE>(isStatic);
+        }
+
         switch (id) {
             case x86::x86_insn::X86_INS_STOSD:
                 return std::make_unique<INST_X86_INS_REP_STOSD>(isStatic);
