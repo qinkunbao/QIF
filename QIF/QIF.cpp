@@ -197,7 +197,7 @@ int main(int argc, char *argv[]) {
     auto duration = duration_cast<microseconds>(stop - start);
 
     cout << "Time taken by QIF: "
-         << duration.count() / 1000000 << " seconds" << endl;
+         << static_cast<double >(duration.count()) / 1000000 << " seconds" << endl;
 
 
     return 0;

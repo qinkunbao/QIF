@@ -561,10 +561,10 @@ namespace tana {
     };
 
 
-    class INST_X86_INS_CMOVNB : public Inst_Base{
+    class INST_X86_INS_CMOVNB : public Inst_Base {
         using Inst_Base::Inst_Base;
 
-        bool symbolic_execution(SEEngine *se) final ;
+        bool symbolic_execution(SEEngine *se) final;
     };
 
     class INST_X86_INS_CDQ : public Inst_Base {
@@ -573,93 +573,93 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_CMOVBE : public Inst_Base{
+    class INST_X86_INS_CMOVBE : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_SYSENTER : public Inst_Base{
-        using Inst_Base::Inst_Base;
-
-        bool symbolic_execution(SEEngine *se) final ;
-    };
-
-    class INST_X86_INS_JECXZ : public Inst_Base{
+    class INST_X86_INS_SYSENTER : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_CMPXCHG : public Inst_Base{
+    class INST_X86_INS_JECXZ : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_SETB : public Inst_Base{
+    class INST_X86_INS_CMPXCHG : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-
-    class INST_X86_INS_JP : public Inst_Base{
+    class INST_X86_INS_SETB : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
 
-    class INST_X86_INS_MOVSW : public Inst_Base{
+    class INST_X86_INS_JP : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_BSWAP : public Inst_Base{
+
+    class INST_X86_INS_MOVSW : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_CMOVNZ : public Inst_Base{
+    class INST_X86_INS_BSWAP : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_CMOVNBE : public Inst_Base{
+    class INST_X86_INS_CMOVNZ : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_SETNBE : public Inst_Base{
+    class INST_X86_INS_CMOVNBE : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_LODSD : public Inst_Base{
+    class INST_X86_INS_SETNBE : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_SETBE : public Inst_Base{
+    class INST_X86_INS_LODSD : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_BSF : public Inst_Base{
+    class INST_X86_INS_SETBE : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_SSE : public Inst_Base{
+    class INST_X86_INS_BSF : public Inst_Base {
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class INST_X86_INS_SSE : public Inst_Base {
     public:
         static std::map<std::string, int> sse_map;
 
@@ -668,7 +668,7 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
-    class INST_X86_INS_SETLE : public Inst_Base{
+    class INST_X86_INS_SETLE : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;
