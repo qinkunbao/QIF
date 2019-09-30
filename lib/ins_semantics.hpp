@@ -24,6 +24,10 @@ namespace tana {
 
         static std::unique_ptr<Inst_Base> makeInst(const std::string &ins, bool isStatic, \
                                           const std::shared_ptr<Function> &fun);
+
+        static std::unique_ptr<Inst_Base> makeRepInst(x86::x86_insn id, bool isStatic, \
+                                          const std::shared_ptr<Function> &fun, \
+                                          uint32_t addr);
     };
 
     namespace inst_dyn_details {
@@ -477,6 +481,12 @@ namespace tana {
     };
 
     class INST_X86_INS_REP_STOSD : public Inst_Base {
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class INST_X86_INS_STOSD : public Inst_Base {
         using Inst_Base::Inst_Base;
 
         bool symbolic_execution(SEEngine *se) final;

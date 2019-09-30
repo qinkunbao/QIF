@@ -152,6 +152,30 @@ namespace tana {
         return Inst_Dyn_Factory::makeInst(id, isStatic, nullptr, 0);
     }
 
+    std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeRepInst(tana::x86::x86_insn id, bool isStatic,
+                                                             const std::shared_ptr<Function> &fun,
+                                                             uint32_t addr){
+        switch (id) {
+            case x86::x86_insn::X86_INS_STOSD:
+                return std::make_unique<INST_X86_INS_REP_STOSD>(isStatic);
+
+            default: {
+                if(fun != nullptr)
+                {
+                    std::string info = "unrecognized inst: " + fun->getFunName(addr);
+                    WARN(info.c_str());
+                    std::cout << x86::insn_id2string(id) << std::endl;
+                    return std::make_unique<Inst_Base>(isStatic);
+
+                }
+
+                WARN("unrecognized instructions");
+                std::cout << x86::insn_id2string(id) << std::endl;
+                return std::make_unique<Inst_Base>(isStatic);
+            }
+        }
+    }
+
 
     std::unique_ptr<Inst_Base> Inst_Dyn_Factory::makeInst(tana::x86::x86_insn id, bool isStatic,\
                                                           const std::shared_ptr<Function> &func, \
@@ -349,7 +373,7 @@ namespace tana {
                 return std::make_unique<INST_X86_INS_JZ>(isStatic);
 
             case x86::x86_insn::X86_INS_STOSD:
-                return std::make_unique<INST_X86_INS_REP_STOSD>(isStatic);
+                return std::make_unique<INST_X86_INS_STOSD>(isStatic);
 
             case x86::x86_insn::X86_INS_STOSB:
                 return std::make_unique<INST_X86_INS_STOSB>(isStatic);
@@ -475,13 +499,18 @@ namespace tana {
             getline(disasbuf, opcstr, ' ');
             auto ins_id = x86::insn_string2id(opcstr);
 
+            std::unique_ptr<Inst_Base> ins = nullptr;
+
             //Remove prefix
             if (ins_id == x86::X86_INS_REP || ins_id == x86::X86_INS_DATA16) {
                 getline(disasbuf, opcstr, ' ');
                 ins_id = x86::insn_string2id(opcstr);
+                ins = Inst_Dyn_Factory::makeRepInst(ins_id, false, fun, ins_addrn);
             }
 
-            std::unique_ptr<Inst_Base> ins = Inst_Dyn_Factory::makeInst(ins_id, false, fun, ins_addrn);
+            else {
+                ins = Inst_Dyn_Factory::makeInst(ins_id, false, fun, ins_addrn);
+            }
 
             ins->addrn = ins_addrn;
             ins->instruction_id = ins_id;
@@ -3260,6 +3289,14 @@ namespace tana {
 
         auto res = buildop1(BVOper::bvbsf, bv1);
         se->writeReg(op0->field[0], res);
+        return true;
+
+    }
+
+    bool INST_X86_INS_STOSD::symbolic_execution(tana::SEEngine *se)
+    {
+        auto v_eax = se->readReg("eax");
+        se->writeMem(this->get_memory_address(), oprd[0]->bit, v_eax);
         return true;
 
     }
