@@ -468,6 +468,12 @@ namespace tana {
             case x86::x86_insn::X86_INS_SETLE:
                 return std::make_unique<INST_X86_INS_SETLE>(isStatic);
 
+            case x86::x86_insn::X86_INS_RDTSC:
+                return std::make_unique<INST_X86_INS_RDTSC>(isStatic);
+
+            case x86::x86_insn::X86_INS_SETNB:
+                return std::make_unique<INST_X86_INS_SETNB>(isStatic);
+
 
             default: {
                 if(func != nullptr)
@@ -3318,6 +3324,52 @@ namespace tana {
 
         auto v_eax = se->readReg("eax");
         se->writeMem(this->get_memory_address(), oprd[0]->bit, v_eax);
+        return true;
+
+    }
+
+    bool INST_X86_INS_RDTSC::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static) {
+            return true;
+        }
+        uint32_t eax = se->getRegisterConcreteValue("eax");
+        uint32_t edx = se->getRegisterConcreteValue("edx");
+
+        auto eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax);
+        auto edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx);
+
+        se->writeReg("eax", eax_v);
+        se->writeReg("edx", edx_v);
+
+        return true;
+
+    }
+
+    // Sets the byte in the operand to 1 if the Carry Flag is clear
+
+    bool INST_X86_INS_SETNB::symbolic_execution(tana::SEEngine *se)
+    {
+        if(this->is_static) {
+            return true;
+        }
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+
+        auto CF = se->getFlags("CF");
+
+        auto notCF = buildop1(BVOper::bvbitnot, CF);
+
+        if(op0->type == Operand::Reg)
+        {
+            se->writeReg(op0->field[0], notCF);
+        }
+
+        if(op0->type == Operand::Mem)
+        {
+            se->writeMem(this->get_memory_address(), T_BYTE_SIZE, notCF);
+        }
+
         return true;
 
     }
