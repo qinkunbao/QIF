@@ -63,6 +63,12 @@ std::vector<std::string> split(std::string str, std::string sep) {
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
+
+#ifdef NDEBUG
+        cout << "Release Build\n";
+#else
+        cout << "Debug build\n";
+#endif
         cout << "Usage: " << argv[0] << " <traces.txt> " << "<options>" << "\n";
         cout << "Option one:   -t <Monte Carlo Times>\n";
         cout << "Option two:   -t <Monte Carlo Times> -f <Function Name>\n";
