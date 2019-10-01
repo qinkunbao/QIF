@@ -37,9 +37,9 @@ float getEntropy(std::vector<uint8_t> key_value, \
 
     FastMonteCarlo res(MonteCarloTimes, constrains, key_value, func, key_value_map);
     res.verifyConstrain();
-    res.infoConstrains(fileName);
     res.run();
     res.run_addr_group();
+    res.infoConstrains(fileName);
     res.print_group_result(fileName, t2e);
     float MonteCarloResult = res.getResult();
 

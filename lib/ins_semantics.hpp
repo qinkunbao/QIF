@@ -683,7 +683,27 @@ namespace tana {
     class INST_X86_INS_SETNB : public Inst_Base {
         using Inst_Base::Inst_Base;
 
-        bool symbolic_execution(tana::SEEngine *se) final;
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+    class INST_X86_INS_CMOVS : public Inst_Base {
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+
+    class INST_X86_INS_SETNLE : public Inst_Base {
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
+
+    class INST_X86_INS_CMOVLE : public Inst_Base{
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
     };
 
 }
