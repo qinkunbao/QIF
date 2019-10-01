@@ -3415,6 +3415,7 @@ namespace tana {
         //std::cout << "setnb: " << se->debugEval(notCF) << std::endl;
         //std::cout << "ecx before " << std::hex << se->getRegisterConcreteValue("ecx") << std::dec;
 
+        notCF->high_bit = T_BYTE_SIZE;
         if(op0->type == Operand::Reg)
         {
             se->writeReg(op0->field[0], notCF);
