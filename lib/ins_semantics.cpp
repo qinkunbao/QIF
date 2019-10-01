@@ -2546,9 +2546,15 @@ namespace tana {
     bool INST_X86_INS_SETZ::symbolic_execution(tana::SEEngine *se) {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto ZF = se->getFlags("ZF");
+        ZF->high_bit = T_BYTE_SIZE;
         if (op0->type == Operand::Reg) {
             auto v = SEEngine::Extract(ZF, 1, op0->bit);
             se->writeReg(op0->field[0], v);
+            return true;
+        }
+
+        if (op0->type == Operand::Mem) {
+            se->writeMem(this->get_memory_address(), op0->bit, ZF);
             return true;
         }
         return false;
