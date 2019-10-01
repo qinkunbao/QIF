@@ -131,6 +131,12 @@ namespace tana {
             case BVOper::bvimul8_l:
                 return os << "bvimul8_l";
 
+            case BVOper::bvidiv32_quo:
+                return os << "bvidiv32_quo";
+
+            case BVOper::bvidiv32_rem:
+                return os << "bvidiv32_rem";
+
                 //omit default case to triger compiler warning for missing cases
 
         };
@@ -471,8 +477,39 @@ namespace tana {
         auto res_u = static_cast<uint32_t > (res_bit.to_ulong());
         return res_u;
 
+    }
+
+    uint32_t BitVector::bvidiv32_quo(uint32_t edx, uint32_t eax, uint32_t op2)
+    {
+        uint64_t edx_w = edx;
+        uint64_t eax_w = eax;
+
+        uint64_t edx_eax = (edx_w<<REGISTER_SIZE) + eax_w;
+
+        int64_t edx_eax_s = edx_eax;
+        int64_t op = op2;
+
+        int64_t quo = edx_eax_s / op;
+
+        return static_cast<uint32_t >(quo);
+    }
+
+    uint32_t BitVector::bvidiv32_rem(uint32_t edx, uint32_t eax, uint32_t op2)
+    {
+        uint64_t edx_w = edx;
+        uint64_t eax_w = eax;
+
+        uint64_t edx_eax = (edx_w<<REGISTER_SIZE) + eax_w;
+
+        int64_t edx_eax_s = edx_eax;
+        int64_t op = op2;
+
+        int64_t rem = edx_eax_s % op;
+
+        return static_cast<uint32_t >(rem);
 
     }
+
 
     bool BitVector::bit(uint32_t op0, uint32_t op1) {
         std::bitset<REGISTER_SIZE> bit1(op0);

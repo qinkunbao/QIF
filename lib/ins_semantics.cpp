@@ -492,6 +492,9 @@ namespace tana {
             case x86::x86_insn::X86_INS_SETNL:
                 return std::make_unique<INST_X86_INS_SETNL>(isStatic);
 
+            case x86::x86_insn::X86_INS_IDIV:
+                return std::make_unique<INST_X86_INS_IDIV>(isStatic);
+
 
             default: {
                 if(func != nullptr)
@@ -3722,6 +3725,38 @@ namespace tana {
             se->writeMem(this->get_memory_address(), T_BYTE_SIZE, SFequalOF);
         }
 
+        return true;
+    }
+
+    bool INST_X86_INS_IDIV::symbolic_execution(SEEngine *se)
+    {
+
+        if(this->is_static){
+            return true;
+        }
+
+        auto eax_v = se->readReg("eax");
+        auto edx_v = se->readReg("edx");
+
+        std::shared_ptr<BitVector> divisor;
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+
+        if(op0->type == Operand::Reg)
+        {
+            divisor = se->readReg(op0->field[0]);
+        }
+
+        if(op0->type == Operand::Mem)
+        {
+            divisor = se->readMem(this->get_memory_address(), op0->bit);
+        }
+
+        auto quo = buildop3(BVOper::bvidiv32_quo, edx_v, eax_v, divisor);
+        auto rem = buildop3(BVOper::bvidiv32_rem, edx_v, eax_v, divisor);
+
+        se->writeReg("eax", quo);
+        se->writeReg("edx", rem);
         return true;
     }
 

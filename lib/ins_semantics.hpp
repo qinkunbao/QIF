@@ -724,4 +724,10 @@ namespace tana {
         bool symbolic_execution(SEEngine *se) final;
     };
 
+    class INST_X86_INS_IDIV : public Inst_Base {
+        using Inst_Base::Inst_Base;
+
+        bool symbolic_execution(SEEngine *se) final;
+    };
+
 }

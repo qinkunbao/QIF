@@ -373,6 +373,12 @@ namespace tana {
                 case BVOper::bvimul8_h:
                     return BitVector::bvimul8_h(op0, op1);
 
+                case BVOper::bvidiv32_quo:
+                    return BitVector::bvidiv32_quo(op0, op1, op2);
+
+                case BVOper::bvidiv32_rem:
+                    return BitVector::bvidiv32_rem(op0, op1, op2);
+
             }
 
 

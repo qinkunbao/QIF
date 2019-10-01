@@ -61,7 +61,9 @@ namespace tana {
         bvimul16_l,
         bvimul16_h,
         bvimul8_h,
-        bvimul8_l
+        bvimul8_l,
+        bvidiv32_quo,
+        bvidiv32_rem
     };
 
     class BitVector {
@@ -145,6 +147,10 @@ namespace tana {
         static uint32_t bvmul32_l(uint32_t op1, uint32_t op2);
 
         static uint32_t bvmul16_8(uint32_t op1, uint32_t op2);
+
+        static uint32_t bvidiv32_quo(uint32_t edx, uint32_t eax, uint32_t op);
+
+        static uint32_t bvidiv32_rem(uint32_t edx, uint32_t eax, uint32_t op);
 
         static bool bit(uint32_t op0, uint32_t op1);
 

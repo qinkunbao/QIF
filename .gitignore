@@ -16,6 +16,8 @@ cmake-build-release/
 json/
 disassembler/rc4
 disassembler/target/
+cmake-build-relwithdebinfo/
+data/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
