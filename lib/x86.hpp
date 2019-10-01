@@ -672,6 +672,7 @@ namespace tana {
             X86_INS_SETG,
             X86_INS_SETLE,
             X86_INS_SETL,
+            X86_INS_SETNL, //add on
             X86_INS_SETNLE,
             X86_INS_SETNE,
             X86_INS_SETNO,
@@ -2855,6 +2856,7 @@ namespace tana {
                 {X86_INS_SETZ,             "setz"},
                 {X86_INS_SETNZ,            "setnz"},
                 {X86_INS_SFENCE,           "sfence"},
+                {X86_INS_SETNL,            "setnl"},
                 {X86_INS_SETNLE,           "setnle"},
                 {X86_INS_SGDT,             "sgdt"},
                 {X86_INS_SHA1MSG1,         "sha1msg1"},

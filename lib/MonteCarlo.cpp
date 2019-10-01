@@ -232,7 +232,7 @@ namespace tana {
     void FastMonteCarlo::run() {
 
         std::cout << "Start Computing "
-                  << "Constraints by Address: " << constrains_group_addr.size() << std::endl;
+                  << "Constraints"<< std::endl;
         this->reset_tests();
         for (const auto &element : constrains) {
             auto &cons = std::get<1>(element);

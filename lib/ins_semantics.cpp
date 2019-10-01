@@ -489,6 +489,9 @@ namespace tana {
             case x86::x86_insn::X86_INS_CMOVL:
                 return std::make_unique<INST_X86_INS_CMOVL>(isStatic);
 
+            case x86::x86_insn::X86_INS_SETNL:
+                return std::make_unique<INST_X86_INS_SETNL>(isStatic);
+
 
             default: {
                 if(func != nullptr)
@@ -3413,7 +3416,7 @@ namespace tana {
         auto notCF = buildop1(BVOper::bvbitnot, CF);
 
         //std::cout << "setnb: " << se->debugEval(notCF) << std::endl;
-        //std::cout << "ecx before " << std::hex << se->getRegisterConcreteValue("ecx") << std::dec;
+        //std::cout << "ecx before " << std::hex << se->debugEval(se->readReg("ecx")) << std::dec << std::endl;
 
         notCF->high_bit = T_BYTE_SIZE;
         if(op0->type == Operand::Reg)
@@ -3421,7 +3424,7 @@ namespace tana {
             se->writeReg(op0->field[0], notCF);
         }
 
-        //std::cout << "ecx after  " << se->debugEval(se->readReg("ecx")) << std::endl;
+        //std::cout << "ecx after  " << std::hex <<se->debugEval(se->readReg("ecx")) << std::dec << std::endl;
 
 
         if(op0->type == Operand::Mem)
@@ -3690,6 +3693,39 @@ namespace tana {
         ERROR("Error: The first operand in MOV is not Reg or Mem!");
         return false;
     }
+
+    // setnl set the byte if SF=OF
+    bool INST_X86_INS_SETNL::symbolic_execution(SEEngine *se)
+    {
+        if(this->is_static) {
+            return true;
+        }
+
+        std::shared_ptr<Operand> op0 = this->oprd[0];
+
+        auto SF = se->getFlags("SF");
+        auto OF = se->getFlags("OF");
+
+        auto SFequalOF = buildop2(BVOper::equal, SF, OF);
+        SFequalOF->high_bit = T_BYTE_SIZE;
+
+        if(op0->type == Operand::Reg)
+        {
+            se->writeReg(op0->field[0], SFequalOF);
+        }
+
+        //std::cout << "ecx after  " << std::hex <<se->debugEval(se->readReg("ecx")) << std::dec << std::endl;
+
+
+        if(op0->type == Operand::Mem)
+        {
+            se->writeMem(this->get_memory_address(), T_BYTE_SIZE, SFequalOF);
+        }
+
+        return true;
+    }
+
+
 
 
 
