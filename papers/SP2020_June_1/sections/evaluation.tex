@@ -73,19 +73,22 @@ Some of them have been confirmed by existing research that those
 vulnerabilities can be exploited to realize real attacks. 
 
 All the symmetric key implementations in OpenSSL and mbedTLS all yield
-a significant leakage due to the implementation of the lookup table
+significant leakages due to the implementation of the lookup table
 to speed up the computation. Every leakages found during the evaluation
 belongs to the type of secret-dependent memory accesses. We believe that
 the secret-dependent control-flow transfers have been widely studied in
 the past few years, and developers have patched most of those leakages. 
+One method to address the leakage is to use bit-slicing. We will analyse
+the corresponding countermeasure in the following sections.
 
-\tool{} find eight leakage sites for the implementation of DES in OpenSSL.
+\tool{} find several leakage sites for the implementation of DES in OpenSSL.
 Each leakage can leak one bit of information from one byte. Also, our tool
-confirms those leakages are independent, so the total information leakage
+confirms those leakages are independent, so the total leaked information leakage
 is 8 bits. We check the source code and find the least significant
 bit in each byte is used for the parity. Therefore, \tool{} can confirm
 that even the key length of DES is 64 bits. However, only 56 bits of the 
-DES key is valid.
+DES key is valid. 
+
 
 
 \subsection{Information Leakage Quantification}
