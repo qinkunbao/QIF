@@ -1816,22 +1816,7 @@ namespace tana {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         auto operand_size = op0->bit;
         assert(operand_size == 8 || operand_size == 16 || operand_size == 32);
-        std::shared_ptr<BitVector> dividend, divisor, quotient, remainder;
-        if (operand_size == 8) {
-            dividend = se->readReg("ax");
-        }
-        if (operand_size == 16) {
-            auto temp1 = se->readReg("ax");
-            auto temp2 = se->readReg("dx");
-            dividend = se->Concat(temp2, temp1);
-        }
-        if (operand_size == 32) {
-            auto temp1 = se->readReg("eax");
-            auto temp2 = se->readReg("edx");
-            dividend = se->Concat(temp2, temp1);
-
-        }
-
+        std::shared_ptr<BitVector> dividend = nullptr, divisor = nullptr, quotient = nullptr, remainder = nullptr;
 
         if (op0->type == Operand::Mem) {
             divisor = se->readMem(get_memory_address(), op0->bit);
@@ -1841,31 +1826,50 @@ namespace tana {
             divisor = se->readReg(op0->field[0]);
         }
 
-        quotient = buildop2(BVOper::bvquo, dividend, divisor);
-        remainder = buildop2(BVOper::bvrem, dividend, divisor);
 
         if (operand_size == 8) {
+            dividend = se->readReg("ax");
+
+            quotient = buildop2(BVOper::bvquo, dividend, divisor);
+            remainder = buildop2(BVOper::bvrem, dividend, divisor);
+
             quotient = SEEngine::Extract(quotient, 1, 8);
             remainder = SEEngine::Extract(remainder, 1, 8);
             se->writeReg("al", quotient);
             se->writeReg("ah", remainder);
-        }
 
+            return true;
+        }
         if (operand_size == 16) {
+            auto temp1 = se->readReg("ax");
+            auto temp2 = se->readReg("dx");
+            dividend = se->Concat(temp2, temp1);
+
+            quotient = buildop2(BVOper::bvquo, dividend, divisor);
+            remainder = buildop2(BVOper::bvrem, dividend, divisor);
+
             quotient = SEEngine::Extract(quotient, 1, 16);
             remainder = SEEngine::Extract(remainder, 1, 16);
             se->writeReg("ax", quotient);
             se->writeReg("dx", remainder);
-        }
 
+            return true;
+
+        }
         if (operand_size == 32) {
-            quotient = SEEngine::Extract(quotient, 1, 32);
-            remainder = SEEngine::Extract(remainder, 1, 32);
+            auto eax_v = se->readReg("eax");
+            auto edx_v = se->readReg("edx");
+
+            quotient = buildop3(BVOper::bvdiv32_quo, edx_v, eax_v, divisor);
+            remainder = buildop3(BVOper::bvdiv32_rem, edx_v, eax_v, divisor);
+
             se->writeReg("eax", quotient);
             se->writeReg("edx", remainder);
+
+            return true;
         }
 
-        return true;
+        return false;
 
     }
 

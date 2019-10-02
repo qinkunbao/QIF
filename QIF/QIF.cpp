@@ -64,9 +64,13 @@ std::vector<std::string> split(std::string str, std::string sep) {
 int main(int argc, char *argv[]) {
     if (argc < 2) {
 
+        string build_time(__TIMESTAMP__);
+
 #ifdef NDEBUG
+        cout << "Build Time: " << build_time << "\n";
         cout << "Release Build\n";
 #else
+        cout << "Build Time: " << build_time << "\n";
         cout << "Debug build\n";
 #endif
         cout << "Usage: " << argv[0] << " <traces.txt> " << "<options>" << "\n";

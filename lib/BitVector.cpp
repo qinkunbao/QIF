@@ -137,8 +137,13 @@ namespace tana {
             case BVOper::bvidiv32_rem:
                 return os << "bvidiv32_rem";
 
-                //omit default case to triger compiler warning for missing cases
+            case BVOper::bvdiv32_quo:
+                return os << "bvdiv32_quo";
 
+            case BVOper::bvdiv32_rem:
+                return os << "bvdiv32_rem";
+
+                //omit default case to triger compiler warning for missing cases
         };
 
         return os << static_cast<uint32_t>(bvop);
@@ -508,6 +513,32 @@ namespace tana {
 
         return static_cast<uint32_t >(rem);
 
+    }
+
+    uint32_t BitVector::bvdiv32_quo(uint32_t edx, uint32_t eax, uint32_t div)
+    {
+        uint64_t edx_w = edx;
+        uint64_t eax_w = eax;
+
+        uint64_t edx_eax = (edx_w<<REGISTER_SIZE) + eax_w;
+        uint64_t op = div;
+
+        uint64_t quo = edx_eax / op;
+
+        return static_cast<uint32_t >(quo);
+    }
+
+    uint32_t BitVector::bvdiv32_rem(uint32_t edx, uint32_t eax, uint32_t div)
+    {
+        uint64_t edx_w = edx;
+        uint64_t eax_w = eax;
+
+        uint64_t edx_eax = (edx_w<<REGISTER_SIZE) + eax_w;
+        uint64_t op = div;
+
+        uint64_t rem = edx_eax % op;
+
+        return static_cast<uint32_t >(rem);
     }
 
 

@@ -379,6 +379,12 @@ namespace tana {
                 case BVOper::bvidiv32_rem:
                     return BitVector::bvidiv32_rem(op0, op1, op2);
 
+                case BVOper::bvdiv32_quo:
+                    return BitVector::bvdiv32_quo(op0, op1, op2);
+
+                case BVOper::bvdiv32_rem:
+                    return BitVector::bvdiv32_rem(op0, op1, op2);
+
             }
 
 
