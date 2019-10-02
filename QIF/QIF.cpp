@@ -189,6 +189,14 @@ int main(int argc, char *argv[]) {
 
     }
     se->run();
+
+    auto time_se = high_resolution_clock::now();
+    auto se_duration = duration_cast<microseconds>(time_se - start);
+
+    cout << "Time taken by SE: "
+         << static_cast<double >(se_duration.count()) / 1000000 << " seconds" << endl;
+
+
     se->reduceConstrains();
     se->printConstrains();
 

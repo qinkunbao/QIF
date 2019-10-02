@@ -25,15 +25,14 @@ crypto libraries in today's software. NaCl (pronounced "salt") is a
 new software libreary for encryption, decryption and signatures, etc.
 NaCl is designed to have no data flow from secrets to load address and no data 
 flow from secrets to branch conditions. Therefore, NaCl should have no leakages
-under our attack model. We build OpenSSL with the option \textit{no-asm} 
-to disable the assembly language routines. 
+under our attack model. 
 
-For non-crypto libraries, we study li bjepg, GTK, and wget.
+For non-crypto libraries, we study libjepg, GTK, and wget.
 JPEG is a commonly used lossy image c ompression standard, and
-libjpeg is a popular library for hand ling the JPEG image data
-format. Previously, researchers have  introduced controlled-channel
+libjpeg is a popular library for handling the JPEG image data
+format. Previously, researchers have introduced controlled-channel
 attacks, which allow attackers to ret rieve outlines of JPEG images
-from applications. We also study GTK  and wget with \tool{}. GTK 
+from applications. We also study GTK and wget with \tool{}. GTK 
 is a widely used cross-platform toolkit for creating graphical user
 interfaces. And wget is free software that can retrieve information
 via HTTPS, HTTP, and FTP.
@@ -59,28 +58,25 @@ aspects:
 
 \subsection{Evaluation Result Overview}
 In this section, we present an overview of the evaluation result. 
-\tool{} find xx leakages in total from real-world cryptosystems and open
-source libraries. Among the xx leak points, xx of them are leaked due
+\tool{} find xx leakages in total from real-world cryptosystems source libraries.
+ Among the xx leak points, xx of them are leaked due
 to secret-dependent control-flow transfers and xx of them are leaked 
 due to secret-dependent memory accesses. 
 
 For crypto libraries, \tool{} finds that secret-dependent memory accesses 
-cause most leakages. We think that secret-dependent
-control-flow transfers have been widely studied in recent years, 
-and crypto authors have patched those leakages.
+cause most leakages. 
 \tool{} also identifies that most side-channel vulnerabilities 
 leak very little information in practice, which confirms our initial
 assumptions. 
 However, we do find some sensitive leakages. 
 Some of them have been confirmed by existing research that those 
-vulnerabilities can be exploited
-to realize real attacks. 
+vulnerabilities can be exploited to realize real attacks. 
 
 All the symmetric key implementations in OpenSSL and mbedTLS all yield
 a significant leakage due to the implementation of the lookup table
-to speed up the computation. Every leakage found during the evaluation
+to speed up the computation. Every leakages found during the evaluation
 belongs to the type of secret-dependent memory accesses. We believe that
-the secret-dependent control-flow transfers have been wide studied in
+the secret-dependent control-flow transfers have been widely studied in
 the past few years, and developers have patched most of those leakages. 
 
 \tool{} find eight leakage sites for the implementation of DES in OpenSSL.
