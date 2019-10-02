@@ -436,8 +436,9 @@ namespace tana {
                               << func->getFunName(memory_address) << "\n";
                 }
 
-                std::cout << "\n" << memory_address_str << std::endl;
+                //std::cout << "\n" << memory_address_str << std::endl;
                 if (v_test->symbol_num() != 0) {
+                    std::cout << "ID: "<< this->current_eip->id << "\n";
                     ERROR("Memory Error");
                 }
                 m_memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
