@@ -2707,10 +2707,6 @@ namespace tana {
         std::shared_ptr<Operand> op0 = this->oprd[0];
         assert(op0->type == Operand::Reg || op0->type == Operand::Mem);
 
-        if(this->id == 7064)
-        {
-            std::cout << "debug" << std::endl;
-        }
 
         if (op0->bit == 32) {
             std::shared_ptr<BitVector> eax_v, edx_v, src_v;
