@@ -394,6 +394,47 @@ namespace tana {
 
         std::ofstream myfile;
         myfile.open (result, std::ios_base::app);
+
+        myfile << "START:\n";
+        for (auto &it : num_satisfied_group) {
+            uint32_t addr = std::get<0>(it);
+            uint64_t num = std::get<1>(it);
+            LeakageType type = std::get<2>(it);
+            auto sample_num = std::get<3>(it);
+            std::string type_str = (type == LeakageType::CFLeakage) ? "CF" : "DA";
+            if (num != 0) {
+                float portion =
+                        (static_cast<float>(num)) / (static_cast<float>(sample_num));
+                float leaked_information = abs(-log(portion) / log(2.0));
+                myfile << "Address: " << std::hex << addr << std::dec
+                       << " Leaked:" << leaked_information << " bits"
+                       << " Type: " << type_str << " "
+                       << " Num of Satisfied: " << num
+                       << " Total Sampling Numbers: " << sample_num
+                       << "\n";
+
+                if(t2e != nullptr)
+                {
+                    myfile << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                           << t2e->locateSym(addr)->file_name << " line number: "
+                           << t2e->locateSym(addr)->line_number << std::endl;
+                }
+            } else {
+                myfile << "Address: " << std::hex << addr << std::dec;
+                myfile << " Monte Carlo Failed" << "\n";
+                if(t2e != nullptr)
+                {
+                    myfile << "Source code: " << t2e->locateSym(addr)->pwd << ": "
+                           << t2e->locateSym(addr)->file_name << " line number: "
+                           << t2e->locateSym(addr)->line_number << std::endl;
+                }
+
+            }
+
+        }
+
+        myfile << "DETAILS:\n";
+
         for (auto &it : num_satisfied_group) {
             uint32_t addr = std::get<0>(it);
             uint64_t num = std::get<1>(it);
@@ -404,7 +445,7 @@ namespace tana {
             if (num != 0) {
                 float portion =
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
-                float leaked_information = abs(-log(portion) / log(2));
+                float leaked_information = abs(-log(portion) / log(2.0));
                 myfile << "Address: " << std::hex << addr << std::dec
                        << " Leaked:" << leaked_information << " bits"
                        << " Type: " << type_str << " "
