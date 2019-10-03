@@ -11,6 +11,7 @@
 #include <cmath>
 #include <cstring>
 #include <tuple>
+#include <iomanip>
 #include "MonteCarlo.hpp"
 #include "ins_parser.hpp"
 #include "QIFSEEngine.hpp"
