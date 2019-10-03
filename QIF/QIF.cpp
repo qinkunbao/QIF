@@ -74,9 +74,12 @@ int main(int argc, char *argv[]) {
         cout << "Debug build\n";
 #endif
         cout << "Usage: " << argv[0] << " <traces.txt> " << "<options>" << "\n";
-        cout << "Option one:   -t <Monte Carlo Times>\n";
-        cout << "Option two:   -t <Monte Carlo Times> -f <Function Name>\n";
-        cout << "Option three: -t <Monte Carlo Times> -f <Function Name> -d <Debug Info>\n";
+        cout << left << setw(40)<< "-o <file>" <<setw(30)<< "Place the output into <file>" << endl;
+        cout << left << setw(40)<< "-f <Function Name> " <<setw(30)<< "The location of the function file" <<endl;
+        cout << left << setw(40)<< "-d <Debug Info> -f <Function Name> " <<setw(30)
+             << "The location of the ELF and the location of the function name" << endl;
+        cout << left << setw(40)<< "-t <Monte Carlo Times> " <<setw(30)<<"Specify the Monte Carlo times" << endl;
+
         return 1;
     }
 
@@ -108,29 +111,21 @@ int main(int argc, char *argv[]) {
         cmdStatus = true;
     }
 
-    if (input.cmdOptionExists("-t") && input.cmdOptionExists("-f")) {
-        const std::string &mc_times = input.getCmdOption("-t");
-        stringstream strValue;
-        strValue << mc_times;
-        uint64_t temp;
-        strValue >> temp;
-        MonteCarloTimes = temp;
-
-        const std::string &fun_name = input.getCmdOption("-f");
-        ifstream func_file(fun_name);
-        func = std::make_shared<Function>(func_file);
+    if (input.cmdOptionExists("-o")) {
+        const std::string &output_name = input.getCmdOption("-o");
+        fileName = output_name;
         cmdStatus = true;
     }
 
-    if (input.cmdOptionExists("-t")
-        && input.cmdOptionExists("-f")
-        && input.cmdOptionExists("-d")) {
-        const std::string &mc_times = input.getCmdOption("-t");
-        stringstream strValue;
-        strValue << mc_times;
-        uint64_t temp;
-        strValue >> temp;
-        MonteCarloTimes = temp;
+
+    if (input.cmdOptionExists("-f") &&
+        input.cmdOptionExists("-d")){
+        cout << "Error: \n Option -d must be used with -f together\n";
+        exit(0);
+    }
+
+    if (input.cmdOptionExists("-f") &&
+        input.cmdOptionExists("-d")) {
 
         const std::string &fun_name = input.getCmdOption("-f");
         func = std::make_shared<Function>(fun_name);
@@ -140,6 +135,7 @@ int main(int argc, char *argv[]) {
         cmdStatus = true;
 
     }
+
     ifstream trace_file(argv[1]);
     if (!trace_file.is_open()) {
         cout << "Can't open files" << endl;

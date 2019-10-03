@@ -805,7 +805,6 @@ namespace tana {
 
 
         if (func != nullptr) {
-            std::cout << func->getFunName(this->eip) << std::endl;
             auto input_vector = cons->getInputKeys();
             std::vector<std::shared_ptr<CallLeakageSites>> sites;
             for (const int &key:input_vector) {
@@ -999,8 +998,6 @@ namespace tana {
     void QIFSEEngine::checkOperand(const std::shared_ptr<tana::Operand> &opr, Inst_Base *inst) {
         assert(opr->type == Operand::Mem);
 
-        //std::cout << "Inst: " << *inst << std::endl;
-        //std::cout << "MemOperand: " << *opr << std::endl;
         switch (opr->tag) {
             case 1: {
                 // Immediate Value
