@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    if (!input.cmdOptionExists("-f") &&
+    if ((!input.cmdOptionExists("-f")) &&
         input.cmdOptionExists("-d")){
         cout << "Error: \n Option -d must be used with -f together\n";
         exit(0);
