@@ -629,7 +629,7 @@ namespace tana {
             if (func != nullptr) {
                 //std::string function_name = func->getFunName(current_eip->addrn);
                 //stacks->fast_call_stack(function_name);
-                updateStacks(current_eip);
+                //updateStacks(current_eip);
             }
 
             bool status = it->symbolic_execution(this);
