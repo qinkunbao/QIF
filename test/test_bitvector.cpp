@@ -16,12 +16,11 @@ void test_concat()
     std::cout << "num1:   " << bit1 << std::endl;
     std::cout << "num2:   " << bit2 << std::endl;
 
-    auto res = tana::BitVector::concat(num1, num2, 3, 5);
+    auto res = tana::BitVector::concat(num1, num2, 25, 7);
 
     auto bit_res = std::bitset<tana::REGISTER_SIZE>(res);
 
-    std::cout << "Result: " << bit_res << std::endl;
-
+    std::cout << "Result:     " << bit_res << std::endl;
 
 }
 

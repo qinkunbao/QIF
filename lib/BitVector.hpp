@@ -124,6 +124,7 @@ namespace tana {
 
         static uint32_t concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size);
 
+
         static uint32_t zeroext(uint32_t op1);
 
         static uint32_t signext(uint32_t op1, uint32_t origin_size, uint32_t new_size);

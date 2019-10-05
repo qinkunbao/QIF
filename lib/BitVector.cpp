@@ -462,27 +462,23 @@ namespace tana {
     }
 
 
-    uint32_t BitVector::concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size) {
-        std::bitset<REGISTER_SIZE> bit1(op1);
-        std::bitset<REGISTER_SIZE> bit2(op2);
-        std::string res;
 
-        std::string bit1_str = bit1.to_string();
-        std::string bit2_str = bit2.to_string();
+    uint32_t BitVector::concat(uint32_t op1, uint32_t op2, uint32_t op1_size, uint32_t op2_size)
+    {
+        const static uint32_t op_mask[] = {0x1u,        0x3u,       0x7u,        0xFu,
+                                           0x1Fu,       0x3Fu,      0x7Fu,       0xFFu,
+                                           0x1FFu,      0x3FFu,     0x7FFu,      0xFFFu,
+                                           0x1FFFu,     0x3FFFu,    0x7FFFu,     0xFFFFu,
+                                           0x1FFFFu,    0x3FFFFu,   0x7FFFFu,    0xFFFFFu,
+                                           0x1FFFFFu,   0x3FFFFFu,  0x7FFFFFu,   0xFFFFFFu,
+                                           0x1FFFFFFu,  0x3FFFFFFu, 0x7FFFFFFu,  0xFFFFFFFu,
+                                           0x1FFFFFFFu, 0x3FFFFFFFu,0x7FFFFFFFu, 0xFFFFFFFFu};
+        uint32_t op1_mask = op1 & op_mask[op1_size];
+        uint32_t op2_mask = op2 & op_mask[op2_size];
 
-        auto bit1_str_size = bit1_str.size();
-        auto bit2_str_size = bit2_str.size();
-
-        std::string bit1_sub = bit1_str.substr(bit1_str_size - op1_size, bit1_str_size);
-        std::string bit2_sub = bit2_str.substr(bit2_str_size - op2_size, bit2_str_size);
-
-        res = bit1_sub + bit2_sub;
-
-        std::bitset<REGISTER_SIZE + REGISTER_SIZE> res_bit(res);
-        auto res_u = static_cast<uint32_t > (res_bit.to_ulong());
-        return res_u;
-
+        return (op1_mask << op2_size) + op2_mask;
     }
+
 
     uint32_t BitVector::bvidiv32_quo(uint32_t edx, uint32_t eax, uint32_t op2)
     {
