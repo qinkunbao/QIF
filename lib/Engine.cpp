@@ -6,6 +6,7 @@
  ************************************************************************/
 
 #include <algorithm>
+#include <stack>
 #include "Engine.hpp"
 #include "error.hpp"
 #include "VarMap.hpp"
@@ -245,6 +246,91 @@ namespace tana {
         std::map<int, uint32_t> varm;
         assert(v->getInputSymbolSet().empty());
         return eval(v, varm);
+    }
+
+    uint32_t
+    SEEngine::eval_fast(const std::shared_ptr<BitVector> &v, const std::map<int, uint32_t> &inmap) {
+        std::stack<std::shared_ptr<BitVector>> stack1, stack2;
+        stack1.push(v);
+        while(!stack1.empty())
+        {
+            std::shared_ptr<BitVector> top_v = stack1.top();
+            stack1.pop();
+            stack2.push(top_v);
+
+            if(top_v == nullptr)
+            {
+                continue;
+            }
+
+            std::unique_ptr<Operation> &op = v->opr;
+
+            if(op->val[0] != nullptr)
+            {
+                stack1.push(op->val[0]);
+            }
+
+            if(op->val[1] != nullptr)
+            {
+                stack1.push(op->val[1]);
+            }
+
+            if(op->val[2] != nullptr)
+            {
+                stack1.push(op->val[2]);
+            }
+
+        }
+
+        uint32_t res = 0;
+        std::shared_ptr<BitVector> v0, v1, v2, v3;
+        while(!stack2.empty())
+        {
+            v3 = stack2.top();
+            std::unique_ptr<Operation> &op_t3 = v3->opr;
+            stack2.pop();
+
+            if(op_t3 == nullptr)
+            {
+                res = v3->concrete_value;
+                break;
+            }
+
+            v2 = stack2.top();
+            std::unique_ptr<Operation> &op_t2 = v2->opr;
+            stack2.pop();
+
+            if(op_t2 != nullptr)
+            {
+               //TODO
+               assert(v3->val_type == ValueType::CONCRETE);
+               continue;
+            }
+
+            v1 = stack2.top();
+            std::unique_ptr<Operation> &op_t1 = v1->opr;
+            stack2.pop();
+
+            if(op_t1 != nullptr)
+            {
+                //TODO
+                assert(v3->val_type == ValueType::CONCRETE);
+                assert(v2->val_type == ValueType::CONCRETE);
+                continue;
+            }
+
+            v0 = stack2.top();
+            std::unique_ptr<Operation> &op_t0 = v1->opr;
+            stack2.pop();
+            assert(op_t0 != nullptr);
+            assert(v3->val_type == ValueType::CONCRETE);
+            assert(v2->val_type == ValueType::CONCRETE);
+            assert(v1->val_type == ValueType::CONCRETE);
+
+
+        }
+        return res;
+
     }
 
     uint32_t

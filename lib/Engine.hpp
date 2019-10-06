@@ -68,6 +68,9 @@ namespace tana {
         static uint32_t eval(const std::shared_ptr<BitVector> &v,
                              const std::map<int, uint32_t> &inmap);
 
+        static uint32_t eval_fast(const std::shared_ptr<BitVector> &v,
+                                  const std::map<int, uint32_t> &inmap);
+
         static uint32_t eval(const std::shared_ptr<BitVector> &v);
 
         uint32_t  debugEval(const std::shared_ptr<BitVector> &v);
