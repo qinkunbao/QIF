@@ -24,12 +24,22 @@ int main(){
 
     auto v4 = buildop2(BVOper::bvadd, v2, v3);
 
+    auto v5 = buildop2(BVOper::bvsar, v4, v3);
+
+    auto v6 = buildop2(BVOper::bvconcat, v5, v4);
+
+    auto v7 = buildop3(BVOper::bvand3, v5, v4, v6);
+
+
+
     map<int, uint32_t > fake;
 
-    cout << "eval"<< SEEngine::eval(v4, fake) << endl;
-    cout << "eval_fast"<< SEEngine::eval_fast(v4, fake) << endl;
+    for(int i = 0; i < 100000; ++i) {
 
+        SEEngine::eval(v6, fake);
+        SEEngine::eval_fast(v6, fake);
 
+    }
     return 1;
 }
 

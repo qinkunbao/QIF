@@ -851,7 +851,9 @@ namespace tana {
 
 
             }
-
+            if(!stack2.empty()) {
+                ptr = stack2.top();
+            }
         }while(!stack2.empty());
         return stack3.top()->concrete_value;
 
