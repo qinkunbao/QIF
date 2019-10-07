@@ -132,6 +132,9 @@ add_executable(TestCMD
 add_executable(TestELF
         test/test_elf.cpp)
 
+add_executable(TestEval
+        test/test_eval.cpp)
+
 
 add_executable(TestELFSym
         test/test_elf_sym.cpp)
@@ -153,6 +156,8 @@ target_link_libraries(TestCMD TraceLib)
 target_link_libraries(TestELFSym TraceLib)
 target_link_libraries(TestBit TraceLib)
 target_link_libraries(TestBvMul TraceLib)
+target_link_libraries(TestEval TraceLib)
+
 
 
 

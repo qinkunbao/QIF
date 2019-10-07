@@ -68,14 +68,14 @@ namespace tana {
         auto con2 = buildop2(BVOper::less, B, max_num_size);
         auto C1 = buildop2(BVOper::bvadd, A, B);
         auto C1_cons = buildop2(BVOper::greater, C1, max_num_size);
-        auto S1 = buildop3(BVOper::bvand, con1, con2, C1_cons);
+        auto S1 = buildop3(BVOper::bvand3, con1, con2, C1_cons);
 
         // Situation 2
         auto con3 = buildop2(BVOper::greater, A, max_num_size);
         auto con4 = buildop2(BVOper::greater, B, max_num_size);
         auto sum2 = buildop2(BVOper::bvadd, A, B);
         auto sum2_cons = buildop2(BVOper::less, C1, max_num_size);
-        auto S2 = buildop3(BVOper::bvand, con3, con4, sum2_cons);
+        auto S2 = buildop3(BVOper::bvand3, con3, con4, sum2_cons);
 
         // S1 AND S2
         auto OF = buildop2(BVOper::bvor, S1, S2);
@@ -105,14 +105,14 @@ namespace tana {
         auto con2 = buildop2(BVOper::greater, B, max_num_size);
         auto C1 = buildop2(BVOper::bvsub, A, B);
         auto C1_cons = buildop2(BVOper::greater, C1, max_num_size);
-        auto S1 = buildop3(BVOper::bvand, con1, con2, C1_cons);
+        auto S1 = buildop3(BVOper::bvand3, con1, con2, C1_cons);
 
         // Situation 2
         auto con3 = buildop2(BVOper::greater, A, max_num_size);
         auto con4 = buildop2(BVOper::less, B, max_num_size);
         auto sum2 = buildop2(BVOper::bvsub, A, B);
         auto sum2_cons = buildop2(BVOper::less, C1, max_num_size);
-        auto S2 = buildop3(BVOper::bvand, con3, con4, sum2_cons);
+        auto S2 = buildop3(BVOper::bvand3, con3, con4, sum2_cons);
 
         // S1 AND S2
         auto OF = buildop2(BVOper::bvor, S1, S2);

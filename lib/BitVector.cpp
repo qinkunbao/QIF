@@ -38,8 +38,17 @@ namespace tana {
             case BVOper::bvxor:
                 return os << "bvxor";
 
+            case BVOper::bvxor3:
+                return os << "bvxor3";
+
             case BVOper::bvand:
                 return os << "bvand";
+
+            case BVOper::bvand3:
+                return os << "bvand3";
+
+            case BVOper::bvor3:
+                return os << "bvor3";
 
             case BVOper::bvor:
                 return os << "bvor";

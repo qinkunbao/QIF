@@ -250,7 +250,7 @@ namespace tana {
 
     uint32_t
     SEEngine::eval_fast(const std::shared_ptr<BitVector> &v, const std::map<int, uint32_t> &inmap) {
-        std::stack<std::shared_ptr<BitVector>> stack1, stack2;
+        std::stack<std::shared_ptr<BitVector>> stack1, stack2, stack3;
         stack1.push(v);
         while(!stack1.empty())
         {
@@ -263,7 +263,12 @@ namespace tana {
                 continue;
             }
 
-            std::unique_ptr<Operation> &op = v->opr;
+            std::unique_ptr<Operation> &op = top_v->opr;
+
+            if(op == nullptr)
+            {
+                continue;
+            }
 
             if(op->val[0] != nullptr)
             {
@@ -283,53 +288,572 @@ namespace tana {
         }
 
         uint32_t res = 0;
-        std::shared_ptr<BitVector> v0, v1, v2, v3;
-        while(!stack2.empty())
+        std::shared_ptr<BitVector> ptr = stack2.top();
+        std::shared_ptr<BitVector> v0, v1, v2, v_n;
+        do
         {
-            v3 = stack2.top();
-            std::unique_ptr<Operation> &op_t3 = v3->opr;
-            stack2.pop();
-
-            if(op_t3 == nullptr)
+            while(ptr->opr == nullptr)
             {
-                res = v3->concrete_value;
-                break;
+
+                stack3.push(ptr);
+                stack2.pop();
+                ptr = stack2.top();
+
             }
 
-            v2 = stack2.top();
-            std::unique_ptr<Operation> &op_t2 = v2->opr;
             stack2.pop();
-
-            if(op_t2 != nullptr)
+            switch(ptr->opr->opty)
             {
-               //TODO
-               assert(v3->val_type == ValueType::CONCRETE);
-               continue;
+                case BVOper::bvzeroext:
+                {
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::zeroext(v0->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+
+                }
+                case BVOper::bvextract:
+                {
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::extract(v0->concrete_value, ptr->high_bit, ptr->low_bit);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+
+                }
+
+                case BVOper::bvconcat:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::concat(v0->concrete_value, v1->concrete_value, v0->size(), v1->size());
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    v_n->high_bit = v0->size() + v1->size();
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvsignext:
+                {
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::signext(v0->concrete_value, v0->size(), ptr->size());
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    v_n->high_bit = ptr->size();
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvadd:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v1->concrete_value + v0->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+
+                case BVOper::bvsub:
+                {
+
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value - v1->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvimul:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvimul(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+
+                }
+
+                case BVOper::bvshld:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::shld32(v0->concrete_value, v1->concrete_value, v2->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvshrd:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::shrd32(v0->concrete_value, v1->concrete_value, v2->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+
+                }
+
+                case BVOper::bvxor:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value ^ v1->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+
+                }
+
+                case BVOper::bvxor3:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value ^ v1->concrete_value ^ v2->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+
+                case BVOper::bvand:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value & v1->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+
+                case BVOper::bvand3:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value & v1->concrete_value & v2->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvor:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value | v1->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvor3:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value | v1->concrete_value | v2->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvshl:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value << v1->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvshr:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value >> v1->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvbit:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bit(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvsar:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::arithmeticRightShift(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvneg:
+                {
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = ~v0->concrete_value + 1;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+
+                case BVOper::bvnot:
+                {
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = ~v0->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvrol:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::rol32(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvror:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::ror32(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvquo:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value / v1->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvrem:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value % v1->concrete_value;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::equal:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = (v0->concrete_value == v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::noequal:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = (v0->concrete_value != v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::greater:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = (v0->concrete_value > v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::less:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = (v0->concrete_value < v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvbitnot:
+                {
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = v0->concrete_value ? 0 : 1 ;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvbsf:
+                {
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bsf(v0->concrete_value) ;
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvmul32_h:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvmul32_h(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvmul32_l:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvmul32_l(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvmul:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvmul16_8(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvimul32_l:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvimul32_l(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvimul32_h:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvimul32_h(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvimul16_l:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvimul16_l(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvimul16_h:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvimul16_h(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvimul8_l:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvimul8_l(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+
+                case BVOper::bvimul8_h:
+                {
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvimul8_h(v0->concrete_value, v1->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvidiv32_quo:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvidiv32_quo(v0->concrete_value, v1->concrete_value, v2->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvidiv32_rem:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvidiv32_rem(v0->concrete_value, v1->concrete_value, v2->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+
+                case BVOper::bvdiv32_quo:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvdiv32_quo(v0->concrete_value, v1->concrete_value, v2->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+                case BVOper::bvdiv32_rem:
+                {
+                    v2 = stack3.top();
+                    stack3.pop();
+                    v1 = stack3.top();
+                    stack3.pop();
+                    v0 = stack3.top();
+                    stack3.pop();
+                    res = BitVector::bvdiv32_rem(v0->concrete_value, v1->concrete_value, v2->concrete_value);
+                    v_n = std::make_shared<BitVector>(ValueType::CONCRETE, res);
+                    stack3.push(v_n);
+                    break;
+                }
+
+
             }
 
-            v1 = stack2.top();
-            std::unique_ptr<Operation> &op_t1 = v1->opr;
-            stack2.pop();
-
-            if(op_t1 != nullptr)
-            {
-                //TODO
-                assert(v3->val_type == ValueType::CONCRETE);
-                assert(v2->val_type == ValueType::CONCRETE);
-                continue;
-            }
-
-            v0 = stack2.top();
-            std::unique_ptr<Operation> &op_t0 = v1->opr;
-            stack2.pop();
-            assert(op_t0 != nullptr);
-            assert(v3->val_type == ValueType::CONCRETE);
-            assert(v2->val_type == ValueType::CONCRETE);
-            assert(v1->val_type == ValueType::CONCRETE);
-
-
-        }
-        return res;
+        }while(!stack2.empty());
+        return stack3.top()->concrete_value;
 
     }
 
@@ -363,66 +887,88 @@ namespace tana {
             switch (op->opty) {
                 case BVOper::bvzeroext:
                     return BitVector::zeroext(op0);
+
                 case BVOper::bvextract:
                     return BitVector::extract(op0, v->high_bit, v->low_bit);
+
                 case BVOper::bvconcat:
                     return BitVector::concat(op0, op1, op->val[0]->size(), op->val[1]->size());
+
                 case BVOper::bvsignext:
                     return BitVector::signext(op0, op->val[0]->size(), v->size());
+
                 case BVOper::bvadd:
                     return op0 + op1;
+
                 case BVOper::bvsub:
                     return op0 - op1;
+
                 case BVOper::bvimul:
                     return BitVector::bvimul(op0, op1);
+
                 case BVOper::bvshld:
                     return BitVector::shld32(op0, op1, op2);
+
                 case BVOper::bvshrd:
                     return BitVector::shrd32(op0, op1, op2);
-                case BVOper::bvxor: {
-                    if (op_num == 2)
-                        return op0 ^ op1;
-                    if (op_num == 3)
-                        return op0 ^ op1 ^ op2;
-                }
-                case BVOper::bvand: {
-                    if (op_num == 2)
-                        return op0 & op1;
-                    if (op_num == 3)
-                        return op0 & op1 & op2;
-                }
-                case BVOper::bvor: {
-                    if (op_num == 2)
-                        return op0 | op1;
-                    if (op_num == 3)
-                        return op0 | op1 | op2;
-                }
+
+                case BVOper::bvxor:
+                    return op0 ^ op1;
+
+                case BVOper::bvxor3:
+                    return op0 ^ op1 ^ op2;
+
+                case BVOper::bvand:
+                    return op0 & op1;
+
+                case BVOper::bvand3:
+                    return op0 & op1 & op2;
+
+                case BVOper::bvor:
+                    return op0 | op1;
+
+                case BVOper::bvor3:
+                    return op0 | op1 | op2;
+
                 case BVOper::bvshl:
                     return op0 << op1;
+
                 case BVOper::bvshr:
                     return op0 >> op1;
+
                 case BVOper::bvbit:
                     return BitVector::bit(op0, op1);
+
                 case BVOper::bvsar:
                     return BitVector::arithmeticRightShift(op0, op1);
+
                 case BVOper::bvneg:
                     return ~op0 + 1;
+
                 case BVOper::bvnot:
                     return ~op0;
+
                 case BVOper::bvrol:
                     return BitVector::rol32(op0, op1);
+
                 case BVOper::bvror:
                     return BitVector::ror32(op0, op1);
+
                 case BVOper::bvquo:
                     return op0 / op1;
+
                 case BVOper::bvrem:
                     return op0 % op1;
+
                 case BVOper::equal:
                     return op0 == op1;
+
                 case BVOper::noequal:
                     return op0 != op1;
+
                 case BVOper::greater:
                     return op0 > op1;
+
                 case BVOper::less:
                     return op0 < op1;
 
