@@ -213,6 +213,9 @@ int main(int argc, char *argv[]) {
 
     ofstream result_file;
     result_file.open(fileName, ios_base::app);
+
+    result_file << "Total Instructions:: " << inst_size << std::endl;
+
     result_file << "Time taken by SE: "
                 << static_cast<double >(se_duration.count()) / 1000000 << " seconds" << endl;
 
