@@ -256,7 +256,7 @@ namespace tana {
             uint32_t dim = con_input_vector.size();
             uint32_t sample_size = 1000;
             uint32_t test_round = 0;
-            uint32_t min_satisfied_cons = 5;
+            uint32_t min_satisfied_cons = 10;
 
             while (num_satisfied_for_group < min_satisfied_cons) {
 
@@ -273,7 +273,7 @@ namespace tana {
 
                 ++test_round;
 
-                if(test_round > 20)
+                if(test_round > 15)
                     break;
             }
 
