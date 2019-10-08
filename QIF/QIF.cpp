@@ -190,10 +190,6 @@ int main(int argc, char *argv[]) {
     auto time_se = high_resolution_clock::now();
     auto se_duration = duration_cast<microseconds>(time_se - start);
 
-    cout << "Time taken by SE: "
-         << static_cast<double >(se_duration.count()) / 1000000 << " seconds" << endl;
-
-
     se->reduceConstrains();
     se->printConstrains();
 
@@ -209,8 +205,21 @@ int main(int argc, char *argv[]) {
 
     auto duration = duration_cast<microseconds>(stop - start);
 
+
+    cout << "Time taken by SE: "
+         << static_cast<double >(se_duration.count()) / 1000000 << " seconds" << endl;
     cout << "Time taken by QIF: "
          << static_cast<double >(duration.count()) / 1000000 << " seconds" << endl;
+
+    ofstream result_file;
+    result_file.open(fileName, ios_base::app);
+    result_file << "Time taken by SE: "
+                << static_cast<double >(se_duration.count()) / 1000000 << " seconds" << endl;
+
+    result_file << "Time taken by QIF: "
+                << static_cast<double >(duration.count()) / 1000000 << " seconds" << endl;
+
+    result_file.close();
 
 
     return 0;
