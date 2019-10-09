@@ -273,7 +273,7 @@ namespace tana {
 
                 ++test_round;
 
-                if(test_round > 20)
+                if(test_round > 15)
                     break;
             }
 
