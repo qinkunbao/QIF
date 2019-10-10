@@ -15,13 +15,15 @@ guess the secrets such as encryption keys~\cite{}.
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against 
 software-based side-channel attacks. Hardware level solutions, 
-including reducing shared resources, adopting oblivious RAM and 
+including reducing shared resources, adopting oblivious RAM, and using
 transnational memory~\cite{182946,203878,217537} need to change the hardware
 and modern complex computer systems, which is tedious and hard to adopt in 
-practice. Therefore, a more promising and universal direction are software countermeasures, which
-detect and eliminate secret-dependent control-flow transfers and data accesses.
+practice. Therefore, a more promising and universal direction are software countermeasures, 
+detecting and eliminating side channels vulnerabilities from source code base.
 
-%% There are some detection methods but need a good assess method 
+After examing the root cause of many software-based side channels, we believe that
+many of them are caused by the fowllowing two specific types of disaster: 
+data flow from secrets to load addresses and data flow from secrets to branch conditions.
 In general, recent work~\cite{203878} adopts both static and dynamic analysis
 to detect side-channels.
 They can find a list of potential leak sites in real-world software, 
