@@ -38,11 +38,13 @@ developers, it is hard for them to fix all those vulnerabilities.
 While some vulnerabilities can be used to recover the full secret
 keys~\cite{}, many other vulnerabilities prove to be less serious in reality.
 
-To assess side-channel vulnerabilities, we need a proper quantification metric.
-Tools based on static analysis with abstract interpretation can provide an upper bound, 
+To assess the sensitive level of side-channel vulnerabilities, we need a proper 
+quantification metric.
+Static method, usually with the abstract interpretation can provide an upper bound, 
 which is useful to justify whether the implementation is secure enough. 
 However, they cannot indicate the leakage is severe due to the over-approximation~\cite{}
 they make during the analysis. 
+For example, CacheAudit~\cite{} reports the upper bound leakage of AES-128 exceeds the key size.
 The ``average'' information leakage assumes that the target program will have 
 \textbf{different} sensitive 
 input when an attacker launches the attack.
@@ -53,8 +55,7 @@ environment.
 Although they are very precise in term of true leakages, no existing tool can
 assess the vulnerabilities they discover.
 \fixme{why DATA example is commented out below.}
-%For example, DATA~\cite{217537} reports more than 2000 potential leakage sites for the RSA implementation of OpenSSL.
-%But most of them were dismissed by the author after some manual inspections.
+
 
 Additionally, open source libraries may have multiple leakage sites, which can be exploited for attackers
 at once~\cite{191010,7163052,hornby2011side}. 
