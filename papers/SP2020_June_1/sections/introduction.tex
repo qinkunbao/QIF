@@ -3,20 +3,22 @@
 Side channels are inevitable in modern computer systems as the sensitive information 
 may be leaked by many kinds of inadvertent behaviors, 
 such as power, electromagnetic radiation and even sound~\cite{}. 
-Among them, software-based side-channel attacks are especially common 
+Among them, software-based side-channel channels (e.g., cache attacks, memory page attacks,
+and controlled-channel attacks) are especially common 
 and have been studied for years~\cite{}. 
 Those vulnerabilities result from vulnerable software and shared hardware components.
 By observing the outputs or hardware behaviors, attackers can
 infer the program execution flow that manipulate secrets and 
 guess the secrets such as encryption keys~\cite{}.
 
+
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against 
-software-based side-channel attacks. In term of hardware level,
-those methods includes reducing shared resources, adopting oblivious RAM and 
-transnational memory~\cite{182946,203878,217537}. 
-However, in addition to runtime overheads, those methods are limited to specific hardwares. 
-Therefore, a more promising and universal direction are software countermeasures, which
+software-based side-channel attacks. Hardware level solutions, 
+including reducing shared resources, adopting oblivious RAM and 
+transnational memory~\cite{182946,203878,217537} need to change the hardware
+and modern complex computer systems, which is tedious and hard to adopt in 
+practice. Therefore, a more promising and universal direction are software countermeasures, which
 detect and eliminate secret-dependent control-flow transfers and data accesses.
 
 %% There are some detection methods but need a good assess method 
