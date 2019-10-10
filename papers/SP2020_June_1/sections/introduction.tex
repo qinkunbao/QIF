@@ -11,35 +11,38 @@ By observing the outputs or hardware behaviors, attackers can
 infer the program execution flow that manipulate secrets and 
 guess the secrets such as encryption keys~\cite{}.
 
-
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against 
 software-based side-channel attacks. Hardware level solutions, 
 including reducing shared resources, adopting oblivious RAM, and using
 transnational memory~\cite{182946,203878,217537} need to change the hardware
-and modern complex computer systems, which is tedious and hard to adopt in 
-practice. Therefore, a more promising and universal direction are software countermeasures, 
+and modern complex computer systems, which is unpractical and hard to adopt in 
+reality. Therefore, a more promising and universal direction are software countermeasures, 
 detecting and eliminating side channels vulnerabilities from source code base.
 
 After examing the root cause of many software-based side channels, we believe that
 many of them are caused by the fowllowing two specific types of disaster: 
 data flow from secrets to load addresses and data flow from secrets to branch conditions.
-In general, recent work~\cite{203878} adopts both static and dynamic analysis
+We call them secret-dependent control-flow and memory-access correspondingly.
+Therefore, a central problem is identifying those two code patterns automatically.
+Recent work~\cite{203878} adopts static and dynamic analysis
 to detect side-channels.
-They can find a list of potential leak sites in real-world software, 
+They can find many potential leak sites in real-world software, 
 but fail to report how severe a potential leakage could be. 
 Many of the reported vulnerabilities are typically hard to exploit
-and leak very little information (e.g., one bit of the length of the key~\cite{203878}).  
-For example, many vulnerabilities in OpenSSL library are assigned with a low severity 
-and not considered 
-in the current threat model~\cite{https://www.openssl.org/policies/secpolicy.html}. 
-It would be valuable to have a tool to tell how much information is actually leaked 
-at one vulnerability.
+and leak very little information. For example, DATA~\cite{} reports
+2246 potential leakage site for the RSA implementation in OpenSSL.
+After some inspectations, 1510 are dismissed, but it still
+leaves 278 control-flow and 460 data-access patterns. For software
+developers, it is hard for them to fix all those vulnerabilities.
+While some vulnerabilities can be used to recover the full secret
+keys~\cite{}, many other vulnerabilities prove to be less serious in reality.
 
 To assess side-channel vulnerabilities, we need a proper quantification metric.
 Tools based on static analysis with abstract interpretation can provide an upper bound, 
 which is useful to justify whether the implementation is secure enough. 
-However, they cannot indicate the leakage is severe due to the over-approximation~\cite{}. 
+However, they cannot indicate the leakage is severe due to the over-approximation~\cite{}
+they make during the analysis. 
 The ``average'' information leakage assumes that the target program will have 
 \textbf{different} sensitive 
 input when an attacker launches the attack.
