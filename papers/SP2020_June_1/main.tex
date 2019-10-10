@@ -36,16 +36,20 @@
 \begin{abstract}
     Side-channel attacks allow adversaries to infer sensitive
     information based on non-functional characteristics. 
-    Existing work on address-based side-channel detections can provide 
-    many tentative side-channel leakage sites. However, 
-    they fail to report how severe each leakage sites is among those
-    leakage sites.
+    Existing work on address-based side-channel detections can identify 
+    many tentative side-channel leakage sites. Those leakage sites, can
+    leak one bit, two bits or many bits. However, no existing tools can
+    precisely report the number of leaked bits for each leakage site.
        
-    To overcome the above limitations, we propose a novel method
-    to precisely quantify the information leakage.
-    %% The key insight is ...  --- Qinkun: complete this and i will revise. ----
-    %%---FIXME: NEED A BETTER NAME---%%
-    The key insight is \fixme{XXXXX}.
+    To overcome above limitations, we propose a novel method
+    to precisely quantify the leaked information. We model each 
+    leakage as a unique math constraint and use those
+    constraints to divide the input space set into several subsets.
+    Among those subsets, only one subset that satisfies every constraints.
+    The cardinality of the subset correspondds to the amount of leaked
+    information from those leakages. 
+
+
     We have developed a tool called \tool{}, which can not only 
     find the side-channel vulnerabilities but also estimate how many bits are actually leaked. 
     \tool{} works in three steps. First, the application is executed to record 
@@ -56,7 +60,7 @@
     information leakage. \tool{} can report a very fined-grained vulnerability result 
     compared to existing tools.
     
-    We applied the tool to OpenSSL, MbedTLS and libjpeg and found several serious side-channel 
+    We applied the tool to OpenSSL, MbedTLS and found several serious side-channel 
     vulnerabilities. Compared with previous research, the results are surprisingly different. 
     First, it shows most of the reported vulnerabilities are hard to exploit in practice. 
     Second, we also find some several sensitive vulnerabilities which are neglected before with \tool{}. 
