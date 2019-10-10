@@ -36,35 +36,26 @@
 \begin{abstract}
     Side-channel attacks allow adversaries to infer sensitive
     information based on non-functional characteristics. 
-    Existing work on address-based side-channel detections can identify 
-    many tentative side-channel leakage sites. Those leakage sites, can
-    leak one bit, two bits or many bits. However, no existing tools can
+    Existing work on address-based side-channel detections can identify many tentative side-channel leakage sites. Those leakage sites can leak one bit, two bits, or many bits. However, no existing tools can
     precisely report the number of leaked bits for each leakage site.
        
-    To overcome above limitations, we propose a novel method
-    to precisely quantify the leaked information. We model each 
-    leakage as a unique math constraint and use those
+    To overcome the limitation, we propose a novel method to precisely quantify the leaked information from side-channel vulnerabilities. 
+    We model each leakage as a math constraint and use those
     constraints to divide the input space set into several subsets.
-    Among those subsets, only one subset that satisfies every constraints.
-    The cardinality of the subset correspondds to the amount of leaked
-    information from those leakages. 
+    Among those subsets, only one subset that satisfies every constraint.
+    As we discuss later, the cardinality of the subset corresponds to the amount of leaked information from those leakages. We use symbolic executions to generate math constraints. It is widely believed that symbolic execution is expensive in terms of performance. We systematically analyze the bottlenecks of the current dynamic symbolic execution approach and make it scalable to real-world cryptosystems. In the final step, we run Monte Carlo sampling to estimate the number of leaked information for each detected vulnerabilities. With the help of the Central Limit Theorem (CLT),
+    we can also give the error estimation.
 
-
-    We have developed a tool called \tool{}, which can not only 
-    find the side-channel vulnerabilities but also estimate how many bits are actually leaked. 
-    \tool{} works in three steps. First, the application is executed to record 
-    trace. Second, \tool{} runs the instruction level symbolic execution on the 
-    execution trace. \tool{} will find side-channel information leakages and model each leakage 
-    as a unique math constraint. Finally, \tool{} will classify those constraints into 
-    independent multiple groups and run a Markov Chain Monte Carlo analysis to estimate the 
-    information leakage. \tool{} can report a very fined-grained vulnerability result 
-    compared to existing tools.
+    We have implemented the above technique in a tool called \tool{}, which can not only find the side-channel vulnerabilities but also estimate how many bits are leaked. 
+    \tool{} outperforms existing dynamic side-channel detection tools in terms of performance and accuracy. Also, \tool{} can report a very fined-grained vulnerability leakage information.
+    Compared to existing abstract interpretation approaches that can only give upper leakage
+    bounds, those information are more useful for developers to identify the severity level
+    of each side-channel vulnerabilities.
     
-    We applied the tool to OpenSSL, MbedTLS and found several serious side-channel 
-    vulnerabilities. Compared with previous research, the results are surprisingly different. 
-    First, it shows most of the reported vulnerabilities are hard to exploit in practice. 
-    Second, we also find some several sensitive vulnerabilities which are neglected before with \tool{}. 
-    We confirmed those vulnerabilities with software developpers.
+    We applied \tool{} on OpenSSL, MbedTLS, and found several side-channel severe vulnerabilities. Compared with previous research, the results are surprisingly different. 
+    First, it shows that most of the reported vulnerabilities are hard to exploit in practice. 
+    Second, we also find several sensitive vulnerabilities that are neglected before \tool{}. 
+    We confirmed those vulnerabilities with manual checks and software developers.
     %% which are confirmed with manual checks and software developpers. 
 
 \end{abstract}
