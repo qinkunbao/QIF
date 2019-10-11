@@ -260,9 +260,6 @@ namespace tana {
         }
 
 
-        //std::cout << "Before Extract Debug: "<< *v <<" low: "<< low << " high: " << high << std::endl
-        //          <<" After Extract Debug: " << *res <<  " low: "<<  res->low_bit <<" high: "<< res->high_bit
-        //          << std::endl;
         return res;
 
     }
