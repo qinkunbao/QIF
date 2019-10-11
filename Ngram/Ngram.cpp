@@ -7,7 +7,6 @@
 
 #include<iostream>
 using namespace std;
-using namespace tant;
 
 
 int main(){

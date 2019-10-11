@@ -49,18 +49,18 @@ the original key size. The dynamic methods take another way with a concrete inpu
 run the program in real environment. Although they are very precise in term of true leakages, 
 no existing tool can precisely assess the vulnerabilities they discover.
 
-To overcome above limitations, we propose a novel method
+To overcome the above limitations, we propose a novel method
 to quantify information leakage more precisely. 
 Different from previous works, which only consider the
-``average'' information leakage, we study the problem from real attack scenarios.
+``average'' information leakage, we study the problem based on real attack scenarios.
 The average information assumes that the target program will have \textbf{variable} sensitive 
 information when the attacker launches the attack.
 However, for real-world attacks, an adversary may run the target problem again and over again 
 with \textbf{fixed} unknown sensitive information such as the key. 
-Therefore, the previous threat model can't catch real attack scenarios.
+Therefore, the previous threat model cannot catch real attack scenarios.
 In contrast, our method is more precise and fine-grained. 
-We quantify the amount of leaked information as the cardinality of the set of possible inputs 
-based on attackers' observations. 
+We quantify the amount of leaked information as the cardinality of the set of 
+possible inputs based on attackers' observations. 
 
 Before an attack, an adversary has a big but finite input space.
 Every time when the adversary observes one leakage site, he can eliminate some 
@@ -68,10 +68,19 @@ potential inputs and reduce the size of the input space.
 The smaller the input space is, the more information is actually gained. 
 In extreme cases, if the size of the input space reduces to one, 
 the adversary can determine the input information uniquely, which means all information
-(e.g., the whole secret key) is leaked. By counting the number of different input, 
-we can quantify the information leakage more precisely.
+(e.g., the whole secret key) is leaked. By counting the number of distinct inputs, 
+we can quantify the information leakage more precisely. 
 
-More specifically, we build a tool called \tool{},\footnote{Clever Hans is a horse that can ``count''.
+We use math constraints to model the relation between the original sensitive input and
+each leakage site. We run the instruction level symbolic execution on the whole
+execution trace to generate the constraints. Symbolic execution can provide the fine-grained
+information but is usually believed to be an expensive operation in terms of performance. 
+Therefore, existing dynamic symbolic execution based works~\cite{} either only analyze 
+small programs or apply some domain knowledges to simplify the execution. We systematically
+analyze the bottleneck of the symbolic execution and optimzie it scalable to
+real-world cryptosystems. 
+
+We apply the above technique and build a tool called \tool{},\footnote{Clever Hans is a horse that can ``count''.
 Our tool uses an advanced method to count the number of leaked bits through side channel.}
 which could discover and estimate those potential information leakage sites 
 as well as how many bits they can leak. 
