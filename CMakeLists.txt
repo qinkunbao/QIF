@@ -80,6 +80,10 @@ add_executable(SymbolicExecution
 add_executable(LoopDetection
         LoopDetection/LoopDetection.cpp)
 
+
+add_executable(Ngram
+        Ngram/Ngram.cpp)
+
 add_executable(TestBitVector
         test/test_bitvector.cpp)
 
@@ -142,6 +146,7 @@ add_executable(TestELFSym
 
 target_link_libraries(taintTrace TraceLib)
 target_link_libraries(SymbolicExecution TraceLib)
+target_link_libraries(Ngram TraceLib)
 target_link_libraries(LoopDetection TraceLib)
 target_link_libraries(TestX86 TraceLib)
 target_link_libraries(TestBitVector TraceLib)

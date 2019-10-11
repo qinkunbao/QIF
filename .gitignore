@@ -68,7 +68,7 @@ papers/*/main.pdf
 *.acn
 *.acr
 *.alg
-# *.bbl
+*.bbl
 *.blg
 *.dvi
 *.glg

@@ -25,7 +25,7 @@ many of them are caused by the fowllowing two specific types of disaster:
 data flow from secrets to load addresses and data flow from secrets to branch conditions.
 We call them secret-dependent control-flow and memory-access correspondingly.
 Therefore, a central problem is identifying those two code patterns automatically.
-Recent work~\cite{203878} adopts static and dynamic analysis
+Recent works~\cite{203878} adopt static and dynamic analysis
 to detect side-channels.
 They can find many potential leak sites in real-world software, 
 but fail to report how severe a potential leakage could be. 
@@ -40,57 +40,36 @@ keys~\cite{}, many other vulnerabilities prove to be less serious in reality.
 
 To assess the sensitive level of side-channel vulnerabilities, we need a proper 
 quantification metric.
-Static method, usually with the abstract interpretation can provide an upper bound, 
-which is useful to justify whether the implementation is secure enough. 
-However, they cannot indicate the leakage is severe due to the over-approximation~\cite{}
+Static methods, usually with the abstract interpretation, can give a leakage upper bound, 
+which is useful to justify the implementation is secure when they report zero leakage. 
+However, they cannot indicate how serious the leakage is because of the over-approximation~\cite{}
 they make during the analysis. 
-For example, CacheAudit~\cite{} reports the upper bound leakage of AES-128 exceeds the key size.
-The ``average'' information leakage assumes that the target program will have 
-\textbf{different} sensitive 
-input when an attacker launches the attack.
-But for real-world attacks, an adversary may run the target problem again and over again 
-with \textbf{fixed} unknown sensitive information such as the input.
-The dynamic methods take another way with a concrete input and run the program in real
-environment. 
-Although they are very precise in term of true leakages, no existing tool can
-assess the vulnerabilities they discover.
-\fixme{why DATA example is commented out below.}
+For example, CacheAudit~\cite{} reports that the upper bound leakage of AES-128 exceeds 
+the original key size. The dynamic methods take another way with a concrete input and 
+run the program in real environment. Although they are very precise in term of true leakages, 
+no existing tool can precisely assess the vulnerabilities they discover.
 
-
-Additionally, open source libraries may have multiple leakage sites, which can be exploited for attackers
-at once~\cite{191010,7163052,hornby2011side}. 
-The attacker may retrieve part of the sensitive information from one site, part of the sensitive
-information from another site and combine them.
-It is necessary to know how much information is actually leaked in total, 
-but no existing tools can practically estimate multiple leakage sites in real-world libraries.
-Simply adding the results for each leakage sites together gets a very rough upper bound of 
-the total information leakage if those 
-leakages are not independent. 
-
-To overcome the above limitations, we propose a novel method
+To overcome above limitations, we propose a novel method
 to quantify information leakage more precisely. 
-%Different from previous works, which only consider the
-%``average'' information leakage, we study the problem from real attack scenario.
-%The average information assumes that the target program will have \textbf{variable} sensitive 
-%information when the attacker launches the attack.
-%However, for real-world attacks, an adversary may run the target problem again and over again 
-%with \textbf{fixed} unknown sensitive information such as the key. 
-%Therefore, the previous threat model can't catch real attack scenarios.
-%In contrast, our method is more precise and fine-grained. 
-%For our analysis, the input key is fixed. 
-In general, we quantify the leaked information as the uncertain input space based on attackers' observation.
-%It is interesting to notice that the definition is different from that in previous static analysis tools. 
+Different from previous works, which only consider the
+``average'' information leakage, we study the problem from real attack scenarios.
+The average information assumes that the target program will have \textbf{variable} sensitive 
+information when the attacker launches the attack.
+However, for real-world attacks, an adversary may run the target problem again and over again 
+with \textbf{fixed} unknown sensitive information such as the key. 
+Therefore, the previous threat model can't catch real attack scenarios.
+In contrast, our method is more precise and fine-grained. 
+We quantify the amount of leaked information as the cardinality of the set of possible inputs 
+based on attackers' observations. 
+
 Before an attack, an adversary has a big but finite input space.
-Every time the adversary observes one leakage site, he can eliminate some potential inputs and
-reduce the size of the input space. 
-%The smaller the input space is, the more information is actually gained. 
+Every time when the adversary observes one leakage site, he can eliminate some 
+potential inputs and reduce the size of the input space. 
+The smaller the input space is, the more information is actually gained. 
 In extreme cases, if the size of the input space reduces to one, 
 the adversary can determine the input information uniquely, which means all information
-(e.g., the whole secret key) is leaked. 
-Further, we turn the quantification into a model counting problem~\cite{bibid} 
-and solve it by Markov Chain Monte Carlo approximate counting~\cite{bibid}. 
-In this way, we quantify the information leakage more precisely.
-
+(e.g., the whole secret key) is leaked. By counting the number of different inputs that
+, we can quantify the information leakage more precisely.
 
 More specifically, we build a tool called \tool{},\footnote{Clever Hans is a horse that can ``count''.
 Our tool uses an advanced method to count the number of leaked bits through side channel.}
