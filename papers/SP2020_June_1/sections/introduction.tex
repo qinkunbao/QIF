@@ -80,12 +80,12 @@ small programs or apply some domain knowledges to simplify the execution. We sys
 analyze the bottleneck of the symbolic execution and optimzie it scalable to
 real-world cryptosystems. 
 
-We apply the above technique and build a tool called \tool{},\footnote{Clever Hans is a horse that can ``count''.
-Our tool uses an advanced method to count the number of leaked bits through side channel.}
-which could discover and estimate those potential information leakage sites 
-as well as how many bits they can leak. 
-We assume that adversaries can exploit different control-flow transfers and data-access patterns when 
-the program processes different sensitive data. 
+We apply the above technique and build a tool called \tool{},\footnote{CleverHans is a horse that can ``count''.
+Our tool uses an advanced method to count the number of leaked bits from side channels.}
+which could discover potential information leakage sites 
+as well as estimating how many bits they can leak for each leakage site. 
+We assume that adversaries can exploit secret-dependnet control-flow transfers and 
+data-access patterns when the program processes different sensitive data. 
 %We refer them as the potential information leakage sites. 
 First, we collect the dynamic execution trace for each input of the target libraries 
 and then run symbolic execution on the traces. 
@@ -124,21 +124,22 @@ the code can still leak the same information.
 %dependent relationships among those multiple leakages sites. Therefore, we introduce a 
 %monte carlo sampling method to estimate the total information leakage.
 
-We apply \tool{} on several crypto and non-crypto libraries including OpenSSL,
-MbedTLS and libjpeg. The experiment result confirms that \tool{} can precisely identify the pre-known vulnerabilities,
-reports how much information is leaked and which byte in the original sensitive buffer is leaked. 
+We apply \tool{} on both symmetric and asymmetric ciphers from real-world crypto libraries including OpenSSL,
+mbedTLS. The experiment result confirms that \tool{} can precisely identify the pre-known vulnerabilities,
+reporting how much information is leaked and which byte in the original sensitive buffer is leaked. 
 Although some of the analyzed crypto libraries have a number of side-channels, they actually
-leak very little information. Also, we also use the tool to analysis the two reported side-channel attack 
-in the libjpeg library. Finally, we present new vulnerabilities. With the help of \tool{}, we confirm those
+leak very little information. Also, we perform the analysis of widely deployed software countermeasures
+against side channels.
+Finally, we present new vulnerabilities. With the help of \tool{}, we confirm those
 vulnerabilities are easily to be exploited. Our results are superisingly different compared to previous results
 and much more useful in practice.
 
 In summary, we make the following contributions:
 
 \begin{itemize}
-	\item We propose a novel method that can quantify fine-grained side-channel
-        information leakages. We model each information leakage vulnerability as math formulas and 
-        mutiple side-channel vulnerabilities can be seen as the disjunctions of those formulas, which
+	\item We propose a novel method that can quantify fine-grained leaked information from side-channel
+        vulnerabilities. We model each side-channel vulnerabilities as math formulas and 
+        mutiple side-channel vulnerabilities can be seen as the conjunction of those formulas, which
         precisely models the program semantics.
         \item We transfer the information quantification problem into a probabilty distribution problem and 
         use the Monte Carlo sampling method to estimate the information leakage. Some initial results indicate the 
@@ -146,8 +147,8 @@ In summary, we make the following contributions:
         sampling method and provide the corresponding error esitimate.
 	\item We implement the proposed method into a practical tool and apply it on several real-world software. \tool{} 
         successfully identify the address-based side-channel vulnerabilities and provide the corresponding
-        information leakge. The information lekage result provide the detailed information that help developers
-        to fix the vulnerability.
+        information leakge. The information leakage result provide the detailed information that help developers
+        fix the vulnerability.
 \end{itemize}
 
 
