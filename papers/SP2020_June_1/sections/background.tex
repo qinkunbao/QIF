@@ -1,20 +1,22 @@
 \section{Background}
 In this section, we first present an introduction to software-based 
-side-channel attacks. These attacks are what we study in the paper. 
-After that, we will discuss existing methods on side-channel detection 
-and quantification.
+side-channel attacks. Moreover, we analyze the root cause of many
+software-based side-channels. We find many of them are caused by the
+two specific side-channel vulnerabilities, secret-dependent control-flow transfers and
+secret-dependent memory accesses. Therefore, we will focus on identifying
+and quantifying those leakages in the paper. After that, we 
+discuss existing methods on side-channel detection and quantification.
 
 \subsection{Software-based Side-Channels}
-Side-channels are information channels that can 
-leak sensitive information unconsciously through different 
-behaviors.  
+Side-channels are information channels that can leak sensitive information 
+unconsciously through different execution behaviors.  
 
-Fundamentally, those differences were caused by the memory 
-hierarchy design in modern computer systems. When a CPU 
-fetches data, it first searches
-the cache, which stores copies of data that was frequently 
-referred in main memory. If the data does not exist in the cache, 
-the CPU will read the data from the main memory (RAM). 
+Fundamentally, those differences were caused by the shared hardware
+resource in modern computer systems. When a CPU fetches data, it first searches
+the cache, which stores copies of data that were frequently referred in the main memory. 
+If the data does not exist in the cache, the CPU will read the data from the main memory (RAM). 
+Depending on the layer caused side-channels, we can classify them 
+into many types of side-channels.
 
 \subsubsection{Cache-based Attacks}
 In general, the cached-based side-channels rely on the time differences 
