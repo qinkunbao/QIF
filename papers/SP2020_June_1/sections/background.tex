@@ -7,7 +7,7 @@ secret-dependent memory accesses. Therefore, we will focus on identifying
 and quantifying those leakages in the paper. After that, we 
 discuss existing methods on side-channel detection and quantification.
 
-\subsection{Software-based Side-Channels}
+\subsection{Software-based Side-channels}
 Side-channels are information channels that can leak sensitive information 
 unconsciously through different execution behaviors.  
 
@@ -16,7 +16,7 @@ resource in modern computer systems. When a CPU fetches data, it first searches
 the cache, which stores copies of data that were frequently referred in the main memory. 
 If the data does not exist in the cache, the CPU will read the data from the main memory (RAM). 
 Depending on the layer caused side-channels, we can classify them 
-into many types of side-channels.
+into the following types of side-channels attacks.
 
 \subsubsection{Cache-based Attacks}
 In general, the cached-based side-channels rely on the time differences 
