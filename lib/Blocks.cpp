@@ -67,8 +67,11 @@ namespace tana {
 
     uint32_t DynamicBlock::block_seed_id = 0;
 
-    DynamicBlock::DynamicBlock(uint32_t start_inst_index, uint32_t end_inst_index) : m_end_inst_index(end_inst_index),
-                                                                                     m_start_inst_index(start_inst_index)
+    DynamicBlock::DynamicBlock(uint32_t start_inst_index, uint32_t end_inst_index,
+                               std::shared_ptr<std::vector<std::unique_ptr<Inst_Base>>> m_ptr):
+                                                                                     m_end_inst_index(end_inst_index),
+                                                                                     m_start_inst_index(start_inst_index),
+                                                                                     m_inst_list_ptr(m_ptr)
     {
         this->block_id = ++block_seed_id;
     }
