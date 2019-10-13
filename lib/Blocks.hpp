@@ -44,7 +44,7 @@ namespace tana {
         uint32_t m_start_inst_index;
         uint32_t m_end_inst_index;
 
-        void print(const std::vector<unique_ptr<Inst_Base>> &inst_vector) const;
+        void print(const std::vector<std::unique_ptr<Inst_Base>> &inst_vector) const;
         DynamicBlock(uint32_t start_inst_index, uint32_t end_inst_index);
 
     };
