@@ -18,14 +18,11 @@ If the data does not exist in the cache, the CPU will read the data from the mai
 Depending on the layer caused side-channels, we can classify them 
 into the following types of side-channels attacks.
 
-\subsubsection{Cache-based Attacks}
-In general, the cached-based side-channels rely on the time differences 
-between the cache miss
-and the cache hit. Here we introduce two frequently used cache attacks:
-PRIME+PROBE and FLUSH+RELOAD.
-
-\textit{PRIME+PROBE} targets a single cache set. It has two phases. During the
-``prime'' phase, the attacker fills the cache set with his data.
+Cached-based side-channels rely on the time differences 
+between cache miss and cache hit. We introduce two common attack strategies,
+Prime + Probe and Flush + Reload.
+PRIME+PROBE targets a single cache set. During the
+``prime'' phase, the attacker fills the cache set with its own data.
 In the second ``probe'' phase, the attacker re-accesses the cache set
 again. If the victim accesses the cache set and evicts part of 
 the data, the attacker will experience a slow measurement. If not, 
@@ -33,7 +30,7 @@ it will be fast. By knowing which cache set the target
 program accesses, the attacker can infer locations of
 the sensitive information.
 
-\textit{FLUSH+RELOAD} targets a single cache line. 
+FLUSH+RELOAD targets a single cache line. 
 It requires the attacker and victim share the same memory.
 It also has two phases. During the ``flush'' stage, the attacker 
 flushes the ``monitored memory'' from the cache. Then the attacker
