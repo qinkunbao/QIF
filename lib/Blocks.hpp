@@ -52,6 +52,8 @@ namespace tana {
 
         void print() const;
 
+        uint32_t size() const ;
+
         DynamicBlock(uint32_t start_inst_index, uint32_t end_inst_index,
                      std::shared_ptr<std::vector<std::unique_ptr<Inst_Base>>> m);
 

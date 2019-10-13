@@ -78,8 +78,29 @@ namespace tana {
 
     bool DynamicBlock::operator==(const tana::DynamicBlock &block)
     {
-        bool true_flag = false;
+        if(size() != block.size())
+        {
+            return false;
+        }
+        uint32_t inst_size = size();
+        uint32_t inst_index = 0;
 
+        while(inst_index < inst_size)
+        {
+            auto &inst1 = (*m_inst_list_ptr)[m_start_inst_index + inst_index]->instruction_id;
+            auto &inst2 = (*(block.m_inst_list_ptr))[block.m_start_inst_index + inst_index]->instruction_id;
+            if(inst1 != inst2)
+            {
+                return false;
+            }
+            ++inst_index;
+        }
+        return true;
+
+    }
+
+    uint32_t DynamicBlock::size() const {
+        return m_end_inst_index - m_start_inst_index;
     }
 
 
