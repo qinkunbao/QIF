@@ -76,5 +76,11 @@ namespace tana {
         this->block_id = ++block_seed_id;
     }
 
+    bool DynamicBlock::operator==(const tana::DynamicBlock &block)
+    {
+        bool true_flag = false;
+
+    }
+
 
 }

@@ -45,6 +45,11 @@ namespace tana {
         uint32_t m_start_inst_index;
         uint32_t m_end_inst_index;
 
+        bool operator==(const DynamicBlock &block);
+        bool operator!=(const DynamicBlock &block);
+        bool operator<(const DynamicBlock &block);
+        bool operator>(const DynamicBlock &block);
+
         void print() const;
 
         DynamicBlock(uint32_t start_inst_index, uint32_t end_inst_index,
