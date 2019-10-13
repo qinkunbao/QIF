@@ -99,6 +99,10 @@ namespace tana {
 
     }
 
+    bool DynamicBlock::operator!=(const DynamicBlock &block) {
+        return !((*this) == block);
+    }
+
     uint32_t DynamicBlock::size() const {
         return m_end_inst_index - m_start_inst_index;
     }
