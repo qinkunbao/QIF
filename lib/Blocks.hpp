@@ -14,7 +14,7 @@
 
 namespace tana {
 
-    class Block {
+    class StaticBlock {
     public:
         std::vector<std::unique_ptr<Inst_Base>> inst_list;
         uint32_t addr;
@@ -26,12 +26,26 @@ namespace tana {
         int id = 0;
         bool traced;
 
-        Block(uint32_t n_addr, uint32_t n_end_addr, uint32_t n_inputs, uint32_t n_ninstr, \
+        StaticBlock(uint32_t n_addr, uint32_t n_end_addr, uint32_t n_inputs, uint32_t n_ninstr, \
               uint32_t n_outputs, uint32_t n_size, uint32_t trace);
 
         bool init(std::vector<std::unique_ptr<Inst_Base>> &fun_inst);
 
         void print() const;
+
+    };
+
+    class DynamicBlock {
+    private:
+        uint32_t block_id;
+
+    public:
+        static uint32_t block_seed_id;
+        uint32_t m_start_inst_index;
+        uint32_t m_end_inst_index;
+
+        void print(const std::vector<unique_ptr<Inst_Base>> &inst_vector) const;
+        DynamicBlock(uint32_t start_inst_index, uint32_t end_inst_index);
 
     };
 

@@ -11,13 +11,13 @@
 
 namespace tana {
 
-    Block::Block(uint32_t n_addr, uint32_t n_end_addr, uint32_t n_inputs, uint32_t n_ninstr, \
+    StaticBlock::StaticBlock(uint32_t n_addr, uint32_t n_end_addr, uint32_t n_inputs, uint32_t n_ninstr, \
               uint32_t n_outputs, uint32_t n_size, uint32_t n_trace) : addr(n_addr), end_addr(n_end_addr), \
                                                                        inputs(n_inputs), \
                                                                        ninstr(n_ninstr), outputs(n_outputs), \
                                                                        size(n_size), traced(n_trace) {}
 
-    bool Block::init(std::vector<std::unique_ptr<Inst_Base>> &fun_inst) {
+    bool StaticBlock::init(std::vector<std::unique_ptr<Inst_Base>> &fun_inst) {
         bool copy_flag = false;
         bool finish_flag = false;
         for (auto &ins : fun_inst) {
@@ -53,7 +53,7 @@ namespace tana {
         return finish_flag;
     }
 
-    void Block::print() const {
+    void StaticBlock::print() const {
         std::cout << "Block: " << this->id << "\n";
         std::cout << "Start Address: " << std::hex << addr << " End Address: " << end_addr << std::dec << "\n";
         std::cout << "Block Size: " << size << std::endl;
@@ -62,6 +62,15 @@ namespace tana {
         }
 
         std::cout << "\n";
+    }
+
+
+    uint32_t DynamicBlock::block_seed_id = 0;
+
+    DynamicBlock::DynamicBlock(uint32_t start_inst_index, uint32_t end_inst_index) : m_end_inst_index(end_inst_index),
+                                                                                     m_start_inst_index(start_inst_index)
+    {
+        this->block_id = ++block_seed_id;
     }
 
 

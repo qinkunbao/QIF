@@ -549,7 +549,7 @@ namespace tana {
     }
 
 
-    bool parse_static_trace(std::ifstream &trace_file, std::ifstream &json_file, std::vector<Block> &blocks) {
+    bool parse_static_trace(std::ifstream &trace_file, std::ifstream &json_file, std::vector<StaticBlock> &blocks) {
         nlohmann::json blocks_json = nlohmann::json::array();
         json_file >> blocks_json;
         uint32_t ins_index = 0;
@@ -577,7 +577,7 @@ namespace tana {
             uint32_t block_size = std::stoul(str_size, nullptr, 16);
             uint32_t block_traced = (str_traced == "true");
 
-            Block block(block_addr, block_end_addr, block_inputs, block_ninstr, \
+            StaticBlock block(block_addr, block_end_addr, block_inputs, block_ninstr, \
                         block_outputs, block_size, block_traced);
 
             block.id = block_id++;

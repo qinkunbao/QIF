@@ -85,7 +85,7 @@ namespace tana {
     }
 
     void
-    StaticSEEngine::initFromBlock(tana::Block &b) {
+    StaticSEEngine::initFromBlock(tana::StaticBlock &b) {
 
         this->initAllRegSymol(b.inst_list.begin(), b.inst_list.end());
     }

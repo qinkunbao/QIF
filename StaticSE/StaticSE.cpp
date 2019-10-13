@@ -14,7 +14,7 @@ using namespace std;
 
 class block_result{
     vector<shared_ptr<BitVector>> value;
-    shared_ptr<Block> block;
+    shared_ptr<StaticBlock> block;
 };
 
 string disassemble_cmd(const string &elf){
@@ -65,7 +65,7 @@ int printFormulas(char* filename)
         return 1;
     }
 
-    std::vector<Block> block_list;
+    std::vector<StaticBlock> block_list;
     parse_static_trace(infile1, infile2, block_list);
 
 
@@ -166,8 +166,8 @@ int main(int argc, char **argv)
         cerr << "Open file error!, one of "<< file_name2 << "or" << blocks_file_name2 << "failed to open\n";
     }
 
-    std::vector<Block> block_list1;
-    std::vector<Block> block_list2;
+    std::vector<StaticBlock> block_list1;
+    std::vector<StaticBlock> block_list2;
 
     parse_static_trace(in_file1, in_file1_block, block_list1);
     parse_static_trace(in_file2, in_file2_block, block_list2);

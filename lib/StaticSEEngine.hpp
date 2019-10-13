@@ -43,7 +43,7 @@ namespace tana {
 
         void reset();
 
-        void initFromBlock(Block &b);
+        void initFromBlock(StaticBlock &b);
 
         std::vector<std::shared_ptr<BitVector>> getAllOutput() override;
 
