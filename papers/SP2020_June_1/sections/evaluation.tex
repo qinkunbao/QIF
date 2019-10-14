@@ -1,11 +1,37 @@
 \section{Evaluation}
 \label{res_overview}
-\begin{figure*}[ht]
+
+\begin{table*}
     \centering
-    \includegraphics[width=\columnwidth]{./figures/Result.pdf}
     \caption{Result}
     \label{fig:Test}
-\end{figure*}
+    \begin{tabular}{rrrrrrrrr}
+      \hline
+Algorithm & Implementation & \# of Lekage Sites & \# of CF & \# of DF & Total Instructions & Max Leakeage (bits) & Symbolic Execution Time & Monte Carlo Time\\\hline
+AES & mbed TLS 2.5   & 68 & 0 & 68 & 39,855 & 8 & 570ms & 850ms\\
+AES & mbed TLS 2.15  & 68 & 0 & 68 & 39,855 & 8 & 550ms & 829ms\\
+AES & openssl 0.9.7  & 75 & 0 & 75 & 1,704 & 10 & 319ms & 7s 720ms\\
+AES & openssl 1.0.2f & 88 & 0 & 88 & 1,350 & 12 & 72ms & 1s 500ms\\
+AES & openssl 1.0.2k & 88 & 0 & 88 & 1,350 & 11 & 83ms & 1s 441ms\\
+AES & openssl 1.1.0f & 88 & 0 & 88 & 1,420 & 12 & 87ms & 1s 454ms\\
+AES & openssl 1.1.1  & 88 & 0 & 88 & 1,586 & 8 & 91ms & 1s 250ms\\
+DES & mbed TLS 2.5   & 15 & 0 & 15 & 4,596 & 1 & 114ms & 144ms\\
+DES & mbed TLS 2.15  & 15 & 0 & 15 & 4,596 & 1 & 106ms & 137ms\\
+DES & openssl 0.9.7  & 6 & 0 & 6 & 2,976 & 7 & 149ms & 4s 193ms       \\
+DES & openssl 1.0.2f & 8 & 0 & 8 & 2,593 & 9 & 239ms & 5s 311ms       \\
+DES & openssl 1.0.2k & 8 & 0 & 8 & 2,593 & 9 & 235ms & 5s 80ms        \\
+DES & openssl 1.1.0f & 8 & 0 & 8 & 4,260 & 9 & 256ms & 5s 27ms        \\
+DES & openssl 1.1.1  & 6 & 0 & 6 & 8,272 & 7 & 235ms & 4s 584ms       \\
+RSA & mbed TLS 2.5   & 6 & 6 & 0 & 22,109,246 & 9      & 37m 51s & 20m 10s \\
+RSA & mbed TLS 2.15  & 12 & 0 & 12 & 24,484,441 & 9    & 39m 17s & 4h 1m 16s     \\
+RSA & openssl 0.9.7  & 105 & 103 & 2 & 16,980,109 & 13 & 28m 26s & 4h 26m 33s \\
+RSA & openssl 1.0.2f & 38 & 27 & 11 & 14,468,307 & 10  & 28m 11s & 2h 40m 17s  \\
+RSA & openssl 1.0.2k & 36 & 27 & 9 & 15,285,210 & 12   & 39m 13s & 4h 42m 43s   \\
+RSA & openssl 1.1.0f & 31 & 22 & 9 & 16,390,750 & 13   & 32m 48s & 4h 21m 58s   \\
+RSA & openssl 1.1.1  & 26 & 20 & 6 & 18,207,020 & 12   &  7m  3s & 7h 35m         \\\hline
+\end{tabular}
+\end{table*}
+
 We evaluate \tool{} with the real-world crypto libraries and non-crypto libraries. 
 For crypto libraries, we choose OpenSSL, mbedTLS and NaCl. 
 OpenSSL and mbedTLS are the two most commonly used
