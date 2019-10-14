@@ -11,14 +11,26 @@ as the mutual information or the maximal leakage. These definitions provide a st
 when trying to prove a program is secure enough if their methods calculate the program 
 leaks zero bits of information.
 
-\lstinputlisting[language=c, 
-numbers=left,
-caption={Side-channel leakage},
-captionpos=b,
-frame=single,
-label={code::entropy},
-basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
-{sample_code/dependent.c}
+
+\begin{figure}[h!]
+\centering
+    % \vspace{-5mm}
+\begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
+unsigned char key = input();
+// key = [0 ... 255]
+if(key = 128)
+    A(); // branch 1
+else if (key < 64)
+    B(); // branch 2
+else if (key < 128)
+    C(); // branch 3
+else
+    D(); // branch 4
+\end{lstlisting}
+\caption{Side-channel leakage}
+\label{code::entropy}
+    % \vspace{-5mm}
+\end{figure}
 
 However, the above definition is less useful to justify the sensitive level of leakage sites. 
 Considering the example code~\ref{code::entropy}, if an attacker knows the

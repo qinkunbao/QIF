@@ -12,10 +12,27 @@
 \usepackage{amsfonts}
 \usepackage{amsthm}
 \usepackage{tikz}
+\usepackage{multirow}
+\usepackage{balance}
+\usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{pdfpages}
 \usepackage{subfig}
 \usepackage[ruled, linesnumbered]{algorithm2e}
+
+\usepackage[scaled]{beramono}
+\usepackage[T1]{fontenc}
+
+\usepackage[english]{babel} % handle hyphenation
+
+\lstset{
+numbers=left,
+frame=single,
+language=C,
+basicstyle=\fontfamily{fvm}\scriptsize,
+showlines=true
+%xleftmargin=.2\textwidth, xrightmargin=.2\textwidth,
+}
 
 \newcommand{\highlight}[1]{\colorbox{yellow}{\textbf{#1}}}
 \newcommand{\fixme}[1]{\highlight{FIXME:} \emph{#1}}
