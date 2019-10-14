@@ -39,14 +39,29 @@ where an attacker works in the kernel space, can infer sensitive data in the shi
 observing the page fault sequences after restricting some code and
 data pages. 
 
-The fundamental intuition is that every side-channels above happens when the program accesses different 
+\begin{figure}
+    \centering
+    \subfloat[Mutual Information]
+    {
+        \includegraphics[width=.4\linewidth]{./figures/MI.pdf}
+        \label{fig:1}
+    }
+    \subfloat[Real Attack]
+    {
+        \includegraphics[width=.4\linewidth]{./figures/RA.pdf}
+        \label{fig:2}
+    }
+    \caption{some caption here. \fixme{redraw the figure. i will give you the instruction.}}
+    \end{figure}
+
+The key intuition is that each side-channels above happens when the program accesses different 
 memory addresses if the program has different sensitive inputs. More specifically, if 
 a program show different patterns in control transfers or data accesses when the program 
 processes different sensitive inputs, the program could possibly have side channels vulnerabilities. 
 Different kinds of side-channels can be exploited to retrieve information
 in various granularities. For example, many cache channels can observe cache accesses
-at the level of the cache line. For most CPU, one cache line holds 64 bytes of data. So
-the low 6 bits the address is irrelevant in causing side-channels. 
+at the level of a cache line. For most CPU, one cache line holds 64 bytes of data. So
+the low 6 bits the address is irrelevant in causing those cached-based side-channels. 
 
 %\lstinputlisting[language=c, 
 %                 numbers=left,
