@@ -1,23 +1,11 @@
 \section{Evaluation}
 \label{res_overview}
-\begin{table*}[]
-    \begin{tabular}{c c c c c c c l}
-    \hline
-    Program                & Start Function             & Input Size (bits)   & CF   & DA     & Number of Instructions & Process Time (s) \\ \hline
-    AES OpenSSL-0.9.7      & AES\_set\_encrypt\_key     &     128             &      &        &                        &                  \\
-    DES OpenSSL-0.9.7      & DES\_string\_to\_key       &     64              &      &        &                        &                  \\
-    AES OpenSSL-1.1.1      & AES\_set\_encrypt\_key     &     128             &      &        &                        &                  \\
-    DES OpenSSL-1.1.1      & DES\_string\_to\_key       &     64              &      &        &                        &                  \\
-    AES mbedTLS-2.5        & mbedtls\_aes\_setkey\_enc	&     128             &      &        &                        &                  \\
-    DES mbedTLS-2.5        & mbedtls\_des\_setkey\_enc  &     64              &      &        &                        &                  \\
-    RSA mbedTLS-2.5        & mbedtls\_pk\_parse\_key    &     1024            &      &        &                        &                  \\
-    AES mbedTLS-2.15       & mbedtls\_aes\_setkey\_enc  &     128             &      &        &                        &                  \\
-    DES mbedTLS-2.15       & mbedtls\_des\_setkey\_enc  &     64              &      &        &                        &                  \\
-    wget-1.18              & sock\_read                 &     494             &      &        &                        &                  \\
-    GTK                    &                            &                     &      &        &                        &                  \\
-    \hline
-    \end{tabular}
-\end{table*}
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=\columnwidth]{./figures/Result.pdf}
+    \caption{Result}
+    \label{fig:Test}
+\end{figure*}
 We evaluate \tool{} with the real-world crypto libraries and non-crypto libraries. 
 For crypto libraries, we choose OpenSSL, mbedTLS and NaCl. 
 OpenSSL and mbedTLS are the two most commonly used
