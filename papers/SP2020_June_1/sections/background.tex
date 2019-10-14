@@ -9,46 +9,43 @@ discuss existing methods on side-channel detection and quantification.
 
 \subsection{Software-based Side-channels}
 Side-channels are information channels that can leak sensitive information 
-unconsciously through different execution behaviors.  
-
-Fundamentally, those differences were caused by the shared hardware
-component (e.g., the CPU cache, the TLB and DRAM) in modern computer systems.
+unconsciously through different execution behaviors.  Fundamentally, those 
+differences were caused by shared hardware
+components (e.g., the CPU cache, the TLB and DRAM) in modern computer systems.
 Depending on the layer causing side-channels, we can classify them 
-into the following types of side-channels attacks.
+into the following types of side-channel attacks.
 
-Cached-based side-channels rely on the time differences 
+For example, cached-based side-channels rely on the time differences 
 between cache miss and cache hit. We introduce two common attack strategies,
-Prime + Probe and Flush + Reload.
-PRIME+PROBE targets a single cache set. The attacker preloads cache set with
+namely Prime+Probe and Flush+Reload.
+Prime+Probe targets a single cache set. The attacker preloads cache set with
 its own data and wait until the victim execute the program.
 If the victim accesses the cache set and evicts part of 
 the data, the attacker will experience a slow measurement. If not, 
 it will be fast. By knowing which cache set the target
 program accesses, the attacker can infer locations of
-the sensitive information.
-
-FLUSH+RELOAD targets a single cache line. 
-It requires the attacker and victim share the same memory address space.
-It also has two phases. During the ``flush'' stage, the attacker 
+the sensitive information. Flush+Reload targets a single cache line. 
+It requires the attacker and the victim share the same memory address space.
+During the ``flush'' stage, an attacker 
 flushes the ``monitored memory'' from the cache. Then the attacker
 waits for the victim to access the memory. In the next phase, the 
 attacker reload the ``monitored memory''. By measuring the time difference, the
 attacker can infer the sensitive information.
 
-Another type of attacks are memory-based side-channels~\cite{7163052} that exploits 
-the different behaviors when the
-program accesses different memory address. For example, the controlled-channel attack~\cite{7163052},
-which works in the shielding system, can infer the sensitive data in the shielding systems by
+There are some other types of side-channels which target the different hardware layer other than  
+CPU cache.
+For example, the controlled-channel attack~\cite{7163052},
+where an attacker works in the kernel space, can infer sensitive data in the shielding systems by
 observing the page fault sequences after restricting some code and
 data pages. 
 
-After examining the memory-based side-channels attack, we believe the root
-cause of those attacks are secret-dependent memory access and control
-flow transfers.  \fixme{This paragraph is confusing. Secret-dependent memory access and control
-flow transfers can be cache-based side channels. We need further develop this so it is not a surprise
-when it is mentioned in the next subsection. It is better to classify these into 'branch-taken-related' and 'data-accessed-related.'}
+The fundamental intuition is that every side-channels above happens when the program accesses different 
+memory addresses when the program has different sensitive inputs. More specifically, if 
+a program show different patterns in control transfers or data accesses when the program 
+processes different sensitive inputs, the program could possibly have side channels vulnerabilities. 
+Different kinds of side-channels can be exploited to retrieve information
+in various granularities. 
 
-%
 %\lstinputlisting[language=c, 
 %                 numbers=left,
 %                 caption={Sample code shows secret-dependent memory access and 
