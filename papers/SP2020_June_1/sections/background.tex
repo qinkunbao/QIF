@@ -33,26 +33,39 @@ attacker reload the ``monitored memory''. By measuring the time difference, the
 attacker can infer the sensitive information.
 
 There are some other types of side-channels which target different hardware layers other than  
-CPU cache.
+CPU cache as well.
 For example, the controlled-channel attack~\cite{7163052},
 where an attacker works in the kernel space, can infer sensitive data in the shielding systems by
 observing the page fault sequences after restricting some code and
 data pages. 
 
 \begin{figure}
-    \centering
-    \subfloat[Mutual Information]
-    {
-        \includegraphics[width=.4\linewidth]{./figures/MI.pdf}
-        \label{fig:1}
-    }
-    \subfloat[Real Attack]
-    {
-        \includegraphics[width=.4\linewidth]{./figures/RA.pdf}
-        \label{fig:2}
-    }
-    \caption{some caption here. \fixme{redraw the figure. i will give you the instruction.}}
-    \end{figure}
+
+\noindent\begin{minipage}[t]{0.35\linewidth}
+\begin{lstlisting}[]
+int a;
+int c;
+int d;
+if(a+b > 0)
+{
+    branch();
+}
+\end{lstlisting}
+\end{minipage}\hfill
+
+\begin{minipage}[t]{0.35\linewidth}
+\begin{lstlisting}[]
+int b;
+int a;
+int c;
+int d;
+if(a+b > 0)
+{
+    branch();
+}
+\end{lstlisting}
+\end{minipage}
+\end{figure}
 
 The key intuition is that each side-channels above happens when the program accesses different 
 memory addresses if the program has different sensitive inputs. More specifically, if 
