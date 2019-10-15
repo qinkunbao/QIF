@@ -23,13 +23,13 @@ information leakage.
 \end{figure*}
 
 \begin{enumerate}
-    \item \textit{Execution trace generation.} The design goal of \tool\ is to
+    \item \emph{Execution trace generation.} The design goal of \tool\ is to
     estimate the information leakage as precisely as possible. Therefore,
     we sacrifice the soundness for the precision in terms of program analysis.
     Previous works~\cite{203878,217537} have demonstrated the effectiveness of the
     dynamic program analysis. We run the target binary under the dynamic binary
     instrumentation (DBI) to record the execution trace and the runtime information.
-    \item \textit{Instruction level symbolic execution.} We model the 
+    \item \emph{Instruction level symbolic execution.} We model the 
     attacker's observation about the side-channel vulnerabilities with math
     formula. Each formula capture the fined-grained information between the input secrets
     and the leakage site. For the consideration of precision and performance, 
@@ -37,7 +37,7 @@ information leakage.
     Also, the engine only symbolically execute the instruction that might be affected the
     input key. The above design significantly reduces the overhead of the symbolic
     execution, which make the tool scales to real-world programs.
-    \item \textit{Leakage estimation.} We transfer the information leakage quantification
+    \item \emph{Leakage estimation.} We transfer the information leakage quantification
     problem into the problem of counting the number of assignments that satisfy the formulas
     which models the observations from attacker. We propose a markov monte carlo method to 
     estimate the number of satisfied solutions. With the help of Chebyshev's Inequality,
