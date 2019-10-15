@@ -16,7 +16,7 @@
 \usepackage{graphicx}
 \usepackage{pdfpages}
 \usepackage{subfig}
-\usepackage[ruled, linesnumbered]{algorithm2e}
+\usepackage[ruled,linesnumbered]{algorithm2e}
 
 \usepackage[scaled]{beramono}
 \usepackage[T1]{fontenc}
@@ -49,17 +49,30 @@ showlines=true
 \maketitle
 
 \begin{abstract}
-    Side-channel attacks allow adversaries to infer sensitive
-    information based on non-functional characteristics. 
-    Existing work on address-based side-channel detections can identify many tentative side-channel leakage sites. Those leakage sites can leak one bit, two bits, or many bits. However, no existing tools can
-    precisely report the number of leaked bits for each leakage site.
+Side-channel attacks allow adversaries to infer sensitive information
+based on non-functional characteristics.  Existing work on
+address-based side-channel detections can identify many tentative
+side-channel leakage sites.
+  %Those leakage sites can leak one bit, two bits, or many bits.
+However, no existing tools can precisely report the number of leaked
+bits for each leakage site, for production systems.
        
-    To overcome the limitation, we propose a novel method to precisely quantify the leaked information from side-channel vulnerabilities. 
-    We model each leakage as a math constraint and use those
-    constraints to divide the input space set into several subsets.
-    Among those subsets, only one subset that satisfies every constraint.
-    As we discuss later, the cardinality of the subset corresponds to the amount of leaked information from those leakages. We use symbolic executions to generate math constraints. It is widely believed that symbolic execution is expensive in terms of performance. We systematically analyze the bottlenecks of the current dynamic symbolic execution approach and make it scalable to real-world cryptosystems. In the final step, we run Monte Carlo sampling to estimate the number of leaked information for each detected vulnerabilities. With the help of the Central Limit Theorem (CLT),
-    we can also give the error estimation.
+To overcome the limitation, we propose a novel method to precisely
+quantify the leaked information from side-channel vulnerabilities.  We
+model each leakage as a constraint and use those constraints to
+divide the input space set into several subsets such that  %.  Among those subsets,
+only one subset satisfies every constraint.  %As we discuss later,
+The cardinality of the subset corresponds to the amount of leaked
+information from those leakages.
+We use symbolic executions to
+generate math constraints. It is widely believed that symbolic
+execution is expensive in terms of performance. We systematically
+analyze the bottlenecks of the current dynamic symbolic execution
+approach and make it scalable to real-world cryptosystems. In the
+final step, we run Monte Carlo sampling to estimate the number of
+leaked information for each detected vulnerabilities. With the help of
+the Central Limit Theorem (CLT), we can also give the error
+estimation.
 
     We have implemented the above technique in a tool called \tool{}, which can not only find the side-channel vulnerabilities but also estimate how many bits are leaked. 
     \tool{} outperforms existing dynamic side-channel detection tools in terms of performance and accuracy. Also, \tool{} can report a very fined-grained vulnerability leakage information.
