@@ -66,8 +66,8 @@ aspects:
 
 \subsection{Evaluation Result Overview}
 In this section, we present an overview of the evaluation result. 
-\tool{} find 883 leakages in total from real-world crypto system source libraries.
- Among those 883 leak points, 205 of them are leaked due
+\tool{} find 883 leakages in total from real-world crypto system libraries.
+Among those 883 leak points, 205 of them are leaked due
 to secret-dependent control-flow transfers and 678 of them are leaked 
 due to secret-dependent memory accesses. 
 
@@ -89,13 +89,12 @@ the past few years, and developers have patched most of those leakages.
 One method to address the leakage is to use bit-slicing. We will analyse
 the corresponding countermeasure in the following sections.
 
-\tool{} find several leakage sites for the implementation of DES in OpenSSL.
-Each leakage can leak one bit of information from one byte. Also, our tool
-confirms those leakages are independent, so the total leaked information leakage
-is 8 bits. We check the source code and find the least significant
-bit in each byte is used for the parity. Therefore, \tool{} can confirm
-that even the key length of DES is 64 bits. However, only 56 bits of the 
-DES key is valid. 
+\tool{} find several leakage sites for both the implementation of DES and AES
+in OpenSSL and mbedTLS. \tool{} confirm that all those leakages come from
+table lookups implementations. mbed TLS 2.15 and 2.5 have the same implementation
+of DES and AES so they have the same leakage report. One proper fix would be 
+a scalar bit-sliced implementations. However, we don't see the bit-sliced 
+implementation of AES and DES in various versions of OpenSSL and mbedTLS.  
 
 \subsection{Information Leakage Quantification}
 \subsection{Analysis of Software Countermeasures}
