@@ -95,6 +95,10 @@ table lookups implementations. mbed TLS 2.15 and 2.5 have the same implementatio
 of DES and AES so they have the same leakage report. One proper fix would be 
 a scalar bit-sliced implementations. However, we don't see the bit-sliced 
 implementation of AES and DES in various versions of OpenSSL and mbedTLS.  
+However, we find the new implementation of OpenSSL instead use typical four 1K
+tables. It only uses 1K of tables. This implementation is rather easy but is
+still vulnerable to a side channel attack. However, the countermeasures do
+somehow decrease the total amount of leaked information.
 
 \subsection{Information Leakage Quantification}
 \subsection{Analysis of Software Countermeasures}
