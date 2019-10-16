@@ -41,20 +41,20 @@ OpenSSL and mbedTLS are the two most commonly used
 crypto libraries in today's software. NaCl (pronounced "salt") is a 
 new software library for encryption, decryption and signatures, etc.
 NaCl is designed to have no data flow from secrets to load address and no data 
-flow from secrets to branch conditions. Therefore, NaCl should have no leakages
+flow from secrets to branch conditions. Therefore, NaCl should have no leakage
 under our attack model. 
 
-
 We build the source code into 32-bit x86 Linux executables with the 
-GCC 8.0 on Ubuntu 14.04. Although our tool can
-work on stripped binaries, we use symbol information to track
-back leakage sites in the source code. We use Intel Pin version 3.7 
+GCC 8.0 on Ubuntu 14.04. Although we use use symbol information to track
+back leakage sites in the source code, our tool can
+work on stripped binaries as well. We use Intel Pin version 3.7 
 to record the execution trace. We run our experiments on a 2.90GHz
-Intel Xeon(R) E5-2690 CPU with 128GB memory.
-During the evaluation, we are interested in the following two
+Intel Xeon(R) E5-2690 CPU with 128GB RAM memory.
+During our evaluation process, we are interested in the following two
 aspects:
 \begin{enumerate}
-    
+    \item  Is \tool{} effective to detect side-channels in real-world
+    crypto systems?
     \item  Can \tool{} precisely
     report the number of leaked bits in open source libraries?
     \item  Recent work has reported a number
@@ -66,9 +66,9 @@ aspects:
 
 \subsection{Evaluation Result Overview}
 In this section, we present an overview of the evaluation result. 
-\tool{} find xx leakages in total from real-world crypto system source libraries.
- Among the xx leak points, xx of them are leaked due
-to secret-dependent control-flow transfers and xx of them are leaked 
+\tool{} find 883 leakages in total from real-world crypto system source libraries.
+ Among those 883 leak points, 205 of them are leaked due
+to secret-dependent control-flow transfers and 678 of them are leaked 
 due to secret-dependent memory accesses. 
 
 For crypto libraries, \tool{} finds that secret-dependent memory accesses 
