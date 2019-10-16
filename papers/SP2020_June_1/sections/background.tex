@@ -39,31 +39,35 @@ where an attacker works in the kernel space, can infer sensitive data in the shi
 observing the page fault sequences after restricting some code and
 data pages. 
 
-\begin{figure}
+\begin{figure}[]
 
-\noindent\begin{minipage}[t]{0.35\linewidth}
-\begin{lstlisting}[]
-int a;
-int c;
-int d;
-if(a+b > 0)
-{
-    branch();
+\noindent\begin{minipage}{0.45\linewidth}
+    \noindent
+\begin{lstlisting}[numbers = none]
+unsigned long long r;
+int secret[32];
+while(i>0){
+    r = (r * r) % n;
+    if(secret[--i] == 1){
+        r = (r * x) % n;
+    }
 }
 \end{lstlisting}
-\end{minipage}\hfill
-
-\begin{minipage}[t]{0.35\linewidth}
-\begin{lstlisting}[]
-int b;
-int a;
-int c;
-int d;
-if(a+b > 0)
-{
-    branch();
-}
+\caption{Secret-dependent control-flow transfers}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+\begin{lstlisting}[numbers = none]
+static char Fsb[256] = {...}
+... 
+uint32_t a = *RK++ ^ \ 
+(FSb[(secret)) ^
+(FSb[(secret >> 8)] <<  8 ) ^
+(FSb[(secret >>16)] << 16 ) ^
+(FSb[(secret >>24)] << 24 );
+...
 \end{lstlisting}
+\caption{Secret-dependent memory accesses}
 \end{minipage}
 \end{figure}
 
