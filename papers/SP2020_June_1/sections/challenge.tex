@@ -143,19 +143,19 @@ we have no idea about the total information leakage.
 
 Suppose one program has two side-channel vulnerabilities A and B, which can leak $L_A$ and $L_B$ bits respectively
 according to the definition~\ref{def}. 
-Depending on the relation between A and B, the total leaked information $L_{Total}$ will be:
+Depending on the relation between A and B, the total leaked information $L_{\mathit{total}}$ will be:
 
 \subsubsection{Independent Leakages}
 If A and B are independent leakages, the total information leakage will be:
-$$L_{total} = L_A + L_B $$
+$$L_{\mathit{total}} = L_A + L_B $$
 
 \subsubsection{Dependent Leakages}
 If A and B are dependent leakages, the total information leakage will be:
-$$\max{\{L_A, L_B\}}  \leq L_{total} < L_A + L_B$$
+$$\max{\{L_A, L_B\}}  \leq L_{\mathit{total}} < L_A + L_B$$
 
 \subsubsection{Mutual Exclusive Leakages}
 If A and B are mutual exclusive leakages, then only A or B can be observed for one fixed input.
-$$L_{total} = 
+$$L_{\mathit{total}} = 
 \begin{cases}
 L_A & only A \\
 L_B & only B
