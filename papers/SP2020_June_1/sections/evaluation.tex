@@ -30,7 +30,8 @@ RSA & openssl 0.9.7  & 105 & 103 & 2 & 16,980,109 & 13 & 28m 26s ~~& 4h 26m 33s 
 RSA & openssl 1.0.2f & 38 & 27 & 11 & 14,468,307 & 10  & 28m 11s ~~& 2h 40m 17s  ~~\\
 RSA & openssl 1.0.2k & 36 & 27 & 9 & 15,285,210 & 12   & 39m 13s ~~& 4h 42m 43s   ~~\\
 RSA & openssl 1.1.0f & 31 & 22 & 9 & 16,390,750 & 13   & 32m 48s ~~& 4h 21m 58s   ~~\\
-RSA & openssl 1.1.1  & 26 & 20 & 6 & 18,207,020 & 12   &  7m  3s ~~& 7h 35m         ~~\\\hline
+RSA & openssl 1.1.1  & 26 & 20 & 6 & 18,207,020 & 12   &  7m  3s ~~& 7h 35m      ~~\\\hline
+Total &              & 883 &205& 678& 128,042,089&     & 213m    ~~& 1688m ~~\\\hline
 \end{tabular}
 \end{table*}
 
@@ -38,20 +39,11 @@ We evaluate \tool{} with the real-world crypto libraries and non-crypto librarie
 For crypto libraries, we choose OpenSSL, mbedTLS and NaCl. 
 OpenSSL and mbedTLS are the two most commonly used
 crypto libraries in today's software. NaCl (pronounced "salt") is a 
-new software libreary for encryption, decryption and signatures, etc.
+new software library for encryption, decryption and signatures, etc.
 NaCl is designed to have no data flow from secrets to load address and no data 
 flow from secrets to branch conditions. Therefore, NaCl should have no leakages
 under our attack model. 
 
-For non-crypto libraries, we study libjepg, GTK, and wget.
-JPEG is a commonly used lossy image c ompression standard, and
-libjpeg is a popular library for handling the JPEG image data
-format. Previously, researchers have introduced controlled-channel
-attacks, which allow attackers to ret rieve outlines of JPEG images
-from applications. We also study GTK and wget with \tool{}. GTK 
-is a widely used cross-platform toolkit for creating graphical user
-interfaces. And wget is free software that can retrieve information
-via HTTPS, HTTP, and FTP.
 
 We build the source code into 32-bit x86 Linux executables with the 
 GCC 8.0 on Ubuntu 14.04. Although our tool can
@@ -74,7 +66,7 @@ aspects:
 
 \subsection{Evaluation Result Overview}
 In this section, we present an overview of the evaluation result. 
-\tool{} find xx leakages in total from real-world cryptosystems source libraries.
+\tool{} find xx leakages in total from real-world crypto system source libraries.
  Among the xx leak points, xx of them are leaked due
 to secret-dependent control-flow transfers and xx of them are leaked 
 due to secret-dependent memory accesses. 
@@ -105,12 +97,7 @@ bit in each byte is used for the parity. Therefore, \tool{} can confirm
 that even the key length of DES is 64 bits. However, only 56 bits of the 
 DES key is valid. 
 
-
-
 \subsection{Information Leakage Quantification}
 \subsection{Analysis of Software Countermeasures}
 \subsubsection{Bit-slicing}
 \subsubsection{Scatter and Gather}
-\subsection{Case Studies}
-\subsubsection{libjpeg}
-
