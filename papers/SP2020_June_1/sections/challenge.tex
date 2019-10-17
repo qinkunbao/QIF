@@ -157,8 +157,8 @@ $$\max{\{L_A, L_B\}}  \leq L_{\mathit{total}} < L_A + L_B$$
 If A and B are mutual exclusive leakages, then only A or B can be observed for one fixed input.
 $$L_{\mathit{total}} = 
 \begin{cases}
-L_A & only A \\
-L_B & only B
+L_A, & \text{only} ~ A \\
+L_B, & \text{only} ~ B
 \end{cases}$$
 
 According to above definition, leakage 1, 2, 3 are independent leakages. Leakage 4, 5
@@ -233,7 +233,7 @@ $M$ random values and check how many of them satisfy those constrains. If $l$ va
 satisfy those constrains, then the approximate result is $\frac{l*2^{8m}}{M}$.
 
 However, the number of satisfying values could be exponentially small. Consider the formula
-$F={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ each represent
+$F={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ each represents
 one byte in the orginal sensitive input, there is only one possible solution of $2^{32}$ possible
 values, which requres exponentially many samples to get a tight bound. 
 The naive Monte Carlo Method also suffers from the curse of dimensionality. For example, 
