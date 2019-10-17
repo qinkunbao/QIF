@@ -164,8 +164,8 @@ sensitive information from the data access pattern as well.
 We try to find this kind of leakages by checking 
 every memory operand of the instruction. We generate the memory addressing 
 formulas. As discussed before, every symbols in the formula is the input key. 
-If the formula doesn’t contain any symbols, the memory access is independent 
-from the input sensitive information and won’t leak any sensitive information 
+If the formula does not contain any symbols, the memory access is independent 
+from the input sensitive information and will not leak any sensitive information 
 according to our threat model. Otherwise, we will generate the constraint for
 the memory addressing. We model the memory address with a symbolic formula 
 $F(\vec{K})$. 
