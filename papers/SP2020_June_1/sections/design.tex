@@ -1,4 +1,5 @@
-\section{Design}
+%\section{Design}
+\section{Design and Implementation}
 In this section, we describe the design of \tool{} by focusing on
 how our design solves the three challenges discussed in the previous
 section.
@@ -73,7 +74,7 @@ to generate the execution trace but still satisfies those constraints,
 the new execution trace still have the same control flow and 
 data access patterns. 
 
-The tool runs the symbolic execution on the top of the execution traces.
+The tool runs the symbolic execution on top of the execution traces.
 At the beginning of the symbolic execution, the tool creates fresh 
 symbols for each byte in the sensitive buffer. For other data in the 
 register or memory at the beginning, we use concrete values from the 
@@ -88,8 +89,8 @@ If so, the tool will only use the concrete values in the
 following symbolic execution.
 
 \subsubsection{Verification and Optimization}
-We run the symbolic execution(SE) on the top of x86 instructions.
-In other words, we don’t rely on any intermediate languages to 
+We run the symbolic execution (SE) on top of x86 instructions.
+In other words, we don't rely on any intermediate languages to 
 simplify the implemetation of symbolic execution. 
 While the implementation itself 
 has a lot of benefits (Better performance, accurate memory model), 
@@ -131,8 +132,8 @@ the constraint accordingly.
 \begin{figure}[ht]
       \centering
       \includegraphics[width=\columnwidth]{./figures/secretCF.pdf}
-      \caption{The workflow of \tool{}}
-      \label{fig:Test}
+      \caption{The workflow of \tool{}. \fixme{fix the caption, fix the drawing.} \fixme{duplicate label.}}
+      \label{fig:Test-------------------}
   \end{figure}
 
 For examples,
@@ -196,8 +197,6 @@ pass through the instruction. Since each byte in the sensitive
 buffer is represented as a symbol with a unique ID, \tool{} can
 know which byte in the origin buffer actually goes through the
 instruction.
-
-\input{sections/mc.tex}
 
 
 %% the algorithm
