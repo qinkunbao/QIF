@@ -99,8 +99,9 @@ the low 6 bits the address is irrelevant in causing those cached-based side-chan
 %in the paper.
 
 \subsection{Information Leakage Quantification}
-
-\fixme{Section (II.B), this subsection: Clarify mutual information, min-entropy, and maximal leakage. How many types? maybe use subsubsection}
+ 
+\fixme{Section (II.B), this subsection: Clarify mutual information, min-entropy, 
+and maximal leakage. How many types? maybe use subsubsection}
 
 Given an event $e$ which occurs with the probability $p(e)$, if the event $e$ happens, 
 then we receive
@@ -114,10 +115,12 @@ ranges from 0 to 255.  Assume
 equals $1$, the probability of this observation is $\frac{1}{256}$. So the information we get is 
 $-\log(\frac{1}{256}) = 8$ bits, which is exactly the size of the char variable in the C program.
 
-Some existing work on information leakage quantification is based on mutual information,
+Existing works on information leakage quantification uses Shannon entropy.
 min-entropy \cite{10.1007/978-3-642-00596-1_21} and max-entropy.
 In these frameworks, the input sensitive
-information $K$ is viewed as a random variable. Let $k_i$ be one of the possible
+information $K$ is viewed as a random variable. 
+
+Let $k_i$ be one of the possible
 value of $K$. The Shannon entropy $H(K)$ is defined as
 \begin{displaymath}
     H(K) = - \sum_{k_i {\in} K}P(k_i)\log_2P(k_i)
