@@ -132,7 +132,7 @@ of the $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
 \begin{algorithm}[h]
 \DontPrintSemicolon
 \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-\Input{$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}}) = C_{{addr}_1} \land C_{{addr}_2} \land \ldots \land C_{{addr}_m}$}
+\Input{$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}}) = C_{\addr{1}} \land C_{\addr{2}} \land \ldots \land C_{\addr{m}}$}
 \Output{The Maximum Independent Partition of $G = \{C_{g1}, C_{g2}  , \ldots,  C_{gm} \}$ }
 \For{$i\leftarrow 1$ \KwTo $n$}
 {
@@ -146,7 +146,7 @@ of the $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
       $C_{gi} = C_{gi} \land C_{\addr{i}}$ \;
       $break$ \;
    }
-   Insert $C_{{addr}_i}$ to $G$
+   Insert $C_{\addr{i}}$ to $G$
    }
 }
 \caption{The Maximum Independent Partition}
