@@ -52,6 +52,8 @@ namespace tana {
 
 		std::string getFunName(tana_type::T_ADDRESS addr);
 
+		std::shared_ptr<Routine> getFunRoutine(tana_type::T_ADDRESS addr);
+
 		std::shared_ptr<Routine> pickOneRandomElement();
 
 		~Function() = default;

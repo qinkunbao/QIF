@@ -135,6 +135,20 @@ namespace tana {
         return "NOT Found";
     }
 
+    std::shared_ptr<Routine> Function::getFunRoutine(tana::tana_type::T_ADDRESS addr){
+        if ((addr >= (ptr_cache->start_addr)) && (addr <= (ptr_cache->end_addr))) {
+            return ptr_cache;
+        }
+        for (const auto& iter : fun_rtns) {
+            if ((addr >= (iter->start_addr)) && (addr <= (iter->end_addr))) {
+                ptr_cache = iter;
+                return iter;
+            }
+        }
+        return nullptr;
+
+    }
+
     std::shared_ptr<Routine> Function::pickOneRandomElement()
     {
         std::random_device random_device;
