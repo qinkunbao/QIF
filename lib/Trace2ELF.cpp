@@ -47,6 +47,7 @@ Trace2ELF::Trace2ELF(const std::string &obj_name, const std::string &function_fi
     }
 
     assert(offset1 == offset2);
+    std::cout << "Debug in trace2elf: " << offset1 << std::endl;
     offset_from_trace_to_elf = offset1;
 
 }
