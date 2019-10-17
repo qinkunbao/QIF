@@ -6,7 +6,6 @@
 	isbn = {978-1-931971-40-9},
 	address = {Vancouver, BC},
 	pages = {235--252},
-	url = {https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/wang-shuai},
 	publisher = {USENIX Association},
 }
 
@@ -18,7 +17,6 @@ year = {2018},
 isbn = {978-1-931971-46-1},
 address = {Baltimore, MD},
 pages = {603--620},
-url = {https://www.usenix.org/conference/usenixsecurity18/presentation/weiser},
 publisher = {USENIX Association},
 }
 
@@ -30,7 +28,6 @@ year = {2015},
 isbn = {978-1-931971-232},
 address = {Washington, D.C.},
 pages = {897--912},
-url = {https://www.usenix.org/conference/usenixsecurity15/technical-sessions/presentation/gruss},
 publisher = {USENIX Association},
 }
 
@@ -39,12 +36,7 @@ author={Y. Xu and W. Cui and M. Peinado},
 booktitle={2015 IEEE Symposium on Security and Privacy}, 
 title={Controlled-Channel Attacks: Deterministic Side Channels for Untrusted Operating Systems}, 
 year={2015}, 
-volume={}, 
-number={}, 
-pages={640-656}, 
-keywords={cryptography;document handling;operating systems (computers);trusted computing;legacy operating systems;JPEG images;text documents;Haven;Ink Tag;Overshadow;trusted hardware;hypervisor;trusted computing;feature-rich commodity operating systems;security vulnerabilities;untrusted operating systems;deterministic side channels;controlled-channel attacks;Operating systems;Monitoring;Hardware;Control systems;Resource management;Data mining;Virtual machine monitors;side-channel attack;untrusted operating system;SGX;virtualization}, 
-doi={10.1109/SP.2015.45}, 
-ISSN={1081-6011}, 
+pages={640--656}, 
 month={May},}
 
 @article{DBLP:journals/jce/GeYCH18,
@@ -66,12 +58,7 @@ author={C. S. Pasareanu and Q. Phan and P. Malacaria},
 booktitle={2016 IEEE 29th Computer Security Foundations Symposium (CSF)}, 
 title={Multi-run Side-Channel Analysis Using Symbolic Execution and Max-SMT}, 
 year={2016}, 
-volume={}, 
-number={}, 
-pages={387-400}, 
-keywords={computability;cryptography;multirun side-channel analysis;symbolic execution;max-SMT;satisfiability modulo theory;confidential information;program analysis;information quantification;side-channel measurements;model counting metrics;information-theoretic metrics;Symbolic PathFinder tool;password checking function;cryptographic functions;Java;Cryptography;Concrete;Computational modeling;Channel capacity;Measurement uncertainty;Context;Side-Channel Attacks;Quantitative Information Flow;Cryptography;Multi-run Security;Symbolic Execution;Satisfiability Modulo Theories;Max-SMT}, 
-doi={10.1109/CSF.2016.34}, 
-ISSN={2374-8303}, 
+pages={387--400}, 
 month={June},
 }
 
@@ -84,8 +71,6 @@ year="2009",
 publisher="Springer Berlin Heidelberg",
 address="Berlin, Heidelberg",
 pages="288--302",
-abstract="There is growing interest in quantitative theories of information flow in a variety of contexts, such as secure information flow, anonymity protocols, and side-channel analysis. Such theories offer an attractive way to relax the standard noninterference properties, letting us tolerate ``small'' leaks that are necessary in practice. The emerging consensus is that quantitative information flow should be founded on the concepts of Shannon entropy and mutual information. But a useful theory of quantitative information flow must provide appropriate security guarantees: if the theory says that an attack leaks x bits of secret information, then x should be useful in calculating bounds on the resulting threat. In this paper, we focus on the threat that an attack will allow the secret to be guessed correctly in one try. With respect to this threat model, we argue that the consensus definitions actually fail to give good security guarantees---the problem is that a random variable can have arbitrarily large Shannon entropy even if it is highly vulnerable to being guessed. We then explore an alternative foundation based on a concept of vulnerability (closely related to Bayes risk) and which measures uncertainty using R{\'e}nyi's min-entropy, rather than Shannon entropy.",
-isbn="978-3-642-00596-1"
 }
 
 @InProceedings{10.1007/978-3-642-31424-7_40,
@@ -100,24 +85,20 @@ year="2012",
 publisher="Springer Berlin Heidelberg",
 address="Berlin, Heidelberg",
 pages="564--580",
-abstract="The latency gap between caches and main memory has been successfully exploited for recovering sensitive input to programs, such as cryptographic keys from implementation of AES and RSA. So far, there are no practical general-purpose countermeasures against this threat. In this paper we propose a novel method for automatically deriving upper bounds on the amount of information about the input that an adversary can extract from a program by observing the CPU's cache behavior. At the heart of our approach is a novel technique for efficient counting of concretizations of abstract cache states that enables us to connect state-of-the-art techniques for static cache analysis and quantitative information-flow. We implement our counting procedure on top of the AbsInt TimingExplorer, one of the most advanced engines for static cache analysis. We use our tool to perform a case study where we derive upper bounds on the cache leakage of a 128-bit AES executable on an ARM processor. We also analyze this implementation with a commonly suggested (but until now heuristic) countermeasure applied, obtaining a formal account of the corresponding increase in security.",
-isbn="978-3-642-31424-7"
 }
 
-@inproceedings {182946,
+@inproceedings{182946,
 author = {Goran Doychev and Dominik Feld and Boris Kopf and Laurent Mauborgne and Jan Reineke},
-title = {CacheAudit: A Tool for the Static Analysis of Cache Side Channels},
+title = {{CacheAudit}: A Tool for the Static Analysis of Cache Side Channels},
 booktitle = {Presented as part of the 22nd USENIX Security Symposium (USENIX Security 13)},
 year = {2013},
-isbn = {978-1-931971-03-4},
 address = {Washington, D.C.},
 pages = {431--446},
-url = {https://www.usenix.org/conference/usenixsecurity13/technical-sessions/paper/doychev},
 publisher = {USENIX},
 }
 
 @inproceedings{shoshitaishvili2016state,
-  title={{SoK: (State of) The Art of War: Offensive Techniques in Binary Analysis}},
+  title={{SoK}: (State of) The Art of War: Offensive Techniques in Binary Analysis},
   author={Shoshitaishvili, Yan and Wang, Ruoyu and Salls, Christopher and
           Stephens, Nick and Polino, Mario and Dutcher, Audrey and Grosen, John and
           Feng, Siji and Hauser, Christophe and Kruegel, Christopher and Vigna, Giovanni},
@@ -138,8 +119,6 @@ year="2011",
 publisher="Springer Berlin Heidelberg",
 address="Berlin, Heidelberg",
 pages="463--469",
-abstract="BAP is a publicly available infrastructure for performing program verification and analysis tasks on binary (i.e., executable) code. In this paper, we describe BAP as well as lessons learned from previous incarnations of binary analysis platforms. BAP explicitly represents all side effects of instructions in an intermediate language (IL), making syntaxdirected analysis possible. We have used BAP to routinely generate and solve verification conditions that are hundreds of megabytes in size and encompass 100,000's of assembly instructions.",
-isbn="978-3-642-22110-1"
 }
 
 @book{intelsys,
@@ -155,10 +134,8 @@ author = {Insu Yun and Sangho Lee and Meng Xu and Yeongjin Jang and Taesoo Kim},
 title = {{QSYM}: A Practical Concolic Execution Engine Tailored for Hybrid Fuzzing},
 booktitle = {27th USENIX Security Symposium (USENIX Security 18)},
 year = {2018},
-isbn = {978-1-939133-04-5},
 address = {Baltimore, MD},
 pages = {745--761},
-url = {https://www.usenix.org/conference/usenixsecurity18/presentation/yun},
 publisher = {USENIX Association},
 }
 
@@ -167,10 +144,8 @@ author = {Yuval Yarom and Katrina Falkner},
 title = {{FLUSH+RELOAD}: A High Resolution, Low Noise, {L3} Cache Side-Channel Attack},
 booktitle = {23rd USENIX Security Symposium (USENIX Security 14)},
 year = {2014},
-isbn = {978-1-931971-15-7},
 address = {San Diego, CA},
 pages = {719--732},
-url = {https://www.usenix.org/conference/usenixsecurity14/technical-sessions/presentation/yarom},
 publisher = {USENIX Association},
 }
 
@@ -181,11 +156,8 @@ title={Last-Level Cache Side-Channel Attacks are Practical},
 year={2015}, 
 volume={}, 
 number={}, 
-pages={605-622}, 
-keywords={cache storage;cloud computing;security of data;virtual machines;last-level cache side-channel attacks;Prime+Probe side-channel attack;covert channel;cross-core attack;cross-VM attack;GnuPG;virtual machine monitor;IaaS cloud computing;Probes;Indexes;Multicore processing;Monitoring;Cryptography;Virtual machine monitors;Memory management;side-channel attack;cross-VM side channel;covert channel;last-level cache;ElGamal}, 
-doi={10.1109/SP.2015.43}, 
-ISSN={1081-6011}, 
-month={May},}
+pages={605--622}, 
+}
 
 @inproceedings{Osvik:2006:CAC:2117739.2117741,
  author = {Osvik, Dag Arne and Shamir, Adi and Tromer, Eran},
@@ -196,13 +168,8 @@ month={May},}
  isbn = {3-540-31033-9, 978-3-540-31033-4},
  location = {San Jose, CA},
  pages = {1--20},
- numpages = {20},
- url = {http://dx.doi.org/10.1007/11605805_1},
- doi = {10.1007/11605805_1},
- acmid = {2117741},
  publisher = {Springer-Verlag},
  address = {Berlin, Heidelberg},
- keywords = {AES, cache, cryptanalysis, memory access, side-channel attack},
 } 
 
 @inproceedings {236338,
@@ -210,7 +177,6 @@ title = {Identifying Cache-Based Side Channels through Secret-Augmented Abstract
 booktitle = {28th USENIX Security Symposium (USENIX Security 19)},
 year = {2019},
 address = {Santa Clara, CA},
-url = {https://www.usenix.org/conference/usenixsecurity19/presentation/wang-shuai},
 publisher = {USENIX Association},
 }
 
@@ -238,17 +204,11 @@ publisher = {USENIX Association},
  issue_date = {November 2012},
  volume = {37},
  number = {6},
- month = nov,
  year = {2012},
  issn = {0163-5948},
  pages = {1--5},
- numpages = {5},
- url = {http://doi.acm.org/10.1145/2382756.2382791},
- doi = {10.1145/2382756.2382791},
- acmid = {2382791},
  publisher = ACM,
  address = {New York, NY, USA},
- keywords = {algorithms, security, verification},
 } 
 
 @inproceedings{Chattopadhyay:2017:QIL:3127041.3127044,
@@ -260,20 +220,16 @@ publisher = {USENIX Association},
  isbn = {978-1-4503-5093-8},
  location = {Vienna, Austria},
  pages = {25--35},
- numpages = {11},
- url = {http://doi.acm.org/10.1145/3127041.3127044},
- doi = {10.1145/3127041.3127044},
- acmid = {3127044},
  publisher = ACM,
  address = {New York, NY, USA},
- keywords = {cache, security, side channel, symbolic execution},
 } 
 
 @manual{OpenSSL:Security:Policy,
     title  = "Security Policy",
     author = "OpenSSL",
     url    = "https://www.openssl.org/policies/secpolicy.html",
-    year   = "12th May 2019"
+    year   = "2019",
+    month =may,
 }
 
 @InProceedings{10.1007/11499107_24,
@@ -287,8 +243,6 @@ year="2005",
 publisher="Springer Berlin Heidelberg",
 address="Berlin, Heidelberg",
 pages="324--339",
-abstract="We introduce ApproxCount, an algorithm that approximates the number of satisfying assignments or models of a formula in propositional logic. Many AI tasks, such as calculating degree of belief and reasoning in Bayesian networks, are computationally equivalent to model counting. It has been shown that model counting in even the most restrictive logics, such as Horn logic, monotone CNF and 2CNF, is intractable in the worst-case. Moreover, even approximate model counting remains a worst-case intractable problem. So far, most practical model counting algorithms are based on backtrack style algorithms such as the DPLL procedure. These algorithms typically yield exact counts but are limited to relatively small formulas. Our ApproxCount algorithm is based on SampleSat, a new algorithm that samples from the solution space of a propositional logic formula near-uniformly. We provide experimental results for formulas from a variety of domains. The algorithm produces good estimates for formulas much larger than those that can be handled by existing algorithms.",
-isbn="978-3-540-31679-4"
 }
 
 @inproceedings{Wei2004TowardsES,
