@@ -1,6 +1,6 @@
 \section{Discussion}
 
-\subsection{Binary code vs source code}
+\subsection{Binary vs.\ Source Code}
 Many existing works find side-channels vulnerabilities from source code level 
 or intermediate languages (e.g., LLVM IR). Those approaches will have the following limitations. 
 First, many compilers can translate the operator into branches. For example, 
@@ -11,7 +11,7 @@ Second, some if else in the source code can be converted into single conditional
 instructions (e.g., cmov). Source-based methods will still regard them as potential leakages, 
 which will introduce false positives.
 
-\subsection{X86 vs Intermediate Languages}
+\subsection{x86 vs.\ Intermediate Languages}
 The tool takes in an unmodified binary and the marked sensitive information as the input. 
 The tool will first start with logging the execution trace. Then the tool will symbolizes the 
 sensitive information into multiple symbols and start with the symbolic execution. 
