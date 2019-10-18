@@ -58,6 +58,7 @@ previous example, the existing static method does not work well in those situati
    \caption{some caption here. \fixme{redraw the figure. i will give you the instruction.}}
 \end{figure}
 
+\vspace*{6pt}
 \textbf{Our Solution to Challenge I:}
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program multiple times with one fixed input, we
@@ -172,6 +173,7 @@ can't simply add them up. Third, leakage sites are in the different blocks of th
 control-flow graph, which means that only one of the two leakages site may be executed
 during the exectution.
 
+\vspace*{6pt}
 \textbf{Our Solution to Challenge II:}
 Given a program $P$ with $k$ as the sensitive input, 
 we use $k_i$ to denote the sensitive information, where $i$ is the index of the byte in the original buffer.  
@@ -203,7 +205,7 @@ We systematically analyze the performance bottlenecks of the whole process. In g
 from the two following reasons. 
 \begin{itemize}
     \item Symbolic Execution (Challenge III(a))
-    \item The Monte Carlo Sampling  (Challenge III(b))
+    \item Monte Carlo Sampling  (Challenge III(b))
 \end{itemize}
 
 \subsubsection{Symbolic Execution}
@@ -218,6 +220,7 @@ will translate machine instructions into intermediate languages (IR). The IR typ
 instructions compared to the original machine instructions. The IR layer designs, which significantly
 simplify the implementations, also introduce significant overhead as well~\cite{217563}.
 
+\vspace*{6pt}
 \textbf{Our Solution to Challenge III(a):}
 We adopt the similar approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions.
@@ -241,8 +244,9 @@ the libjpeg libraries can transfer the image from one format into another format
 be 1kMB. If we take each byte in the original buffer as symbols, the formula can have at most
 1024 symbols. 
 
+\vspace*{6pt}
 \textbf{Our Solution to Challenge III(b):}
 We adopt the Markov Chain Monte Carlo to estimate the number of possible input
 that satisfies the logic formula groups. The key idea is that we have one group of input that satisfies
 the logic formula constrains.  We will
-introduce the method in the following sections.
+introduce the method in the following subsection.

@@ -6,10 +6,11 @@
 \renewcommand{\addr}[1]{{\xi}_{#1}}
 
 In this section, we present the alogorithm to calculate the information
-leakage based on the definition~\ref{def}. 
+leakage based on the definition~\ref{def}, answering to
+\textbf{Challenge III(b)}. 
 
 \subsubsection{Problem Statement}
-From the above step~\ref{InstructionSE}, we can generate the constraint 
+With instruction level symbolic execution (see \S\ref{InstructionSE}), we can generate the constraint 
 for each unique leakage site on the execution trace.
 The only variables in those constraints are the sensitive data represented
 with $k_1, k_2, \ldots , k_n$. Suppose the address of the leakage site is $\addr{i}$,
@@ -24,10 +25,10 @@ cardinality of $K$ is known, the key problem is to know the cardinality of
 $K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site has
 the following constraints: $C_{\addr{1}}, C_{\addr{2}}, \ldots, C_{\addr{n}}$ respectively. 
 The total leakage has the constraint 
-$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}}) = C_{\addr{1}} \land C_{\addr{2}} 
+$F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}}) = C_{\addr{1}} \land C_{\addr{2}} 
 \land \ldots \land C_{\addr{n}}$. The problem of estimating the total leaked information 
 can be reduced to the problem of counting the number of different solutions 
-that satisfies the constraint $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$. 
+that satisfies the constraint $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$. 
 
 A native method for approximating 
 the result is to pick $k$ elements from $K$ and check how many of them are also
@@ -38,9 +39,9 @@ However, as the discussion in ~\ref{MCreasons},
 the above sampling method will typically fail in practice due to the following two problems:
 
 \begin{enumerate}
-      \item The curse of dimensionality. $F(c_1,\ldots,c_n)$ is the conjunction of many
+      \item The curse of dimensionality. $F(C_1,\ldots,C_n)$ is the conjunction of many
       constraints. Therefore, the input variables of each constraints will also be 
-      the input variables of the  $F(c_1,\ldots,c_n)$. The sampling method will fail as 
+      the input variables of the  $F(C_1,\ldots,C_n)$. The sampling method will fail as 
       $n$ increases. For example, when $n$ equals to 2, the whole serach space is 
       a $256^2$ cube. If we want the sampling distance between each point still to 1,
       we need $256^2$ points. When $n$ equals to 10, we need $256^{10}$ points if we 
@@ -53,14 +54,14 @@ the above sampling method will typically fail in practice due to the following t
       assignment after sampling many points.
 \end{enumerate}
 
-However, despite the two problems. We also observe the constrain $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$
+However, despite the two problems. We also observe the constrain $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$
 has the following characteristics:
 \begin{enumerate}
-      \item $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ is the conjunction of several
-      short constraints $F(c_{{addr}_i})$. The set contaning the input variables of 
-      $F(c_{{addr}_i})$ is the subset of the input variables of $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
+      \item $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ is the conjunction of several
+      short constraints $F(C_{{addr}_i})$. The set contaning the input variables of 
+      $F(C_{{addr}_i})$ is the subset of the input variables of $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$.
       Some constraints have completely different input variables from other constraints.
-      \item For each constraint $F(c_{{addr}_i})$, the satisfying assignments
+      \item For each constraint $F(C_{{addr}_i})$, the satisfying assignments
       are close to each other, which means if we find one satisfying assignment, we 
       are more likely to find other satisfying assignments nearby than randomly
       pick one point in the whole searching space.
@@ -68,7 +69,7 @@ has the following characteristics:
 \end{enumerate}
 
 In regard to the above problems, we present our methods. First, we split 
-$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ into several independent constraint groups. After
+$F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ into several independent constraint groups. After
 that, we run random-walk based sampling method on each constraint.
 
 \subsubsection{Maximum Independent Partition}
@@ -87,18 +88,18 @@ $S(k1 + k2 > 128) = \{k1, k2\}$.
 \end{definition}
 
 Based on the definition~\label{independentC}, we can split
-the constraint $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ into several 
+the constraint $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ into several 
 independent constraints. There are many partitions. For our project, 
 we are interested in the following one.
 
 \begin{definition}
       \label{Goodpartition}
-      For the constraint $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ and 
+      For the constraint $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ and 
       the constraint group
       $C_{g1}, C_{g2}, \ldots, C_{gm}$, we call  $C_{g1}, C_{g2}, \ldots, C_{gm}$
-      is the maximum independent partition of $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ iff
+      is the maximum independent partition of $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ iff
       \begin{enumerate}
-            \item $C_{g1} \land C_{g2} \land \ldots \land C_{gm} = F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$
+            \item $C_{g1} \land C_{g2} \land \ldots \land C_{gm} = F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$
             \item $\forall \quad i, j \in \{1, 2, 3, \ldots, m\} \quad \textrm{and} \quad 
                   i \neq j, \quad S(C_{gi}) \cap S(C_{gj}) = \emptyset $
             \item For any other partitions  $C_{g1}, C_{g2}, \ldots, C_{gn}$ satisfy 1) and
@@ -119,23 +120,23 @@ together with~\ref{mip-theorem} .
 \label{mip-theorem}
 \begin{theorem}
       \label{IndependentConstraint}
-$C_{g1}, C_{g2}, \ldots, C_{gm}$ is a maximum independent partition of $F(c_1,c_2,\ldots,c_n)$.
+$C_{g1}, C_{g2}, \ldots, C_{gm}$ is a maximum independent partition of $F(C_1,C_2,\ldots,C_n)$.
 $K_c$ is the input set that satisfies constrain $c$. We can have the following
 equation in regard to the size of $K_c$
-$$|K_{F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})}| = |K_{C_{g1}}|*|K_{C_{g2}}|*\ldots*|K_{C_{gn}}|$$
+$$|K_{F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})}| = |K_{C_{g1}}|*|K_{C_{g2}}|*\ldots*|K_{C_{gn}}|$$
 \end{theorem}
 
 With the~\ref{IndependentConstraint}, we can transfer the problem of counting the number of 
 solutions in a large constraint with high
 dimensions into counting solutions of 
 several small constraints. We apply the following algorithm to get the Maximum Independent Partition
-of the $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
+of the $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$.
 
 \IncMargin{1em}
 \begin{algorithm}[h]
 \DontPrintSemicolon
 \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-\Input{$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}}) = C_{\addr{1}} \land C_{\addr{2}} \land \ldots \land C_{\addr{m}}$}
+\Input{$F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}}) = C_{\addr{1}} \land C_{\addr{2}} \land \ldots \land C_{\addr{m}}$}
 \Output{The Maximum Independent Partition of $G = \{C_{g1}, C_{g2}  , \ldots,  C_{gm} \}$ }
 \For{$i\leftarrow 1$ \KwTo $n$}
 {

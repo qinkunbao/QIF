@@ -1,5 +1,6 @@
 \section{Related Work}
-\subsection{Side-channel vulnerabilities detection}
+
+\subsection{Side-channel Vulnerability Detection}
 
 There are a large number of works on side-channel vulnerability detections in recent years.
 CacheAudit~\cite{182946} uses abstract domains to compute the overapproximation of cache-based
@@ -27,9 +28,6 @@ goal of their work is to ensure the program is non-interference. They adopt an o
 approximation way of estimating the total information leakage and their method doesn't work for
 secret-dependent memory access side-channels. CHALICE~\cite{Chattopadhyay:2017:QIL:3127041.3127044}
 quantifies the information for a given cache behaviours. But CHALICE can only 
-work on PICA code (a MIPS like archiecture), which limits its usage to X86 bianry. 
+work on PICA code (a MIPS like archiecture), which limits its usage to x86 bianry. 
 CHALICE can only scale to small programs, which limits its usage in
 real-world applications.
-
-
-
