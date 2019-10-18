@@ -3,7 +3,13 @@
 
 \begin{table*}
 \centering
-\caption{Result \fixme{fix the caption. convert to minutes for RSA}}\label{fig:Testttttttttttttttttttttttt}
+\caption{Evaluation results overview. We evaluate two versions of mbedTLS and five
+versions of OpenSSL. CF represents secret-dependent control-flow transfers and
+DF represents secret-dependent data-flow transfers. Side-channel leakagas can
+be found by symbolic execution and we run Monte Carlo to estimate the amount 
+of leakage information. A summary of all vulnerabilities with the amount of
+leak information can be found in the appendix.
+}\label{fig:Testtt}
 \begin{tabular}{clrrrrrrr}
 \hline
 \textbf{Algorithm} & \textbf{Implementation} & \textbf{Lekage Sites} & \textbf{CF} & \textbf{DF}
@@ -24,14 +30,14 @@ DES & openssl 1.0.2k & 8 & 0 & 8 & 2,593 & 9 & 235 ~~& 5,080        ~~\\
 DES & openssl 1.1.0f & 8 & 0 & 8 & 4,260 & 9 & 256 ~~& 5,027        ~~\\
 DES & openssl 1.1.1  & 6 & 0 & 6 & 8,272 & 7 & 235 ~~& 4,584       ~~\\
 &&&&&&& minutes & minutes\\\cline{8-9}
-RSA & mbed TLS 2.5   & 6 & 6 & 0 & 22,109,246 & 9      & 37m 51s ~~& 20m 10s ~~\\
-RSA & mbed TLS 2.15  & 12 & 0 & 12 & 24,484,441 & 9    & 39m 17s ~~& 4h 1m 16s     ~~\\
-RSA & openssl 0.9.7  & 105 & 103 & 2 & 16,980,109 & 13 & 28m 26s ~~& 4h 26m 33s ~~\\
-RSA & openssl 1.0.2f & 38 & 27 & 11 & 14,468,307 & 10  & 28m 11s ~~& 2h 40m 17s  ~~\\
-RSA & openssl 1.0.2k & 36 & 27 & 9 & 15,285,210 & 12   & 39m 13s ~~& 4h 42m 43s   ~~\\
-RSA & openssl 1.1.0f & 31 & 22 & 9 & 16,390,750 & 13   & 32m 48s ~~& 4h 21m 58s   ~~\\
-RSA & openssl 1.1.1  & 26 & 20 & 6 & 18,207,020 & 12   &  7m  3s ~~& 7h 35m      ~~\\\hline
-Total &              & 883 &205& 678& 128,042,089&     & 213m    ~~& 1,688m ~~\\\hline
+RSA & mbed TLS 2.5   & 6 & 6 & 0 & 22,109,246 & 9      & 38 ~~& 20  ~~\\
+RSA & mbed TLS 2.15  & 12 & 0 & 12 & 24,484,441 & 9    & 39 ~~& 241  ~~\\
+RSA & openssl 0.9.7  & 105 & 103 & 2 & 16,980,109 & 13 & 28 ~~& 266 ~~\\
+RSA & openssl 1.0.2f & 38 & 27 & 11 & 14,468,307 & 10  & 28 ~~& 160  ~~\\
+RSA & openssl 1.0.2k & 36 & 27 & 9 & 15,285,210 & 12   & 39 ~~& 282   ~~\\
+RSA & openssl 1.1.0f & 31 & 22 & 9 & 16,390,750 & 13   & 32 ~~& 262 ~~\\
+RSA & openssl 1.1.1  & 26 & 20 & 6 & 18,207,020 & 12   &  7 ~~& 455 ~~\\\hline
+Total &              & 883 &205& 678& 128,042,089&     & 213    ~~& 1,688m ~~\\\hline
 \end{tabular}
 \end{table*}
 
