@@ -1,8 +1,6 @@
 
 \section{Information Leakage Quantification}
  
-
-
 Given an event $e$ which occurs with the probability $p(e)$, if the event $e$ happens, 
 then we receive
 \begin{displaymath}
@@ -40,8 +38,8 @@ Max-entropy is defined solely on the number of possible observations. It is
 equal to $-log_2{n}$. As it is easy to compute, most recent works use 
 max-entropy as the definition of the amount of leaked information.
 
-To illustrate, how the above definitions work, we consider the following
-code. 
+To illustrate how above definitions work, we consider the following
+code fragment. 
 
 \begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
 uint_8 key[2]; 
@@ -56,8 +54,10 @@ if(key[0] > key[1]){        // branch 2
 
 Suppose an attacker can observe if branch 1 and branch 2 are executed or not, 
 an attacker can have four different observations: neither branch 1 or 
-branch 2 is executed $\emptyset$, branch 1 is executed ${1}$, branch 2
-is executed ${2}$, and both branch 1 and branch 2 are executed ${1, 2}$.
+branch 2 is executed $\emptyset$, branch 1 is executed $\{1\}$, branch 2
+is executed $\{2\}$, and both branch 1 and branch 2 are executed $\{1, 2\}$.
+If $key$ has uniform distribution, we can calculate the corresponding
+possibility.
 
 %% put this example in next section
 %%\section{Running Example}
