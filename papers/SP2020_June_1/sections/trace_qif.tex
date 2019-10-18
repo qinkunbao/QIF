@@ -6,4 +6,46 @@ vulnerabilities. After that, we present the terminology in the
 paper and introduce the definition of the amount of 
 leaked information.
 \subsection{A Toy Example}
-%\subsection{Definitions}
+\subsection{Definitions}
+\subsection{Leakage Definition}
+Suppose a program with some
+sensitive input $K$, an adversary has some observations ($O$) through some side channel.
+In this work, the observations are referred as the secret-dependent control-flows and
+secret-dependent data-access patterns. \fixme{See the comment above, we need to explain these
+  patterns before this point.} The conditional entropy $H(K|O)$ is
+\begin{displaymath}
+    H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)\log_2P(k_i|o_j)}}
+\end{displaymath}
+Intuitively, the conditional information marks the uncertainty about $K$ after the adversary
+has gained some observations ($O$). 
+
+Some previous work uses the mutual information $I(K; O)$ to quantify the leakage which is defined 
+as follows:
+\begin{displaymath}
+    \mathit{Leakage} = I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)\log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
+\end{displaymath}
+where $P(k_i, o_i)$ is the joint discrete distribution of $K$ and $O$.
+Alternatively, the mutual information can also be computed with the following equation:
+\begin{displaymath}
+    \mathit{Leakage} = I(K;O) = H(K) - H(K|O) = H(O) - H(O|K)
+\end{displaymath}
+
+For a deterministic program, once the input $K$ is fixed, the program will have the same
+control-flow transfers and data-access patterns. As a result, $P(k_i, o_j)$ will always
+equals to 1 or 0. So the conditional entropy $H(O|K)$ will equal to zero. So the leakage defined
+by the mutual information can be simplified into:
+\begin{displaymath}
+\label{mutual:information}
+    \mathit{Leakage} = I(K;O) = H(O)
+\end{displaymath}
+In other words, once we know the distribution of those memory-access patterns. We can 
+calculate how much information is actually leaked.
+
+Another common method is based on the maximal leakage~\cite{10.1007/978-3-642-00596-1_21,10.1007/978-3-642-31424-7_40,182946}.
+The formal information theory can prove that the maximal leakage is the upper bound of the mutual 
+information (Channel Capacity).
+
+\begin{displaymath}
+    \mathit{Leakage} = \log(C(O))
+\end{displaymath}
+Here $C(O)$ represents the number of different observations that an attacker can have. 
