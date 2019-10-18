@@ -44,7 +44,7 @@ code fragment.
 \begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
 uint_8 key[2]; 
 get_key(key);               // key[0], key[1] = [0 ... 255]
-if(key[0] < 63){
+if(key[0] + key[1] < 8){
     A();                    // branch 1
 }
 if(key[0] > key[1]){        // branch 2
@@ -58,6 +58,18 @@ branch 2 is executed $\emptyset$, branch 1 is executed $\{1\}$, branch 2
 is executed $\{2\}$, and both branch 1 and branch 2 are executed $\{1, 2\}$.
 If $key$ has uniform distribution, we can calculate the corresponding
 possibility.
+$$p_{\emptyset} = $$
+$$p_{\{1\}} = $$
+$$p_{\{2\}} = $$
+$$p_{\{1, 2\}} = $$
+
+\begin{table}[]
+\begin{tabular}{llll}
+Observation (o)  &  &  &  \\
+possi     &  &  & 
+\end{tabular}
+\end{table}
+
 
 %% put this example in next section
 %%\section{Running Example}
