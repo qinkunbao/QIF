@@ -44,11 +44,20 @@ To illustrate, how the above definitions work, we consider the following
 code. 
 
 \begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
-uint_8 key1, key2;
-
-if(key == 0xf)
-
+uint_8 key[2]; 
+get_key(key);               // key[0], key[1] = [0 ... 255]
+if(key[0] < 63){
+    A();                    // branch 1
+}
+if(key[0] > key[1]){        // branch 2
+    B();
+}
 \end{lstlisting}
+
+Suppose an attacker can observe if branch 1 and branch 2 are executed or not, 
+an attacker can have four different observations: neither branch 1 or 
+branch 2 is executed $\emptyset$, branch 1 is executed ${1}$, branch 2
+is executed ${2}$, and both branch 1 and branch 2 are executed ${1, 2}$.
 
 %% put this example in next section
 %%\section{Running Example}
