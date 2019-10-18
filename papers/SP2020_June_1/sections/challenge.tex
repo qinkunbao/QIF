@@ -89,11 +89,11 @@ We denote it as
 The leakage $L_{P(k)=o}$ based on the oberservation is
     $$L_{P(k)=o} = \log_2{|K|} - \log_2{|K^o|}$$
     where
-    $$K^o = \{k^{'} | k^{'}{\in}K \ \text{and} \ P(k^{'}) = o \}$$
+    $$K^o = \{k | k \in K \ \text{and} \ P(k) = o \}$$
 \end{mydef}
 
 With the new definition, if the attacker observes that the code~\ref{code::entropy} runs the branch 1, 
-then the $K^{o^{1}} = \{128\}$. Therefore, the information leakage $L_{P(k)=o^{1}} = log_2{256} - log_2{1} = 8$
+then the $K^{o^{1}} = \{128\}$. Therefore, the information leakage $L_{P(k)=o^{1}} = \log_2{256} - \log_2{1} = 8$
 bits, which means the key is totally leaked. If the attacker observes the code runs other
 branches, the leaked information is shown in the following table.
 
