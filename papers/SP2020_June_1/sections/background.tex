@@ -98,7 +98,7 @@ the low 6 bits the address is irrelevant in causing those cached-based side-chan
 %side-channles. We identify and quantify the leakage of the two kinds of vulnerabilities 
 %in the paper.
 
-\subsection{Information Leakage Quantification}
+\subsection{Exisiting Information Leakage Quantification}
  
 Given an event $e$ that occurs with the probability $p(e)$, if the event $e$ happens, 
 then we receive
@@ -112,7 +112,7 @@ ranges from 0 to 255.  Assume
 equals $1$, the probability of this observation is $\frac{1}{256}$. So the information we get is 
 $-\log(\frac{1}{256}) = 8$ bits, which is exactly the size of the char variable in the C program.
 
-Existing works on information leakage quantification uses Shannon entropy,  
+Existing works on information leakage quantification typically uses Shannon entropy,  
 min-entropy \cite{10.1007/978-3-642-00596-1_21}, and max-entropy.
 In these frameworks, the input sensitive
 information $K$ is viewed as a random variable. 
@@ -194,29 +194,13 @@ Shannon entropy, according to the definition, equals to
 \end{displaymath}
 
 
-
-
-
-------\fixme{CLEANUP - begin}------
-
-Note, if i understand correctly, you'll have the following:
-\begin{enumerate}
-\item Shannon entropy
-\item min-entropy
-\item max-entropy
-  \item mutual information
-\end{enumerate}
-clean up the following material and introduce mutual information.
-After that, we'll instruct you on how to add some additional information
-that can help our paper.
-
 Now we provide a concrete example to show how the two types of quantification definition works and show that
 how our method is different.
 
 \vspace{3pt}
 \textbf{Maximal Leakage.} 
-Depending on the value of key, the code can run four different branches which corrosponding to 
-four different observations. Therefore, by the maximal leakage definition, the leakage equals to 
+Depending on the value of key, the code can run four different branches which corresponding to 
+four different observations. Therefore, with the maximal leakage definition, the leakage equals to 
 $\log4 = 2$ bits.
 
 \vspace{3pt}
@@ -238,12 +222,6 @@ Possibility      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
 
 Therefore, the leakage equals to 
 $\frac{1}{256}\log\frac{1}{256} + \frac{1}{4}\log\frac{1}{4}*2 + \frac{127}{256}\log\frac{127}{256} = 1.7$ bits.
-
-
-------\fixme{CLEAN UP - continue}------
-
-\input{sections/trace_qif.tex}
-
 
 
 \subsection{Threat Model}
