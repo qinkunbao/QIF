@@ -112,8 +112,8 @@ ranges from 0 to 255.  Assume
 equals $1$, the probability of this observation is $\frac{1}{256}$. So the information we get is 
 $-\log(\frac{1}{256}) = 8$ bits, which is exactly the size of the char variable in the C program.
 
-Existing works on information leakage quantification uses Shannon entropy: 
-min-entropy \cite{10.1007/978-3-642-00596-1_21} and max-entropy.
+Existing works on information leakage quantification uses Shannon entropy,  
+min-entropy \cite{10.1007/978-3-642-00596-1_21}, and max-entropy.
 In these frameworks, the input sensitive
 information $K$ is viewed as a random variable. 
 
@@ -182,15 +182,15 @@ Possibility (p)     & 0.5016 & 0.0003 & 0.4980  & 0.0002   \\
 \end{table}
 According to the definition, min-entropy equals to 
 \begin{displaymath}
-    \mathit{min\text{-}entropy} = -log_2{0.5016} = 1.0\, bits
+    \mathit{min\text{-}entropy} = -\log_2{0.5016} = 1.0\ \mathit{bits}
 \end{displaymath}
 Because the above code has four different observations, max-entropy equals to 
 \begin{displaymath}
-    \mathit{max\text{-}entropy} = -log_2{4} = 2.0\, bits
+    \mathit{max\text{-}entropy} = -\log_2{4} = 2.0\ \mathit{bits}
 \end{displaymath}
 Shannon entropy, according to the definition, equals to 
 \begin{displaymath}
-    \mathit{Shannon\text{-}entropy} = 1.0\, bits
+    \mathit{Shannon\text{-}entropy} = 1.0\ \mathit{bits}
 \end{displaymath}
 
 
