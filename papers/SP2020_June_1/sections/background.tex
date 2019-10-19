@@ -97,9 +97,10 @@ the low 6 bits the address is irrelevant in causing those cached-based side-chan
 %branch is executed or not. Such vulnerabilities are called the memory-based 
 %side-channles. We identify and quantify the leakage of the two kinds of vulnerabilities 
 %in the paper.
+
 \subsection{Information Leakage Quantification}
  
-Given an event $e$ which occurs with the probability $p(e)$, if the event $e$ happens, 
+Given an event $e$ that occurs with the probability $p(e)$, if the event $e$ happens, 
 then we receive
 \begin{displaymath}
     I = - \log_2p(e)
@@ -111,7 +112,7 @@ ranges from 0 to 255.  Assume
 equals $1$, the probability of this observation is $\frac{1}{256}$. So the information we get is 
 $-\log(\frac{1}{256}) = 8$ bits, which is exactly the size of the char variable in the C program.
 
-Existing works on information leakage quantification uses Shannon entropy.
+Existing works on information leakage quantification uses Shannon entropy: 
 min-entropy \cite{10.1007/978-3-642-00596-1_21} and max-entropy.
 In these frameworks, the input sensitive
 information $K$ is viewed as a random variable. 
@@ -126,47 +127,53 @@ Shannon entropy can be used to quantify the initial uncertainty about the sensit
 information. It measures how much information is in a system.
 
 Min-entropy describes in the information leaks from the most likely outcome.
-Min-entropy can be used to describe the best chance of success in guessing 
+For example, min-entropy can be used to describe the best chance of success in guessing 
 one's password in one chance, which is defined as 
 \begin{displaymath}
-    min-entropy = - log_2(p_{max})
+    \mathit{min\text{-}entropy} = - \log_2(p_{max})
 \end{displaymath}
 
-Max-entropy is defined solely on the number of possible observations. It is 
-equal to $-log_2{n}$. As it is easy to compute, most recent works use 
+Max-entropy is defined solely on the number of possible observations. 
+  %It is equal to $-\log_2{n}$.
+\begin{displaymath}
+    \mathit{max\text{-}entropy} = -\log_2{n}
+\end{displaymath}
+As it is easy to compute, most recent works use 
 max-entropy as the definition of the amount of leaked information.
 
 To illustrate how above definitions work, we consider the following
 code fragment. 
 
 \begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
-uint_8 key[2]; 
-get_key(key);               // key[0], key[1] = [0 ... 255]
-if(key[0] + key[1] < 8){
-    A();                    // branch 1
+uint_8 key[2];
+get_key(key);              // 0 <= key[0], key[1] < 256
+if (key[0] + key[1] < 8) {
+    A();                   // branch 1
 }
-if(key[0] > key[1]){        // branch 2
+if (key[0] > key[1]) {     // branch 2
     B();
 }
 \end{lstlisting}
 
 Suppose an attacker can observe if branch 1 and branch 2 are executed or not, 
-an attacker can have four different observations: neither branch 1 or 
-branch 2 is executed $\emptyset$, branch 1 is executed $\{1\}$, branch 2
-is executed $\{2\}$, and both branch 1 and branch 2 are executed $\{1, 2\}$.
+an attacker can have four different observations:
+$\emptyset$ for neither branch 1 nor branch 2 executed,
+$\{1\}$ for only branch 1 executed,
+$\{2\}$ for only branch 2 executed, and
+ $\{1, 2\}$ for both branch 1 and branch 2 executed.
 If $key$ has uniform distribution, we can calculate the corresponding
 possibility.
 \begin{table}[ht]
     \centering
-    \resizebox{.8\columnwidth}{!}{
+%    \resizebox{.8\columnwidth}{!}{
 
 \begin{tabular}{lllll}
     \hline
-Observation (o)  & $\emptyset$ & ${\{1\}}$ & ${\{2\}}$ & ${\{1, 2\}}$ \\ \hline
-Possibility (p)  &  &  &  &  \\
+Observation ($o$)  & $\emptyset$ & ${\{1\}}$ & ${\{2\}}$ & ${\{1, 2\}}$ \\ \hline
+Possibility ($p$)  &  &  &  &  \\
     \hline
 \end{tabular}
-    }
+%    }
 \end{table}
 
 
