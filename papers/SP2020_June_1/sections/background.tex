@@ -179,15 +179,10 @@ Possibility (p)     & 0.5016 & 0.0003 & 0.4980  & 0.0002   \\
     \hline
 \end{tabular}
 %    }
+\label{back:table}
 \end{table}
-According to the definition, min-entropy equals to 
-\begin{displaymath}
-    \mathit{min\text{-}entropy} = -\log_2{0.5016} = 1.0\ \mathit{bits}
-\end{displaymath}
-Because the above code has four different observations, max-entropy equals to 
-\begin{displaymath}
-    \mathit{max\text{-}entropy} = -\log_2{4} = 2.0\ \mathit{bits}
-\end{displaymath}
+
+
 Shannon entropy, according to the definition, equals to 
 \begin{displaymath}
     \mathit{Shannon\text{-}entropy} = 1.0\ \mathit{bits}
@@ -198,30 +193,27 @@ Now we provide a concrete example to show how the two types of quantification de
 how our method is different.
 
 \vspace{3pt}
-\textbf{Maximal Leakage.} 
+\textbf{Min Entropy.}
+As $p_{max} = 0.5016$, with the definition, min-entropy equals to 
+\begin{displaymath}
+    \mathit{min\text{-}entropy} = -\log_2{0.5016} = 1.0\ \mathit{bits}
+\end{displaymath}
+
+\textbf{Max Entropy.} 
 Depending on the value of key, the code can run four different branches which corresponding to 
-four different observations. Therefore, with the maximal leakage definition, the leakage equals to 
-$\log4 = 2$ bits.
+four different observations. Therefore, with the max entropy definition, the leakage equals to 
+
+\begin{displaymath}
+    \mathit{max\text{-}entropy} = -\log_2{4} = 2.0\ \mathit{bits}
+\end{displaymath}
 
 \vspace{3pt}
-\textbf{Mutual Information.}
-If the key satisfies the uniform distribution, the probability of the code runs each branch
-can be computed with the following result.  
-
-\begin{table}[h]
-\centering
-%\resizebox{\columnwidth}{!}{
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Branch & A     & B      & C      & D       \\ \hline
-Possibility      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
-\end{tabular}
-%}
-\caption{The distribution of observations}
-\end{table}
+\textbf{Shannon Entropy.}
+If the key satisfies the uniform distribution, the probability of each observations
+is shown is the table~\ref{back:table}.  
 
 Therefore, the leakage equals to 
-$\frac{1}{256}\log\frac{1}{256} + \frac{1}{4}\log\frac{1}{4}*2 + \frac{127}{256}\log\frac{127}{256} = 1.7$ bits.
+$0.5016*log_{2}0.5016 + 0.0003*log_{2}0.0003 + 0.4980*log_{2}0.4980 + 0.0002*log_{2}0.0002= 1.0$ bits.
 
 
 \subsection{Threat Model}
