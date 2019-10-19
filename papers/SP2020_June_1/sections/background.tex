@@ -194,41 +194,44 @@ Shannon entropy, according to the definition, equals to
 \end{displaymath}
 
 
-%% put this example in next section
-%%\section{Running Example}
 
-%Now we provide a concrete example to show how the two types of quantification definition works and show that
-%how our method is different.
 
-%\vspace{3pt}
-%\textbf{Maximal Leakage.} 
-%Depending on the value of key, the code can run four different branches which corrosponding to 
-%four different observations. Therefore, by the maximal leakage definition, the leakage equals to 
-%$\log4 = 2$ bits.
 
-%\vspace{3pt}
-%\textbf{Mutual Information.}
-%If the key satisfies the uniform distribution, the probability of the code runs each branch
-%can be computed with the following result.  
+------\fixme{CLEANUP - begin}------
 
-%\begin{table}[h]
-%\centering
+Now we provide a concrete example to show how the two types of quantification definition works and show that
+how our method is different.
+
+\vspace{3pt}
+\textbf{Maximal Leakage.} 
+Depending on the value of key, the code can run four different branches which corrosponding to 
+four different observations. Therefore, by the maximal leakage definition, the leakage equals to 
+$\log4 = 2$ bits.
+
+\vspace{3pt}
+\textbf{Mutual Information.}
+If the key satisfies the uniform distribution, the probability of the code runs each branch
+can be computed with the following result.  
+
+\begin{table}[h]
+\centering
 %\resizebox{\columnwidth}{!}{
-%\begin{tabular}{|c|c|c|c|c|}
-%\hline
-%Branch & A     & B      & C      & D       \\ \hline
-%Possibility      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
-%\end{tabular}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Branch & A     & B      & C      & D       \\ \hline
+Possibility      & 1/256 & 64/256 & 64/256 & 127/256 \\ \hline
+\end{tabular}
 %}
-%\caption{The distribution of observations}
-%\end{table}
+\caption{The distribution of observations}
+\end{table}
 
-%Therefore, the leakage equals to 
-%$\frac{1}{256}\log\frac{1}{256} + \frac{1}{4}\log\frac{1}{4}*2 + \frac{127}{256}\log\frac{127}{256} = 1.7$ bits.
+Therefore, the leakage equals to 
+$\frac{1}{256}\log\frac{1}{256} + \frac{1}{4}\log\frac{1}{4}*2 + \frac{127}{256}\log\frac{127}{256} = 1.7$ bits.
 
-%\vspace{3pt}
-%\textbf{\tool.}
-%\fixme{What is out result here? Need explain}
+
+------\fixme{CLEAN UP - continue}------
+
+\input{sections/trace_qif.tex}
 
 
 
