@@ -8,10 +8,10 @@ leaked information.
 \subsection{Definitions}
 \subsection{Leakage Definition}
 Suppose a program with some
-sensitive input $K$, an adversary has some observations ($O$) through some side channel.
-In this work, the observations are referred as the secret-dependent control-flows and
-secret-dependent data-access patterns. \fixme{See the comment above, we need to explain these
-  patterns before this point.} The conditional entropy $H(K|O)$ is
+sensitive input $K$, an adversary has some observations ($O$) through some side channel.  
+ %In this work, the observations are referred as the secret-dependent control-flows and
+ %secret-dependent data-access patterns. 
+  The conditional entropy $H(K|O)$ is
 \begin{displaymath}
     H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)\log_2P(k_i|o_j)}}
 \end{displaymath}
