@@ -155,19 +155,32 @@ an attacker can have four different observations: neither branch 1 or
 branch 2 is executed $\emptyset$, branch 1 is executed $\{1\}$, branch 2
 is executed $\{2\}$, and both branch 1 and branch 2 are executed $\{1, 2\}$.
 If $key$ has uniform distribution, we can calculate the corresponding
-possibility.
+possibility by counting the number of possible solutions.
 \begin{table}[ht]
     \centering
-    \resizebox{.8\columnwidth}{!}{
+    \resizebox{.9\columnwidth}{!}{
 
-\begin{tabular}{lllll}
+\begin{tabular}{l|cccc}
     \hline
-Observation (o)  & $\emptyset$ & ${\{1\}}$ & ${\{2\}}$ & ${\{1, 2\}}$ \\ \hline
-Possibility (p)  &  &  &  &  \\
+Observation (o)     & $\emptyset$ & ${\{1\}}$ & ${\{2\}}$ & ${\{1, 2\}}$ \\ \hline
+Number of Solutions &  32876 & 20 & 32634 & 16 \\ \hline
+Possibility (p)     & 0.5016 & 0.0003 & 0.4980  & 0.0002   \\
     \hline
 \end{tabular}
     }
 \end{table}
+According to the definition, min-entropy equals to 
+\begin{displaymath}
+    min\, entropy = -log_2{0.5016} = 0.9954\, bits
+\end{displaymath}
+Because the above code has four different observations, max-entropy equals to 
+\begin{displaymath}
+    max\, entropy = -log_2{4} = 2\, bits
+\end{displaymath}
+Shannon entropy, according to the definition, equals to 
+\begin{displaymath}
+    Shannon\, entropy = 1.0006\, bits
+\end{displaymath}
 
 
 %% put this example in next section
