@@ -64,7 +64,15 @@ previous example, the existing static method does not work well in those situati
 \vspace*{3pt}
 
 \subsection{Notations}
-In the section, we give the necessary definitions for dealing with programs and side-channels.
+In the section, we give the necessary definitions and notations for dealing with programs and side-channels.
+We assume the program (P) has $n$ sensitive inputs, from $k_1$ to $k_n$, denoted as $k$. 
+The sensitive input
+can be an integer or an array. If the input is an array, $n$ is the size of the array.
+As the sensitive inputs is unknown to attacker, we think $k_1$ to $k_n$ are variables.
+We also use $I$ to denote the initial state of the target program. In the paper, $I$
+represents the values of memories and registers at the time when the program takes $k$.
+
+We model one execution of the program as P(I, T, K)
 \subsection{Theoretical Analysis}
 Suppose a program with some
 sensitive input $K$, an adversary has some observations ($O$) by side channels.  
