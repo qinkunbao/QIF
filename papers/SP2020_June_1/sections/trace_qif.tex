@@ -63,14 +63,21 @@ previous example, the existing static method does not work well in those situati
 
 
 \subsection{Notations}
-In the section, we give the necessary definitions and notations for dealing with programs and side-channels.
-We assume the program (P) has $K$ as the sensitive input. $K$ should be a finite set of keys.
+In the section, we give the necessary definitions and notations for dealing 
+with programs and side-channels.
+We assume the program ($P$) has $K$ as the sensitive input. 
+$K$ should be a finite set of keys. The program also takes known messages $M$ as the input. The model applies to most of the most cryptosystems. For example,
+during the AES encryption, $P$ are the encryption function. $K$ is AES key and
+$M$ is the message to be encrypted. During the execution, an adversary may have some observations ($O$) from the program. Examples of those observations
+include timing, CPU usages, and Electromagnetic signals (EM). For the paper, we
+consider the secret-dependent control-flows and secret-dependent memory accesses
+as the observations.
 
-As the sensitive inputs is unknown to attacker, we think $k_1$ to $k_n$ are variables.
-We also use $I$ to denote the initial state of the target program. In the paper, $I$
-represents the values of memories and registers at the time when the program takes $k$.
+With the above definitions, we have the following functions:
+\begin{displaymath}
+    P(K, M) \rightarrow	O
+\end{displaymath}
 
-We model one execution of the program as P(I, T, K)
 \subsection{Theoretical Analysis}
 Suppose a program with some
 sensitive input $K$, an adversary has some observations ($O$) by side channels.  
