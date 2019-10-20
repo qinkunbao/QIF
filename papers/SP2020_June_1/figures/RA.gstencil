@@ -752,7 +752,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2019-10-16 18:22:52 +0000</string>
+	<string>2019-10-20 17:57:08 +0000</string>
 	<key>Modifier</key>
 	<string>包秦坤</string>
 	<key>MovementHandleVisible</key>
@@ -815,7 +815,7 @@
 			<key>BackgroundGraphic</key>
 			<dict>
 				<key>Bounds</key>
-				<string>{{-750, -524}, {2621, 2156}}</string>
+				<string>{{-744, -524}, {2621, 2156}}</string>
 				<key>Class</key>
 				<string>GraffleShapes.CanvasBackgroundGraphic</string>
 				<key>ID</key>
@@ -842,11 +842,11 @@
 			<key>BaseZoom</key>
 			<integer>0</integer>
 			<key>CanvasDimensionsOrigin</key>
-			<string>{129, 211}</string>
+			<string>{135, 211}</string>
 			<key>CanvasOrigin</key>
 			<string>{0, 0}</string>
 			<key>CanvasSize</key>
-			<string>{461, 295}</string>
+			<string>{455, 295}</string>
 			<key>CanvasSizingMode</key>
 			<integer>2</integer>
 			<key>ColumnAlign</key>
@@ -1110,7 +1110,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{129.46709374999864, 478.4622802734375}, {166.5078125, 27.5234375}}</string>
+					<string>{{140.58428124999864, 478.4622802734375}, {144.2734375, 27.5234375}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -1161,7 +1161,7 @@
 \deftab720
 \pard\pardeftab720\qc\partightenfactor0
 
-\f0\fs32 \cf2 (a) Mutual Information}</string>
+\f0\fs32 \cf2 (a) Previous Model}</string>
 						<key>TextAlongPathGlyphAnchor</key>
 						<string>center</string>
 					</dict>
@@ -1840,7 +1840,7 @@
 		<key>CurrentSheet</key>
 		<integer>0</integer>
 		<key>Frame</key>
-		<string>{{-1999, -131}, {1440, 860}}</string>
+		<string>{{583, 186}, {1440, 860}}</string>
 		<key>ShowInfo</key>
 		<true/>
 		<key>ShowRuler</key>
