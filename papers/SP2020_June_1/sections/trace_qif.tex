@@ -79,10 +79,18 @@ With the above definitions, we have the following functions:
 \end{displaymath}
 
 An adversary does not have access to $K$, but he should know $P$, $M$, and $O$. 
+For one execution of a deterministic program, once $k \in K$ and $m \in M$ are fixed, the 
+observation ($o \in O$) is also determined. As an attacker, he knows $P$, $o$, 
+and $m$ and wants to infer value of $k$. We use $\hat{K}$ to denote the set of
+$k$ that satisfies the below function:
+
+\begin{displaymath}
+    P(\hat{K}, m) \rightarrow	o
+\end{displaymath}
 The question of quantifying the amount of leaked information transferring into the
 following question: 
 
-How much uncertainty of $K$ can be reduced if an attacker knows $P$, $M$, and $O$?  
+How much uncertainty of $K$ can be reduced if an attacker knows $P$, $m$, and $o$?  
 
 \subsection{Theoretical Analysis}
 Suppose a program with some
