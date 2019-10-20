@@ -64,10 +64,13 @@ previous example, the existing static method does not work well in those situati
 
 \subsection{Notations}
 In the section, we give the necessary definitions and notations for dealing 
-with programs and side-channels.
-We assume the program ($P$) has $K$ as the sensitive input. 
+with programs and side-channels. We use capital letters (e.g., $S$) to represent 
+the set. $|S|$ represents the size of set $S$. We use corresponding small letters
+to represents one element in the set (e.g., $s \in S$).
+
+We assume the program ($\beta$) has $K$ as the sensitive input. 
 $K$ should be a finite set of keys. The program also takes known messages $M$ as the input. The model applies to most of the most cryptosystems. For example,
-during the AES encryption, $P$ are the encryption function. $K$ is AES key and
+during the AES encryption, $\beta$ are the encryption function. $K$ is AES key and
 $M$ is the message to be encrypted. During the execution, an adversary may have some observations ($O$) from the program. Examples of those observations
 include timing, CPU usages, and Electromagnetic signals (EM). For the paper, we
 consider the secret-dependent control-flows and secret-dependent memory accesses
@@ -75,23 +78,23 @@ as the observations.
 
 With the above definitions, we have the following functions:
 \begin{displaymath}
-    P(K, M) \rightarrow	O
+    \beta(K, M) \rightarrow	O
 \end{displaymath}
 
-An adversary does not have access to $K$, but he should know $P$, $M$, and $O$. 
+An adversary does not have access to $K$, but he should know $\beta$, $M$, and $O$. 
 For one execution of a deterministic program, once $k \in K$ and $m \in M$ are fixed, the 
-observation ($o \in O$) is also determined. As an attacker, he knows $P$, $o$, 
-and $m$ and wants to infer value of $k$. We use $\hat{K}$ to denote the set of
+observation ($o \in O$) is also determined. As an attacker, he knows $\beta$, $o$, 
+and $m$. The attacker wants to infer value of $k$. We use $\hat{K}$ to denote the set of
 $k$ that satisfies the below function:
 
 \begin{displaymath}
-    P(\hat{K}, m) \rightarrow	o
+    \beta(\hat{K}, m) \rightarrow	o
 \end{displaymath}
 The problem of quantifying the amount of leaked information can be transferred into the
 following question: 
 
-How much uncertainty of $K$ can be reduced if an attacker knows $P$, $m$, and $o$?  
-
+How much uncertainty of $K$ can be reduced if an attacker knows $\beta$, $m$, and $o$?  
+ 
 \subsection{Theoretical Analysis}
 Suppose a program with some
 sensitive input $K$, an adversary has some observations ($O$) by side channels.  
