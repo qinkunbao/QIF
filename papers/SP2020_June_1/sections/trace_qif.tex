@@ -40,7 +40,7 @@ of the sensitive input.
 However, previous static-based approach can not precisely reflect the sensitivity of the leakage.
 According to the definition of Shannon entropy, the leakage will be $\frac{1}{256}*\log_{2}\frac{1}{256} + 
 \frac{255}{256} *\log_{2}\frac{255}{256}= 0.24$ bits. Because the program has two branches, tools
-based on max-entropy will report the code has $log_2{2} = 1$ bit leakage.
+based on max-entropy will report the code has $\log_2{2} = 1$ bit leakage.
 
 Both approaches fail to tell how 
 much information is leaked during the execution precisely.
