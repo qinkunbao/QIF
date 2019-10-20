@@ -10,11 +10,28 @@ and propose our method.
 Existing static-based side-channel quantification works~\cite{182946,Wichelmann:2018:MFF:3274694.3274741 } define information leakage
 using max entropy or Shannon entropy. These definitions provide a strong security guarantee
 when trying to prove a program is secure enough if zero bit of information is leaked 
-report by their tools. However, it is useless if the tool report the program leaks
-some information.
+reported by their approaches. However, it is useless if the tool report the program leaks
+some information. Moreover, those metrics does not apply to static method.
+
+
+\begin{figure}[h!]
+    \centering
+\begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
+uint_8 password = input();
+if(password == 0x1b){
+    pass();
+}else{
+    fail();
+}
+\end{lstlisting}
+\caption{A dummy password checker}
+\label{figure:password checker}
+\end{figure}
 
 Considering the example~\ref{background::side-channel}, if an attacker knows the
-code executes branch A by some observations, the attacker can know the key actually equals to 128. 
+code executes branch $\{{1, 2\}}$ by side-channel attacks, the attacker can infer the total key size equals to 16. 
+Without the above information, an attacker can only know $key[1]$ and $key[2]$ have 256*256 = 65536 
+possibilities.
 Suppose it is a dummy password checker, in which case the attacker can fully retrieve the password.
 Therefore, the total information leakage should be 8 bits, which equals to the size
 of unsigned char. 
