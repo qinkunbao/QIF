@@ -144,6 +144,8 @@ max-entropy as the definition of the amount of leaked information.
 To illustrate how above definitions work, we consider the following
 code fragment. 
 
+\begin{figure}[h!]
+    \centering
 \begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
 uint_8 key[2];
 get_key(key);              // 0 <= key[0], key[1] < 256
@@ -154,8 +156,11 @@ if (key[0] > key[1]) {     // branch 2
     B();
 }
 \end{lstlisting}
+\caption{Side-channel leakage}
+\label{background::side-channel}
+\end{figure}
 In this paper we assume an attacker can observe 
-if branch 1 and branch 2 are executed or not. Therefore 
+if branch 1 and branch 2 are executed or not. Therefore， 
 an attacker can have four different observations depending on
 the value of $\mathit{key}$:
 $\emptyset$ for neither branch 1 nor branch 2 executed,

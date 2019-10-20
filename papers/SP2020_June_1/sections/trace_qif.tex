@@ -2,11 +2,44 @@
 In the section, we discuss how \tool{} quantifies the amount of
 leaked information. \tool{} is a dynamic-based approach to 
 quantify the information leakage. We will first introduce 
-the limitation of existing quantification metric. After
+the limitation of existing quantification metrics. After
 that, we introduce the abstract and notation for the paper 
 and propose our method.
 
 \subsection{Problem Setting}
+Existing static-based side-channel quantification works~\cite{182946,Wichelmann:2018:MFF:3274694.3274741 } define information leakage
+using max entropy or Shannon entropy. These definitions provide a strong security guarantee
+when trying to prove a program is secure enough if zero bit of information is leaked 
+report by their tools. However, it is useless if the tool report the program leaks
+some information.
+
+Considering the example~\ref{background::side-channel}, if an attacker knows the
+code executes branch A by some observations, the attacker can know the key actually equals to 128. 
+Suppose it is a dummy password checker, in which case the attacker can fully retrieve the password.
+Therefore, the total information leakage should be 8 bits, which equals to the size
+of unsigned char. 
+According to the mutual definition, however, the leakage will be 1.7 bits. \fixme{use footnote or list the calculation process}. The maximal information
+leakage is 2 bits. \fixme{the same with previous}. Both approaches fail to tell how 
+much information is leaked during the execution precisely.
+
+The problem with the existing methods is that they are static-based and the 
+input values are neglected by the previous definition. 
+They assume the attacker runs the program multiple times with many different sensitive 
+information as the input. Both the mutual information and the max-leakage give an ``average" 
+estimate of the information leakage. However, it isn't the typical scenario for an adversary to 
+launch an side-channel attack. When a side-channel attack happens, the adversary wants 
+to retrieve the sensitive information, in which case the sensitive information is fixed (e.g. AES keys). 
+The adversary will run the attack over and over again and guess the value bit by bit. Like the 
+previous example, the existing static method does not work well in those situations.
+
+\begin{figure}
+  \centering
+   \includegraphics[width=.9\columnwidth]{./figures/RA.pdf}
+   \caption{\fixme{some caption here}}
+\end{figure}
+
+\vspace*{6pt}
+
 \subsection{Notations}
 \subsection{Theoretical Analysis}
 Suppose a program with some
@@ -42,11 +75,3 @@ by the mutual information can be simplified into:
 In other words, once we know the distribution of those memory-access patterns. We can 
 calculate how much information is actually leaked.
 
-Another common method is based on the maximal leakage~\cite{10.1007/978-3-642-00596-1_21,10.1007/978-3-642-31424-7_40,182946}.
-The formal information theory can prove that the maximal leakage is the upper bound of the mutual 
-information (Channel Capacity).
-
-\begin{displaymath}
-    \mathit{Leakage} = \log(C(O))
-\end{displaymath}
-Here $C(O)$ represents the number of different observations that an attacker can have. 
