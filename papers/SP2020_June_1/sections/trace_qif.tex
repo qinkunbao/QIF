@@ -17,34 +17,40 @@ some information. Moreover, those metrics does not apply to static method.
 \begin{figure}[h!]
     \centering
 \begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
-uint_8 password = input();
+uint8_t password = input();
 if(password == 0x1b){
-    pass();
+    pass();     //branch 1
 }else{
-    fail();
+    fail();     //branch 2
 }
 \end{lstlisting}
 \caption{A dummy password checker}
 \label{figure:password checker}
 \end{figure}
 
-Considering the example~\ref{background::side-channel}, if an attacker knows the
-code executes branch $\{{1, 2\}}$ by side-channel attacks, the attacker can infer the total key size equals to 16. 
-Without the above information, an attacker can only know $key[1]$ and $key[2]$ have 256*256 = 65536 
-possibilities.
-Suppose it is a dummy password checker, in which case the attacker can fully retrieve the password.
+We consider the above dummy password checker~\ref{figure:password checker}.
+The program will take a 8 bit number as the input and check if the input is the
+correct password. 
+If an attacker knows the
+code executes branch $\{{1\}}$ by side-channel attacks, he can infer the password equals to 0x1b,
+in which case the attacker can fully retrieve the password.
 Therefore, the total information leakage should be 8 bits, which equals to the size
-of unsigned char. 
-According to the mutual definition, however, the leakage will be 1.7 bits. \fixme{use footnote or list the calculation process}. The maximal information
-leakage is 2 bits. \fixme{the same with previous}. Both approaches fail to tell how 
+of the sensitive input. 
+
+However, previous static-based approach can not precisely reflect the sensitivity of the leakage.
+According to the definition of Shannon entropy, the leakage will be $\frac{1}{256}*\log_{2}\frac{1}{256} + 
+\frac{255}{256} *\log_{2}\frac{255}{256}= 0.24$ bits. Because the program has two branches, tools
+based on max-entropy will report the code has $log_2{2} = 1$ bit leakage.
+
+Both approaches fail to tell how 
 much information is leaked during the execution precisely.
 
 The problem with the existing methods is that they are static-based and the 
 input values are neglected by the previous definition. 
 They assume the attacker runs the program multiple times with many different sensitive 
-information as the input. Both the mutual information and the max-leakage give an ``average" 
-estimate of the information leakage. However, it isn't the typical scenario for an adversary to 
-launch an side-channel attack. When a side-channel attack happens, the adversary wants 
+information as the input. Both Shannon entropy and max entropy give an ``average" 
+estimate of the information leakage. However, it is not the typical scenario for an adversary to 
+launch a side-channel attack. When a side-channel attack happens, the adversary wants 
 to retrieve the sensitive information, in which case the sensitive information is fixed (e.g. AES keys). 
 The adversary will run the attack over and over again and guess the value bit by bit. Like the 
 previous example, the existing static method does not work well in those situations.
@@ -91,4 +97,59 @@ by the mutual information can be simplified into:
 \end{displaymath}
 In other words, once we know the distribution of those memory-access patterns. We can 
 calculate how much information is actually leaked.
+
+In the project, we hope to give a very precise definition of information leakages. 
+Suppose an attacker run the target program multiple times with one fixed input, we
+want to know how much information he can infer by observing the memory access patterns.
+We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} %% where the information
+%% leakage equals:
+%% \textbf{Initial uncertainty - remaining uncertainty}
+that
+\begin{align*}
+ & \mathit{Information\ leakage} = \\
+ & ~~~~~~ \mathit{Initial}\ \mathit{uncertainty} - \mathit{Remaining\ uncertainty}. 
+\end{align*}
+
+
+If an adversary has zero knowledge about the input before the attack. The initial uncertainty
+equals to the size the input. As for the remaining uncertainty, we come to the original definition
+of the information content.
+We quantify the information leakage with the following definition. 
+
+\newtheorem{mydef}{Definition}
+
+\begin{mydef}
+\label{def}
+Given a program $P$ with the input set $K$, 
+an adversary has the observation $o$ when the input $k{\in}K$. 
+We denote it as
+    $$P(k) = o.$$
+The leakage $L_{P(k)=o}$ based on the oberservation is
+    $$L_{P(k)=o} = \log_2{|K|} - \log_2{|K^o|}$$
+    where
+    $$K^o = \{k | k \in K \ \text{and} \ P(k) = o \}$$
+\end{mydef}
+
+With the new definition, if the attacker observes that the code~\ref{code::entropy} runs the branch 1, 
+then the $K^{o^{1}} = \{128\}$. Therefore, the information leakage $L_{P(k)=o^{1}} = \log_2{256} - \log_2{1} = 8$
+bits, which means the key is totally leaked. If the attacker observes the code runs other
+branches, the leaked information is shown in the following table.
+
+\begin{table}[h]
+    \centering
+    \resizebox{.7\columnwidth}{!}{
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    Branch & 1 & 2  & 3  & 4   \\ \hline
+    $K^o$   & 1 & 64 & 64 & 127 \\ \hline
+    $L_{P(k)=o}$(bits)   & 8 & 2  & 2  & 1   \\ \hline
+    \end{tabular}
+    }
+    \caption{The leaked information by the definition~\ref{def}}
+\end{table}
+
+With the same definition~\ref{def}, if the attacker observes that the code run branch 2, the information
+leakage will be 2 bits. The conclusion is consistent with the intuition. Because if the branch 2 was
+executed, we can know the key is less than 64. So we know the most and the second significant digits of 
+the value key equals to $128$.
 
