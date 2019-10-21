@@ -90,10 +90,10 @@ An adversary does not have access to $K$, but he should know $\beta$, $M$, and $
 For one execution of a deterministic program, once $k \in K$ and $m \in M$ are fixed, the 
 observation ($o \in O$) is also determined. As an attacker, he knows $\beta$, $o$, 
 and $m$. The attacker wants to infer value of $k$. We use $K^o$ to denote the set of
-$k$ that satisfies the below mapping:
+$k$ that still produces the same observations:
 
 \begin{displaymath}
-    \beta(K^o, m) \rightarrow	o
+    K^o = \{ k \in K \, |\, \beta(k, m) \rightarrow o\}
 \end{displaymath}
 The problem of quantifying the amount of leaked information can be transferred into the
 following question: 
