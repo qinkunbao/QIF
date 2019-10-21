@@ -166,26 +166,32 @@ The leakage $L_{\beta(k)\rightarrow o}$ based on the observation ($o$) is
     $$L_{\beta(k)\rightarrow o} = \log_2{|K|} - \log_2{|K^o|}$$
 \end{mydef}
 
-With the new definition, if the attacker observes that the code~\ref{code::entropy} runs the branch 1, 
-then the $K^{o^{1}} = \{128\}$. Therefore, the information leakage $L_{P(k)=o^{1}} = \log_2{256} - \log_2{1} = 8$
-bits, which means the key is totally leaked. If the attacker observes the code runs other
-branches, the leaked information is shown in the following table.
+With the new definition, if the attacker observes that the code~\ref{figure:password checker} runs the branch 1, 
+then the $K^{o^{1}} = \{0x1b\}$. Therefore, the information leakage $L_{P(k)=o^{1}} = \log_2{256} - \log_2{1} = 8$
+bits, which means the key is totally leaked. If the attacker observes the code runs branch2, the leaked information is 
+$L_{P(k)=o^{2}} = \log_2{256} - \log_2{255} = 0$ bit.
 
-\begin{table}[h]
+
+With the same definition~\ref{def}, we can also calculate the leaked information
+from the sample code~\ref{background::side-channel}.
+
+\begin{table}[ht]
     \centering
-    \resizebox{.7\columnwidth}{!}{
-    \begin{tabular}{|c|c|c|c|c|}
-    \hline
-    Branch & 1 & 2  & 3  & 4   \\ \hline
-    $K^o$   & 1 & 64 & 64 & 127 \\ \hline
-    $L_{P(k)=o}$(bits)   & 8 & 2  & 2  & 1   \\ \hline
-    \end{tabular}
-    }
-    \caption{The leaked information by the definition~\ref{def}}
-\end{table}
 
-With the same definition~\ref{def}, if the attacker observes that the code run branch 2, the information
-leakage will be 2 bits. The conclusion is consistent with the intuition. Because if the branch 2 was
-executed, we can know the key is less than 64. So we know the most and the second significant digits of 
-the value key equals to $128$.
+ %  \resizebox{.8\columnwidth}{!}{
+
+\begin{tabular}{l|cccc}
+    \hline
+%Observation (o)     & $\emptyset$ & ${\{1\}}$ & ${\{2\}}$ & ${\{1, 2\}}$ \\ \hline
+%Number of Solutions &  32876 & 20 & 32634 & 16 \\ \hline
+%Possibility (p)     & 0.5016 & 0.0003 & 0.4980  & 0.0002   \\
+Observation ($o$)  & $\emptyset$ & ${\{1\}}$ & ${\{2\}}$ & ${\{1, 2\}}$ \\ \hline
+Number of Solutions &  32876 & 20 & 32634 & 16 \\ \hline
+Leaked Information (bits)     & 1.0 & 11.7 & 1.0  & 12.0   \\
+    \hline
+\end{tabular}
+%    }
+\caption{The distribution of observation}
+\label{shtable}
+\end{table}
 
