@@ -117,10 +117,10 @@ min-entropy \cite{10.1007/978-3-642-00596-1_21}, and max-entropy.
 In these frameworks, the input sensitive
 information $K$ is viewed as a random variable. 
 
-Let $k_i$ be one of the possible
+Let $k$ be one of the possible
 value of $K$. The Shannon entropy $H(K)$ is defined as
 \begin{displaymath}
-    H(K) = - \sum_{k_i {\in} K}p(k_i)\log_2(k_i)
+    H(K) = - \sum_{k {\in} K}p(k)\log_2(k)
 \end{displaymath}
 
 Shannon entropy can be used to quantify the initial uncertainty about the sensitive
@@ -170,7 +170,7 @@ $\{2\}$ for only branch 2 executed, and
 Now the question is how much information can be leaked from the 
 above code if an attacker can know which branch is executed?
 
-If $key$ has uniform distribution, we can calculate the corresponding
+If $key$ has the uniform distribution, we can calculate the corresponding
 possibility by counting the number of possible solutions.
 \begin{table}[ht]
     \centering
