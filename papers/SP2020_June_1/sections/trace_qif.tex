@@ -145,14 +145,14 @@ For a program ($\beta$) without knowing any domain information, any sensitive
 input should appear equally. Therefore, for any $k \in K$, $p(k) = \frac{1}{|K|}$.
 So we have 
 $$H(K) = \sum_{k {\in} K}\frac{1}{|K|}log_2{|K|} = log_2{|K|}$$
-
-\begin{align}
-    H(K;o) = - \sum_{k {\in} \hat{K}}{p(k|o)\log_2p(k|o)} \\
-             - \sum_{k` {\in} (K - \hat{K})}{p(k`|o)\log_2p(k`|o)}\\
-           = - \sum_{k {\in} \hat{K}}{p(k|o)\log_2p(k|o)}\\
-           = \sum_{k {\in} \hat{K}}\frac{1}{|\hat{K}|}log_2{|\hat{K}|}\\
-           = log_2{\hat{|K|}}
-\end{align}
+For any $k' \in K - \hat{K}$, $p(k'|o) = 0$. We can get the following equation:
+\begin{align*}
+H(K;o) &= - \sum_{k {\in} \hat{K}}{p(k|o)\log_2p(k|o)} 
+          - \sum_{k` {\in} (K - \hat{K})}{p(k'|o)\log_2p(k'|o)}\\
+       &= - \sum_{k {\in} \hat{K}}{p(k|o)\log_2p(k|o)}\\
+       &= \sum_{k {\in} \hat{K}}\frac{1}{|\hat{K}|}log_2{|\hat{K}|}\\
+       &= log_2{\hat{|K|}}
+\end{align*}
 
 \newtheorem{mydef}{Definition}
 
