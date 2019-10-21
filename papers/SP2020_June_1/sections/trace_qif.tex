@@ -103,7 +103,7 @@ between the two variables. Here we use MI to describe the leakage between $K$ an
 which is defined as:
 
 \begin{equation} \label{eq:1}
-    I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)\log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
+    I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{p(k_i, o_j)\log_2\frac{p(k_i, o_j)}{p(k_i)p(o_j)}}}
 \end{equation}
 
 where $P(k_i, o_i)$ is the joint discrete distribution of $K$ and $O$.
@@ -116,7 +116,7 @@ $H(K|O)$ is the entropy of $K$ conditioned on $O$. It quantifies the uncertainty
 given the value of $O$. In other word, the conditional entropy $H(K|O)$ marks the 
 uncertainty about $K$ after the adversary has gained some observations ($O$). 
 \begin{equation}
-    H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)\log_2P(k_i|o_j)}}
+    H(K|O) = - \sum_{o_j {\in} O} {p(o_j) \sum_{k_i {\in} K}{p(k_i|o_j)\log_2p(k_i|o_j)}}
 \end{equation}
 
 In the project, we hope to give a very precise definition of information leakages. 
@@ -133,14 +133,26 @@ that
 
 Now we come compare the equation~\ref{eq:2} with the above slogan, we will
 find $H(K)$ is the $\mathit{Initial\ uncertainty}$ and $H(K|O)$ is
-$\mathit{Remaining\ uncertainty}$.
+$\mathit{Remaining\ uncertainty}$. During a side-channel attack, 
+the observation ($o$) is known.  We have $H(K|O) = H(K|o)$.
 
 Therefore, we define the amount of leaked information as 
 \begin{displaymath}
-    Leakage = H(K) - H(K|O)
+    Leakage = H(K;o) = H(K) - H(K|o)
 \end{displaymath}
 
-For a program ($\beta$) without knowing any domain information,  
+For a program ($\beta$) without knowing any domain information, any sensitive
+input should appear equally. Therefore, for any $k \in K$, $p(k) = \frac{1}{|K|}$.
+So we have 
+$$H(K) = \sum_{k {\in} K}\frac{1}{|K|}log_2{|K|} = log_2{|K|}$$
+
+\begin{align}
+    H(K;o) = - \sum_{k {\in} \hat{K}}{p(k|o)\log_2p(k|o)} \\
+             - \sum_{k` {\in} (K - \hat{K})}{p(k`|o)\log_2p(k`|o)}\\
+           = - \sum_{k {\in} \hat{K}}{p(k|o)\log_2p(k|o)}\\
+           = \sum_{k {\in} \hat{K}}\frac{1}{|\hat{K}|}log_2{|\hat{K}|}\\
+           = log_2{\hat{|K|}}
+\end{align}
 
 \newtheorem{mydef}{Definition}
 
