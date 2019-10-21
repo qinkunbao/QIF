@@ -98,6 +98,20 @@ following question:
 How much uncertainty of $K$ can be reduced if an attacker knows $\beta$, $m$, and $o$?  
  
 \subsection{Theoretical Analysis}
+In information theory, the mutual information (MI) of is a measure of the mutual dependence 
+between the two variables. Here we use MI to describe the leakage between $K$ and $O$, 
+which is defined as:
+
+\begin{displaymath}
+    \mathit{Leakage} = I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)\log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
+\end{displaymath}
+
+where $P(k_i, o_i)$ is the joint discrete distribution of $K$ and $O$.
+Alternatively, the mutual information can also be equivalently expressed as:
+\begin{displaymath}
+    \mathit{Leakage} = I(K;O) = H(K) - H(K|O)
+\end{displaymath}
+
 Suppose a program with some
 sensitive input $K$, an adversary has some observations ($O$) by side channels.  
  %In this work, the observations are referred as the secret-dependent control-flows and
@@ -109,16 +123,6 @@ sensitive input $K$, an adversary has some observations ($O$) by side channels.
 Intuitively, the conditional information marks the uncertainty about $K$ after the adversary
 has gained some observations ($O$). 
 
-Some previous work uses the mutual information $I(K; O)$ to quantify the leakage which is defined 
-as follows:
-\begin{displaymath}
-    \mathit{Leakage} = I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)\log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
-\end{displaymath}
-where $P(k_i, o_i)$ is the joint discrete distribution of $K$ and $O$.
-Alternatively, the mutual information can also be computed with the following equation:
-\begin{displaymath}
-    \mathit{Leakage} = I(K;O) = H(K) - H(K|O) = H(O) - H(O|K)
-\end{displaymath}
 
 For a deterministic program, once the input $K$ is fixed, the program will have the same
 control-flow transfers and data-access patterns. As a result, $P(k_i, o_j)$ will always
