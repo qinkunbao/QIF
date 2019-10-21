@@ -2,10 +2,10 @@
 \label{trace_qif}
 In the section, we discuss how \tool{} quantifies the amount of
 leaked information. \tool{} is a dynamic-based approach to 
-quantify the information leakage. We will first introduce 
+quantifying the leaked information. We will first present 
 the limitation of existing quantification metrics. After
-that, we introduce the abstract and notation for the paper 
-and propose our method.
+that, we introduce the abstract of the model and math notations 
+for the paper and propose our method.
 
 \subsection{Problem Setting}
 Existing static-based side-channel quantification works~\cite{182946,Wichelmann:2018:MFF:3274694.3274741 } define information leakage
@@ -29,7 +29,7 @@ if(password == 0x1b){
 \label{figure:password checker}
 \end{figure}
 
-We consider the above dummy password checker~\ref{figure:password checker}.
+We consider the above dummy password checker in ~\ref{figure:password checker}.
 The program will take a 8 bit number as the input and check if the input is the
 correct password. 
 If an attacker knows the
@@ -46,7 +46,7 @@ based on max-entropy will report the code has $\log_2{2} = 1$ bit leakage.
 Both approaches fail to tell how 
 much information is leaked during the execution precisely.
 
-The problem with the existing methods is that they are static-based and the 
+The problem with existing methods is that they are static-based and the 
 input values are neglected by the previous definition. 
 They assume the attacker runs the program multiple times with many different sensitive 
 information as the input. Both Shannon entropy and max entropy give an ``average" 
