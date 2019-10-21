@@ -160,7 +160,7 @@ H(K;o) &= - \sum_{k {\in} K^o}{p(k|o)\log_2p(k|o)}
 Given a program $\beta$ with the input set $K$, 
 an adversary has the observation $o$ when the input $k{\in}\hat{K}$. 
 We denote it as
-$$\beta(\hat{K}, m) \rightarrow	o$$
+$$\beta(K^o, m) \rightarrow	o$$
 
 The leakage $L_{\beta(k)\rightarrow o}$ based on the observation ($o$) is
     $$L_{\beta(k)\rightarrow o} = \log_2{|K|} - \log_2{|K^o|}$$
@@ -172,8 +172,11 @@ bits, which means the key is totally leaked. If the attacker observes the code r
 $L_{P(k)=o^{2}} = \log_2{256} - \log_2{255} = 0$ bit.
 
 
-With the same definition~\ref{def}, we can also calculate the leaked information
-from the sample code~\ref{background::side-channel}.
+We can also calculate the leaked information
+from the sample code~\ref{background::side-channel}. As the size of input 
+sensitive information is usually public. The problem of quantifying the
+leaked information has been transferred into the problem of estimating
+the size of $|K^o|$.
 
 \begin{table}[ht]
     \centering
