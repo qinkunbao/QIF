@@ -102,53 +102,57 @@ In information theory, the mutual information (MI) of is a measure of the mutual
 between the two variables. Here we use MI to describe the leakage between $K$ and $O$, 
 which is defined as:
 
-\begin{displaymath}
-    \mathit{Leakage} = I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)\log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
-\end{displaymath}
+\begin{equation} \label{eq:1}
+    I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{P(k_i, o_j)\log_2\frac{P(k_i, o_j)}{P(k_i)P(o_j)}}}
+\end{equation}
 
 where $P(k_i, o_i)$ is the joint discrete distribution of $K$ and $O$.
 Alternatively, the mutual information can also be equivalently expressed as:
-\begin{displaymath}
-    \mathit{Leakage} = I(K;O) = H(K) - H(K|O)
-\end{displaymath}
+\begin{equation} \label{eq:2}
+    I(K;O) = H(K) - H(K|O)
+\end{equation}
 
 $H(K|O)$ is the entropy of $K$ conditioned on $O$. It quantifies the uncertainty of $K$
 given the value of $O$. In other word, the conditional entropy $H(K|O)$ marks the 
 uncertainty about $K$ after the adversary has gained some observations ($O$). 
-\begin{displaymath}
+\begin{equation}
     H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)\log_2P(k_i|o_j)}}
-\end{displaymath}
+\end{equation}
 
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program multiple times with one fixed input, we
-want to know how much information he can infer by observing the memory access patterns.
+want to know how much information he can infer by observing the memory access patterns ($o$).
 We come to the simple slogan ~\cite{10.1007/978-3-642-00596-1_21} %% where the information
 %% leakage equals:
 %% \textbf{Initial uncertainty - remaining uncertainty}
 that
 \begin{align*}
  & \mathit{Information\ leakage} = \\
- & ~~~~~~ \mathit{Initial}\ \mathit{uncertainty} - \mathit{Remaining\ uncertainty}. 
+ & ~~~~~~ \mathit{Initial\ uncertainty} - \mathit{Remaining\ uncertainty}. 
 \end{align*}
 
+Now we come compare the equation~\ref{eq:2} with the above slogan, we will
+find $H(K)$ is the $\mathit{Initial\ uncertainty}$ and $H(K|O)$ is
+$\mathit{Remaining\ uncertainty}$.
 
-If an adversary has zero knowledge about the input before the attack. The initial uncertainty
-equals to the size the input. As for the remaining uncertainty, we come to the original definition
-of the information content.
-We quantify the information leakage with the following definition. 
+Therefore, we define the amount of leaked information as 
+\begin{displaymath}
+    Leakage = H(K) - H(K|O)
+\end{displaymath}
+
+For a program ($\beta$) without knowing any domain information,  
 
 \newtheorem{mydef}{Definition}
 
 \begin{mydef}
 \label{def}
-Given a program $P$ with the input set $K$, 
-an adversary has the observation $o$ when the input $k{\in}K$. 
+Given a program $\beta$ with the input set $K$, 
+an adversary has the observation $o$ when the input $k{\in}\hat{K}$. 
 We denote it as
-    $$P(k) = o.$$
-The leakage $L_{P(k)=o}$ based on the oberservation is
-    $$L_{P(k)=o} = \log_2{|K|} - \log_2{|K^o|}$$
-    where
-    $$K^o = \{k | k \in K \ \text{and} \ P(k) = o \}$$
+$$\beta(\hat{K}, m) \rightarrow	o$$
+
+The leakage $L_{\beta(k)\rightarrow o}$ based on the observation ($o$) is
+    $$L_{\beta(k)\rightarrow o} = \log_2{|K|} - \log_2{|\hat{K}|}$$
 \end{mydef}
 
 With the new definition, if the attacker observes that the code~\ref{code::entropy} runs the branch 1, 
