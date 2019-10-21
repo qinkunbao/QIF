@@ -112,28 +112,12 @@ Alternatively, the mutual information can also be equivalently expressed as:
     \mathit{Leakage} = I(K;O) = H(K) - H(K|O)
 \end{displaymath}
 
-Suppose a program with some
-sensitive input $K$, an adversary has some observations ($O$) by side channels.  
- %In this work, the observations are referred as the secret-dependent control-flows and
- %secret-dependent data-access patterns. 
-  The conditional entropy $H(K|O)$ is
+$H(K|O)$ is the entropy of $K$ conditioned on $O$. It quantifies the uncertainty of $K$
+given the value of $O$. In other word, the conditional entropy $H(K|O)$ marks the 
+uncertainty about $K$ after the adversary has gained some observations ($O$). 
 \begin{displaymath}
     H(K|O) = - \sum_{o_j {\in} O} {P(o_j) \sum_{k_i {\in} K}{P(k_i|o_j)\log_2P(k_i|o_j)}}
 \end{displaymath}
-Intuitively, the conditional information marks the uncertainty about $K$ after the adversary
-has gained some observations ($O$). 
-
-
-For a deterministic program, once the input $K$ is fixed, the program will have the same
-control-flow transfers and data-access patterns. As a result, $P(k_i, o_j)$ will always
-equals to 1 or 0. So the conditional entropy $H(O|K)$ will equal to zero. So the leakage defined
-by the mutual information can be simplified into:
-\begin{displaymath}
-\label{mutual:information}
-    \mathit{Leakage} = I(K;O) = H(O)
-\end{displaymath}
-In other words, once we know the distribution of those memory-access patterns. We can 
-calculate how much information is actually leaked.
 
 In the project, we hope to give a very precise definition of information leakages. 
 Suppose an attacker run the target program multiple times with one fixed input, we
