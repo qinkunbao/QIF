@@ -106,7 +106,7 @@ between the two variables. Here we use MI to describe the leakage between $K$ an
 which is defined as:
 
 \begin{equation} \label{eq:1}
-    I(K;O) = \sum_{k_i {\in} K}{\sum_{o_j {\in} O}{p(k_i, o_j)\log_2\frac{p(k_i, o_j)}{p(k_i)p(o_j)}}}
+    I(K;O) = \sum_{k {\in} K}{\sum_{o {\in} O}{p(k, o)\log_2\frac{p(k, o)}{p(k)p(o)}}}
 \end{equation}
 
 where $P(k_i, o_i)$ is the joint discrete distribution of $K$ and $O$.
@@ -119,7 +119,7 @@ $H(K|O)$ is the entropy of $K$ conditioned on $O$. It quantifies the uncertainty
 given the value of $O$. In other word, the conditional entropy $H(K|O)$ marks the 
 uncertainty about $K$ after the adversary has gained some observations ($O$). 
 \begin{equation}
-    H(K|O) = - \sum_{o_j {\in} O} {p(o_j) \sum_{k_i {\in} K}{p(k_i|o_j)\log_2p(k_i|o_j)}}
+    H(K|O) = - \sum_{o {\in} O} {p(o) \sum_{k {\in} K}{p(k|o)\log_2p(k|o)}}
 \end{equation}
 
 In the project, we hope to give a very precise definition of information leakages. 
