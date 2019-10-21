@@ -54,7 +54,10 @@ launch a side-channel attack. When a side-channel attack happens, the adversary 
 to retrieve the sensitive information, in which case the sensitive information is fixed (e.g. AES keys). 
 The adversary will run the attack over and over again and guess the value bit by bit. Like the 
 previous example, the existing static method does not work well in those situations.
-
+We want to have a theory for dynamic analysis that if the theory says 
+an attack leaks $x$ bits of secret information from side-channel vulnerabilities,
+then $x$ should be useful in estimating the sensitive level of side-channels.
+However, the above method all fails in the real attack model.
 \begin{figure}
   \centering
    \includegraphics[width=.9\columnwidth]{./figures/RA.pdf}
