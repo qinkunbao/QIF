@@ -36,7 +36,7 @@ If an attacker knows the
 code executes branch $\{{1\}}$ by side-channel attacks, he can infer the password equals to 0x1b,
 in which case the attacker can fully retrieve the password.
 Therefore, the total information leakage should be 8 bits, which equals to the size
-of the sensitive input. 
+of the sensitive input if an attacker observes the code executes branch $1$ . 
 
 However, previous static-based approach can not precisely reflect the sensitivity of the leakage.
 According to the definition of Shannon entropy, the leakage will be $\frac{1}{256}*\log_{2}\frac{1}{256} + 
@@ -45,7 +45,6 @@ based on max-entropy will report the code has $\log_2{2} = 1$ bit leakage.
 
 Both approaches fail to tell how 
 much information is leaked during the execution precisely.
-
 The problem with existing methods is that they are static-based and the 
 input values are neglected by the previous definition. 
 They assume the attacker runs the program multiple times with many different sensitive 
@@ -102,6 +101,9 @@ following question:
 How much uncertainty of $K$ can be reduced if an attacker knows $\beta$, $m$, and $o$?  
  
 \subsection{Theoretical Analysis}
+Now we present our metric to quantify the amount of leaked 
+information from dynamic analysis.
+
 In information theory, the mutual information (MI) of is a measure of the mutual dependence 
 between the two variables. Here we use MI to describe the leakage between $K$ and $O$, 
 which is defined as:
