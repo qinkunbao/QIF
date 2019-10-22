@@ -221,10 +221,27 @@ data accesses.
 
 \subsubsection{Secret-dependent Control Transfers}
 We think a control-flow is secret-dependence if different input sensitive keys ($K$)
-can lead to different branch conditions ($t_{b}$). For a specific branch, the branch
+can lead to different branch conditions. For a specific branch, the branch
 condition is either true or false. Therefore, the branch condition is always a
 boolean variable. 
 
 We think a branch is secret-dependent if:
-$$\exists k_{i1}, k_{i2} \in K, \,f_i(\beta, k_{i1}, m) \oplus f_i(\beta, k_{i2}, m) = 1 $$
+$$\exists k_{i1}, k_{i2} \in K, \,f_i(\beta, k_{i1}, m) \neq f_i(\beta, k_{i2}, m)$$
+
+An adversary can observe which branch the code executes, if the branch condition
+equals to $t_b$. We use the constraint $c_i : f_i(\beta, k, m) = t_b$ to model the
+observation on secret-dependent control-transfers. 
+
+\subsubsection{Secret-dependent Data Accesses}
+Similar to secret-dependent control transfers, a data access is secret-dependence 
+if different input sensitive keys ($K$) can lead to different memory addresses.
+We use the model from~\cite{203878}. The low $L$ bits of the address is irrelevant
+in side-channels. 
+
+We think a data access is secret-dependent if:
+$$\exists k_{i1}, k_{i2} \in K, \,f_i(\beta, k_{i1}, m) >> L \neq f_i(\beta, k_{i2}, m) >> L$$
+
+If the branch condition equals to $t_b$,
+we can use the constraint $c_i : f_i(\beta, k, m) >> L = t_b >> L$ to model the
+observation on secret-dependent control-transfers. 
 
