@@ -97,9 +97,9 @@ the corresponding countermeasure in the following sections.
 
 \tool{} find several leakage sites for both the implementation of DES and AES
 in OpenSSL and mbedTLS. \tool{} confirm that all those leakages come from
-table lookups implementations. mbed TLS 2.15 and 2.5 have the same implementation
+table lookups implementations. mbedTLS 2.15 and 2.5 have the same implementations
 of DES and AES so they have the same leakage report. One proper fix would be 
-a scalar bit-sliced implementations. However, we don't see the bit-sliced 
+a scalar bit-sliced implementations. However, we do not see the bit-sliced 
 implementation of AES and DES in various versions of OpenSSL and mbedTLS.  
 However, we find the new implementation of OpenSSL instead use typical four 1K
 tables. It only uses 1K of tables. This implementation is rather easy but is

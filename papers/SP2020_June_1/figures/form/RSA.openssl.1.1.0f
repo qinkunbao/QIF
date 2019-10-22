@@ -1,0 +1,33 @@
+| File | Line Num | Function | Leaked bits | Type | Location |
+| :--: | :------: | :------: | :---------: | :--: | :------: |
+|bn_lib.c|143||Failed|||
+|bn_lib.c|144||Failed|||
+|bn_lib.c|145||15|DA||
+|bn_lib.c|029||Failed|||
+|bn_lib.c|639||Failed|||
+|ct_b64.c|164||5 |CF||
+|bn_div.c|330||Failed|||
+|bn_gcd.c|192||0 |CF||
+|bn_gcd.c|215||7 |CF||
+|bn_gcd.c|237||7 |CF||
+|bn_gcd.c|218||13|CF||
+|bn_gcd.c|240||9 |CF||
+|bn_lib.c|147||Failed|||
+|bn_lib.c|152||14|CF||
+|bn_lib.c|153||Failed|||
+|bn_lib.c|156||Failed|||
+|bn_div.c|384||15|CF||
+|bn_div.c|330||11|CF||
+|bn_div.c|334||3 |CF||
+|bn_exp.c|622||1 |CF||
+|bn_exp.c|741||0 |CF||
+|bn_mont.c|138||Failed|||
+|bn_mont.c|139||Failed|||
+|bn_mont.c|140||Failed|||
+|bn_mont.c|142||Failed|||
+|bn_mont.c|152||Failed|||
+|bn_asm.c|733||Failed|||
+|bn_asm.c|592||Failed|||
+|bn_mont.c| 98||0 |CF||
+|bn_div.c|330||0 |CF||
+|bn_div.c|330||0 |CF||

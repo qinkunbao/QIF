@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use('pdf')
 basicPath = './'
 formPath = basicPath + 'form/'
-figurePath = basicPath + 'figure/'
+figurePath = basicPath + 'result/'
 
 
 def count(formName):

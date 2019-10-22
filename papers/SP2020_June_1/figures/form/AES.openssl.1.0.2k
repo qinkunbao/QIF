@@ -1,0 +1,90 @@
+| File | Line Num | Function | Leaked bits | Type | Location |
+| :--: | :------: | :------: | :---------: | :--: | :------: |
+|aes_core.c|654||4 |DA||
+|aes_core.c|654||4 |DA||
+|aes_core.c|672||4 |DA||
+|aes_core.c|673||4 |DA||
+|aes_core.c|694||3 |DA||
+|aes_core.c|694||3 |DA||
+|aes_core.c|695||3 |DA||
+|aes_core.c|695||3 |DA||
+|aes_core.c|643||4 |DA||
+|aes_core.c|644||3 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|657||4 |DA||
+|aes_core.c|664||3 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|665||4 |DA||
+|aes_core.c|658||3 |DA||
+|aes_core.c|659||4 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|665||4 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|658||3 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|658||3 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|661||3 |DA||
+|aes_core.c|658||3 |DA||
+|aes_core.c|661||4 |DA||
+|aes_core.c|663||4 |DA||
+|aes_core.c|801||6 |DA||
+|aes_core.c|801||5 |DA||
+|aes_core.c|802||10|DA||
+|aes_core.c|802||11|DA||
+|aes_core.c|878||5 |DA||
+|aes_core.c|878||10|DA||
+|aes_core.c|910||5 |DA||
+|aes_core.c|910||9 |DA||
+|aes_core.c|910||11|DA||
+|aes_core.c|926||12|DA||
+|aes_core.c|916||5 |DA||
+|aes_core.c|918||4 |DA||
+|aes_core.c|918||11|DA||
+|aes_core.c|916||11|DA||
+|aes_core.c|916||5 |DA||
+|aes_core.c|922||5 |DA||
+|aes_core.c|922||4 |DA||
+|aes_core.c|922||6 |DA||
+|aes_core.c|928||9 |DA||
+|aes_core.c|884||9 |DA||
+|aes_core.c|881||5 |DA||
+|aes_core.c|880||10|DA||
+|aes_core.c|880||5 |DA||
+|aes_core.c|886||10|DA||
+|aes_core.c|888||10|DA||
+|aes_core.c|889||9 |DA||
+|aes_core.c|901||5 |DA||
+|aes_core.c|892||5 |DA||
+|aes_core.c|892||6 |DA||
+|aes_core.c|892||8 |DA||
+|aes_core.c|894||4 |DA||
+|aes_core.c|895||9 |DA||
+|aes_core.c|898||3 |DA||
+|aes_core.c|898||4 |DA||
+|aes_core.c|941||4 |DA||
+|aes_core.c|940||4 |DA||
+|aes_core.c|940||4 |DA||
+|aes_core.c|942||4 |DA||
+|aes_core.c|946||5 |DA||
+|aes_core.c|946||3 |DA||
+|aes_core.c|946||4 |DA||
+|aes_core.c|949||4 |DA||
+|aes_core.c|947||3 |DA||
+|aes_core.c|947||4 |DA||
+|aes_core.c|953||4 |DA||
+|aes_core.c|953||4 |DA||
+|aes_core.c|958||4 |DA||
+|aes_core.c|954||3 |DA||
