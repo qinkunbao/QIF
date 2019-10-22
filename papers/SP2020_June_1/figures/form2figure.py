@@ -25,11 +25,11 @@ def count(formName):
 
 def plot(formName):
     import matplotlib.pyplot as plt
-    plt.figure(figsize=(11, 4.5))
+    plt.figure(figsize=(4, 2.5))
     yax = plt.axes().yaxis
     yax.set_ticks_position('none')
     yax.set_tick_params(pad=10)
-    # xax = plt.axes().xaxis
+    xax = plt.axes().xaxis
     # xax.set_ticks_position('none')
     # xax.set_tick_params(pad=10)
     dataLength = len(data) - 2
@@ -39,12 +39,14 @@ def plot(formName):
     xtitles = range(dataLength)
     xtitles[-1] = 'Failed'
     plt.xticks(range(dataLength), xtitles)
+    failedLable = plt.axes().get_xticklabels()
+    failedLable[-1].set_rotation(270)
     data[dataLength-1] = data[-1]
     plt.bar(range(dataLength),
-            data[:dataLength], align='center', color='#377ba8')
-    plt.xticks(fontsize=22)
-    plt.ylabel('Number of Leakages', fontsize=22)
-    plt.xlabel('Size of Leakages', fontsize=22)
+            data[:dataLength], align='center', color='#377ba8', width=0.3)
+    plt.xticks(fontsize=10)
+    plt.ylabel('Number of Leakages', fontsize=12)
+    plt.xlabel('Size of Leakages', fontsize=12)
     plt.tight_layout()
     plt.savefig(figurePath + formName + '.pdf', format='pdf')
     plt.close('all')
