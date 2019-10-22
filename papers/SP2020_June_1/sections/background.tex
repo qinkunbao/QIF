@@ -147,12 +147,14 @@ code fragment.
 \begin{figure}[h!]
     \centering
 \begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
-uint_8 key[2];
+uint_8 key[2], t1, t2;
 get_key(key);              // 0 <= key[0], key[1] < 256
-if (key[0] + key[1] < 8) {
+t1 = key[0] + key[1];
+t2 = key[0] - key[1];
+if (t1 < 8) {
     A();                   // branch 1
 }
-if (key[0] > key[1]) {     // branch 2
+if (t2 > 0) {              // branch 2
     B();
 }
 \end{lstlisting}
