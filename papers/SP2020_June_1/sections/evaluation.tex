@@ -106,8 +106,19 @@ tables. It only uses 1K of tables. This implementation is rather easy but is
 still vulnerable to a side channel attack. However, the countermeasures do
 somehow decrease the total amount of leaked information.
 
+We also evaluates our tool on the RSA implementation. With the optimizations
+introduced in the paper, we do not apply any domain knowledge to 
+simplify the analysis. Therefore, our tools can identify all the leakage 
+sites reported by CacheD~\cite{203878} in a shorter time. Our tool
+also finds that most leakages in RSA are caused in the big number implementation.
+We also find newer version of RSA in OpenSSL tend to have fewer leakages detected
+by \tool{}. We will discuss the version changes and corresponding leakages 
+in the next section.
+
 \subsection{Information Leakage Quantification}
-\subsection{Overview}
+\subsubsection{Quantification Overview}
+\subsubsection{Case Study 1: RSA in OpenSSL}
+\subsubsection{Case Study 2: Lookup Tables}
 \subsection{Analysis of Software Countermeasures}
 \subsubsection{Bit-slicing}
 \subsubsection{Scatter and Gather}
