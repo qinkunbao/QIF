@@ -150,13 +150,13 @@ Therefore, we define the amount of leaked information as
 For a program ($\beta$) without knowing any domain information, any sensitive
 input should appear equally. Therefore, for any $k \in K$, $p(k) = \frac{1}{|K|}$.
 So we have 
-$$H(K) = \sum_{k {\in} K}\frac{1}{|K|}log_2{|K|} = log_2{|K|}$$
+$$H(K) = \sum_{k {\in} K}\frac{1}{|K|}\log_2{|K|} = \log_2{|K|}$$
 For any $k' \in K - K^o$, $p(k'|o) = 0$. We can get the following equation:
 \begin{align*}
 H(K;o) &= - \sum_{k {\in} K^o}{p(k|o)\log_2p(k|o)} 
           - \sum_{k` {\in} (K - K^o)}{p(k'|o)\log_2p(k'|o)}\\
-       &= \sum_{k {\in} K^o}\frac{1}{|K^o|}log_2{|K^o|}\\
-       &= log_2{|K^o|}
+       &= \sum_{k {\in} K^o}\frac{1}{|K^o|}\log_2{|K^o|}\\
+       &= \log_2{|K^o|}
 \end{align*}
 
 \newtheorem{mydef}{Definition}
