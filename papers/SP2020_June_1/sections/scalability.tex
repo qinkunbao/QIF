@@ -9,12 +9,9 @@ symbolic execution and model counting are well-known for theirs
 expensive performance cost, which limit their usage in real-world
 crypto systems.  
 
-
-\subsection{Scalability and Performance}
-
 After we transfer each potential leaks sites into formula. We can group several formulas together
 to estimate the total information leakage. One naive way is to use the Monte Carlo sampling  estimate the
-number of input keys. With the definition ~\ref{def}, we can estimate the total information leakage.
+number of input keys. With the definition~\ref{def}, we can estimate the total information leakage.
 
 However, some pre-experiments show that above approach suffers from the unbearable cost, which impede its usage
 to detect and quantify side-channel leakages in real-world applications. 
@@ -63,7 +60,7 @@ be 1kMB. If we take each byte in the original buffer as symbols, the formula can
 
 \vspace*{6pt}
 \textbf{Our Solution to Challenge III(b):}
-We adopt the Markov Chain Monte Carlo to estimate the number of possible input
+We adopt Monte Carlo sampling to estimate the number of possible input
 that satisfies the logic formula groups. The key idea is that we have one group of input that satisfies
 the logic formula constrains.  We will
 introduce the method in the following subsection.
