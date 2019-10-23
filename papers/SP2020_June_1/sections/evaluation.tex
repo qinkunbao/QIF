@@ -180,6 +180,37 @@ return( 0 );
 \label{mbedtls_aes}
 \end{figure}
 
+\subsubsection{RSA in mbedTLS}
+\tool{} identify several side-channel leakages for the RSA implementation
+in MbedTLS. Here we introduce and analyze two cases. 
+
+\begin{figure}[h!]
+    \centering
+\begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+...
+if( mbedtls_mpi_cmp_int( N, 0 ) < 0 || ( N->p[0] & 1 ) == 0 )
+    return( MBEDTLS_ERR_MPI_BAD_INPUT_DATA );
+...
+\end{lstlisting}
+\caption{mbedtls\_mpi\_exp\_mod}
+\label{mbedtls_rsa_1}
+\end{figure}
+
+
+\begin{figure}[h!]
+    \centering
+\begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+...
+do {
+    *d += c; c = ( *d < c ); d++;
+}
+while( c != 0 );
+...
+\end{lstlisting}
+\caption{mpi\_mul\_hlp}
+\label{mbedtls_rsa_2}
+\end{figure}
+
 \subsection{Case Study of RSA in OpenSSL}
 \begin{figure*}
     \centering
