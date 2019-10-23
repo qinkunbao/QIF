@@ -134,10 +134,17 @@ sites and think most of them are serious.
 During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
 the same implementation of AES. Our tool provide the same leakage report
 for both versions. \tool{} identify that most leakages are in 
-function \emph{mbedtls\_internal\_aes\_decrypt}. (One leakage site
+function \emph{mbedtls\_internal\_aes\_decrypt}. (Other leakage sites are
 in function \emph{mbedtls\_aes\_setkey\_enc}.) All leakages
-are caused by secret-dependent memory accesses.
-
+are caused by secret-dependent memory accesses. 
+Shown in the figure~\ref{mbedtls_aes}, there are seven leakage sites in 
+total. Leakage 1, 2, 3 are the same and leakage 4, 5, 6, 7 are the 
+same. They both use a pre-computed lookup tables to speed up computation.
+However, \tool{} report Leakage 1, 2, 3 typically leak more information compared
+to leakage 4, 5, 6, 7. We check the source code and find leakage 1, 2, 3 
+use secret to access the lookup table \emph{RT0, RT1, RT2, RT3}, which
+is 8K. On the contrary, leakage 4, 5, 6, 7 access a smaller lookup tables (2K).
+Therefore, leakage 4, 5, 6, 7 leaks less information.
 \begin{figure}[h!]
     \centering
 \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -145,11 +152,7 @@ int mbedtls_internal_aes_encrypt( mbedtls_aes_context *ctx,
 const unsigned char input[16],
 unsigned char output[16] )
 {
-int i;
 uint32_t *RK, X0, X1, X2, X3, Y0, Y1, Y2, Y3;
-RK = ctx->rk;
-
-GET_UINT32_LE( X0, input,  0 ); X0 ^= *RK++;
 ...
 for( i = ( ctx->nr >> 1 ) - 1; i > 0; i-- )
 {
@@ -174,7 +177,7 @@ return( 0 );
 }
 \end{lstlisting}
 \caption{mbedtls\_internal\_aes\_encrypt}
-\label{background::side-channel}
+\label{mbedtls_aes}
 \end{figure}
 
 \subsection{Case Study of RSA in OpenSSL}
