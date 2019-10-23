@@ -131,7 +131,7 @@ sites and think most of them are serious.
 
 \emph{Comparison with CacheD}
 
-\subsection{Case Study of vulnerabilities}
+\subsection{Case Study of Vulnerabilities}
 \subsubsection{AES in mbedTLS} 
 During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
 the same implementation of AES. Our tool provide the same leakage report
@@ -220,27 +220,29 @@ of those vulnerabilities. \tool{} confirm our assumptions. The newer version of
 OpneSSL obviously has less leaked sited compare to previous version.
 \begin{figure*}
     \centering
+    \vspace*{-9pt}
+    \hspace*{-8pt} 
     \subfloat[RSA OpenSSL 0.9.7]{
-        \includegraphics[width=.17\linewidth]{./figures/result/RSA-openssl-0-9-7.pdf}
-    \label{fig:1}
+        \includegraphics[width=.19\linewidth]{./figures/result/RSA-openssl-0-9-7.pdf}
+    \label{fig:rsa-1}
     }
     \subfloat[RSA OpenSSL 1.0.2f]{
-        \includegraphics[width=.17\linewidth]{./figures/result/RSA-openssl-1-0-2f.pdf}
-    \label{fig:1}
+        \includegraphics[width=.19\linewidth]{./figures/result/RSA-openssl-1-0-2f.pdf}
+    \label{fig:rsa-2}
     }
     \subfloat[RSA OpenSSL 1.0.2k]{
-        \includegraphics[width=.17\linewidth]{./figures/result/RSA-openssl-1-0-2k.pdf}
-    \label{fig:1}
+        \includegraphics[width=.19\linewidth]{./figures/result/RSA-openssl-1-0-2k.pdf}
+    \label{fig:rsa-3}
     }
     \subfloat[RSA OpenSSL 1.1.0f]{
-        \includegraphics[width=.17\linewidth]{./figures/result/RSA-openssl-1-1-0f.pdf}
-    \label{fig:1}
+        \includegraphics[width=.19\linewidth]{./figures/result/RSA-openssl-1-1-0f.pdf}
+    \label{fig:rsa-4}
     }
     \subfloat[RSA OpenSSL 1.1.1]{
-        \includegraphics[width=.17\linewidth]{./figures/result/RSA-openssl-1-1-1.pdf}
-    \label{fig:1}
+        \includegraphics[width=.19\linewidth]{./figures/result/RSA-openssl-1-1-1.pdf}
+    \label{fig:rsa-5}
     }
-\caption{RSA implementation in different versions of OpenSSL}
+\caption{RSA implementation in different versions of OpenSSL}\label{fig:rsa}
 
 \end{figure*}
 \subsection{Analysis of Software Countermeasures}
