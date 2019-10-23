@@ -25,10 +25,10 @@ def count(formName):
 
 def plot(formName):
     import matplotlib.pyplot as plt
-    plt.figure(figsize=(2.5, 2.5))
+    plt.figure(figsize=(5, 5))
     yax = plt.axes().yaxis
     yax.set_ticks_position('none')
-    yax.set_tick_params(pad=10)
+    #yax.set_tick_params(pad=10)
     xax = plt.axes().xaxis
     # xax.set_ticks_position('none')
     # xax.set_tick_params(pad=10)
@@ -43,12 +43,12 @@ def plot(formName):
     failedLable[-1].set_rotation(270)
     data[dataLength-1] = data[-1]
     plt.bar(range(dataLength),
-            data[:dataLength], align='center', color='#377ba8', width=0.8)
-    plt.xticks(fontsize=5)
-    plt.yticks(fontsize=5)
-    plt.ylabel('Number of Leakages', fontsize=5)
-    plt.xlabel('Leakage Amount (bits)', fontsize=5)
-    plt.title(formName.replace('.', ' ', 2), fontsize = 8)
+            data[:dataLength], align='center', color='grey', width=0.8)
+    plt.xticks(fontsize=8)
+    plt.yticks(fontsize=8)
+    plt.ylabel('Number of Leakages', fontsize=8)
+    plt.xlabel('Leakage Amount (bits)', fontsize=8)
+    plt.title(formName.replace('.', ' ', 2), fontsize = 10)
     plt.tight_layout()
     plt.savefig(figurePath + formName + '.pdf', format='pdf')
     plt.close('all')
