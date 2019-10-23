@@ -44,13 +44,13 @@ def plot(formName):
     data[dataLength-1] = data[-1]
     plt.bar(range(dataLength),
             data[:dataLength], align='center', color='grey', width=0.8)
-    plt.xticks(fontsize=8)
-    plt.yticks(fontsize=8)
-    plt.ylabel('Number of Leakages', fontsize=8)
-    plt.xlabel('Leakage Amount (bits)', fontsize=8)
-    plt.title(formName.replace('.', ' ', 2), fontsize = 10)
+    plt.xticks(fontsize=16)
+    plt.yticks(fontsize=16)
+    plt.ylabel('Number of Leakages', fontsize=16)
+    plt.xlabel('Leakage Amount (bits)', fontsize=16)
+    #plt.title(formName.replace('.', ' ', 2), fontsize = 10)
     plt.tight_layout()
-    plt.savefig(figurePath + formName + '.pdf', format='pdf')
+    plt.savefig(figurePath + formName.replace('.', '-') + '.pdf', format='pdf')
     plt.close('all')
 
 
