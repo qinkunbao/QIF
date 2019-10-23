@@ -129,6 +129,8 @@ for every symmetric encryptions. For asymmetric encryptions, Monte
 Carlo quantification sometimes fail. We manually check those leakages
 sites and think most of them are serious.
 
+\emph{Comparison with CacheD}
+
 \subsection{Case Study of vulnerabilities}
 \subsubsection{AES in mbedTLS} 
 During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
@@ -212,6 +214,10 @@ while( c != 0 );
 \end{figure}
 
 \subsection{Case Study of RSA in OpenSSL}
+For crypto libraries, it is likely that a newer version has less vulnerabilities
+compared to the previous version because software developers have patched some
+of those vulnerabilities. \tool{} confirm our assumptions. The newer version of
+OpneSSL obviously has less leaked sited compare to previous version.
 \begin{figure*}
     \centering
     \subfloat[RSA OpenSSL 0.9.7]{
@@ -235,8 +241,7 @@ while( c != 0 );
     \label{fig:1}
     }
 \caption{RSA implementation in different versions of OpenSSL}
-For crypto libraries, it is likely that a newer version has less vulnerabilities
-compared to the previous version.
+
 \end{figure*}
 \subsection{Analysis of Software Countermeasures}
 \subsubsection{Bit-slicing}
