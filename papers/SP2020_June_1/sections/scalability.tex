@@ -1,8 +1,13 @@
 \section{Scalable to Real-world Crypto Systems}
 
 In the section, we articulate several challenges and existing problems
-in quantifying the side-channel vulnerability leakages. We describe the
-challenges and then briefly present the corresponding solution.
+in applying the method above in real-world crypto systems. 
+
+We use symbolic execution to get the function $f_i$ and model 
+counting to get the number of items in $K^o$. However, both
+symbolic execution and model counting are well-known for theirs
+expensive performance cost, which limit their usage in real-world
+crypto systems.  
 
 
 \subsection{Scalability and Performance}
@@ -11,7 +16,7 @@ After we transfer each potential leaks sites into formula. We can group several 
 to estimate the total information leakage. One naive way is to use the Monte Carlo sampling  estimate the
 number of input keys. With the definition ~\ref{def}, we can estimate the total information leakage.
 
-However, some pre-experiments show that above approach suffers from the unberable cost, which impede its usage
+However, some pre-experiments show that above approach suffers from the unbearable cost, which impede its usage
 to detect and quantify side-channel leakages in real-world applications. 
 We systematically analyze the performance bottlenecks of the whole process. In general, the performance suffers
 from the two following reasons. 

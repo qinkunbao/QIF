@@ -248,5 +248,6 @@ observation on secret-dependent control-transfers.
 With the following definition, we can model an attacker's observation with math formulas.
 For example~\ref{background::side-channel}, if an attacker observes
 the code executes 1, we have $c_5: k_1 + k_2 < 8$ to describe an
-attacker's knowledge.if an attacker observes
-the code executes 2, we have $c_5: k_1 - k_2 > 0$.
+attacker's knowledge and $K^{o5} = \{k_1,\, k_2\,|\, (k_1 + k_2) < 8\}$. If an attacker observes
+the code executes 2, we have $c_8: k_1 - k_2 > 0$ 
+and $K^{o8} = \{k_1,\, k_2\,|\, (k_1 - k_2) > 0\}$. 
