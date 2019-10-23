@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 import matplotlib
 
@@ -36,7 +36,7 @@ def plot(formName):
     while data[dataLength] == 0:
         dataLength -= 1
     dataLength += 2
-    xtitles = range(dataLength)
+    xtitles = list(range(dataLength))
     xtitles[-1] = 'Failed'
     plt.xticks(range(dataLength), xtitles)
     failedLable = plt.axes().get_xticklabels()
