@@ -18,8 +18,8 @@ to detect and quantify side-channel leakages in real-world applications.
 We systematically analyze the performance bottlenecks of the whole process. In general, the performance suffers
 from the two following reasons. 
 \begin{itemize}
-    \item Symbolic Execution (Challenge III(a))
-    \item Monte Carlo Sampling  (Challenge III(b))
+    \item Symbolic Execution (Challenge a)
+    \item Monte Carlo Sampling  (Challenge b)
 \end{itemize}
 
 \subsubsection{Symbolic Execution}
@@ -35,7 +35,7 @@ instructions compared to the original machine instructions. The IR layer designs
 simplify the implementations, also introduce significant overhead as well~\cite{217563}.
 
 \vspace*{6pt}
-\textbf{Our Solution to Challenge III(a):}
+\textbf{Our Solution to Challenge a:}
 We adopt the similar approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions.
 
@@ -59,7 +59,7 @@ be 1kMB. If we take each byte in the original buffer as symbols, the formula can
 1024 symbols. 
 
 \vspace*{6pt}
-\textbf{Our Solution to Challenge III(b):}
+\textbf{Our Solution to Challenge b:}
 We adopt Monte Carlo sampling to estimate the number of possible input
 that satisfies the logic formula groups. The key idea is that we have one group of input that satisfies
 the logic formula constrains.  We will
