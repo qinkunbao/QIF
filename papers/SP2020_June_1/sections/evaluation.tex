@@ -153,20 +153,20 @@ GET_UINT32_LE( X0, input,  0 ); X0 ^= *RK++;
 ...
 for( i = ( ctx->nr >> 1 ) - 1; i > 0; i-- )
 {
-    AES_FROUND( Y0, Y1, Y2, Y3, X0, X1, X2, X3 );
-    AES_FROUND( X0, X1, X2, X3, Y0, Y1, Y2, Y3 );
+    AES_FROUND( Y0, Y1, Y2, Y3, X0, X1, X2, X3 ); // Leakage 1
+    AES_FROUND( X0, X1, X2, X3, Y0, Y1, Y2, Y3 ); // Leakage 2
 }
 
-AES_FROUND( Y0, Y1, Y2, Y3, X0, X1, X2, X3 );
+AES_FROUND( Y0, Y1, Y2, Y3, X0, X1, X2, X3 );     // Leakage 3
 
-X0 = *RK++ ^ \
+X0 = *RK++ ^ \                                    // Leakage 4
     ( (uint32_t) FSb[ ( Y0       ) & 0xFF ]       ) ^
     ( (uint32_t) FSb[ ( Y1 >>  8 ) & 0xFF ] <<  8 ) ^
     ( (uint32_t) FSb[ ( Y2 >> 16 ) & 0xFF ] << 16 ) ^
     ( (uint32_t) FSb[ ( Y3 >> 24 ) & 0xFF ] << 24 );
 
 // X1, X2, X3 do the same computation as X0
-...
+...                                           // Leakage 5,6,7
 
 PUT_UINT32_LE( X0, output,  0 );
 ...
