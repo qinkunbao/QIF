@@ -41,19 +41,19 @@ Total &              & 883 &205& 678& 128,042,089&     & 213m    ~~& 1,688m ~~\\
 \end{tabular}
 \end{table*}
 
-We evaluate \tool{} with the real-world crypto libraries and non-crypto libraries. 
-For crypto libraries, we choose OpenSSL, mbedTLS and NaCl. 
-OpenSSL and mbedTLS are the two most commonly used
-crypto libraries in today's software. NaCl (pronounced "salt") is a 
-new software library for encryption, decryption and signatures, etc.
-NaCl is designed to have no data flow from secrets to load address and no data 
-flow from secrets to branch conditions. Therefore, NaCl should have no leakage
-under our attack model. 
+We evaluate \tool{} with the real-world crypto libraries. 
+For crypto libraries, we choose OpenSSL and mbedTLS. 
+OpenSSL is the most commonly used
+crypto libraries in today's software. 
+MbedTLS (previous known as PolarSSL) is is designed to 
+fit on small embedded devices and designed to be easy to 
+understand.
+
 
 We build the source code into 32-bit x86 Linux executables with the 
 GCC 8.0 on Ubuntu 14.04. Although we use use symbol information to track
 back leakage sites in the source code, our tool can
-work on stripped binaries as well. We use Intel Pin version 3.7 
+work on stripped binaries. We use Intel Pin version 3.7 
 to record the execution trace. We run our experiments on a 2.90GHz
 Intel Xeon(R) E5-2690 CPU with 128GB RAM memory.
 During our evaluation process, we are interested in the following two
@@ -234,6 +234,8 @@ For crypto libraries, it is likely that a newer version has less vulnerabilities
 compared to the previous version because software developers have patched some
 of those vulnerabilities. \tool{} confirm our assumptions. The newer version of
 OpneSSL obviously has less leaked sited compare to previous version.
+
+For our evaluation, we test five versions 
 \begin{figure*}
     \centering
     \vspace*{-9pt}
