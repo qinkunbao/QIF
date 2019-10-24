@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 import matplotlib
+import numpy as np
 
 matplotlib.use('pdf')
 basicPath = './'
@@ -28,7 +29,7 @@ def plot(formName):
     plt.figure(figsize=(5, 5))
     yax = plt.axes().yaxis
     yax.set_ticks_position('none')
-    #yax.set_tick_params(pad=10)
+    # yax.set_tick_params(pad=10)
     xax = plt.axes().xaxis
     # xax.set_ticks_position('none')
     # xax.set_tick_params(pad=10)
@@ -39,13 +40,22 @@ def plot(formName):
     xtitles = list(range(dataLength))
     xtitles[-1] = 'Failed'
     plt.xticks(range(dataLength), xtitles)
+    if 'RSA' in formName:
+        # plt.yticks([0, 10, 20, 30, 40, 50, 60, 70])
+        if 'openssl' in formName:
+            plt.ylim(0, 80)
+            # plt.xlim(0.5, 15.5)
+            plt.xlim(-0.5, 15.5)
+
     failedLable = plt.axes().get_xticklabels()
     failedLable[-1].set_rotation(270)
     data[dataLength-1] = data[-1]
     plt.bar(range(dataLength),
             data[:dataLength], align='center', color='grey', width=0.8)
-    plt.xticks(fontsize=16)
-    plt.yticks(fontsize=16)
+    # plt.bar(range(1, dataLength),
+    #         data[1:dataLength], align='center', color='grey', width=0.8)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
     plt.ylabel('Number of Leakages', fontsize=16)
     plt.xlabel('Leakage Amount (bits)', fontsize=16)
     #plt.title(formName.replace('.', ' ', 2), fontsize = 10)
