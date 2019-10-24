@@ -127,10 +127,39 @@ very serious. The tools mark the Monte Carlo is failed. During the
 evaluation, we find \tool{} can quantify every side-channels leakages 
 for every symmetric encryptions. For asymmetric encryptions, Monte 
 Carlo quantification sometimes fail. We manually check those leakages
-sites and think most of them are serious.
+sites and find most of them are serious.
 
-\emph{Comparison with CacheD}
+\subsection{Comparison with peer tools}
+\tool{} is designed to quantify side-channels leakages. But it can
+find side-channels leakages as well. In the section, we compare 
+\tool{} with existing trace-based side-channels identification 
+tools.
 
+\tool{} can identify all the leakage sites reported by CacheD.
+CacheD fails to detect many other vulnerabilities for two
+reasons. First, CacheD only can only detect secret-dependent
+memory accesses vulnerabilities. But \tool{} can detect 
+secret-dependent control-flows as well. Second, CacheD suffers
+from the performance bottlenecks and use some domain knowledge 
+to simplify symbolic execution and cut the trace. The design does 
+not introduce false positives, but can neglect some vulnerabilities 
+as well. On the contrary, \tool{} do not apply any domain knowledge.
+For example, CacheD takes 43.4 seconds to process the AES implementation
+of OpenSSL but \tool{} only takes less than 0.1 second.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{l|lll|lll}
+                          & \multicolumn{3}{c|}{CacheD}       & \multicolumn{3}{c|}{CleversHans}  \\
+                          & \# instructions & time & Leakages & \# instructions & time & Leakages \\ \hline
+    AES openssl 0.9.7     &                 &      &          &                 &      &          \\
+    AES openssl 1.0.2f    &                 &      &          &                 &      &          \\
+    RSA openssl 0.9.7c    &                 &      &          &                 &      &          \\
+    RSA openssl 1.0.2f    &                 &      &          &                 &      &          \\
+    Total                 &                 &      &          &                 &      &          \\
+    \# instruction / time & \multicolumn{3}{l|}{}             & \multicolumn{3}{l|}{}            
+    \end{tabular}
+    \end{table}
 \subsection{Case Study of Vulnerabilities}
 \subsubsection{AES in mbedTLS} 
 During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
@@ -230,12 +259,23 @@ each time it will leak independent information. The leakage is serious
 compared to the previous one.
 
 \subsection{Case Study of RSA in OpenSSL}
-For crypto libraries, it is likely that a newer version has less vulnerabilities
+For crypto libraries, it is likely that a updated version has less vulnerabilities
 compared to the previous version because software developers have patched some
-of those vulnerabilities. \tool{} confirm our assumptions. The newer version of
-OpneSSL obviously has less leaked sited compare to previous version.
+of those vulnerabilities.  
 
-For our evaluation, we test five versions of OpenSSL.
+We test five versions of OpenSSL (0.9.7, 1.0.2f, 1.0.2k, 1.1.0f, 1.1.1). 
+The result~\ref{fig:rsa} also confirms 
+our assumptions. The newer version of
+OpenSSL leaked less amount of information compared to the previous version.
+After version 0.9.7g, OpenSSL adopted a fixed-window mod\_exp implementation 
+for RSA. With the new design, the sequence of squares and multiples and the 
+memory accesses pattern are independent of the secret key. \tool{}'s result
+confirms the new exponentiation implementation has significantly mitigates
+most of leakages because the other four versions have less leakages than 0.9.7. 
+OpenSSL version 1.0.2f, 1.0.2k and 1.1.0f almost has the same amount of leakage. 
+We check the changelog and find only one changes for patching vulnerabilities
+for RSA (CVE-2016-0702). RSA changelog also claims OpenSSL 1.1.1 adopted
+``numerous side-channels attack mitigations". The result confirms our assumptions.
 \begin{figure*}
     \centering
     \vspace*{-9pt}
