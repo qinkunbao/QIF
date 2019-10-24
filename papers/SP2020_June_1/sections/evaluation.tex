@@ -265,5 +265,39 @@ For our evaluation, we test five versions of OpenSSL.
 \end{figure*}
 \subsection{Analysis of Software Countermeasures}
 \subsubsection{Bit-slicing}
+
+\begin{figure}[h!]
+    \centering
+\begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+...
+uint8_t na = ~a;
+uint8_t nb = ~b;
+uint8_t nc = ~c;
+
+uint8_t t0 = (b & nc);
+uint8_t t1 = (b | nc);
+
+*l = (a & nb) | t0;
+*r = (na & t1) | t0;
+...
+\end{lstlisting}
+\caption{SBOX\_with\_BitSlicing}
+\label{SBOX_bitslicing}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+\begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+...
+uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
+x = (a << 2) + (b << 1) + c;
+*l = SBOX[x] >> 1;
+*r = SBOX[x] & 0b01;
+...
+\end{lstlisting}
+\caption{SBOX\_without\_BitSlicing}
+\label{SBOX_da}
+\end{figure}
+
 \subsubsection{Scatter and Gather}
 \subsubsection{Smaller Lookup Tables}
