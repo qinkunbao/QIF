@@ -127,9 +127,23 @@ very serious. The tools mark the Monte Carlo is failed. During the
 evaluation, we find \tool{} can quantify every side-channels leakages 
 for every symmetric encryptions. For asymmetric encryptions, Monte 
 Carlo quantification sometimes fail. We manually check those leakages
-sites and think most of them are serious.
+sites and find most of them are serious.
 
-\emph{Comparison with CacheD}
+\subsection{Comparison with peer tools}
+\tool{} is designed to quantify side-channels leakages. But it can
+find side-channels leakages as well. In the section, we compare 
+\tool{} with existing trace-based side-channels identification 
+tools.
+
+\tool{} can identify all the leakage sites reported by CacheD.
+CacheD fails to detect many other vulnerabilities for two
+reasons. First, CacheD only can only detect secret-dependent
+memory accesses vulnerabilities. But \tool{} can detect 
+secret-dependent control-flows as well. Second, CacheD suffers
+from the performance bottlenecks and use some domain knowledge 
+to simplify symbolic execution and cut the trace. The design does 
+not introduce false positives, but can neglect some vulnerabilities. 
+
 
 \subsection{Case Study of Vulnerabilities}
 \subsubsection{AES in mbedTLS} 
