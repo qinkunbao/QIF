@@ -147,7 +147,19 @@ as well. On the contrary, \tool{} do not apply any domain knowledge.
 For example, CacheD takes 43.4 seconds to process the AES implementation
 of OpenSSL but \tool{} only takes less than 0.1 second.
 
-
+\begin{table}[]
+    \centering
+    \begin{tabular}{l|lll|lll}
+                          & \multicolumn{3}{c|}{CacheD}       & \multicolumn{3}{c|}{CleversHans}  \\
+                          & \# instructions & time & Leakages & \# instructions & time & Leakages \\ \hline
+    AES openssl 0.9.7     &                 &      &          &                 &      &          \\
+    AES openssl 1.0.2f    &                 &      &          &                 &      &          \\
+    RSA openssl 0.9.7c    &                 &      &          &                 &      &          \\
+    RSA openssl 1.0.2f    &                 &      &          &                 &      &          \\
+    Total                 &                 &      &          &                 &      &          \\
+    \# instruction / time & \multicolumn{3}{l|}{}             & \multicolumn{3}{l|}{}            
+    \end{tabular}
+    \end{table}
 \subsection{Case Study of Vulnerabilities}
 \subsubsection{AES in mbedTLS} 
 During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
