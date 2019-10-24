@@ -230,12 +230,23 @@ each time it will leak independent information. The leakage is serious
 compared to the previous one.
 
 \subsection{Case Study of RSA in OpenSSL}
-For crypto libraries, it is likely that a newer version has less vulnerabilities
+For crypto libraries, it is likely that a updated version has less vulnerabilities
 compared to the previous version because software developers have patched some
-of those vulnerabilities. \tool{} confirm our assumptions. The newer version of
-OpneSSL obviously has less leaked sited compare to previous version.
+of those vulnerabilities.  
 
-For our evaluation, we test five versions of OpenSSL.
+We test five versions of OpenSSL (0.9.7, 1.0.2f, 1.0.2k, 1.1.0f, 1.1.1). 
+The result~\ref{fig:rsa} also confirms 
+our assumptions. The newer version of
+OpenSSL leaked less amount of information compared to the previous version.
+After version 0.9.7g, OpenSSL adopted a fixed-window mod\_exp implementation 
+for RSA. With the new design, the sequence of squares and multiples and the 
+memory accesses pattern are independent of the secret key. \tool{}'s result
+confirms the new exponentiation implementation has significantly mitigates
+most of leakages because the other four versions have less leakages than 0.9.7. 
+OpenSSL version 1.0.2f, 1.0.2k and 1.1.0f almost has the same amount of leakage. 
+We check the changelog and find only one changes for patching vulnerabilities
+for RSA (CVE-2016-0702). RSA changelog also claims OpenSSL 1.1.1 adopted
+``numerous side-channels attack mitigations". The result confirms our assumptions.
 \begin{figure*}
     \centering
     \vspace*{-9pt}
