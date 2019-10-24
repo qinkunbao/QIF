@@ -198,6 +198,14 @@ if( mbedtls_mpi_cmp_int( N, 0 ) < 0 || ( N->p[0] & 1 ) == 0 )
 \label{mbedtls_rsa_1}
 \end{figure}
 
+\tool{} reports one bit information is leaked from the branch at line 2 and
+the leakage leaks less information than other leakages.
+Function \emph{mbedtls\_mpi\_exp\_mod} performs sliding-window exponentiation for
+big numbers. 
+The leakage is caused by checking the signed bit of the big number $N$. 
+Therefore, the leakage can only tell $N$ is greater than zero, which is one
+bit leak.
+
 
 \begin{figure}[h!]
     \centering
@@ -212,6 +220,14 @@ while( c != 0 );
 \caption{mpi\_mul\_hlp}
 \label{mbedtls_rsa_2}
 \end{figure}
+
+\emph{mpi\_mul\_hlp} is notoriously for a series of timing attacks. Recent 
+patches have fixed many of leakages in function \emph{mpi\_mul\_hlp}.
+\tool{} report 8 bits of information is leaked from line 5. 
+\emph{mpi\_mul\_hlp} is a helper function to perform
+mbedtls\_mpi multiplication. As the code will be executed many times,
+each time it will leak independent information. The leakage is serious 
+compared to the previous one.
 
 \subsection{Case Study of RSA in OpenSSL}
 For crypto libraries, it is likely that a newer version has less vulnerabilities
