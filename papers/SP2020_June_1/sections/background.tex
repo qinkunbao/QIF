@@ -130,7 +130,7 @@ Min-entropy describes in the information leaks from the most likely outcome.
 For example, min-entropy can be used to describe the best chance of success in guessing 
 one's password in one chance, which is defined as 
 \begin{displaymath}
-    \mathit{min\text{-}entropy} = - \log_2(p_{max})
+    \mathit{min\text{-}entropy} = - \log_2(p_{\mathit{max}})
 \end{displaymath}
 
 Max-entropy is defined solely on the number of possible observations. 
@@ -141,7 +141,7 @@ Max-entropy is defined solely on the number of possible observations.
 As it is easy to compute, most recent works use 
 max-entropy as the definition of the amount of leaked information.
 
-To illustrate how above definitions work, we consider the following
+To illustrate how the above definitions work, we consider the following
 code fragment. 
 
 \begin{figure}[h!]
@@ -195,14 +195,13 @@ Possibility (p)     & 0.5016 & 0.0003 & 0.4980  & 0.0002   \\
 \end{table}
 
 
-Now we provide a concrete example to show how the two types of quantification definition works and show that
-how our method is different.
+The three types of leakage are calculated as folllows.
 
 \vspace{3pt}
 \textbf{Min Entropy.}
-As $p_{max} = 0.5016$, with the definition, min-entropy equals to 
+As $p_{\mathit{max}} = 0.5016$, with the definition, min-entropy equals to 
 \begin{displaymath}
-    \mathit{min\text{-}entropy} = -\log_2{0.5016} = 1.0\ \mathit{bits}
+    \mathit{min\text{-}entropy} = -\log_2{0.5016} = 0.995\ \mathrm{bits}
 \end{displaymath}
 
 \textbf{Max Entropy.} 
@@ -210,23 +209,28 @@ Depending on the value of key, the code can run four different branches which co
 four different observations. Therefore, with the max entropy definition, the leakage equals to 
 
 \begin{displaymath}
-    \mathit{max\text{-}entropy} = -\log_2{4} = 2.0\ \mathit{bits}
+    \mathit{max\text{-}entropy} = -\log_2{4} = 2.000\ \mathrm{bits}
 \end{displaymath}
 
 \vspace{3pt}
 \textbf{Shannon Entropy.}
 If the key satisfies the uniform distribution, the probability of each observations
 is shown is the table~\ref{shtable}.  
+Therefore, based on Shannon entropy, the leakage equals to 
+\begin{align*}
+  \mathit{Shannon\text{-}entropy} &= -(0.5016*\log_{2}0.5016\\
+  &\qquad+ 0.0003*\log_{2}0.0003 \\
+  &\qquad+ 0.4980*\log_{2}0.4980 \\
+  &\qquad+ 0.0002*\log_{2}0.0002) \\
+  &= 1.006\ \mathrm{bits}
+\end{align*}
 
-Therefore, the leakage equals to 
-$0.5016*\log_{2}0.5016 + 0.0003*\log_{2}0.0003 + 0.4980*\log_{2}0.4980 + 0.0002*\log_{2}0.0002= 1.0$ bits.
-Shannon entropy, according to the definition, equals to 
-\begin{displaymath}
-    \mathit{Shannon\text{-}entropy} = 1.0\ \mathit{bits}
-\end{displaymath}
-
-We will show that while those measures works well in static analysis, 
-they don't apply to the dynamic analysis in the next section.
+In the next section, we will show that while those measures work well
+theoretically or in a static analysis setting where only assume the
+average case on leakage, they do not apply to dynamic analysis or
+practical settings. We will show that the static or theoretical results could
+be dramatically different from real world, and we do need a better
+method to quantify the information leakage from a practical point of view.
 
 \subsection{Threat Model}
 We consider an attacker who shares the same hardware resource with the victim. 

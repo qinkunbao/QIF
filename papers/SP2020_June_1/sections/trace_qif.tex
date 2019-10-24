@@ -51,7 +51,7 @@ They assume the attacker runs the program multiple times with many different sen
 information as the input. Both Shannon entropy and max entropy give an ``average" 
 estimate of the information leakage. However, it is not the typical scenario for an adversary to 
 launch a side-channel attack. When a side-channel attack happens, the adversary wants 
-to retrieve the sensitive information, in which case the sensitive information is fixed (e.g. AES keys). 
+to retrieve the sensitive information, in which case the sensitive information is fixed (e.g., AES keys). 
 The adversary will run the attack over and over again and guess the value bit by bit. Like the 
 previous example, the existing static method does not work well in those situations.
 We want to have a theory for dynamic analysis that if the theory says 
@@ -67,38 +67,37 @@ However, the above method all fails in the real attack model.
 
 \subsection{Notations}
 In the section, we give the necessary definitions and notations for dealing 
-with programs and side-channels. We use capital letters (e.g., $S$) to represent 
-the set. $|S|$ represents the size of set $S$. We use corresponding small letters
-to represents one element in the set (e.g., $s \in S$).
+with programs and side-channels. We use capital letters (e.g., $A$) to represent 
+the set. $|S|$ represents the size of set $A$. We use corresponding small letters
+to represents one element in the set (e.g., $a \in A$).
 
 We assume the program ($\beta$) has $K$ as the sensitive input. 
 $K$ should be a finite set of keys. The program also takes known messages $M$ as the input. 
 The model applies to most of the cryptosystems. For example,
 during the AES encryption, $\beta$ is the encryption function. $K$ is AES key and
 $M$ is the message to be encrypted. During the execution, an adversary may have some observations ($O$) from the program. Examples of those observations
-include timing, CPU usages, and Electromagnetic signals (EM). For the paper, we
+include timing, CPU usages, and Electromagnetic signals (EM). For this paper, we
 consider the secret-dependent control-flows and secret-dependent memory accesses
 as the observations.
 
 With the above definitions, we have the following mapping between $\beta$, $K$, $M$, and $O$:
 
 \begin{displaymath}
-    \beta(K, M) \rightarrow	O
+    \beta(K, M) \rightarrow O
 \end{displaymath}
 
-An adversary does not have access to $K$, but he should know $\beta$, $M$, and $O$. 
+An adversary does not have access to $K$, but he knows $\beta$, $M$, and $O$. 
 For one execution of a deterministic program, once $k \in K$ and $m \in M$ are fixed, the 
 observation ($o \in O$) is also determined. As an attacker, he knows $\beta$, $o$, 
-and $m$. The attacker wants to infer value of $k$. We use $K^o$ to denote the set of
-$k$ that still produces the same observations:
+and $m$. The attacker wants to infer the value of $k$. We use $K^o$ to denote the set of
+possible $k$ values that still produce the same observations:
 
 \begin{displaymath}
     K^o = \{ k \in K \, |\, \beta(k, m) \rightarrow o\}
 \end{displaymath}
-The problem of quantifying the amount of leaked information can be transferred into the
-following question: 
-
-How much uncertainty of $K$ can be reduced if an attacker knows $\beta$, $m$, and $o$?  
+Then the problem of quantifying the amount of leaked information can be transferred into the
+following question. 
+\emph{How much uncertainty of $K$ can be reduced if an attacker knows $\beta$, $m$, and $o$?}
  
 \subsection{Theoretical Analysis}
 Now we present our metric to quantify the amount of leaked 
