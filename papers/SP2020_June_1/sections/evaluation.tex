@@ -168,19 +168,19 @@ of OpenSSL but \tool{} only takes less than 0.1 second.
 \subsection{Vulnerability Case Study}
 \subsubsection{AES in mbedTLS} 
 During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
-the same implementation of AES. Our tool provide the same leakage report
-for both versions. \tool{} identify that most leakages are in 
+the same implementation of AES\@. Our tool provides the same leakage report
+for both versions. \tool{} identifies that most leakages are in 
 function \emph{mbedtls\_internal\_aes\_decrypt}. (Other leakage sites are
 in function \emph{mbedtls\_aes\_setkey\_enc}.) All leakages
 are caused by secret-dependent memory accesses. 
-Shown in the figure~\ref{mbedtls_aes}, there are seven leakage sites in 
+Shown in Figure~\ref{mbedtls_aes}, there are seven leakage sites in 
 total. Leakage 1, 2, 3 are the same and leakage 4, 5, 6, 7 are the 
-same. They both use a pre-computed lookup tables to speed up computation.
-However, \tool{} report Leakage 1, 2, 3 typically leak more information compared
+same. They both use a pre-computed lookup table to speed up computation.
+However, \tool{} reports leakage 1, 2, 3 typically leak more information compared
 to leakage 4, 5, 6, 7. We check the source code and find leakage 1, 2, 3 
 use secret to access the lookup table \emph{RT0, RT1, RT2, RT3}, which
-is 8K. On the contrary, leakage 4, 5, 6, 7 access a smaller lookup tables (2K).
-Therefore, leakage 4, 5, 6, 7 leaks less information.
+is 8K each. On the contrary, leakage 4, 5, 6, 7 each accesses a smaller lookup table (2K).
+Therefore, leakage 4, 5, 6, 7 leak less information.
 \begin{figure}[h!]
     \centering
 \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
