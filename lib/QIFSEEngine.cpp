@@ -607,18 +607,18 @@ namespace tana {
     int
     QIFSEEngine::run() {
         auto start_time = std::chrono::high_resolution_clock::now();
-        std::vector<float> se_time_vector;
+        std::vector<double> se_time_vector;
         for (auto inst = start; std::next(inst) != end;) {
             auto it = inst->get();
             current_eip = it;
 
             //this->printMemory();
-            if(it->id % 10000 && (it->id < 5000000))
+            if(it->id % 100000 && (it->id < 8000000))
             {
                 auto now_time = std::chrono::high_resolution_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::microseconds>(now_time - start_time);
 
-                float now_second = static_cast<float>(duration.count() / 1000000);
+                double now_second = static_cast<double>(duration.count() / 1000000.0);
                 se_time_vector.push_back(now_second);
 
             }
