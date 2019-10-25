@@ -32,7 +32,7 @@ def plot(formName, line1, line2):
     plt.figure(figsize=(5, 5))
 
     plt.plot(range(len(line1)), line1, color='grey')
-    plt.plot(range(len(line2)), line2, color='grey')
+    # plt.plot(range(len(line2)), line2, color='grey')
 
     plt.xticks(fontsize=18)
     plt.yticks(fontsize=18)
