@@ -14,14 +14,14 @@ We systematically analyze bottlenecks of the whole process. In general, the perf
 from the two following reasons. 
 \begin{itemize}
     \item Symbolic Execution (Challenge a)
-    \item Model Counting (Challenge b)
+    \item Counting the number of items in $K^o$ (Challenge b)
 \end{itemize}
 
 Both symbolic execution and model counting are well-known for theirs
 expensive performance cost, which limit their usage in real-world
 crypto systems.
 
-\subsubsection{Symbolic Execution}
+\subsection{Symbolic Execution}
 Symbolic execution interprets each instruction and update the memory cells and registers with a 
 formula that captured the semantics of the execution. Unfortunately, the number of machine instructions 
 are huge and the semantics of each instruction is complex. For example, the Intel Developer Manual~\cite{intelsys}
@@ -38,7 +38,7 @@ simplify the implementations, also introduce significant overhead as well~\cite{
 We adopt the similar approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions.
 
-\subsubsection{Monte Carlo Sampling}
+\subsection{Monte Carlo Sampling}
 \label{MCreasons}
 For an application with $m$ bytes secret, there are total $2^{8m}$ possible inputs. Of the
 $2^{8m}$ possible inputs, we want to estimate the number of inputs that satisfy those formulas.
