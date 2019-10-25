@@ -613,7 +613,7 @@ namespace tana {
             current_eip = it;
 
             //this->printMemory();
-            if(it->id % 100000 && (it->id < 8000000))
+            if((it->id % 100000 == 0) && (it->id < 5000000))
             {
                 auto now_time = std::chrono::high_resolution_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::microseconds>(now_time - start_time);
