@@ -66,7 +66,7 @@ aspects:
     Is \tool{} scalable to real-world crypto systems?
     How effective are
     the design decisions made by \tool{} in terms of scalability?  
-    (~\ref{sec:eval_overview},~\ref{eval:comparison})
+    (~\ref{sec:eval_overview},~\ref{eval:scala})
     \item  \textbf{Quantifying side-channel leakages.} 
     Can \tool{} precisely report the number of leaked bits in crypto libraries?
     Are the numbers of leaked bits reported by \tool{} useful to justify 
@@ -133,8 +133,16 @@ evaluation, we find \tool{} can quantify every side-channel leakage
 for every symmetric encryption. For asymmetric encryptions, Monte 
 Carlo quantification sometimes fail. We manually check those leakage 
 sites and find most of them are serious. \fixme{details on those severe leakages?}
+\subsection{Scalability}\label{eval:scala}
 
-\subsection{Comparison with the Existing Tools}\label{eval:comparison}
+\subsubsection{Running Time}
+\begin{figure}
+    \centering
+     \includegraphics[width=.8\columnwidth]{./figures/result/running_time.pdf}
+     \caption{With the optimization introduced in section, \tool{} can be scalable to RSA}
+\end{figure}
+
+\subsubsection{Comparison with the Existing Tools}
 \tool{} is designed to quantify side-channel leakages. But it can
 find side-channels leakages as well. In this section, we compare 
 \tool{} with the existing trace-based side-channel identification 
