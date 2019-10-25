@@ -1,26 +1,25 @@
 \section{Scalable to Real-world Crypto Systems}
 
-In the section, we articulate several challenges and existing problems
+In the section, we present existing problems and our solutions
 in applying the method above in real-world crypto systems. 
 
-We use symbolic execution to get the function $f_i$ and model 
-counting to get the number of items in $K^o$. However, both
-symbolic execution and model counting are well-known for theirs
-expensive performance cost, which limit their usage in real-world
-crypto systems.  
-
-After we transfer each potential leaks sites into formula. We can group several formulas together
-to estimate the total information leakage. One naive way is to use the Monte Carlo sampling  estimate the
-number of input keys. With the definition~\ref{def}, we can estimate the total information leakage.
-
-However, some pre-experiments show that above approach suffers from the unbearable cost, which impede its usage
+We use symbolic execution to get the function $f_i$, and count 
+the number of items in $K^o$.
+With the definition~\ref{def}, we can estimate the total information leakage.
+However, some pre-experiments show that above approach suffers from the unbearable cost, 
+which impede its usage
 to detect and quantify side-channel leakages in real-world applications. 
-We systematically analyze the performance bottlenecks of the whole process. In general, the performance suffers
+
+We systematically analyze bottlenecks of the whole process. In general, the performance suffers
 from the two following reasons. 
 \begin{itemize}
     \item Symbolic Execution (Challenge a)
-    \item Monte Carlo Sampling  (Challenge b)
+    \item Model Counting (Challenge b)
 \end{itemize}
+
+Both symbolic execution and model counting are well-known for theirs
+expensive performance cost, which limit their usage in real-world
+crypto systems.
 
 \subsubsection{Symbolic Execution}
 Symbolic execution interprets each instruction and update the memory cells and registers with a 
