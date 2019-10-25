@@ -144,9 +144,13 @@ secret-dependent control-flows as well. Second, CacheD suffers
 from some performance issues and uses some domain knowledge 
 to simplify symbolic execution and has to trim the traces before processing. The design does 
 not introduce false positives, but can neglect some vulnerabilities. 
- On the contrary, \tool{} does not apply any domain knowledge. 
-For example, CacheD takes 43.4 seconds to process the AES implementation
-of OpenSSL but \tool{} only takes less than 0.1 second.
+On the contrary, \tool{} does not apply any domain knowledge and can find
+more vulnerabilities. The table~\ref{eval:cacheD} shows that \tool{} is 
+three times faster than CacheD. As the time of symbolic execution grow
+quadratically, \tool{} is much faster than CacheD when analyzing the same
+number of instructions. For example, when we test~\tool{} on 
+AES from OpenSSL 0.9.7, ~\tool{} is more than 100x faster than CacheD.
+
 
 \begin{table}[]
     \resizebox{\columnwidth}{!}{%
@@ -163,6 +167,7 @@ of OpenSSL but \tool{} only takes less than 0.1 second.
     \end{tabular}
     }
     \caption{Comparison with CacheD}
+    \label{eval:cacheD}
     \end{table}
 
 \subsection{Vulnerability Case Study}
