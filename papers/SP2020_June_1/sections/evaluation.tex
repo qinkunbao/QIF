@@ -65,8 +65,8 @@ aspects:
     report the number of leaked bits in open source libraries?
     \item  Recent work has reported a number
     of side-channel vulnerabilities in open source libraries. 
-    Is the number of leaked bits reported by \tool{} useful to justify 
-    the sensitive level of side-channel vulnerabilities?
+    Are the numbers of leaked bits reported by \tool{} useful to justify 
+    the severity levels of the side-channel vulnerabilities?
    
 \end{enumerate}
 
@@ -77,18 +77,18 @@ Among those 883 leak points, 205 of them are leaked due
 to secret-dependent control-flow transfers and 678 of them are leaked 
 due to secret-dependent memory accesses. 
 
-For crypto libraries, \tool{} finds that secret-dependent memory accesses 
+For the crypto libraries, \tool{} finds that secret-dependent memory accesses 
 cause most leakages. 
 \tool{} also identifies that most side-channel vulnerabilities 
 leak very little information in practice, which confirms our initial
 assumptions. 
-However, we do find some sensitive leakages. 
+However, we do find some severe leakages. 
 Some of them have been confirmed by existing research that those 
-vulnerabilities can be exploited to realize real attacks. 
+vulnerabilities can be exploited by realize real attacks. 
 
-All the symmetric key implementations in OpenSSL and mbedTLS all yield
+All the symmetric key implementations in OpenSSL and mbedTLS have
 significant leakages due to the implementation of the lookup table
-to speed up the computation. Every leakages found during the evaluation
+to speed up the computation. Every leakage found during the evaluation
 belongs to the type of secret-dependent memory accesses. We believe that
 the secret-dependent control-flow transfers have been widely studied in
 the past few years, and developers have patched most of those leakages. 
@@ -96,56 +96,58 @@ One method to address the leakage is to use bit-slicing. We will analyse
 the corresponding countermeasure in the following sections.
 
 \tool{} find several leakage sites for both the implementation of DES and AES
-in OpenSSL and mbedTLS. \tool{} confirm that all those leakages come from
-table lookups implementations. mbedTLS 2.15 and 2.5 have the same implementations
+in OpenSSL and mbedTLS\@. \tool{} confirms that all those leakages come from
+table lookups. mbedTLS 2.15 and 2.5 have the same implementations
 of DES and AES so they have the same leakage report. One proper fix would be 
-a scalar bit-sliced implementations. However, we do not see the bit-sliced 
-implementation of AES and DES in various versions of OpenSSL and mbedTLS.  
-However, we find the new implementation of OpenSSL instead use typical four 1K
-tables. It only uses 1K of tables. This implementation is rather easy but is
+a scalar bit-sliced implementation. However, we do not see the bit-sliced 
+implementation of AES and DES in various versions of OpenSSL and mbedTLS\@.  
+However, we find the new implementation of OpenSSL instead uses typical four 1K
+tables. It only uses 1K of the tables. This implementation is rather easy but is
 still vulnerable to a side channel attack. However, the countermeasures do
 somehow decrease the total amount of leaked information.
 
 We also evaluates our tool on the RSA implementation. With the optimizations
-introduced in the paper, we do not apply any domain knowledge to 
+introduced in \S\ref{sectionxxx}, we do not apply any domain knowledge to 
 simplify the analysis. Therefore, our tools can identify all the leakage 
 sites reported by CacheD~\cite{203878} in a shorter time. Our tool
-also finds that most leakages in RSA are caused in the big number implementation.
-We also find newer version of RSA in OpenSSL tend to have fewer leakages detected
+ finds that most leakages in RSA occur in the big number implementation.
+We also find the newer versions of RSA in OpenSSL tend to have fewer leakages detected
 by \tool{}. We will discuss the version changes and corresponding leakages 
 in the next section.
 
 In addition to identifying side-channel leakages, \tool{} can also estimate how
-much information is leaked from each vulnerabilities. \tool{} achieve 
+much information is leaked from each vulnerability. \tool{} achieves 
 the goal by estimating number of keys that satisfy the constraints.
-During the Evaluation, for each leakage site, 
-\tool{} will stop once 1) have 95\% confidence 
+During the evaluation, for each leakage site, 
+\tool{} will stop once 1) it has 95\% confidence 
 possibility that the error of estimated leaked information is less than
-1 bit. 2) can not reach the termination condition after 10 minutes. In 
-the case, it means the satisfying keys is very small and the leakage is 
-very serious. The tools mark the Monte Carlo is failed. During the 
-evaluation, we find \tool{} can quantify every side-channels leakages 
-for every symmetric encryptions. For asymmetric encryptions, Monte 
-Carlo quantification sometimes fail. We manually check those leakages
-sites and find most of them are serious.
+1 bit or 2) it cannot reach the termination condition after 10 minutes. In 
+the latter case, it means the number of satisfying keys is very small and the leakage is 
+very serious. The tool marks the Monte Carlo is failed. During the 
+evaluation, we find \tool{} can quantify every side-channel leakage 
+for every symmetric encryption. For asymmetric encryptions, Monte 
+Carlo quantification sometimes fail. We manually check those leakage 
+sites and find most of them are serious. \fixme{details on those severe leakages?}
 
-\subsection{Comparison with peer tools}
-\tool{} is designed to quantify side-channels leakages. But it can
-find side-channels leakages as well. In the section, we compare 
-\tool{} with existing trace-based side-channels identification 
+\subsection{Comparison with the Existing Tools}
+\tool{} is designed to quantify side-channel leakages. But it can
+find side-channels leakages as well. In this section, we compare 
+\tool{} with the existing trace-based side-channel identification 
 tools.
 
-\tool{} can identify all the leakage sites reported by CacheD.
+\tool{} can not only identify all the leakage sites reported by CacheD,
+but also many new ones.
 CacheD fails to detect many other vulnerabilities for two
 reasons. First, CacheD only can only detect secret-dependent
-memory accesses vulnerabilities. But \tool{} can detect 
+memory access vulnerabilities. But \tool{} can detect 
 secret-dependent control-flows as well. Second, CacheD suffers
-from the performance bottlenecks and use some domain knowledge 
-to simplify symbolic execution and cut the trace. The design does 
-not introduce false positives, but can neglect some vulnerabilities 
-as well. On the contrary, \tool{} do not apply any domain knowledge.
+from some performance issues and uses some domain knowledge 
+to simplify symbolic execution and has to trim the traces before processing. The design does 
+not introduce false positives, but can neglect some vulnerabilities. 
+ On the contrary, \tool{} does not apply any domain knowledge. 
 For example, CacheD takes 43.4 seconds to process the AES implementation
 of OpenSSL but \tool{} only takes less than 0.1 second.
+
 \begin{table}[]
     \resizebox{\columnwidth}{!}{%
     \begin{tabular}{c|c|c|c|ccc}
@@ -162,7 +164,8 @@ of OpenSSL but \tool{} only takes less than 0.1 second.
     }
     \caption{Comparison with CacheD}
     \end{table}
-\subsection{Case Study of Vulnerabilities}
+
+\subsection{Vulnerability Case Study}
 \subsubsection{AES in mbedTLS} 
 During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
 the same implementation of AES. Our tool provide the same leakage report
