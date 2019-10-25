@@ -135,7 +135,7 @@ namespace tana {
         //std::cout << "Before Extract Debug: " << *v <<  " low: "<<  low <<  " high: "<< high << std::endl;
         std::shared_ptr<BitVector> res = nullptr;
 
-
+        /*
         if (!v->isSymbol()) {
             // v is a concrete value
             uint32_t result = eval(v);
@@ -149,115 +149,15 @@ namespace tana {
             //          << std::endl;
             return res;
         }
+         */
 
         std::unique_ptr<Operation> oper = std::make_unique<Operation>(BVOper::bvextract, v);
         auto &ref_opr = v->opr;
         bool optimized_flag = false;
 
-
-        if (low == 1 && high == 16) {
-            auto v_part1 = QIFSEEngine::Extract(v, 1, 8);
-            auto v_part2 = QIFSEEngine::Extract(v, 9, 16);
-            res = QIFSEEngine::Concat(v_part2, v_part1);
-            optimized_flag = true;
-
-        }
-
-        if (low == 9 && high == 24) {
-            auto v_part1 = QIFSEEngine::Extract(v, 9, 16);
-            auto v_part2 = QIFSEEngine::Extract(v, 17, 24);
-            res = QIFSEEngine::Concat(v_part2, v_part1);
-            optimized_flag = true;
-
-        }
-
-        if (low == 17 && high == 32) {
-            auto v_part1 = QIFSEEngine::Extract(v, 17, 24);
-            auto v_part2 = QIFSEEngine::Extract(v, 25, 32);
-            res = QIFSEEngine::Concat(v_part2, v_part1);
-            optimized_flag = true;
-
-        }
-
-        if (low == 1 && high == 24) {
-            auto v_part1 = QIFSEEngine::Extract(v, 1, 8);
-            auto v_part2 = QIFSEEngine::Extract(v, 9, 16);
-            auto v_part3 = QIFSEEngine::Extract(v, 17, 24);
-            res = QIFSEEngine::Concat(v_part3, v_part2, v_part1);
-            optimized_flag = true;
-        }
-
-        if (low == 9 && high == 32) {
-            auto v_part1 = QIFSEEngine::Extract(v, 9, 16);
-            auto v_part2 = QIFSEEngine::Extract(v, 17, 24);
-            auto v_part3 = QIFSEEngine::Extract(v, 25, 32);
-            res = QIFSEEngine::Concat(v_part3, v_part2, v_part1);
-            optimized_flag = true;
-        }
-
-
-        if (v->isSymbol()) {
-            if (ref_opr == nullptr) {
-                v->low_bit = low;
-                v->high_bit = high;
-                res = v;
-            }
-
-            uint32_t v_min = 0, v_max = 0;
-            auto &v0 = ref_opr->val[0];
-            auto &v1 = ref_opr->val[1];
-            auto &v2 = ref_opr->val[2];
-            uint32_t v1_size = 0, v2_size = 0;
-
-
-            if (ref_opr->opty == BVOper::bvconcat) {
-                if (ref_opr->val[2] != nullptr) {
-                    v_min = v2->low_bit;
-                    v_max = v2->size();
-                    v2_size = v2->size();
-
-                    if ((v_min == low) && (v_max == high)) {
-                        res = v2;
-                        optimized_flag = true;
-                    } else if ((v_min <= low) && (v_max >= high)) {
-                        res = QIFSEEngine::Extract(v2, low, high);
-                        optimized_flag = true;
-                    }
-                }
-
-                if (ref_opr->val[1] != nullptr) {
-                    v_min = v_max + 1;
-                    v_max = v_min + v1->size() - 1;
-                    v1_size = v1->size();
-
-                    if ((v_min == low) && (v_max == high)) {
-                        res = v1;
-                        optimized_flag = true;
-                    } else if ((v_min <= low) && (v_max >= high)) {
-                        res = QIFSEEngine::Extract(v1, low - v2_size, high - v2_size);
-                        optimized_flag = true;
-                    }
-                }
-
-                if (v->opr->val[0] != nullptr) {
-                    v_min = v_max + 1;
-                    v_max = v_min + v0->size() - 1;
-                    if ((v_min == low) && (v_max == high)) {
-                        res = v0;
-                        optimized_flag = true;
-                    } else if ((v_min <= low) && (v_max >= high)) {
-                        res = QIFSEEngine::Extract(v0, low - v2_size - v1_size, high - v2_size - v1_size);
-                        optimized_flag = true;
-                    }
-                }
-            }
-
-            if (!optimized_flag) {
-                res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
-                res->high_bit = high;
-                res->low_bit = low;
-            }
-        }
+        res = std::make_shared<BitVector>(ValueType::SYMBOL, std::move(oper));
+        res->high_bit = high;
+        res->low_bit = low;
 
 
         return res;
@@ -383,6 +283,7 @@ namespace tana {
             //debug_map(key_value_map);
             //std::cout << *v_test << std::endl;
             uint32_t calculate = 0, con = 0;
+            /*
             if (v_test->symbol_num() == 0) {
                 calculate = QIFSEEngine::eval(v_test);
             } else {
@@ -425,6 +326,7 @@ namespace tana {
                 calculate_t = calculate;
             }
 
+
             if (con_t != calculate_t) {
 
                 //std::cout << std::endl << "Mem :" << *v_test << " == " << std::hex << con << std::dec << "\n";
@@ -440,6 +342,7 @@ namespace tana {
                 }
                 m_memory[memory_address - offset] = std::make_shared<BitVector>(ValueType::CONCRETE, mem_data);
             }
+             */
 
         }
         //Debug
@@ -613,7 +516,7 @@ namespace tana {
             current_eip = it;
 
             //this->printMemory();
-            if((it->id % 10000 == 0) && (it->id < 1000000))
+            if((it->id % 5000 == 0) && (it->id < 500000))
             {
                 auto now_time = std::chrono::high_resolution_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::microseconds>(now_time - start_time);
@@ -623,7 +526,7 @@ namespace tana {
 
             }
 
-            if(it->id == 1000000)
+            if(it->id == 500000)
             {
                 std::ofstream se_time_file;
                 se_time_file.open("se_not_optimized.csv");
@@ -677,6 +580,7 @@ namespace tana {
                 }
 
                 //std::cout << it->id << ": ";
+                /*
                 for (uint32_t j = 0; j < 8; ++j) {
                     //std::cout << *sym_res[j] << " = " << std::hex << con_res[j] << std::dec <<" || ";
                     uint32_t res;
@@ -730,6 +634,7 @@ namespace tana {
 
 
                 }
+                 */
             }
             if (!status) {
                 ERROR("No recognized instruction");
@@ -811,14 +716,14 @@ namespace tana {
     }
 
     void QIFSEEngine::updateCFConstrains(std::shared_ptr<Constrain> cons) {
-        if (!cons->validate(this->key_value_map) && (cons->getNumSymbols() > 0)) {
+        //if (!cons->validate(this->key_value_map) && (cons->getNumSymbols() > 0)) {
 
-            ERROR("Debug");
-        }
+       //     ERROR("Debug");
+        //}
 
-        if (cons->getNumSymbols() == 0) {
-            return;
-        }
+       // if (cons->getNumSymbols() == 0) {
+       //     return;
+      //  }
 
 
         if (func != nullptr) {
@@ -839,11 +744,7 @@ namespace tana {
     }
 
     void QIFSEEngine::updateDAConstrains(std::shared_ptr<Constrain> cons) {
-        if (!cons->validate(this->key_value_map) && (cons->getNumSymbols() > 0)) {
 
-            //std::cout << "Debug" << std::endl;
-            ERROR("Invalid Constrains");
-        }
 
         if (func != nullptr) {
 
@@ -1024,11 +925,7 @@ namespace tana {
                 // 32 bit register value
                 auto reg = opr->field[0];
                 auto regV = this->readReg(reg);
-                auto regV_num = regV->symbol_num();
 
-                if (regV_num == 0) {
-                    return;
-                }
                 this->getMemoryAccessConstrain(regV, inst->get_memory_address());
 
                 return;
@@ -1037,11 +934,6 @@ namespace tana {
                 // eax*2
                 auto reg = opr->field[0];
                 auto regV = this->readReg(reg);
-                auto regV_num = regV->symbol_num();
-
-                if (regV_num == 0) {
-                    return;
-                }
 
                 uint32_t temp_concrete = stoul(opr->field[1], nullptr, 16);
                 auto res = buildop2(BVOper::bvmul, regV, temp_concrete);
@@ -1053,11 +945,7 @@ namespace tana {
                 // eax+0xffffff
                 auto reg = opr->field[0];
                 auto regV = this->readReg(reg);
-                auto regV_num = regV->symbol_num();
 
-                if (regV_num == 0) {
-                    return;
-                }
 
                 uint32_t temp_concrete = stoul(opr->field[2], nullptr, 16);
                 auto symbol = opr->field[1];
@@ -1073,12 +961,7 @@ namespace tana {
                 auto reg2 = opr->field[1];
                 auto regV1 = this->readReg(reg1);
                 auto regV2 = this->readReg(reg2);
-                auto regV1_num = regV1->symbol_num();
-                auto regV2_num = regV2->symbol_num();
 
-                if ((regV1_num + regV2_num) == 0) {
-                    return;
-                }
 
                 uint32_t temp_concrete = stoul(opr->field[2], nullptr, 16);
                 auto res1 = buildop2(BVOper::bvmul, regV2, temp_concrete);
@@ -1094,11 +977,7 @@ namespace tana {
                 auto esi = this->readReg("esi");
 
                 auto regV = this->readReg(reg);
-                auto regV_num = regV->symbol_num();
 
-                if (regV_num == 0) {
-                    return;
-                }
 
                 uint32_t temp_concrete2 = stoul(opr->field[3], nullptr, 16);
                 uint32_t temp_concrete1 = stoul(opr->field[1], nullptr, 16);
@@ -1118,12 +997,6 @@ namespace tana {
                 auto reg2 = opr->field[1];
                 auto regV1 = this->readReg(reg1);
                 auto regV2 = this->readReg(reg2);
-                auto regV1_num = regV1->symbol_num();
-                auto regV2_num = regV2->symbol_num();
-
-                if ((regV1_num + regV2_num) == 0) {
-                    return;
-                }
 
                 uint32_t mul_value = stoul(opr->field[2], nullptr, 16);
                 uint32_t imm_value = stoul(opr->field[4], nullptr, 16);
