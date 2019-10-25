@@ -320,12 +320,12 @@ for RSA (CVE-2016-0702). RSA changelog also claims OpenSSL 1.1.1 adopted
 \end{figure*}
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
-Bit-slicing is a software technology which is capable to implement algorithms with high efficiency and constant running time. 
+Bit-slicing is a software technology that is capable of implementing algorithms with high efficiency and constant running time. 
 % Citation Needed
-This approach can immune cryptographic algorithms to cache and timing-related side channel attacks. The basic concept is to express a function in terms of single-bit logical operations (AND, XOR, OR, NOT, etc.). These operations are then carried out for multiple instances of the function in parallel, using bitwise operations on a CPU. 
-%  A Fast New DES Implementation in Software
-% Matthew Kwan coined the term about 20 years ago after seeing Eli Biham present his paper A Fast New DES Implementation in Software. He later published Reducing the Gate Count of Bitslice DES showing an even faster DES building on Biham’s ideas.
-Matthew Kwan and Eli Biham first present DES implements based on bit-slicing. 
+This approach can immune cryptographic algorithms to cache and timing-related side-channel attacks. The basic concept is to express a function in terms of single-bit logical operations (AND, XOR, OR, NOT, etc.). These operations are then carried out for multiple instances of the function in parallel, using bitwise operations on a CPU. 
+% A Fast New DES Implementation in Software
+% Matthew Kwan coined the term about 20 years ago after seeing Eli Biham present his paper A Fast New DES Implementation in Software. He later published Reducing the Gate Count of Bitslice DES, showing an even faster DES building on Biham’s ideas.
+Matthew Kwan and Eli Biham's first present DES implements based on bit-slicing. 
 
 \begin{figure}[h!]
     \centering
