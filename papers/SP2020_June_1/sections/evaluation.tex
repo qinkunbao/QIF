@@ -320,7 +320,7 @@ for RSA (CVE-2016-0702). RSA changelog also claims OpenSSL 1.1.1 adopted
 \end{figure*}
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
-
+Bit-slicing is a software technology which is capable to implement algorithms with high efficiency and constant running time.
 \begin{figure}[h!]
     \centering
 \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -384,9 +384,6 @@ uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
 align(buf);
 scatter(buf, SBOX, k);
 
-x = (a << 2) + (b << 1) + c;
-*l = SBOX[x] >> 1;
-*r = SBOX[x] & 0b01;
 ...
 \end{lstlisting}
 \caption{Sbox\_with\_Scatter\_and\_Gather}
