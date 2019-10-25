@@ -154,12 +154,12 @@ of OpenSSL but \tool{} only takes less than 0.1 second.
     \hline
     \multicolumn{1}{l|}{} & \multicolumn{2}{c|}{\begin{tabular}[c]{@{}c@{}}Number  \\ of Instructions\end{tabular}} & \multicolumn{2}{c|}{Time}                           & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Number\\ of Leakages\end{tabular}} \\ \cline{2-7} 
     \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{CacheD}                   & \multicolumn{1}{c|}{\tool}              & \multicolumn{1}{c|}{CacheD} & \multicolumn{1}{c|}{\tool} & \multicolumn{1}{c|}{CacheD}                & \multicolumn{1}{c}{\tool}                \\ \hline
-    AES 0.9.7             &             791                               &     1704                                &             43.4s           & \multicolumn{1}{c|}{0.3s} & \multicolumn{1}{c|}{48}                &         75                            \\
-    AES 1.0.2f            &                                               &                                         &                             & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}                      &                                     \\
-    RSA 0.9.7             &                                               &                                         &                             & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}                      &                                     \\
-    RSA 1.0.2f            &                                               &                                         &                             & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}                      &                                     \\ \hline
-    Total                 &                                               &                                         &                             & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}                      &                                     \\ \hline
-    \begin{tabular}[c]{@{}c@{}}\# of Instruction \\ / Time\end{tabular} & \multicolumn{3}{l|}{}                                                                                                 & \multicolumn{3}{l}{}                                                                                     \\ \hline
+    AES 0.9.7             &             791              &     1704                   &             43.4s           & \multicolumn{1}{c|}{0.3s} & \multicolumn{1}{c|}{48}          &         75                            \\
+    AES 1.0.2f            &           2410                &           1350            &            48.5s             & \multicolumn{1}{c|}{0.08s} & \multicolumn{1}{c|}{32}        &         88                        \\
+    RSA 0.9.7             &             674,797        &     16,980,109               &       199.3s               & \multicolumn{1}{c|}{1681s} & \multicolumn{1}{c|}{2}           &         105                       \\
+    RSA 1.0.2f            &          473,392           &      14,468,307              &          165.6s          & \multicolumn{1}{c|}{1692s} & \multicolumn{1}{c|}{2}             &         38                \\ \hline
+    Total                 &            1,151,390       &      31,451,470              &             456.8s            & \multicolumn{1}{c|}{3373.4s} & \multicolumn{1}{c|}{84}     &         317             \\ \hline
+    \begin{tabular}[c]{@{}c@{}}\# of Instruction \\ / Time\end{tabular} & \multicolumn{3}{c|}{2519 ($s^{-1}$)}                    & \multicolumn{3}{c}{9324 ($s^{-1}$)}                                                                  \\ \hline
     \end{tabular}
     }
     \caption{Comparison with CacheD}
