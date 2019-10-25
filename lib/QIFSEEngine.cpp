@@ -677,7 +677,7 @@ namespace tana {
                     }
                     if ((res == con_res[j]) && ((sym_res[j])->symbol_num() == 0)) {
                         auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
-                        writeReg(Registers::convertRegID2RegName(j), reg_v);
+                        //writeReg(Registers::convertRegID2RegName(j), reg_v);
                     }
 
 
@@ -711,15 +711,11 @@ namespace tana {
                         }
 
                         auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
-                        writeReg(Registers::convertRegID2RegName(j), reg_v);
+                        //writeReg(Registers::convertRegID2RegName(j), reg_v);
                     }
 
                     // If the length of formula exceeds 50000, the tool
                     // will use concrete value instead
-                    if (sym_res[j]->length() > 50000) {
-                        auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
-                        writeReg(Registers::convertRegID2RegName(j), reg_v);
-                    }
 
 
                 }
@@ -732,7 +728,7 @@ namespace tana {
         }
 
         std::ofstream se_time_file;
-        se_time_file.open("se_optimized.csv");
+        se_time_file.open("se_not_optimized.csv");
         for (auto &it:se_time_vector )
         {
             se_time_file << it << ",";
