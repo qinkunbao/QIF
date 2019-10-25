@@ -613,7 +613,7 @@ namespace tana {
             current_eip = it;
 
             //this->printMemory();
-            if((it->id % 100000 == 0) && (it->id < 5000000))
+            if((it->id % 10000 == 0) && (it->id < 1000000))
             {
                 auto now_time = std::chrono::high_resolution_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::microseconds>(now_time - start_time);
@@ -621,6 +621,17 @@ namespace tana {
                 double now_second = static_cast<double>(duration.count() / 1000000.0);
                 se_time_vector.push_back(now_second);
 
+            }
+
+            if(it->id == 1000000)
+            {
+                std::ofstream se_time_file;
+                se_time_file.open("se_optimized.csv");
+                for (auto &time:se_time_vector )
+                {
+                    se_time_file << time << ",";
+                }
+                se_time_file.close();
             }
 
             ++inst;
@@ -731,13 +742,7 @@ namespace tana {
 
         }
 
-        std::ofstream se_time_file;
-        se_time_file.open("se_optimized.csv");
-        for (auto &it:se_time_vector )
-        {
-            se_time_file << it << ",";
-        }
-        se_time_file.close();
+
         return true;
     }
 
