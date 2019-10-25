@@ -152,7 +152,7 @@ of OpenSSL but \tool{} only takes less than 0.1 second.
     \resizebox{\columnwidth}{!}{%
     \begin{tabular}{c|c|c|c|ccc}
     \hline
-    \multicolumn{1}{l|}{} & \multicolumn{2}{c|}{\begin{tabular}[c]{@{}c@{}}Number of\\Instructions\end{tabular}} & \multicolumn{2}{c|}{Time (s)}                           & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Number of\\Leakages (bits)\end{tabular}} \\ \cline{2-7} 
+    \multicolumn{1}{l|}{} & \multicolumn{2}{c|}{Number of Instructions} & \multicolumn{2}{c|}{Time (s)}             & \multicolumn{2}{c}{Number of Leakages} \\ \cline{2-7} 
     \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{CacheD}                   & \multicolumn{1}{c|}{\tool}              & \multicolumn{1}{c|}{CacheD} & \multicolumn{1}{c|}{\tool} & \multicolumn{1}{c|}{CacheD}                & \multicolumn{1}{c}{\tool}                \\ \hline
     AES 0.9.7             &             791              &     1,704                   &             43.4           & \multicolumn{1}{c|}{0.30} & \multicolumn{1}{c|}{48}          &         75                            \\
     AES 1.0.2f            &           2,410                &           1,350            &            48.5             & \multicolumn{1}{c|}{0.08} & \multicolumn{1}{c|}{32}        &         88                        \\
@@ -255,7 +255,7 @@ while( c != 0 );
 \label{mbedtls_rsa_2}
 \end{figure}
 
-\emph{mpi\_mul\_hlp} is notoriously for a series of timing attacks. Recent 
+Function \emph{mpi\_mul\_hlp} is notoriously for a series of timing attacks. Recent 
 patches have fixed many leakages in function \emph{mpi\_mul\_hlp}.
 \tool{} reports 8 bits of information is leaked from line 5. 
 \emph{mpi\_mul\_hlp} is a helper function to perform
