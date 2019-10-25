@@ -323,7 +323,7 @@ uint8_t t1 = (b | nc);
 *r = (na & t1) | t0;
 ...
 \end{lstlisting}
-\caption{\fixme{SBOX\_with\_BitSlicing}}
+\caption{SBOX\_with\_BitSlicing}
 \label{SBOX_bitslicing}
 \end{figure}
 
@@ -337,9 +337,47 @@ x = (a << 2) + (b << 1) + c;
 *r = SBOX[x] & 0b01;
 ...
 \end{lstlisting}
-\caption{\fixme{SBOX\_without\_BitSlicing}}
+\caption{SBOX\_without\_BitSlicing}
 \label{SBOX_da}
 \end{figure}
 
 \subsubsection{Scatter and Gather}
+
+\begin{figure}[h!]
+    \centering
+\begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+...
+align ( buf ):
+    return buf - ( buf & ( block size - 1 ) ) + block size
+
+scatter ( buf, p, k ):
+    for i := 0 to N - 1 do
+        buf [k + i * spacing] := p [k][i]
+
+gather ( r, buf, k ):
+    for i := 0 to N - 1 do
+        r [i] := buf [k + i * spacing]
+...
+\end{lstlisting}
+\caption{Scatter\_and\_Gather}
+\label{Scatter_and_Gather}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+\begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+...
+uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
+align(buf);
+scatter(buf, SBOX, k);
+
+x = (a << 2) + (b << 1) + c;
+*l = SBOX[x] >> 1;
+*r = SBOX[x] & 0b01;
+...
+\end{lstlisting}
+\caption{Sbox\_with\_Scatter\_and\_Gather}
+\label{SBOX_sg}
+\end{figure}
+
 \subsubsection{Smaller Lookup Tables}
