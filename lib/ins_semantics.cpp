@@ -2163,10 +2163,7 @@ namespace tana {
         if (!se->eflags)
             return false;
         std::shared_ptr<BitVector> CF = se->getFlags("CF");
-        if((!this->is_static)&&(CF->symbol_num() == 0))
-        {
-            return true;
-        }
+
 
         std::shared_ptr<Constrain> constrains;
 
@@ -2390,30 +2387,12 @@ namespace tana {
         // ecx = ecx - 1
         auto v_ecx = se->readReg("ecx");
 
-        if(v_ecx->symbol_num() == 0)
-        {
-            uint32_t reg_concrete = se->getRegisterConcreteValue("ecx");
-            auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, reg_concrete);
-            se->writeReg("ecx", reg_v);
-        }
-        else {
-            v_ecx = buildop2(BVOper::bvsub, v_ecx, 1);
-            se->writeReg("ecx", v_ecx);
-        }
+
 
         assert(oprd[0]->type == Operand::Mem);
         // Update register
         auto v_reg = se->readReg(oprd[0]->field[0]);
-        if(v_reg->symbol_num() == 0)
-        {
-            uint32_t reg_concrete = se->getRegisterConcreteValue(oprd[0]->field[0]);
-            auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, reg_concrete);
-            se->writeReg(oprd[0]->field[0], reg_v);
-        }
-        else {
-            v_reg = buildop2(BVOper::bvadd, v_reg, 4);
-            se->writeReg(oprd[0]->field[0], v_reg);
-        }
+
         // Store the contents of eax into the m_memory
         auto v_eax = se->readReg("eax");
         se->writeMem(this->get_memory_address(), oprd[0]->bit, v_eax);
@@ -2456,13 +2435,6 @@ namespace tana {
             }
 
             auto ecx_v = se->readReg("ecx");
-            if (ecx_v->symbol_num() == 0)
-            {
-                uint32_t ecx_con = se->getRegisterConcreteValue("ecx");
-                auto ecx_new = std::make_shared<BitVector>(ValueType::CONCRETE, ecx_con);
-                se->writeReg("ecx", ecx_new);
-
-            }
 
             se->writeReg(oprd[0]->field[0], v_reg);
         }
@@ -2633,31 +2605,10 @@ namespace tana {
 
         auto src_reg = se->readReg(src);
         auto dest_reg = se->readReg(dest);
-        if(src_reg->symbol_num() == 0 && dest_reg->symbol_num() == 0) {
-            uint32_t src_c = se->getRegisterConcreteValue(src);
-            uint32_t dest_c = se->getRegisterConcreteValue(dest);
 
-            auto src_v = std::make_shared<BitVector>(ValueType::CONCRETE, src_c);
-            auto dest_v = std::make_shared<BitVector>(ValueType::CONCRETE, dest_c);
-
-            se->writeReg(src, src_v);
-            se->writeReg(dest, dest_v);
-
-        }
-        else {
-            src_reg = buildop2(BVOper::bvadd, src_reg, 4);
-            dest_reg = buildop2(BVOper::bvadd, dest_reg, 4);
-            se->writeReg(src, src_reg);
-            se->writeReg(dest, dest_reg);
-        }
 
         auto ecx_v = se->readReg("ecx");
-        if(ecx_v->symbol_num() == 0)
-        {
-            uint32_t ecx_c = se->getRegisterConcreteValue("ecx");
-            auto ecx_v = std::make_shared<BitVector>(ValueType::CONCRETE, ecx_c);
-            se->writeReg("ecx", ecx_v);
-        }
+
 
         auto src_mem_address = this->read_reg_data(src);
         auto dest_mem_address = this->read_reg_data(dest);
@@ -2689,18 +2640,6 @@ namespace tana {
 
             if(op0->type == Operand::Mem) {
                 src_v = se->readMem(this->get_memory_address(), op0->bit);
-            }
-
-            if(eax_v->symbol_num() == 0 && src_v->symbol_num() == 0 && (!this->is_static))
-            {
-                uint32_t eax_c = se->getRegisterConcreteValue("eax");
-                uint32_t edx_c = se->getRegisterConcreteValue("edx");
-                eax_v = std::make_shared<BitVector>(ValueType::CONCRETE, eax_c);
-                edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
-
-                se->writeReg("edx", edx_v);
-                se->writeReg("eax", eax_v);
-                return true;
             }
 
             auto high = buildop2(BVOper::bvmul32_h, eax_v, src_v);
@@ -2902,13 +2841,6 @@ namespace tana {
             return true;
 
         auto eax_v = se->readReg("eax");
-        if(eax_v->symbol_num() == 0)
-        {
-            auto edx_c = se->getRegisterConcreteValue("edx");
-            auto edx_v = std::make_shared<BitVector>(ValueType::CONCRETE, edx_c);
-            se->writeReg("edx", edx_v);
-            return true;
-        }
 
         return true;
 
@@ -2943,11 +2875,7 @@ namespace tana {
             ERROR("CMOVBE operand one error");
         }
 
-        if(v1->symbol_num() == 0)
-        {
-            uint32_t concrete_v1 = se->getRegisterConcreteValue(op0->field[0]);
-            v1 = std::make_shared<BitVector>(ValueType::CONCRETE, concrete_v1);
-        }
+
 
         se->writeReg(op0->field[0], v1);
 
@@ -2973,8 +2901,7 @@ namespace tana {
             return true;
 
         auto ecx_v = se->readReg("ecx");
-        if(ecx_v->symbol_num() == 0)
-            return true;
+
 
         auto constrains = std::make_shared<Constrain>(this->id, ecx_v, BVOper::equal, 0);
         se->updateCFConstrains(constrains);
@@ -3082,13 +3009,6 @@ namespace tana {
 
         auto regV = se->readReg(regName);
 
-        if(regV->symbol_num() == 0)
-        {
-            uint32_t regC = se->getRegisterConcreteValue(regName);
-            auto regValue = std::make_shared<BitVector>(ValueType::CONCRETE, regC);
-            se->writeReg(regName, regValue);
-            return true;
-        }
 
         auto part0 = se->Extract(regV, 1, 8);
         auto part1 = se->Extract(regV, 9, 16);
@@ -3345,16 +3265,6 @@ namespace tana {
     {
 
         auto v_reg = se->readReg(oprd[0]->field[0]);
-        if(v_reg->symbol_num() == 0)
-        {
-            uint32_t reg_concrete = se->getRegisterConcreteValue(oprd[0]->field[0]);
-            auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, reg_concrete);
-            se->writeReg(oprd[0]->field[0], reg_v);
-        }
-        else {
-            v_reg = buildop2(BVOper::bvadd, v_reg, 4);
-            se->writeReg(oprd[0]->field[0], v_reg);
-        }
 
         auto v_eax = se->readReg("eax");
         se->writeMem(this->get_memory_address(), oprd[0]->bit, v_eax);
