@@ -217,7 +217,7 @@ return( 0 );
 \end{figure}
 
 \subsubsection{RSA in mbedTLS}
-\tool{} identify several side-channel leakages for the RSA implementation
+\tool{} identifies several side-channel leakages for the RSA implementation
 in MbedTLS. Here we introduce and analyze two cases. 
 
 \begin{figure}[h!]
@@ -233,12 +233,12 @@ if( mbedtls_mpi_cmp_int( N, 0 ) < 0 || ( N->p[0] & 1 ) == 0 )
 \end{figure}
 
 \tool{} reports one bit information is leaked from the branch at line 2 and
-the leakage leaks less information than other leakages.
+it leaks less information than other leakages.
 Function \emph{mbedtls\_mpi\_exp\_mod} performs sliding-window exponentiation for
 big numbers. 
 The leakage is caused by checking the signed bit of the big number $N$. 
-Therefore, the leakage can only tell $N$ is greater than zero, which is one
-bit leak.
+Therefore, the leakage can only tell whether $N$ is greater than zero, which is one
+bit leak, not severe.
 
 
 \begin{figure}[h!]
@@ -256,31 +256,31 @@ while( c != 0 );
 \end{figure}
 
 \emph{mpi\_mul\_hlp} is notoriously for a series of timing attacks. Recent 
-patches have fixed many of leakages in function \emph{mpi\_mul\_hlp}.
-\tool{} report 8 bits of information is leaked from line 5. 
+patches have fixed many leakages in function \emph{mpi\_mul\_hlp}.
+\tool{} reports 8 bits of information is leaked from line 5. 
 \emph{mpi\_mul\_hlp} is a helper function to perform
 mbedtls\_mpi multiplication. As the code will be executed many times,
-each time it will leak independent information. The leakage is serious 
+each time it will leak independent information. The leakage is severe 
 compared to the previous one.
 
 \subsection{Case Study of RSA in OpenSSL}
-For crypto libraries, it is likely that a updated version has less vulnerabilities
-compared to the previous version because software developers have patched some
+For the crypto libraries, it is likely that an updated version has less vulnerabilities
+compared to the previous versions because software developers have patched some
 of those vulnerabilities.  
 
 We test five versions of OpenSSL (0.9.7, 1.0.2f, 1.0.2k, 1.1.0f, 1.1.1). 
-The result~\ref{fig:rsa} also confirms 
+The result, as shown in Figure~\ref{fig:rsa}, confirms 
 our assumptions. The newer version of
-OpenSSL leaked less amount of information compared to the previous version.
+OpenSSL leaked less amount of information compared to the previous versions.
 After version 0.9.7g, OpenSSL adopted a fixed-window mod\_exp implementation 
-for RSA. With the new design, the sequence of squares and multiples and the 
-memory accesses pattern are independent of the secret key. \tool{}'s result
-confirms the new exponentiation implementation has significantly mitigates
+for RSA\@. With the new design, the sequence of squares and multiples and the 
+memory access patterns are independent of the secret key. \tool{}'s result
+confirms the new exponentiation implementation has quite effectively mitigated 
 most of leakages because the other four versions have less leakages than 0.9.7. 
-OpenSSL version 1.0.2f, 1.0.2k and 1.1.0f almost has the same amount of leakage. 
-We check the changelog and find only one changes for patching vulnerabilities
+OpenSSL version 1.0.2f, 1.0.2k and 1.1.0f almost have the same amount of leakage. 
+We check the changelog and find only one change for patching vulnerabilities
 for RSA (CVE-2016-0702). RSA changelog also claims OpenSSL 1.1.1 adopted
-``numerous side-channels attack mitigations". The result confirms our assumptions.
+``numerous side-channel attack mitigations.'' The result confirms our assumptions.
 \begin{figure*}
     \centering
     \vspace*{-9pt}
