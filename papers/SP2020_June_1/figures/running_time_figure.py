@@ -16,13 +16,12 @@ def count(formName):
         time = next(f_csv)
 
     time = time[:-1]
-    time[0] = int(time[0].replace('.', ''))
-    for i in range(1, len(time)):
-        time[i] = int(time[i].replace('.', ''))
-        time[i] += time[i-1]
 
     for i in range(len(time)):
-        time[i] = time[i]/10e5
+        # time[i] = int(time[i].replace('.', ''))
+        # # time[i] += time[i-1]
+        # time[i] = time[i]/10e5
+        time[i] = float(time[i])
 
     print(time)
     return time
