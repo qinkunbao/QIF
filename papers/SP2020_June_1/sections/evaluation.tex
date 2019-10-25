@@ -61,17 +61,19 @@ aspects:
     \item  \textbf{Identifying side-channels leakages.}
     The first step of \tool{} is to identify side-channel leakages. 
     Is \tool{} effective to detect side-channels in real-world
-    crypto systems?
+    crypto systems? (~\ref{sec:eval_overview})
     \item  \textbf{Justifying design decisions.} How effective are
     the design decisions made by \tool{} in terms of scalability?  
-    \item  \textbf{Quantifying side-channel leakages.}
+    (~\ref{eval:comparison})
+    \item  \textbf{Quantifying side-channel leakages.} 
     Can \tool{} precisely report the number of leaked bits in crypto libraries?
     Are the numbers of leaked bits reported by \tool{} useful to justify 
-    the severity levels of the side-channel vulnerabilities?
+    the severity levels of the side-channel vulnerabilities? 
+    (~\ref{sec:eval_case},~\ref{sec::eval_rsa},~\ref{sec:eval_countermeasures})
    
 \end{enumerate}
 
-\subsection{Evaluation Result Overview}
+\subsection{Evaluation Result Overview} \label{sec:eval_overview}
 In this section, we present an overview of the evaluation result. 
 \tool{} find 883 leakages in total from real-world crypto system libraries.
 Among those 883 leak points, 205 of them are leaked due
@@ -130,7 +132,7 @@ for every symmetric encryption. For asymmetric encryptions, Monte
 Carlo quantification sometimes fail. We manually check those leakage 
 sites and find most of them are serious. \fixme{details on those severe leakages?}
 
-\subsection{Comparison with the Existing Tools}
+\subsection{Comparison with the Existing Tools}\label{eval:comparison}
 \tool{} is designed to quantify side-channel leakages. But it can
 find side-channels leakages as well. In this section, we compare 
 \tool{} with the existing trace-based side-channel identification 
@@ -171,7 +173,7 @@ AES from OpenSSL 0.9.7, ~\tool{} is more than 100x faster than CacheD.
     \label{eval:cacheD}
     \end{table}
 
-\subsection{Vulnerability Case Study}
+\subsection{Vulnerability Case Study}\label{sec:eval_case}
 \subsubsection{AES in mbedTLS} 
 During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
 the same implementation of AES\@. Our tool provides the same leakage report
@@ -269,7 +271,7 @@ mbedtls\_mpi multiplication. As the code will be executed many times,
 each time it will leak independent information. The leakage is severe 
 compared to the previous one.
 
-\subsection{Case Study of RSA in OpenSSL}
+\subsection{Case Study of RSA in OpenSSL}~\label{sec::eval_rsa}
 For the crypto libraries, it is likely that an updated version has less vulnerabilities
 compared to the previous versions because software developers have patched some
 of those vulnerabilities.  
@@ -314,7 +316,7 @@ for RSA (CVE-2016-0702). RSA changelog also claims OpenSSL 1.1.1 adopted
 \caption{RSA implementation in different versions of OpenSSL}\label{fig:rsa}
 
 \end{figure*}
-\subsection{Analysis of Software Countermeasures}
+\subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
 
 \begin{figure}[h!]
