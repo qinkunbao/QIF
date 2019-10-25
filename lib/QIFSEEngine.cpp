@@ -737,6 +737,7 @@ namespace tana {
         {
             se_time_file << it << ",";
         }
+        se_time_file.close();
         return true;
     }
 
