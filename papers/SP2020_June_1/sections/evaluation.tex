@@ -56,14 +56,16 @@ work on stripped binaries. We develop a Pin tool based on Intel Pin (version 3.7
 to record the execution trace. We run our experiments on a 2.90GHz
 Intel Xeon(R) E5-2690 CPU with 128GB RAM memory.
 During our evaluation process, we are interested in the following two
-aspects:
+questions:
 \begin{enumerate}
-    \item  Is \tool{} effective to detect side-channels in real-world
+    \item  \textbf{Identifying side-channels leakages.}
+    The first step of \tool{} is to identify side-channel leakages. 
+    Is \tool{} effective to detect side-channels in real-world
     crypto systems?
-    \item  Can \tool{} precisely
-    report the number of leaked bits in open source libraries?
-    \item  Recent work has reported a number
-    of side-channel vulnerabilities in open source libraries. 
+    \item  \textbf{Justifying design decisions.} How effective are
+    the design decisions made by \tool{} in terms of scalability?  
+    \item  \textbf{Quantifying side-channel leakages.}
+    Can \tool{} precisely report the number of leaked bits in crypto libraries?
     Are the numbers of leaked bits reported by \tool{} useful to justify 
     the severity levels of the side-channel vulnerabilities?
    
