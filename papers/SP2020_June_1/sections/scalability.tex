@@ -13,18 +13,24 @@ In this section, we begin by discussing the bottlenecks of applying the
 above approaches in real-world crypto systems. After that, we propose
 our methods.
 
-In general, the performance suffers
+In general, \tool suffer from performance costs
 from the two following reasons. 
 \begin{itemize}
     \item Symbolic Execution (Challenge a)
     \item Counting the number of items in $K^o$ (Challenge b)
 \end{itemize}
 
-Both symbolic execution and model counting are well-known for theirs
-expensive performance cost, which limit their usage in real-world
-crypto systems.
+
 
 \subsection{Trace-oriented Symbolic Execution}
+While symbolic execution can capture the fine-grained semantics of programs,
+it is also notorious for its unbearable performance cost. Previous 
+trace-oriented symbolic execution based
+works~\cite{203878,Chattopadhyay:2017:QIL:3127041.3127044} all 
+have large performance bottlenecks. As a result, those approaches 
+either only apply to small-size programs~\cite{Chattopadhyay:2017:QIL:3127041.3127044} or use some
+domain knowledge to simplify the analysis.
+
 Symbolic execution interprets each instruction and update the memory cells and registers with a 
 formula that captured the semantics of the execution. Unfortunately, the number of machine instructions 
 are huge and the semantics of each instruction is complex. For example, the Intel Developer Manual~\cite{intelsys}
