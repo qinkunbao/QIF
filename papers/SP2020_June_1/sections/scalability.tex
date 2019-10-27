@@ -76,9 +76,9 @@ of instructions need to execute during the analysis.
       \begin{tabular}{ccc}
       \hline
                         & \begin{tabular}[c]{@{}c@{}}Number of \\ REIL IR\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of \\ x86 Instructions\end{tabular} \\ \hline
-      AES openssl 0.9.7 &                                                              &                                                                       \\
-      DES openssl 0.9.7 &                                                              &                                                                       \\
-      RSA openssl 0.9.7 &                                                              &                                                                       \\
+      AES openSSL 0.9.7 &                                                              &                                                                       \\
+      DES openSSL 0.9.7 &                                                              &                                                                       \\
+      RSA openSSL 0.9.7 &                                                              &                                                                       \\
       RSA mbed TLS 2.5  &                                                              &                                                                       \\ \hline
       \end{tabular}
       \caption{The number of X86 instructions and the number
@@ -86,7 +86,13 @@ of instructions need to execute during the analysis.
       \label{scala:ir}
       \end{table}
 
-\subsubsection{Constriant Slovers}
+\subsubsection{Constraint Solvers}
+As discussed in section~\ref{side-channel:condition}, the problem
+of identifying side-channels can be reduced to the below 
+questions.
+
+\textit{Can we find two different input variables $k_1$ and $k_2$ that satisfy the
+        formula $f_a(k_1) \neq f_b(k_2)$?}
 
 \subsubsection{Complex Constraints}
 
