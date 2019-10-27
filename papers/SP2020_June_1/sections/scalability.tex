@@ -20,8 +20,6 @@ from the two following reasons.
     \item Counting the number of items in $K^o$ (Challenge b)
 \end{itemize}
 
-
-
 \subsection{Trace-oriented Symbolic Execution}
 While symbolic execution can capture the fine-grained semantics of programs,
 it is also notorious for its unbearable performance cost. Previous 
@@ -30,8 +28,19 @@ works~\cite{203878,Chattopadhyay:2017:QIL:3127041.3127044} all
 have large performance bottlenecks. As a result, those approaches 
 either only apply to small-size programs~\cite{Chattopadhyay:2017:QIL:3127041.3127044} 
 or apply some domain knowledge to simplify the analysis.
-Those tools interpretseach instruction and update the memory cells and registers with a 
-formula that captured the semantics of the execution. 
+Those tools interpret each instruction and update the memory cells and registers with
+formulas that captured the semantics of the execution and search different 
+input values that can lead to different execution behaviors using constraint solver.
+We implement the approach~\ref{trace_qif} and model the side-channels as formulas.
+While the tool can finish analyzing some simple cases like AES, 
+it can not handle complicated cases like RSA. 
+
+We observe that finding side-channels using symbolic execution is different from 
+traditional general symbolic execution and be optimized to be as efficient as other
+methods.
+
+\subsubsection{Interpret Instructions Symbolically}
+
 
 Unfortunately, the number of machine instructions 
 are huge and the semantics of each instruction is complex. For example, the Intel Developer Manual~\cite{intelsys}
@@ -48,11 +57,15 @@ simplify the implementations, also introduce significant overhead as well~\cite{
 We adopt the similar approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions.
 
+\subsubsection{Constriant Slovers}
+
+\subsubsection{Complex Constriants}
+
 \subsection{Monte Carlo Sampling}
 \label{MCreasons}
 For an application with $m$ bytes secret, there are total $2^{8m}$ possible inputs. Of the
 $2^{8m}$ possible inputs, we want to estimate the number of inputs that satisfy those formulas.
-Then we can use the definition ~/ref{def} to calculate the information leakage.
+Then we can use the definition~\ref{def} to calculate the information leakage.
 
 A Monte Carlo method for approximating the number of $|K_o|$ is to pick up 
 $M$ random values and check how many of them satisfy those constrains. If $l$ values
