@@ -94,11 +94,19 @@ questions.
 \textit{Can we find two different input variables $k_1, k_2 \in K$ that satisfy the
         formula $f_a(k_1) \neq f_b(k_2)$?}
 
-Existing approach relies on SMT solvers (e.g, Z3) to find satisfying $k_1$ and $k_2$.
+Existing approach relies on satisfiability modulo theories (SMT) solvers (e.g, Z3) to 
+find satisfying $k_1$ and $k_2$.
 We argue that while it is a universal approach to solving constraints with SMT 
 solvers, for constraints with above formats, using testing works is more
 efficient in practice. Constraint solving is a decision problem expressed in 
-logic formulas. Satisfiability 
+logic formulas. SMT solvers transfer the inputted SMT formula into 
+the boolean conjunctive normal form (CNF) and feed it into the internal 
+SAT solver. The translation process, called ``bit blasting'', is time-consuming.
+Also, as SAT problem is a well-known NP-complete problem, it is also hard to 
+deal when it comes to practical uses.
+
+Despite the rapid development of SMT solvers in recent years, constraint solving still
+remains one of the obstacles to achieve the scalability for real-world crypto systems.
        
 \subsection{Monte Carlo Sampling}
 \label{MCreasons}
