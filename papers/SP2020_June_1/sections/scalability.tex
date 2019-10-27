@@ -107,6 +107,12 @@ deal when it comes to practical uses.
 
 Despite the rapid development of SMT solvers in recent years, constraint solving still
 remains one of the obstacles to achieve the scalability for real-world crypto systems.
+
+\vspace*{2pt}
+\textbf{Our Solution:}
+Instead of feeding the formula $f_a(k_1) \neq f_b(k_2)$ into a SMT solver, we just
+randomly pick up $k_1, k_2 \in K$ and test them if can satisfy the formula.
+
        
 \subsection{Monte Carlo Sampling}
 \label{MCreasons}
