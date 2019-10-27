@@ -73,6 +73,23 @@ adopting IR layers can introduce large overhead.
 We adopt the approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions.
 
+\begin{table}[ht]
+      \centering
+      \caption{The number of X86 instructions and the number
+              of REIL IR instructions on each trace of crypto programs.
+              It shows that 
+              eliminating IR layer can reduce the number
+              of instructions need to execute during the analysis.}
+      \begin{tabular}{ccc}
+      \hline
+                        & \begin{tabular}[c]{@{}c@{}}Number of \\ REIL IR\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of \\ x86 Instructions\end{tabular} \\ \hline
+      AES openssl 0.9.7 &                                                              &                                                                       \\
+      DES openssl 0.9.7 &                                                              &                                                                       \\
+      RSA openssl 0.9.7 &                                                              &                                                                       \\
+      RSA mbed TLS 2.5  &                                                              &                                                                       \\ \hline
+      \end{tabular}
+      \end{table}
+
 \subsubsection{Constriant Slovers}
 
 \subsubsection{Complex Constraints}
