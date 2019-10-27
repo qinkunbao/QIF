@@ -16,7 +16,8 @@ our methods.
 In general, \tool suffer from performance costs
 from the two following reasons. 
 \begin{itemize}
-    \item Symbolic Execution (Challenge a)
+    \item Symbolic Execution (Challenge a).
+
     \item Counting the number of items in $K^o$ (Challenge b)
 \end{itemize}
 
@@ -36,30 +37,38 @@ While the tool can finish analyzing some simple cases like AES,
 it can not handle complicated cases like RSA. 
 
 We observe that finding side-channels using symbolic execution is different from 
-traditional general symbolic execution and be optimized to be as efficient as other
-methods.
+traditional general symbolic execution and can be optimized to be as efficient as other
+methods with below approaches.
 
 \subsubsection{Interpret Instructions Symbolically}
 
-
-Unfortunately, the number of machine instructions 
-are huge and the semantics of each instruction is complex. For example, the Intel Developer Manual~\cite{intelsys}
-introduces more than 1000 different X86 instructions. It is tedious to manually implement the
+The number of machine instructions 
+is huge and the semantics of each instruction is complex. 
+Intel Developer Manual~\cite{intelsys}
+introduces more than 1000 different X86 instructions. 
+It is tedious to manually implement the
 rules for every instructions.
 
-Therefore, existing binary analysis tools ~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} 
-will translate machine instructions into intermediate languages (IR). The IR typically has fewer 
-instructions compared to the original machine instructions. The IR layer designs, which significantly
-simplify the implementations, also introduce significant overhead as well~\cite{217563}.
+Therefore, existing binary analysis tools 
+~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} 
+usually translate machine instructions into intermediate languages (IR). 
+The IR typically has fewer 
+instructions compared to original machine instructions. 
+The IR layer designs, which significantly
+simplify the implementation, also introduce significant 
+overhead as well~\cite{217563}. First, transferring machine
+instruction into IR is time-consuming. REIL IR, adopted in
+CacheS~\cite{236338}, has multiple transform processes (binary -> VEX IR -> BAP IR -> REIL).
 
-\vspace*{6pt}
-\textbf{Our Solution to Challenge a:}
+
+\vspace*{2pt}
+\textbf{Our Solution:}
 We adopt the similar approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions.
 
 \subsubsection{Constriant Slovers}
 
-\subsubsection{Complex Constriants}
+\subsubsection{Complex Constraints}
 
 \subsection{Monte Carlo Sampling}
 \label{MCreasons}
