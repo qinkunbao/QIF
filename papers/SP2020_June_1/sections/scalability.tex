@@ -111,7 +111,9 @@ remains one of the obstacles to achieve the scalability for real-world crypto sy
 \vspace*{2pt}
 \textbf{Our Solution:}
 Instead of feeding the formula $f_a(k_1) \neq f_b(k_2)$ into a SMT solver, we just
-randomly pick up $k_1, k_2 \in K$ and test them if can satisfy the formula.
+randomly pick up $k_1, k_2 \in K$ and test them if can satisfy the formula. Our
+solution is based on the following intuition. For most combination of 
+$(k_{1}, k_{2} )$, the formula $f_a(k_1) \neq f_b(k_2)$ holds. 
 
        
 \subsection{Monte Carlo Sampling}
