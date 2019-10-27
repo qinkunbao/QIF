@@ -42,44 +42,37 @@ methods with below approaches.
 
 \subsubsection{Interpret Instructions Symbolically}
 
-The number of machine instructions 
-is huge and the semantics of each instruction is complex. 
+The number of machine instructions is enormous, and the semantics of each instruction is complex. 
 Intel Developer Manual~\cite{intelsys}
 introduces more than 1000 different X86 instructions. 
-It is tedious to manually implement the
-rules for every instructions.
+It is tedious to implement the manually
+rules for every instruction.
 
 Therefore, existing binary analysis tools 
 ~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} 
 usually translate machine instructions into intermediate languages (IR). 
-The IR typically has fewer 
-instructions compared to original machine instructions. 
+The IR typically has fewer instructions compared to original machine instructions. 
 The IR layer designs, which significantly
-simplify the implementation, also introduce significant 
-overhead as well~\cite{217563}. First, transferring machine
+simplify the implementation, also introduce significant overhead as well~\cite{217563}. First, transferring machine
 instruction into IR is time-consuming. REIL IR, adopted in
 CacheS~\cite{236338}, has multiple transform processes (binary -> VEX IR -> BAP IR -> REIL IR).
 As IR can also introduce additional conditional jump instructions,
 in order to precisely identify secret-dependent control-flow,
 we need to rule out conditional jump instructions introduced by
 IR, which is also time-consuming. Second, IR increases the total
-number of instructions. For example, x86 instruction \textit{test eax, eax}
-transfers into 18 REIL IR instructions. If we assume the time of 
-symbolically executing one instruction is constant, the design of 
-adopting IR layers can introduce large overhead. 
+number of instructions. For example, x86 instruction \textit{test eax, eax} 
+transfers into 18 REIL IR instructions. If we assume the time of symbolically executing 
+one instruction is constant, the design of adopting IR layers can introduce large overhead. 
 
 \vspace*{2pt}
 \textbf{Our Solution:}
 We adopt the approach from~\cite{217563} and implement the symbolic execution 
-directly on the top X86 instructions.
+directly on the top X86 instructions. In table~\ref{scala:ir}, 
+It shows that eliminating the IR layer can reduce the number
+of instructions need to execute during the analysis.
 
 \begin{table}[ht]
       \centering
-      \caption{The number of X86 instructions and the number
-              of REIL IR instructions on each trace of crypto programs.
-              It shows that 
-              eliminating IR layer can reduce the number
-              of instructions need to execute during the analysis.}
       \begin{tabular}{ccc}
       \hline
                         & \begin{tabular}[c]{@{}c@{}}Number of \\ REIL IR\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of \\ x86 Instructions\end{tabular} \\ \hline
@@ -88,6 +81,9 @@ directly on the top X86 instructions.
       RSA openssl 0.9.7 &                                                              &                                                                       \\
       RSA mbed TLS 2.5  &                                                              &                                                                       \\ \hline
       \end{tabular}
+      \caption{The number of X86 instructions and the number
+      of REIL IR instructions on each trace of crypto programs.}
+      \label{scala:ir}
       \end{table}
 
 \subsubsection{Constriant Slovers}
