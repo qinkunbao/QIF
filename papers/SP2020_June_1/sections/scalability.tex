@@ -217,7 +217,7 @@ of the problem:
 \end{enumerate}
 
 In regard to the above problems, we present our methods. First, we split 
-$c_f(\addr{1},\addr{2},\ldots,\addr{n})$ into several independent constraint groups. After
+$c_t(\addr{1},\addr{2},\ldots,\addr{n})$ into several independent constraint groups. After
 that, we run multiple step sampling method for each constraint.
 
 \subsubsection{Maximum Independent Partition}
@@ -232,18 +232,18 @@ $\pi(k1 + k2 > 128) = \{k1, k2\}$.
       $$\pi(c_m) \cap \pi(c_n) = \emptyset$$
 \end{mydef}
 
-Based on the definition~\label{independentC}, we can split
-the constraint $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ into several 
+Based on the definition~\ref{independentC}, we can split
+the constraint $c_t(\addr{1},\addr{2},\ldots,\addr{n})$ into several 
 independent constraints. There are many partitions. For our project, 
 we are interested in the following one.
 
 \begin{mydef}\label{Goodpartition}
-   For the constraint $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$,
+   For the constraint $c_t(\addr{1},\addr{2},\ldots,\addr{n})$,
    we call the constraint group
    $g_{1}, g_{2}, \ldots, g_{m}$
-   the maximum independent partition of $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ iff
+   the maximum independent partition of $c_t(\addr{1},\addr{2},\ldots,\addr{n})$ iff
    \begin{enumerate}
-      \item $g_{1} \land g_{2} \land \ldots \land g_{m} = f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$
+      \item $g_{1} \land g_{2} \land \ldots \land g_{m} = c_t(\addr{1},\addr{2},\ldots,\addr{n})$
       \item $\forall \quad i, j \in \{1, 2, 3, \ldots, m\} \quad \textrm{and} \quad 
             i \neq j, \quad \pi(g_{i}) \cap \pi(g_{j}) = \emptyset $
       \item For any other partitions  $h_{1}, h_{2}, \ldots, h_{m'}$ satisfy 1) and
@@ -254,20 +254,21 @@ we are interested in the following one.
 
 The reason we want a good partition of the constraints is that we want to 
 reduce the dimensions. Consider the example in the previous section,
-$$f: {k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$$
+$$c: ({k_1} = 1)\land({k_2} = 2)\land({k_3} > 4)\land({k_3} - {k_4} > 10)$$
 A good partition of $F$ would be
-$$g_{1}: {k_1} = 1\quad g_{2}: {k_2} = 2\quad g_{3}: {k_3} = 3\quad g_{4}: {k_4} = 4$$     
+$$g_{1}: {k_1} = 1\quad g_{2}: {k_2} = 2\quad g_{3}: {k_3} > 4 \land {k_3} - {k_4} > 10$$     
 So instead of sampling in the four dimension space, we can
-sample each constraint in the one dimension space and combine them
+sample each constraint in the less dimension space and combine them
 together with~\ref{mip-theorem} .
 \newtheorem{theorem}{Theorem}[section]
 \label{mip-theorem}
 \begin{theorem}
       \label{IndependentConstraint}
-Let $g_{1}, g_{2}, \ldots, g_{m}$ be a maximum independent partition of $f(c_1,c_2,\ldots,c_n)$.
-Let $K_c$ is the input set that satisfies constrain $c$. We can have the following
+Let $g_{1}, g_{2}, \ldots, g_{m}$ be a maximum independent partition of 
+$c_t(\addr{1},\addr{2},\ldots,\addr{n})$.
+$K_c$ is the input set that satisfies constraint $c$. We can have the following
 equation in regard to the size of $K_c$
-$$|K_{f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})}| = |K_{g_{1}}|*|K_{g_{2}}|*\ldots*|K_{g_{n}}|$$
+$$|K_{c_t(\addr{1},\addr{2},\ldots,\addr{n})}| = |K_{g_{1}}|*|K_{g_{2}}|*\ldots*|K_{g_{n}}|$$
 \end{theorem}
 
 With Theorem~\ref{IndependentConstraint}, we can transfer the problem of counting the number of 
@@ -275,13 +276,13 @@ solutions in a large constraint with high
 dimensions into counting solutions of 
 several small constraints. We apply the following algorithm~\ref{algo:max-inde} to get the 
 Maximum Independent Partition
-of the $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
+of the $c_t(\addr{1},\addr{2},\ldots,\addr{n})$.
 
 \IncMargin{1em}
 \begin{algorithm}[h]
 \DontPrintSemicolon
 \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-\Input{$f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
+\Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
 \Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
 \For{$i\leftarrow 1$ \KwTo $n$}
 {
@@ -310,9 +311,9 @@ the number of solutions for each constraint. Even though the dimension
 has been reduced greatly after the previous step, this is still a
 \#P problem. For our project, we apply the approximate counting instead of
 exact counting for two reasons. First, we don't need to have a very precise
-result of the exact number of total solutions. The information is defined with
-a logarithmic function. We don't need to distinguish between a constraint having
-$10^{10}$ and $10^{10} + 10$ solutions.
+result of the exact number of total solutions. As the information is defined with
+a logarithmic function. We do not need to distinguish between constraints having
+$10^{10}$ or $10^{10} + 10$ solutions.
 Second, as the constraint could be very complicated. The exact model counting
 approaches, like DPLL search, have difficulty scaling up to large problem sizes.
 
@@ -366,16 +367,16 @@ still ensure the accuracy.
 %\DecMargin{1em}
 
 \subsubsection{Error Estimation}
-In this part, we analyze the accuracy of the Monte Carlo approximate
-result. We use central limit theorem (CLT) and propagation of uncertainty 
+In this part, we analyze the accuracy the result from Monte Carlo approximation. 
+We use central limit theorem (CLT) and uncertainty propagation theorem
 to estimate errors of the number of leaked bits for each site.
 
 Let $n$ be the number of samples and $n_s$ be the number of samples
 that satisfy the constraint $C$. Then we can get $\hat{p} = \frac{n_s}{n}$.
 If we run the same experiment multiple times, each time we can
-get a $p$. 
-As each experiment is independent from others, according to 
-central limit theorem, the sample mean $\bar{p}$ should 
+get a $\hat{p}$. 
+As each $\hat{p}$ is independent and identically distributed, according to 
+central limit theorem, the mean value should 
 satisfy normal distribution.
 $$ \frac{\bar{p}-E(p)}{\sigma\sqrt{n}} \rightarrow N(0,1) $$
 Here $E(p)$ is the mean value of $p$ and $\sigma$ is the standard 
@@ -391,7 +392,7 @@ by differentiation. For \tool, we want the error of estimated leaked information
 less than 1 bit. So we can get $\frac{\Delta p}{p\ln2} \leq 1$. As long as
 $ n \geq \frac{1.96^2(1-p)}{p(\ln2)^2}$, we have 95\% confidence the error of estimated 
 leaked information is less than 1 bit. During the simulation, if $n$ and $p$ satisfy
-the above equation, the Monte Carlo Simulation will terminate.
+the above equation, Monte Carlo Simulation will terminate.
 
 
 
