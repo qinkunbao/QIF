@@ -156,7 +156,7 @@ introduce the method in the following subsection.
 \renewcommand{\addr}[1]{{\zeta}_{#1}}
 \renewcommand{\addr}[1]{{\xi}_{#1}}
 
-In this section, we present the alogorithm to calculate the information
+In this section, we present the algorithm to calculate the information
 leakage based on the definition~\ref{def}, answering to
 \textbf{Challenge b}. 
 
@@ -164,8 +164,8 @@ leakage based on the definition~\ref{def}, answering to
 With instruction level symbolic execution (see \S\ref{InstructionSE}), we can generate the constraint 
 for each unique leakage site on the execution trace.
 The only variables in those constraints are the sensitive data represented
-with $k_1, k_2, \ldots , k_n$. Suppose the address of the leakage site is $\addr{i}$,
-we use $C_{\addr{i}}$ to denote the constraint. For multiple leakage sites, 
+as $k_1, k_2, \ldots , k_n$. Suppose the address of the leakage site is $\addr{i}$,
+we use $c_{\addr{i}}$ to denote the constraint. For multiple leakage sites, 
 as each leakage site has one constraint, we 
 use the conjunction of those constraints to represent those leakage sites. 
 
@@ -174,12 +174,12 @@ information, the key is calculating $\frac{|K|}{|K^o|}$. $K^o$ represents
 the set that contains every input keys that satisfy the constraint. As the 
 cardinality of $K$ is known, the key problem is to know the cardinality of
 $K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site has
-the following constraints: $C_{\addr{1}}, C_{\addr{2}}, \ldots, C_{\addr{n}}$ respectively. 
+the following constraints: $c_{\addr{1}}, c_{\addr{2}}, \ldots, c_{\addr{n}}$ respectively. 
 The total leakage has the constraint 
-$F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}}) = C_{\addr{1}} \land C_{\addr{2}} 
+$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}}) = c_{\addr{1}} \land c_{\addr{2}} 
 \land \ldots \land C_{\addr{n}}$. The problem of estimating the total leaked information 
 can be reduced to the problem of counting the number of different solutions 
-that satisfies the constraint $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$. 
+that satisfies the constraint $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$. 
 
 A native method for approximating 
 the result is to pick $k$ elements from $K$ and check how many of them are also
@@ -190,9 +190,9 @@ However, as discussed in \S\ref{MCreasons},
 the above sampling method will typically fail in practice due to the following two problems:
 
 \begin{enumerate}
-      \item The curse of dimensionality. $F(C_{\addr{1}},\ldots,C_{\addr{n}})$ is the conjunction of many
+      \item The curse of dimensionality. $f(C_{\addr{1}},\ldots,c_{\addr{n}})$ is the conjunction of many
       constraints. Therefore, the input variables of each constraints will also be 
-      the input variables of the  $F(C_{\addr{1}},\ldots,C_{\addr{n}})$. The sampling method will fail as 
+      the input variables of the  $f(c_{\addr{1}},\ldots,c_{\addr{n}})$. The sampling method will fail as 
       $n$ increases. For example, when $n$ equals to 2, the whole serach space is 
       a $256^2$ cube. If we want the sampling distance between each point still to 1,
       we need $256^2$ points. When $n$ equals to 10, we need $256^{10}$ points if we 
@@ -205,64 +205,61 @@ the above sampling method will typically fail in practice due to the following t
       assignment after sampling many points.
 \end{enumerate}
 
-However, despite the two problems. We also observe the constrain $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$
+However, despite the two problems. We also observe the constrain $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$
 has the following characteristics:
 \begin{enumerate}
-      \item $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ is the conjunction of several
-      short constraints $F(C_{{addr}_i})$. The set contaning the input variables of 
-      $F(C_{{addr}_i})$ is the subset of the input variables of $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$.
+      \item $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ is the conjunction of several
+      short constraints $F(c_{{addr}_i})$. The set containing the input variables of 
+      $F(c_{{addr}_i})$ is the subset of the input variables of $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
       Some constraints have completely different input variables from other constraints.
-      \item For each constraint $F(C_{{addr}_i})$, the satisfying assignments
-      are close to each other, which means if we find one satisfying assignment, we 
-      are more likely to find other satisfying assignments nearby than randomly
-      pick one point in the whole searching space.
+      %\item For each constraint $F(C_{{addr}_i})$, the satisfying assignments
+      %are close to each other, which means if we find one satisfying assignment, we 
+      %are more likely to find other satisfying assignments nearby than randomly
+      %pick one point in the whole searching space.
       
 \end{enumerate}
 
 In regard to the above problems, we present our methods. First, we split 
-$F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ into several independent constraint groups. After
+$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ into several independent constraint groups. After
 that, we run random-walk based sampling method on each constraint.
 
 \subsubsection{Maximum Independent Partition}
 
-For a constraint $C_{\addr{i}}$, we define function $\pi$, which maps
+For a constraint $c_{\addr{i}}$, we define function $\pi$, which maps
 the constraint into the set consisting of input symbols. For example, 
 $\pi(k1 + k2 > 128) = \{k1, k2\}$.
 
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-
-\begin{definition}[]
+\begin{mydef}[]
       \label{independentC}
-      Given two constraints $C_m$ and $C_n$, we call them independent iff 
-      $$\pi(C_m) \cap \pi(C_n) = \emptyset$$
-\end{definition}
+      Given two constraints $c_m$ and $c_n$, we call them independent iff 
+      $$\pi(c_m) \cap \pi(c_n) = \emptyset$$
+\end{mydef}
 
 Based on the definition~\label{independentC}, we can split
-the constraint $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ into several 
+the constraint $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ into several 
 independent constraints. There are many partitions. For our project, 
 we are interested in the following one.
 
-\begin{definition}\label{Goodpartition}
-   For the constraint $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$,
+\begin{mydef}\label{Goodpartition}
+   For the constraint $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$,
    we call the constraint group
-   $G_{1}, G_{2}, \ldots, G_{m}$
-   the maximum independent partition of $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$ iff
+   $g_{1}, g_{2}, \ldots, g_{m}$
+   the maximum independent partition of $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ iff
    \begin{enumerate}
-      \item $G_{1} \land G_{2} \land \ldots \land G_{m} = F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$
+      \item $g_{1} \land g_{2} \land \ldots \land g_{m} = f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$
       \item $\forall \quad i, j \in \{1, 2, 3, \ldots, m\} \quad \textrm{and} \quad 
-            i \neq j, \quad \pi(G_{i}) \cap \pi(G_{j}) = \emptyset $
-      \item For any other partitions  $H_{1}, H_{2}, \ldots, H_{m'}$ satisfy 1) and
+            i \neq j, \quad \pi(g_{i}) \cap \pi(g_{j}) = \emptyset $
+      \item For any other partitions  $h_{1}, h_{2}, \ldots, h_{m'}$ satisfy 1) and
             2), $m \geq m'$    
    \end{enumerate}
    
-\end{definition}
+\end{mydef}
 
 The reason we want a good partition of the constraints is that we want to 
 reduce the dimensions. Consider the example in the previous section,
-$$F: {k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$$
+$$f: {k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$$
 A good partition of $F$ would be
-$$G_{1}: {k_1} = 1\quad G_{2}: {k_2} = 2\quad G_{3}: {k_3} = 3\quad G_{4}: {k_4} = 4$$     
+$$g_{1}: {k_1} = 1\quad g_{2}: {k_2} = 2\quad g_{3}: {k_3} = 3\quad g_{4}: {k_4} = 4$$     
 So instead of sampling in the four dimension space, we can
 sample each constraint in the one dimension space and combine them
 together with~\ref{mip-theorem} .
@@ -270,40 +267,42 @@ together with~\ref{mip-theorem} .
 \label{mip-theorem}
 \begin{theorem}
       \label{IndependentConstraint}
-Let $G_{1}, G_{2}, \ldots, G_{m}$ be a maximum independent partition of $F(C_1,C_2,\ldots,C_n)$.
+Let $g_{1}, g_{2}, \ldots, g_{m}$ be a maximum independent partition of $f(c_1,c_2,\ldots,c_n)$.
 Let $K_c$ is the input set that satisfies constrain $c$. We can have the following
 equation in regard to the size of $K_c$
-$$|K_{F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})}| = |K_{G_{1}}|*|K_{G_{2}}|*\ldots*|K_{G_{n}}|$$
+$$|K_{f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})}| = |K_{g_{1}}|*|K_{g_{2}}|*\ldots*|K_{g_{n}}|$$
 \end{theorem}
 
 With Theorem~\ref{IndependentConstraint}, we can transfer the problem of counting the number of 
 solutions in a large constraint with high
 dimensions into counting solutions of 
-several small constraints. We apply the following algorithm to get the Maximum Independent Partition
-of the $F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}})$.
+several small constraints. We apply the following algorithm~\ref{algo:max-inde} to get the 
+Maximum Independent Partition
+of the $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
 
 \IncMargin{1em}
 \begin{algorithm}[h]
 \DontPrintSemicolon
 \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-\Input{$F(C_{\addr{1}},C_{\addr{2}},\ldots,C_{\addr{n}}) = C_{\addr{1}} \land C_{\addr{2}} \land \ldots \land C_{\addr{m}}$}
-\Output{The Maximum Independent Partition of $G = \{G_{1}, G_{2}  , \ldots,  G_{m} \}$ }
+\Input{$f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
+\Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
 \For{$i\leftarrow 1$ \KwTo $n$}
 {
-   $S_{C_i}$ $\leftarrow$ $\pi(C_{\addr{i}})$ \;
-   \For{$G_{i} \in G$} 
+   $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
+   \For{$g_{i} \in G$} 
    {
-   $S_{G_i}$ $\leftarrow$ $\pi(G_{i})$ \;
+   $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
    $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
    \If{$S \neq \emptyset$}
    {
-      $G_{i} \leftarrow G_{i} \land C_{\addr{i}}$ \;
+      $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
       \textbf{break} \;
    }
-   Insert $C_{\addr{i}}$ to $G$
+   Insert $c_{\addr{i}}$ to $G$
    }
 }
 \caption{The Maximum Independent Partition}
+\label{algo:max-inde}
 \end{algorithm}
 \DecMargin{1em}
 
@@ -321,53 +320,53 @@ Second, as the constraint could be very complicated. The exact model counting
 approaches, like DPLL search, have difficulty scaling up to large problem sizes.
 
 We apply the ``counting by sampling" method. The basic idea is as follows.
-For the constraint $G_{i}= C_{i_1} \land C_{i_2} \land ,\ldots, \land C_{i_j} \land ,\ldots, 
-\land C_{i_m}$, 
-if the solution satisfies $G_{i}$, it also
-satisfies any constraint from $C_{i_1}$ to $C_{i_m}$. In other words,
-$K_{C_gi}$ should be the subset of $K_{C_1}$, $K_{C_2}$, \ldots , $K_{C_m}$.
-We notice that $C_i$ usually has less numbers of input compared to $G_{i}$.
-For example, if $C_{i_j}$ has only one input variable, we can find the exact
-solution set $K_{C_{i_j}}$ of $C_{i_j}$ by trying every possible 256 solutions. After that,
+For the constraint $g_{i}= c_{i_1} \land c_{i_2} \land ,\ldots, \land c_{i_j} \land ,\ldots, 
+\land c_{i_m}$, 
+if the solution satisfies $g_{i}$, it should also
+satisfies any constraint from $c_{i_1}$ to $c_{i_m}$. In other words,
+$K_{c_gi}$ should be the subset of $K_{c_1}$, $K_{c_2}$, \ldots , $K_{c_m}$.
+We notice that $c_i$ usually has less numbers of input compared to $g_{i}$.
+For example, if $c_{i_j}$ has only one input variable, we can find the exact
+solution set $K_{c_{i_j}}$ of $c_{i_j}$ by trying every possible 256 solutions. After that,
 we can only generate random input numbers for the rest input variables in 
-constraint $G_{i}$. With the simple trick, we can reduce the number of input while
+constraint $g_{i}$. With the simple trick, we can reduce the number of input while
 still ensure the accuracy.
 
 %% the algorithm
-\IncMargin{1em}
-\begin{algorithm}
-\SetAlgoLined
-\DontPrintSemicolon
+%\IncMargin{1em}
+%\begin{algorithm}
+%\SetAlgoLined
+%\DontPrintSemicolon
 
-\KwIn{{The constraint $G_{i}= C_{i_1} \land C_{i_2}
-\land \ldots \land C_{i_m}$}}    
-\KwOut{{The number of assignments that satisfy $G_{i}$ $|K_{G_{i}}|$}}
+%\KwIn{{The constraint $G_{i}= C_{i_1} \land C_{i_2}
+%\land \ldots \land C_{i_m}$}}    
+%\KwOut{{The number of assignments that satisfy $G_{i}$ $|K_{G_{i}}|$}}
 
-\SetKwProg{RW}{RandomWalk}{}{}
-\SetKwProg{MM}{MetropolisMove}{}{} 
-$n$: the number of sampling times \;
-$P$: a probability generator \;
-$k$: the input assignment \;
-$n_{s}$: the number of satisfying assignments \;
-$\#k$: the satisfying number of k \fixme{this number is not used syntactically} \; 
-Initialization: \;
-$\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}C_{i_j}(k_0)$ \;
-\For{$t\leftarrow 1$ \KwTo $n$} {
-      $p$ $\leftarrow$ $P$ \;
-      \If{$p \geq 0.5$}
-      {
-        $v$ $\leftarrow$ \RW{$v$} {}
-      }
-      \Else{
-            $v$ $\leftarrow$ \MM{$v$} {}
-      }
-      \If{$v$ satisfies $G_{i}$}
-      {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
-}
-$|K_{G_{i}}|$ $\leftarrow$ $n_s|K| / n$
-\caption{Metropolis Sampling}
-\end{algorithm}
-\DecMargin{1em}
+%\SetKwProg{RW}{RandomWalk}{}{}
+%\SetKwProg{MM}{MetropolisMove}{}{} 
+%$n$: the number of sampling times \;
+%$P$: a probability generator \;
+%$k$: the input assignment \;
+%$n_{s}$: the number of satisfying assignments \;
+%$\#k$: the satisfying number of k \fixme{this number is not used syntactically} \; 
+%Initialization: \;
+%$\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}C_{i_j}(k_0)$ \;
+%\For{$t\leftarrow 1$ \KwTo $n$} {
+%      $p$ $\leftarrow$ $P$ \;
+%      \If{$p \geq 0.5$}
+%      {
+%        $v$ $\leftarrow$ \RW{$v$} {}
+%      }
+%      \Else{
+%            $v$ $\leftarrow$ \MM{$v$} {}
+%      }
+%      \If{$v$ satisfies $G_{i}$}
+%      {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
+%}
+%$|K_{G_{i}}|$ $\leftarrow$ $n_s|K| / n$
+%\caption{Metropolis Sampling}
+%\end{algorithm}
+%\DecMargin{1em}
 
 \subsubsection{Error Estimation}
 In this part, we analyze the accuracy of the Monte Carlo approximate

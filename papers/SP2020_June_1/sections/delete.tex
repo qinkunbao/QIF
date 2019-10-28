@@ -1,0 +1,80 @@
+\subsection{Challenge II: How to Combine the Leakage Information from Multiple Leak Sites}
+Real-world software can have various side-channel vulnerabilities. Those vulnerabilities 
+may spread in the whole program. An adversary may exploit more than one side-channel vulnerabilities 
+to gain more information~\cite{7163052, 191010}. In order to precisely quantify the
+total information leakage, we need to know the relation of those leakage sites. 
+
+
+\lstinputlisting[language=c, 
+                 numbers=left,
+                 numbersep=5pt,                   % how far the line-numbers are from the code
+                 caption={Multiple leakages},
+                 frame = single,
+                 captionpos=b,
+                 label={code::multiple},
+                 basicstyle=\fontsize{7}{9}\selectfont\ttfamily]
+                 {sample_code/motivation_multiple.c}
+
+                
+
+Consider the running example in ~\ref{code::multiple}, in which $k1$, $k2$ and $k3$ are
+the sensitive key. The code has six different leakage. Leakage 1, 2, 3 are the secret-dependent
+data accesses and leakage 4, 5, 6 are the secret-dependent control-flow transfers.  
+The attacker can infer the last three digits of
+$k1$, $k2$, $k3$ from leakage 1, 2, 3. So those leakages are independent. For leakage 1, 4, 6, however,
+we have no idea about the total information leakage.
+
+
+Suppose one program has two side-channel vulnerabilities A and B, which can leak $L_A$ and $L_B$ bits respectively
+according to the definition~\ref{def}. 
+Depending on the relation between A and B, the total leaked information $L_{\mathit{total}}$ will be:
+
+\subsubsection{Independent Leakages}
+If A and B are independent leakages, the total information leakage will be:
+$$L_{\mathit{total}} = L_A + L_B $$
+
+\subsubsection{Dependent Leakages}
+If A and B are dependent leakages, the total information leakage will be:
+$$\max{\{L_A, L_B\}}  \leq L_{\mathit{total}} < L_A + L_B$$
+
+\subsubsection{Mutual Exclusive Leakages}
+If A and B are mutual exclusive leakages, then only A or B can be observed for one fixed input.
+$$L_{\mathit{total}} = 
+\begin{cases}
+L_A, & \text{only} ~ A \\
+L_B, & \text{only} ~ B
+\end{cases}$$
+
+According to above definition, leakage 1, 2, 3 are independent leakages. Leakage 4, 5
+are mutual exclusive leakages. 
+For real-world applications, it is hard to estimate the total leaked information for the following reasons.
+First, the real-world applications have more than thousands of lines of code. One leakage site leaks the temporary value. 
+But the value contains some information about the original buffer. It is hard to know how the 
+the sensitive value affects the temporary value. Second, some leakages sites may be
+dependent. The occurrence of the first affects the occurrence of the second sites. We 
+can't simply add them up. Third, leakage sites are in the different blocks of the 
+control-flow graph, which means that only one of the two leakages site may be executed
+during the execution.
+
+\vspace*{6pt}
+\textbf{Our Solution to Challenge II:}
+Given a program $P$ with $k$ as the sensitive input, 
+we use $k_i$ to denote the sensitive information, where $i$ is the index of the byte in the original buffer.  
+We can represent each temporal
+values with a formula. There are two types of values in the formula: the concrete value and
+the symbolic value. We use the runtime information to simplify the formula. In other words,
+we only use symbolic values to represent the sensitive input. For other values that are
+independent from the sensitive input, we use the concrete value from the runtime information. 
+
+After that, we model each leakage sites as a math formulas.
+The attacker can retrieve the sensitive information by observing the different patterns in 
+control-flows and data access when the program process different sensitive information. 
+We refer them as the secret-dependent control flow and secret-dependent data access accordingly.
+For secret-dependent control transfers, we model the leakage using the path conditions that cause the control
+transfer. For secret-dependent memory accesses, we use a symbolic formula $F(\vec{K})$ to
+represent the memory address and check if different sensitive inputs can lead to different
+memory accesses. As long as we model each leakage with a formula. We can regard multiple leakges as the conjunction of
+those formulas. 
+
+%% the algorithm
+
