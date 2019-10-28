@@ -122,24 +122,24 @@ $1 - (1-0.05)^{100} = 99.6\%$ chance find such $k_1, k_2$.
 \subsection{Counting the number}
 \label{MCreasons}
 The problem of quantifying the amount of leaked information can be reduced to 
-a model counting problem (Counting the items in $K^o$) with the definition~\ref{def}.
+the problem of computing the number of items in $K^o$ according to the definition~\ref{def}.
+However, we find while there are various propositional model counters (\#SAT), there is no
+open source modulo theories counter (\#SMT) available.
 
-For an application with $m$ bytes secret, there are total $2^{8m}$ possible inputs. Of the
-$2^{8m}$ possible inputs, we want to estimate the number of inputs that satisfy those formulas.
-Then we can use the definition~\ref{def} to calculate the information leakage.
-
-A Monte Carlo method for approximating the number of $|K_o|$ is to pick up 
-$M$ random values and check how many of them satisfy those constrains. If $l$ values
-satisfy those constrains, then the approximate result is $\frac{l*2^{8m}}{M}$.
+One naive method approximating the number of solutions is based on Monte Carlo sampling.
+Suppose a program has $n$ bytes secret, there are total $2^{8m}$ possible inputs. 
+We randomly pick up $M$ values and check how many of them satisfy those constrains. 
+If $l$ values satisfy those formulas, the approximate result is $\frac{l*2^{8m}}{M}$.
 
 However, the number of satisfying values could be exponentially small. Consider the formula
-$F={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ each represents
-one byte in the orginal sensitive input, there is only one possible solution of $2^{32}$ possible
-values, which requres exponentially many samples to get a tight bound. 
+$f_i={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ all represents
+one byte in the original sensitive input buffer, 
+there is only one possible solution of $2^{32}$ possible
+values, which requires exponentially many samples to get a tight bound. 
 The naive Monte Carlo Method also suffers from the curse of dimensionality. For example, 
-the libjpeg libraries can transfer the image from one format into another format. One image could
-be 1kMB. If we take each byte in the original buffer as symbols, the formula can have at most
-1024 symbols. 
+the private key length of RSA can be as long as 4096 bits.
+If we take each byte (8 bits) in the original buffer as one symbol, the formula can have 
+512 symbols. 
 
 \vspace*{6pt}
 \textbf{Our Solution to Challenge b:}
