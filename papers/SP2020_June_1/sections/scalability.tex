@@ -127,26 +127,26 @@ However, we find while there are various propositional model counters (\#SAT), t
 open source modulo theories counter (\#SMT) available.
 
 One naive method approximating the number of solutions is based on Monte Carlo sampling.
-Suppose a program has $n$ bytes secret, there are total $2^{8m}$ possible inputs. 
+Suppose a program has $n$ byte secrets, the number of total possible input keys is $2^{8m}$. 
 We randomly pick up $M$ values and check how many of them satisfy those constrains. 
 If $l$ values satisfy those formulas, the approximate result is $\frac{l*2^{8m}}{M}$.
 
 However, the number of satisfying values could be exponentially small. Consider the formula
 $f_i={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ all represents
 one byte in the original sensitive input buffer, 
-there is only one possible solution of $2^{32}$ possible
-values, which requires exponentially many samples to get a tight bound. 
-The naive Monte Carlo Method also suffers from the curse of dimensionality. For example, 
+there is only one satisfying solution of total $2^{32}$ possible
+values, which requires exponentially many samples to get a tight bound according to Chernoff bound. 
+Monte Carlo method also suffers from the curse of dimensionality. For example, 
 the private key length of RSA can be as long as 4096 bits.
 If we take each byte (8 bits) in the original buffer as one symbol, the formula can have 
 512 symbols. 
 
 \vspace*{6pt}
 \textbf{Our Solution to Challenge b:}
-We adopt Monte Carlo sampling to estimate the number of possible input
-that satisfies the logic formula groups. The key idea is that we have one group of input that satisfies
-the logic formula constrains.  We will
-introduce the method in the following subsection.
+We adopt multiple step Monte Carlo sampling to count the number of possible inputs
+that satisfies the logic formula groups. The key idea is that 
+we split those constraints into several small formulas and sample them independently.  
+We will introduce the method in the following subsection.
 
 
 \subsection{Information Leakage Estimation}
