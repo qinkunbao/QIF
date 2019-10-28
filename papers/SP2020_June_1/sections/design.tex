@@ -108,23 +108,19 @@ An adversary can infer sensitive information from secret dependent control-flows
 There are two kinds of control-transfer instructions: the unconditional 
 control-transfer instructions and the conditional transfer instructions.
 The unconditional instructions, like CALL, JUMP, RET transfer control
-from one code segment location to another. Since the transfer is 
-independent from the input sensitive information, an attacker was 
-not able to infer any sensitive information from the control-flow. 
-So the unconditional control-transfer doesn't leak any information 
-based on our threat model. During the symbolic execution, 
-we just update the register information and memory cells with 
-new formulas accordingly.
+from one code segment location to another. Since the transfer is independent of the input sensitive information, an attacker was not able to infer any sensitive information from the control-flow. 
+So the unconditional control-transfer does not leak any information based on our threat model. During the symbolic execution, 
+we update the register information and memory cells with new formulas accordingly.
 
 The conditional control-flow transfer instructions, like conditional jumps,
 depending on CPU states, may or may not transfer control flows.
 For conditional jumps, the CPU will test if certain condition flag 
-(e.g., CF = 0, ZF =1) is met and jump to the certain branches respectively.
-The symbolic engine will compute the flag and represent the flag 
-in a symbol formula. Because we are running on a symbolic execution 
-on a execution trace, we know which branch is executed.
-If a conditional jump uses the CPU status flag, we will generate 
-the constraint accordingly.
+(e.g., CF = 0, ZF =1) is met and jump to certain branches, respectively.
+The symbolic engine will compute the flag and represent the flag in a symbol 
+formula. Because we are running on a symbolic execution on an execution trace, 
+we know which branch is executed.
+If a conditional jump uses the CPU status flag, we will generate the constraint 
+accordingly.
 
 
 %\begin{figure}[ht]
