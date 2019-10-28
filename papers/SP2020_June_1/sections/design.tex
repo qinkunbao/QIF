@@ -142,7 +142,7 @@ For examples,
 \end{lstlisting}
 
 At the beginning of the instruction segment, the value at the 
-address of local14h can be written as $F(\vec{K})$. At the address e785, 
+address of local\_14h can be written as $F(\vec{K})$. At the address $e785$, 
 the value will be updated with $F(\vec{K})+1$. Then the code compares 
 the value with 4 and use the result as a conditional jump. 
 Based on the result, we can have the following formula:
@@ -166,10 +166,9 @@ the memory addressing. We model the memory address with a symbolic formula
 $F(\vec{K})$. 
 Because we also have the concrete value of the memory address $Addr1$. 
 Inspired by the work from~\cite{203878}, the formula can be written as:
+$F(\vec{K}) >> L = Addr1 >> L$
 
-$$F(\vec{K}) >> L = Addr1 >> L$$
-
-The $L$ represents the minimum memory address granularity that an attacker 
+$L$ represents the minimum memory address granularity that an attacker 
 can observe. For example, Flush and Reload can distinguish between different
 cache lines, which means the value of L is 6.
 
@@ -179,17 +178,17 @@ side-channel vulnerabilities. To ease the procedure of fixing the bug,
 we also track the information flow for each byte of the input
 buffer. 
 The step can be seen as the multiple-tag taint analysis.
-With the help of the information from symbolic execution, we can implement
-a relative simple but relatively precise information flow track.
-At the beginning of the analysis, \tool{} keep a track for each byte 
-in the original buffer. When \tool{} symbolically executes each
+With the help of the information from symbolic execution, we can implement 
+a relatively simple but relatively precise information flow track.
+At the beginning of the analysis, \tool{} keep a track for each byte in 
+the original buffer. When \tool{} symbolically executes each
 instruction in the trace, it will check every value read from
 registers or memory. If the value is concrete, it means the
 instruction has nothing to do with the original buffer.
-If the value is a formula, it means the original information
-pass through the instruction. Since each byte in the sensitive
+If the value is a formula, it means the original information passes through 
+the instruction. Since each byte in the sensitive
 buffer is represented as a symbol with a unique ID, \tool{} can
-know which byte in the origin buffer actually goes through the
+know which byte in the origin buffer goes through the
 instruction.
 
 
