@@ -7,14 +7,14 @@ section.
 \subsection{Workflow}
 %\subsection{Overview}
 The shortcomings of the existing work inspire us to design a new tool to detect
-and quantify information leakage vulnerabilities in binaries. The tool has three
+and quantify side-channel vulnerabilities in binaries. The tool has three
 steps. First, we run the target program with a concrete input 
 (sensitive information) under the dynamic binary instrumentation (DBI) frameworks
 to collect execution traces. After that, we run the symbolic execution 
 to capture the fined-grained semantic information of each secret-dependent 
 control-flow transfers and data-accesses. 
-Finally we run Monte Carlo (MC) simulation to estimate the amount of leaked
-information leakage. 
+Finally we run Monte Carlo (MC) simulations to estimate the amount of leaked
+information. 
 
 \begin{figure*}[ht]
     \centering
@@ -24,28 +24,29 @@ information leakage.
 \end{figure*}
 
 \begin{enumerate}
-    \item \emph{Execution trace generation.} The design goal of \tool\ is to
+    \item \emph{Execution trace generation.} The design goal of \tool{} is to
     estimate the information leakage as precisely as possible. Therefore,
     we sacrifice the soundness for the precision in terms of program analysis.
     Previous works~\cite{203878,217537} have demonstrated the effectiveness of the
-    dynamic program analysis. We follow their approach and run the target binary with 
+    dynamic analysis. We follow their approaches and run the target binary under
     dynamic binary instrumentations (DBI) to record execution traces and 
     the runtime information.
-    \item \emph{Instruction level symbolic execution.} We model the 
-    attacker's observation from side-channel vulnerabilities with math
-    formulas. Each formula capture the fined-grained information between input secrets
-    and leakage sites. For the consideration of precision and performance, 
-    we remove the intermediate language(IR) layer of the symbolic execution. 
-    Also, the engine only symbolically execute the instruction that might be affected the
-    input key. We use random testing instead of SMT solvers to find satisfying 
-    variables.
-    The above design significantly reduces the overhead of symbolic
-    executions, which makes the tool scales to real-world programs.
-    \item \emph{Leakage estimation.} We transfer the information leakage quantification
-    problem into the problem of counting the number of assignments that satisfy the formulas
-    which models the observations from attackers. We propose a Monte Carlo method to 
-    estimate the number of satisfied solutions. With the help of central limit theorems (CLT),
-    we also give an error estimate with the probability.
+    \item \emph{Instruction level symbolic execution.} We model attackers' observations 
+    from side-channel vulnerabilities with logic formulas. Each formula captures the 
+    fined-grained information between input secrets and leakage sites. In consideration 
+    of precision and performance, we remove the intermediate language(IR) layer of 
+    the symbolic execution. 
+    Also, the engine only symbolically executes the instruction that might be 
+    affected by the input key. We use random testing instead of SMT solvers to find 
+    satisfying variables.
+    The above design significantly reduces the overhead of symbolic executions, which 
+    makes the tool scale to real-world programs.
+    \item \emph{Leakage estimation.} We transfer the information leakage quantification 
+    problem into the problem of counting the number of assignments that satisfy the 
+    formulas which model the observations from attackers. We propose a Monte Carlo 
+    method to estimate the number of satisfying solutions. With the help of central 
+    limit theorems (CLT), we also give an error estimate with the probability.
+
 \end{enumerate}
 
 
@@ -67,24 +68,24 @@ The trace data has the following information:
 
 \subsection{Instruction Level Symbolic Execution}
 \label{InstructionSE}
-The main purpose of the step is to generate 
-constraints of the input sensitive information from the execution trace. 
+The primary purpose of the step is to generate constraints of the input 
+sensitive information from the execution trace. 
 If we give the target program a new input which 
-is different from the origin input that was used 
+is different from the original input that was used 
 to generate the execution trace but still satisfies those constraints,
 as an attacker, he will have the same observations on
 control-flow transfer and 
-data-access patterns. 
+data-access patterns.
 
 The tool runs symbolic execution on top of execution traces.
-At the beginning of the symbolic execution, the tool creates fresh 
-symbols for each byte in the sensitive buffer. For other data in the 
-register or memory at the beginning, we use concrete values from the 
+At the beginning of the symbolic execution, the tool creates new 
+symbols for each byte in the raw buffer. For other data in the 
+register or memory at the beginning, we use actual values from the 
 runtime information collected during the runtime. 
 During the symbolic execution for each instruction, 
 the tool updates every variable in the memory and registers with a
-math formula. The formula is made up with concrete values and 
-the input key as the symbols accumulated through the symbolic execution.
+math formula. The formula is made up of concrete values and the input 
+key as the symbols accumulated through the symbolic execution.
 For each formula, the tool will check weather it can be reduced
 into a concrete values (e.g., $k_1+12-k_1 = 12$ ). 
 If so, the tool will only use the concrete values in the 
@@ -92,20 +93,14 @@ following symbolic execution.
 
 \subsubsection{Verification and Optimization}
 We run the symbolic execution (SE) on top of x86 instructions.
-In other words, we don't rely on any intermediate languages to 
-simplify the implementation of symbolic execution. 
-While the implementation itself 
-has a lot of benefits (Better performance, accurate memory model), 
-we need to implement the symbolic execution 
-rules for each X86 instruction. 
+In other words, we do not rely on any intermediate languages to simplify the implementation of symbolic execution. 
+While the implementation itself has a lot of benefits (Better performance, accurate memory model), 
+we need to implement the symbolic execution rules for each X86 instruction. 
 However, due to the complexity of X86, it is inevitable to make mistakes. 
 Therefore, we verify the correctness of the SE engine during the execution. 
 The tool will collect the runtime information (Register values, 
-memory values) and compare them with the formula generated from the 
-symbolic execution. Whenever the tool finishes the symbolic execution 
-of each instruction, the tool will compare the formula for each symbol 
-and its actual value. If the two values don't match, we check the code
-and fix the error. Also, if the formula doesn't contain any symbols,
+memory values) and compare them with the formula generated from the symbolic execution. Whenever the tool finishes the symbolic execution of each instruction, the tool will compare the formula for each symbol and its actual value. If the two values do not match, we check the code
+and fix the error. Also, if the formula does not contain any symbols,
 the tool will use the concrete value instead of symbolic execution.
 
 \subsubsection{Secret-dependent control-flows}
