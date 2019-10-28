@@ -192,7 +192,7 @@ the above sampling method will typically fail in practice due to the following t
       a $256^2$ cube. If we want the sampling distance between each point equals to $d$,
       we need $256^2d$ points. If the program has $10$ byte input, 
       we need $256^{10}d$ points if we 
-      still we want the distance between each points equals to 1. 
+      still we want the sampling distance equals to $d$. 
 
       \item The number of satisfying assignments could be exponentially small.
       According to Chernoff bound, we need exponentially many samples to get 
@@ -201,12 +201,13 @@ the above sampling method will typically fail in practice due to the following t
       assignment after sampling many points.
 \end{enumerate}
 
-However, despite the two problems. We also observe the constrain $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$
-has the following characteristics:
+However, despite the two problems. We also observe two characteristics
+of the problem:
 \begin{enumerate}
-      \item $f(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ is the conjunction of several
-      short constraints $F(c_{{addr}_i})$. The set containing the input variables of 
-      $F(c_{{addr}_i})$ is the subset of the input variables of $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
+      \item $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$ is the conjunction of several
+      short constraints $c_{{addr}_i}$. The set containing the input variables of 
+      $c_{{addr}_i}$ is the subset of the input variables of 
+      $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
       Some constraints have completely different input variables from other constraints.
       %\item For each constraint $F(C_{{addr}_i})$, the satisfying assignments
       %are close to each other, which means if we find one satisfying assignment, we 
