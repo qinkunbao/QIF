@@ -127,27 +127,22 @@ However, we find while there are various propositional model counters (\#SAT), t
 open source modulo theories counter (\#SMT) available.
 
 One naive method approximating the number of solutions is based on Monte Carlo sampling.
-Suppose a program has $n$ byte secrets, the number of total possible input keys is $2^{8m}$. 
-We randomly pick up $M$ values and check how many of them satisfy those constrains. 
-If $l$ values satisfy those formulas, the approximate result is $\frac{l*2^{8m}}{M}$.
-
 However, the number of satisfying values could be exponentially small. Consider the formula
-$f_i={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ all represents
-one byte in the original sensitive input buffer, 
+$f_i={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ 
+all represent one byte in the original sensitive input buffer, 
 there is only one satisfying solution of total $2^{32}$ possible
-values, which requires exponentially many samples to get a tight bound according to Chernoff bound. 
+values, which requires exponentially many samples to get a tight bound. 
 Monte Carlo method also suffers from the curse of dimensionality. For example, 
-the private key length of RSA can be as long as 4096 bits.
+the length of RSA private key can be as long as 4096 bits.
 If we take each byte (8 bits) in the original buffer as one symbol, the formula can have 
-512 symbols. 
+as many as 512 symbols. 
 
 \vspace*{6pt}
 \textbf{Our Solution to Challenge b:}
-We adopt multiple step Monte Carlo sampling to count the number of possible inputs
+We adopt multiple step Monte Carlo sampling methods to count the number of possible inputs
 that satisfies the logic formula groups. The key idea is that 
 we split those constraints into several small formulas and sample them independently.  
 We will introduce the method in the following subsection.
-
 
 \subsection{Information Leakage Estimation}
 
@@ -161,26 +156,23 @@ leakage based on the definition~\ref{def}, answering to
 \textbf{Challenge b}. 
 
 \subsubsection{Problem Statement}
-With instruction level symbolic execution (see \S\ref{InstructionSE}), we can generate the constraint 
-for each unique leakage site on the execution trace.
-The only variables in those constraints are the sensitive data represented
-as $k_1, k_2, \ldots , k_n$. Suppose the address of the leakage site is $\addr{i}$,
+With each leakage site, we model it with a math formula constraint with the method 
+presented in~\S\ref{side-channel:condition}.
+Suppose the address of the leakage site is $\addr{i}$,
 we use $c_{\addr{i}}$ to denote the constraint. For multiple leakage sites, 
-as each leakage site has one constraint, we 
-use the conjunction of those constraints to represent those leakage sites. 
+we use the conjunction of those constraints to represent those leakage sites. 
 
 According to the definition~\ref{def}, to calculate the amount of leaked 
 information, the key is calculating $\frac{|K|}{|K^o|}$. $K^o$ represents
 the set that contains every input keys that satisfy the constraint. As the 
-cardinality of $K$ is known, the key problem is to know the cardinality of
+cardinality of $K$ is known, the key problem is to estimate the cardinality of
 $K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site has
 the following constraints: $c_{\addr{1}}, c_{\addr{2}}, \ldots, c_{\addr{n}}$ respectively. 
 The total leakage has the constraint 
-$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}}) = c_{\addr{1}} \land c_{\addr{2}} 
-\land \ldots \land C_{\addr{n}}$. The problem of estimating the total leaked information 
+$c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}}) = c_{\addr{1}} \land c_{\addr{2}} 
+\land \ldots \land c_{\addr{n}}$. The problem of estimating the total leaked information 
 can be reduced to the problem of counting the number of different solutions 
-that satisfies the constraint $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$. 
-
+that satisfies the constraint $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$. 
 A native method for approximating 
 the result is to pick $k$ elements from $K$ and check how many of them are also
 contained in $K^o$. If $q$ elements are also in $K^o$. In expectation, we can
@@ -190,12 +182,16 @@ However, as discussed in \S\ref{MCreasons},
 the above sampling method will typically fail in practice due to the following two problems:
 
 \begin{enumerate}
-      \item The curse of dimensionality. $f(C_{\addr{1}},\ldots,c_{\addr{n}})$ is the conjunction of many
-      constraints. Therefore, the input variables of each constraints will also be 
-      the input variables of the  $f(c_{\addr{1}},\ldots,c_{\addr{n}})$. The sampling method will fail as 
-      $n$ increases. For example, when $n$ equals to 2, the whole serach space is 
-      a $256^2$ cube. If we want the sampling distance between each point still to 1,
-      we need $256^2$ points. When $n$ equals to 10, we need $256^{10}$ points if we 
+      \item The curse of dimensionality. $c_t({\addr{1}},\ldots,{\addr{n}})$ is 
+      the conjunction of many constraints. 
+      Therefore, the input variables of each constraints will also be 
+      the input variables of the $c_t({\addr{1}},\ldots,{\addr{n}})$. 
+      The sampling method will fail as 
+      $n$ increases. For example, if the program has $2$ byte input equals to 2, 
+      the whole search space is 
+      a $256^2$ cube. If we want the sampling distance between each point equals to $d$,
+      we need $256^2d$ points. If the program has $10$ byte input, 
+      we need $256^{10}d$ points if we 
       still we want the distance between each points equals to 1. 
 
       \item The number of satisfying assignments could be exponentially small.
