@@ -197,17 +197,17 @@ the above sampling method will typically fail in practice due to the following t
       \item The number of satisfying assignments could be exponentially small.
       According to Chernoff bound, we need exponentially many samples to get 
       a tight bound. On an extreme situation, if the constraint only has one unique
-      satisfying solution, the simple Monte Carlo method can't find the satisfying
-      assignment after sampling many points.
+      satisfying solution, the simple Monte Carlo method cannot find the satisfying
+      assignment even after sampling many points.
 \end{enumerate}
 
 However, despite the two problems. We also observe two characteristics
 of the problem:
 \begin{enumerate}
       \item $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$ is the conjunction of several
-      short constraints $c_{{addr}_i}$. The set containing the input variables of 
-      $c_{{addr}_i}$ is the subset of the input variables of 
-      $F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$.
+      short constraints $c_{\addr{i}}$. The set containing the input variables of 
+      $c_{\addr{i}}$ is the subset of the input variables of 
+      $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$.
       Some constraints have completely different input variables from other constraints.
       %\item For each constraint $F(C_{{addr}_i})$, the satisfying assignments
       %are close to each other, which means if we find one satisfying assignment, we 
