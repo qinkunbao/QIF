@@ -119,9 +119,11 @@ suppose each time we only have 5\% chance find such $k_1, k_2$, then
 after we test with different input combination with 100 times, we have 
 $1 - (1-0.05)^{100} = 99.6\%$ chance find such $k_1, k_2$.
 
-       
-\subsection{Monte Carlo Sampling}
+\subsection{Counting the number}
 \label{MCreasons}
+The problem of quantifying the amount of leaked information can be reduced to 
+a model counting problem (Counting the items in $K^o$).
+
 For an application with $m$ bytes secret, there are total $2^{8m}$ possible inputs. Of the
 $2^{8m}$ possible inputs, we want to estimate the number of inputs that satisfy those formulas.
 Then we can use the definition~\ref{def} to calculate the information leakage.
