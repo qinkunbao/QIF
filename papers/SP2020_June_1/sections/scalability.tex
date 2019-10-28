@@ -217,13 +217,13 @@ of the problem:
 \end{enumerate}
 
 In regard to the above problems, we present our methods. First, we split 
-$F(c_{\addr{1}},c_{\addr{2}},\ldots,c_{\addr{n}})$ into several independent constraint groups. After
-that, we run random-walk based sampling method on each constraint.
+$c_f(\addr{1},\addr{2},\ldots,\addr{n})$ into several independent constraint groups. After
+that, we run multiple step sampling method for each constraint.
 
 \subsubsection{Maximum Independent Partition}
 
 For a constraint $c_{\addr{i}}$, we define function $\pi$, which maps
-the constraint into the set consisting of input symbols. For example, 
+the constraint into a set of different input symbols. For example, 
 $\pi(k1 + k2 > 128) = \{k1, k2\}$.
 
 \begin{mydef}[]
