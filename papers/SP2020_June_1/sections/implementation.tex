@@ -29,9 +29,8 @@ debug information and the symbol information. A sample report can be found
 
 Our current implementation supports part of the Intel 32-bit instructions, 
 including bitwise operations, control transfer, data movement, and logic 
-instructions which are essential in finding memory-based side-channel 
-vulnerabilities. For other 
+instructions, which are essential in finding memory-based side-channel vulnerabilities. For other 
 instructions the current implementation does not support, 
-the tool will use the real values to update the registers and memory cell.
+the tool will use the real values to update the registers and memory cells.
 Therefore, the tool may miss some leakages but will not give us any new
 false positives with the implementation.
