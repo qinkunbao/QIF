@@ -1,8 +1,13 @@
-\section{Discussion}
+\section{Discussions and Limitations}
 
-\subsection{Binary vs.\ Source Code}
-Many existing works find side-channels vulnerabilities from source code level 
-or intermediate languages (e.g., LLVM IR). Those approaches will have the following limitations. 
+\tool{} works on the native x86 instructions, while
+some existing works~\cite{197207,BacelarAlmeida:2013:FVS:2483313.2483334} 
+find side-channels vulnerabilities from source code level 
+or intermediate languages (e.g., VEX, REIL). Apart from the scalability
+issues for IR implementations, \tool{} is designed to work on the
+native x86 instructions for the following considerations.
+
+Those approaches will have the following limitations. 
 First, many compilers can translate the operator into branches. For example, 
 the GCC compiler will translate the ! operator into conditional branches. 
 If the branch is secret-dependent, the attacker could learn some sensitive information.
@@ -11,11 +16,4 @@ Second, some if else in the source code can be converted into single conditional
 instructions (e.g., cmov). Source-based methods will still regard them as potential leakages, 
 which will introduce false positives.
 
-\subsection{x86 vs.\ Intermediate Languages}
-The tool takes in an unmodified binary and the marked sensitive information as the input. 
-The tool will first start with logging the execution trace. Then the tool will symbolizes the 
-sensitive information into multiple symbols and start with the symbolic execution. 
-During the symbolic execution, the tool will find any potentials leakage sites as well as the path constraints. 
-For each leakage site, whether it is  the tool will also generate the constraint. 
-Then, the tool will split the constraints into multiple group. After that, 
-the tool will run monte carlo sampling to estimate the total information leakages.
+
