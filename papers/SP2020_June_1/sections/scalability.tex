@@ -1,12 +1,13 @@
 \section{Scalable to Real-world Crypto Systems}
 
-In section~\ref{trace_qif}, we model two types of address-based side-channel
+In section~\ref{trace_qif}, we propose a better information leakage definition
+for realistic attack scenarios, model two types of address-based side-channel
 leakages
-as math formulas and quantify them by calculating the number of input
-keys ($K^o$) which satisfy those math formulas. Intuitively, we can use
-traditional symbolic execution to capture math formulas and model
+as math formulas, and quantify them by calculating the number of input
+keys ($K^o$) that satisfy those math formulas. Intuitively, we can use
+traditional symbolic execution to capture math formulas and use model
 counting to get the number of satisfying input keys ($K^o$).
-However, some pre-experiments show that above approach suffers from the unbearable cost, 
+However, some preliminary experiments show that above approach suffers from the unbearable cost, 
 which impede its usage
 to detect and quantify side-channel leakages in real-world applications. 
 In this section, we begin by discussing the bottlenecks of applying the 
@@ -37,7 +38,7 @@ it can not handle complicated cases like RSA.
 
 We observe that finding side-channels using symbolic execution is different from 
 traditional general symbolic execution and can be optimized to be as efficient as other
-methods with below approaches.
+methods with the approaches  below.
 
 \subsubsection{Interpret Instructions Symbolically}
 
@@ -87,8 +88,8 @@ of instructions need to execute during the analysis.
 
 \subsubsection{Constraint Solvers}
 As discussed in section~\ref{side-channel:condition}, the problem
-of identifying side-channels can be reduced to the below 
-questions.
+of identifying side-channels can be reduced to the  
+question below.
 
 
 \textit{Can we find two different input variables $k_1, k_2 \in K$ that satisfy the
