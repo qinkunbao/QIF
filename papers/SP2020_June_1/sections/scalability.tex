@@ -256,12 +256,11 @@ The reason we want a good partition of the constraints is that we want to
 reduce the dimensions. Consider the example in the previous section,
 $$c: ({k_1} = 1)\land({k_2} = 2)\land({k_3} > 4)\land({k_3} - {k_4} > 10)$$
 A good partition of $F$ would be
-$$g_{1}: {k_1} = 1\quad g_{2}: {k_2} = 2\quad g_{3}: {k_3} > 4 \land {k_3} - {k_4} > 10$$     
+$$g_{1}: ({k_1} = 1)\quad g_{2}: ({k_2} = 2)\quad g_{3}: ({k_3} > 4) \land ({k_3} - {k_4} > 10)$$     
 So instead of sampling in the four dimension space, we can
 sample each constraint in the less dimension space and combine them
-together with~\ref{mip-theorem} .
-\newtheorem{theorem}{Theorem}[section]
-\label{mip-theorem}
+together with Theorem~\ref{IndependentConstraint} .
+
 \begin{theorem}
       \label{IndependentConstraint}
 Let $g_{1}, g_{2}, \ldots, g_{m}$ be a maximum independent partition of 
