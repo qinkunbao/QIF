@@ -50,7 +50,9 @@ much information is leaked during the execution precisely.
 The problem with existing methods is that they are static-based and the 
 input values are neglected by the previous definition. 
 They assume the attacker runs the program multiple times with many different sensitive 
-information as the input. Both Shannon entropy and max entropy give an ``average" 
+information as the input.
+As shown in Figure~\ref{fig:gap}, previous models, both Shannon entropy and max entropy,
+give an ``average'' 
 estimate of the information leakage. However, it is not the typical scenario for an adversary to 
 launch a side-channel attack. When a side-channel attack happens, the adversary wants 
 to retrieve the sensitive information, in which case the sensitive information is fixed (e.g., AES keys). 
@@ -65,7 +67,7 @@ This is the first challege we face \textbf{(Challege C1)}.
 \begin{figure}
   \centering
    \includegraphics[width=.8\columnwidth]{./figures/RA.pdf}
-   \caption{The gap between the real attack and previous model}
+   \caption{The gap between the real attack and previous model}\label{fig:gap}
 \end{figure}
 
 

@@ -53,11 +53,12 @@ To overcome these limitations, we propose a novel method
 to quantify information leakage more precisely. 
 Different from previous works, which only consider the
 ``average'' information leakage, we study the problem based on real attack scenarios.
-The average information assumes that the target program will have \emph{variable} sensitive 
+The average information assumes that the target program will have \emph{variable}
+or \emph{random} sensitive 
 information when an attack is launched.
 However, for real-world attacks, an adversary may run the target problem again and over again 
 with \emph{fixed} unknown sensitive information such as the key. 
-Therefore, the previous threat model cannot catch real attack scenarios.
+Therefore, the previous threat model cannot model real attack scenarios.
 In contrast, our method is more precise and fine-grained. 
 We quantify the amount of leaked information as the cardinality of the set of 
 possible inputs based on attackers' observations. 
@@ -80,10 +81,10 @@ small programs or apply some domain knowledges to simplify the execution. We sys
 analyze the bottleneck of the symbolic execution and optimzie it scalable to
 real-world cryptosystems. 
 
-We apply the above technique and build a tool called \tool{},%
+We apply the above technique and build a tool called \tool{}, 
   %\footnote{CleverHans is a horse that can ``count''.
   %Our tool uses an advanced method to count the number of leaked bits from side channels.}
-which could discover potential information leakage sites 
+which can discover potential information leakage sites 
 as well as estimating how many bits they can leak for each leakage site. 
 We assume that adversaries can exploit secret-dependnet control-flow transfers and 
 data-access patterns when the program processes different sensitive data. 
@@ -125,29 +126,44 @@ the code can still leak the same information.
 %dependent relationships among those multiple leakages sites. Therefore, we introduce a 
 %monte carlo sampling method to estimate the total information leakage.
 
-We apply \tool{} on both symmetric and asymmetric ciphers from real-world crypto libraries including OpenSSL and
-mbedTLS. The experimental result confirms that \tool{} can precisely identify the previous known vulnerabilities,
-reporting how much information is leaked and which byte in the original sensitive buffer is leaked. 
-Although some of the analyzed crypto libraries have a number of side-channels, they actually
-leak very little information. Also, we perform the analysis of widely deployed software countermeasures
-against side channels.
-Finally, we present new vulnerabilities. With the help of \tool{}, we confirm those
-vulnerabilities are easily to be exploited. Our results are surprisingly different compared to previous results
-and much more useful in practice.
+We apply \tool{} on both symmetric and asymmetric ciphers from
+real-world crypto libraries including OpenSSL and mbedTLS\@. The
+experimental result confirms that \tool{} can precisely identify the
+previous known vulnerabilities, report how much information is leaked
+and which byte in the original sensitive buffer is leaked.  Although
+some of the analyzed crypto libraries have a number of side-channels,
+they actually leak very little information. Also, we perform the
+analysis of widely deployed software countermeasures against side
+channels.  \tool\ also discovers new vulnerabilities. With the help of
+\tool{}, we confirm those vulnerabilities can be exploited.
 
 In summary, we make the following contributions:
 
 \begin{itemize}
-	\item We propose a novel method that can quantify fine-grained leaked information from side-channel
-        vulnerabilities. We model each side-channel vulnerabilities as math formulas and 
-        mutiple side-channel vulnerabilities can be seen as the conjunction of those formulas, which
-        precisely models the program semantics.
-        \item We transfer the information quantification problem into a probabilty distribution problem and 
-        use the Monte Carlo sampling method to estimate the information leakage. Some initial results indicate the 
-        the sampling method suffers from the curse of dimensionality problem. We therefore design a guided
-        sampling method and provide the corresponding error esitimate.
-	\item We implement the proposed method into a practical tool and apply it on several real-world software. \tool{} 
-        successfully identifies the address-based side-channel vulnerabilities and provides the corresponding
-        information leakge. The information leakage result provides the detailed information that help developers to
-        fix the reported vulnerabilities.
+  \item We propose a novel method that can quantify fine-grained
+    leaked information from side-channel vulnerabilities to match real
+    attack scenarios.  Our method is different from previous ones in
+    that we model real attack scenarios more precisely while the
+    previous research only models the ``average'' or ``random'' case.
+    Our results are surprisingly different,
+    % compared to previous results and
+    much more useful in practice.
+    %%   We model each side-channel vulnerabilities as math formulas
+    %% and mutiple side-channel vulnerabilities can be seen as the
+    %% conjunction of those formulas, which precisely models the
+    %% program semantics.
+        
+  \item We transfer the information quantification problem into a
+    probabilty distribution problem and use the Monte Carlo sampling
+    method to estimate the information leakage. Some initial results
+    indicate the the sampling method suffers from the curse of
+    dimensionality problem. We therefore design a guided sampling
+    method and provide the corresponding error esitimate.
+        
+  \item We implement the proposed method into a practical tool and
+    apply it on several real-world software. \tool{} successfully
+    identifies memory-related side-channel vulnerabilities and
+    provides the corresponding information leakge. The information
+    leakage result provides the detailed information that can help
+    developers to fix the reported vulnerabilities.
 \end{itemize}
