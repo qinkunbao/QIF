@@ -11,7 +11,8 @@ resultPath = basicPath + 'form/latex/'
 
 
 def data2form(finame, foname):
-    print(foname + '\n')
+    sys.stdout.write(foname)
+    sys.stdout.flush()
 
     fi = open(finame, 'r')
     buf = fi.readline()
@@ -19,6 +20,7 @@ def data2form(finame, foname):
     fo.write('\\begin{table}[h]\n' +
              '\\centering\n' +
              '\\caption{}\\label{fig:}\n' +
+             '\\resizebox{\\columnwidth}{!}{' +
              '\\begin{tabular}{clrrr}\n\\hline\n')
 
     fo.write('\\textbf{File} & ' +
@@ -68,26 +70,28 @@ def data2form(finame, foname):
                  leakage + '&' + ltype + '\\\\\n')
         #  leakage + '&' + ltype + '& \\\\\n')
 
-        # print(lfile + '&' + lnumber + '&' + lfunction + '&' +
-        #       leakage + '&' + ltype + '& \\\\\n')
-
         buf = fi.readline()
 
-    fo.write('\\hline\n' + '\\end{tabular}\n' + '\end{table}')
+    fo.write('\\hline\n' + '\\end{tabular}\n}\n' + '\\end{table}')
+
     fo.close()
     fi.close()
-    print(foname + ' done.\n')
+
+    sys.stdout.write(' done.\n')
+    sys.stdout.flush()
 
 
 for enc in ['AES', 'DES', 'RSA']:
     # mbedTLS
     for version in ['2.5', '2.15.1']:
         finame = 'result_' + enc + '-mbedTLS-' + version + 'Inst_data.txt'
-        foname = resultPath + enc + '.mbedTLS.' + version + '.tex'
+        foname = enc + '.mbedTLS.' + version
+        foname = resultPath + foname.replace('.', '-') + '.tex'
         data2form(finame, foname)
 
     # openssl
     for version in ['0.9.7', '1.0.2f', '1.0.2k', '1.1.0f', '1.1.1']:
         finame = 'result_' + enc + '-openssl-' + version + 'Inst_data.txt'
-        foname = resultPath + enc + '.openssl.' + version + '.tex'
+        foname = enc + '.openssl.' + version
+        foname = resultPath + foname.replace('.', '-') + '.tex'
         data2form(finame, foname)
