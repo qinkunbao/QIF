@@ -11,13 +11,15 @@ discuss existing methods on side-channel detection and quantification.
 Side-channels are information channels that can leak sensitive information 
 unconsciously through different execution behaviors.  Fundamentally, those 
 differences were caused by shared hardware
-components (e.g., the CPU cache, the TLB and DRAM) in modern computer systems.
+components (e.g., the CPU cache, the TLB and DRAM) 
+in modern computer systems~\cite{ge2018survey,szefer2019survey}.
 Depending on the layer causing side-channels, we can classify them 
 into the following types of side-channel attacks.
 
-For example, cached-based side-channels rely on the time differences 
+For example, cached-based side-channels~\cite{yarom2017cachebleed,191010,184415,7163050,Osvik2006,liu2015last,yarom2014flush+} 
+rely on the time differences 
 between cache miss and cache hit. We introduce two common attack strategies,
-namely Prime+Probe and Flush+Reload.
+namely Prime+Probe~\cite{liu2015last} and Flush+Reload~\cite{yarom2014flush+}.
 Prime+Probe targets a single cache set. The attacker preloads cache set with
 its own data and wait until the victim execute the program.
 If the victim accesses the cache set and evicts part of 
@@ -98,7 +100,7 @@ the low 6 bits the address is irrelevant in causing those cached-based side-chan
 %side-channles. We identify and quantify the leakage of the two kinds of vulnerabilities 
 %in the paper.
 
-\subsection{Exisiting Information Leakage Quantification}
+\subsection{Exisiting Information Leakage Quantification}\label{sec:background_leak}
  
 Given an event $e$ that occurs with the probability $p(e)$, if the event $e$ happens, 
 then we receive
@@ -112,8 +114,8 @@ ranges from 0 to 255.  Assume
 equals $1$, the probability of this observation is $\frac{1}{256}$. So the information we get is 
 $-\log(\frac{1}{256}) = 8$ bits, which is exactly the size of the char variable in the C program.
 
-Existing works on information leakage quantification typically uses Shannon entropy,  
-min-entropy \cite{10.1007/978-3-642-00596-1_21}, and max-entropy.
+Existing works on information leakage quantification typically uses Shannon entropy~\cite{Wichelmann:2018:MFF:3274694.3274741},  
+min-entropy~\cite{10.1007/978-3-642-00596-1_21}, and max-entropy~\cite{182946, Doychev:2017:RAS:3062341.3062388}.
 In these frameworks, the input sensitive
 information $K$ is viewed as a random variable. 
 

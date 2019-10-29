@@ -97,8 +97,8 @@ information.
 %% We run the symbolic execution (SE) on top of x86 instructions.
 %% In other words, we do not rely on any intermediate languages to simplify the implementation of symbolic execution. 
 %% While the implementation itself has a lot of benefits (Better performance, accurate memory model), 
-%% we need to implement the symbolic execution rules for each X86 instruction. 
-%% However, due to the complexity of X86, it is inevitable to make mistakes. 
+%% we need to implement the symbolic execution rules for each x86 instruction. 
+%% However, due to the complexity of x86, it is inevitable to make mistakes. 
 %% Therefore, we verify the correctness of the SE engine during the execution. 
 %% The tool will collect the runtime information (Register values, 
 %% memory values) and compare them with the formula generated from the symbolic execution. Whenever the tool finishes the symbolic execution of each instruction, the tool will compare the formula for each symbol and its actual value. If the two values do not match, we check the code
