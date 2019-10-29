@@ -212,12 +212,13 @@ We now discuss how we model the observation (o), which is the direct information
 that an adversary can get during the attack.
 
 During the execution, a program ($\beta$) have many temporary values ($t_i \in T$).
-Once $\beta, k, m$ is determined,  $t_i$ is also fixed. Therefore, 
-$ t_i = f_i(\beta, k, m)$.
-$f_ i$ is a function that can uniquely map the one to one relation 
+Once $\beta$ (program), $k$ (secret), and $m$ (message, public) are determined,
+$t_i$ is also fixed. Therefore, 
+$ t_i = f_i(\beta, k, m)$, where
+$f_ i$ is a function mapping 
 between $t_i$ and ($\beta$, $k$, $m$). 
 
-In the paper, we consider two code patterns can be exploited by an attacker:
+In the paper, we consider two code patterns can be exploited by an attacker, 
 \emph{secret-dependent control transfers} and \emph{secret-dependent data accesses}.
 In other words, an adversary have observations based on control-flows and
 data accesses.
@@ -238,7 +239,7 @@ observation on secret-dependent control-transfers.
 \subsubsection{Secret-dependent Data Accesses}
 Similar to secret-dependent control transfers, a data access is secret-dependence 
 if different input sensitive keys ($K$) can lead to different memory addresses.
-We use the model from~\cite{203878}. The low $L$ bits of the address is irrelevant
+We use the model from CacheD~\cite{203878}. The low $L$ bits of the address is irrelevant
 in side-channels. 
 
 We think a data access is secret-dependent if:
@@ -249,7 +250,7 @@ we can use the constraint $c_i : f_i(\beta, k, m) >> L = t_b >> L$ to model the
 observation on secret-dependent control-transfers. 
 
 With the following definition, we can model an attacker's observation with math formulas.
-For example~\ref{background::side-channel}, if an attacker observes
+For example, in Figure~\ref{background::side-channel}, if an attacker observes
 the code executes 1, we have $c_5: k_1 + k_2 < 8$ to describe an
 attacker's knowledge and $K^{o5} = \{k_1,\, k_2\,|\, (k_1 + k_2) < 8\}$. If an attacker observes
 the code executes 2, we have $c_8: k_1 - k_2 > 0$ 
