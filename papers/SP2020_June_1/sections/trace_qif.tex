@@ -187,12 +187,16 @@ from the sample code in Figure~\ref{background::side-channel}. As the size of in
 sensitive information is usually public. The problem of quantifying the
 leaked information has been transferred into the problem of estimating
 the size of input key $|K^o|$ under the condition $o \in O$.
-The result is shown in Table~\ref{shtable2}. \fixme{interpret why the result makes
-  more sense that that of Table~\ref{shtable}}.
+The result is shown in Table~\ref{shtable2}.
+We can see that some branches or traces leak much more information than some others.
+In contrast, an \emph{average} estimate based on random secret input information of
+1 or 2 bits, as shown in \S\ref{sec:background_leak} and Table~\ref{shtable},
+is not very useful in practice as an attacker is able to get much more
+leaked information in some attack scenarios.
 
 \begin{table}[ht]
     \centering
-\caption{The distribution of observations}
+\caption{New leakage modeling results}
 \label{shtable2}
  %  \resizebox{.8\columnwidth}{!}{
 \begin{tabular}{l|cccc}
