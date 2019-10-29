@@ -72,14 +72,14 @@ of instructions need to execute during the analysis.
 
 \begin{table}[ht]
       \centering
-      \begin{tabular}{ccc}
-      \hline
-                        & \begin{tabular}[c]{@{}c@{}}Number of \\ REIL IR\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of \\ x86 Instructions\end{tabular} \\ \hline
-      AES openSSL 0.9.7 &                                                              &                                                                       \\
-      DES openSSL 0.9.7 &                                                              &                                                                       \\
-      RSA openSSL 0.9.7 &                                                              &                                                                       \\
-      RSA mbed TLS 2.5  &                                                              &                                                                       \\ \hline
-      \end{tabular}
+      \begin{tabular}{cccc}
+            \hline
+                              & \begin{tabular}[c]{@{}c@{}}Number of\\ x86 Instructions\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of\\ REIL IR\end{tabular} & \begin{tabular}[c]{@{}c@{}}Ratio\\  (REIL/x86)\end{tabular} \\ \hline
+            AES OpenSSL 0.9.7 & 1704                                                                 &                                                             &                                                             \\
+            DES OpenSSL 0.9.7 & 2976                                                                 &                                                             &                                                             \\
+            RSA OpenSSL 0.9.7 & 16,980,109                                                           &                                                             &                                                             \\
+            RSA mbed TLS 2.5  & 22,109,246                                                           &                                                             &                                                             \\ \hline
+            \end{tabular}
       \caption{The number of X86 instructions and the number
       of REIL IR instructions on each trace of crypto programs.}
       \label{scala:ir}
