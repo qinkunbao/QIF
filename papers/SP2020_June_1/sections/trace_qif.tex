@@ -10,9 +10,11 @@ for the paper and propose our method.
 \subsection{Problem Setting}
 Existing static-based side-channel quantification works~\cite{182946,Wichelmann:2018:MFF:3274694.3274741 } define information leakage
 using max entropy or Shannon entropy. These definitions provide a strong security guarantee
-when trying to prove a program is secure enough if zero bit of information is leaked 
-reported by their approaches. However, it is useless if the tool report the program leaks
-some information. Moreover, those metrics does not apply to static method.
+when one tries to prove a program is secure.  If zero bit of information leakage is reported, teh program is secure. However, it is not useful in practice if a tool reports
+the program leaks
+some information because when being reported is the ``average'' leakage while in an attack
+scenario, the leakage could be much severe.
+%Moreover, those metrics does not apply to static method.
 
 
 \begin{figure}[h!]
@@ -29,8 +31,8 @@ if(password == 0x1b){
 \label{figure:password checker}
 \end{figure}
 
-We consider the above dummy password checker in ~\ref{figure:password checker}.
-The program will take a 8 bit number as the input and check if the input is the
+We consider the dummy password checker shown in Figure~\ref{figure:password checker}.
+The program will take an 8-bit number as the input and check if the input is the
 correct password. 
 If an attacker knows the
 code executes branch $\{{1\}}$ by side-channel attacks, he can infer the password equals to 0x1b,
@@ -38,7 +40,7 @@ in which case the attacker can fully retrieve the password.
 Therefore, the total information leakage should be 8 bits, which equals to the size
 of the sensitive input if an attacker observes the code executes branch $1$ . 
 
-However, previous static-based approach can not precisely reflect the sensitivity of the leakage.
+However, previous static-based approach cannot precisely reflect the amount of the leakage.
 According to the definition of Shannon entropy, the leakage will be $\frac{1}{256}*\log_{2}\frac{1}{256} + 
 \frac{255}{256} *\log_{2}\frac{255}{256}= 0.24$ bits. Because the program has two branches, tools
 based on max-entropy will report the code has $\log_2{2} = 1$ bit leakage.
@@ -55,9 +57,9 @@ to retrieve the sensitive information, in which case the sensitive information i
 The adversary will run the attack over and over again and guess the value bit by bit. Like the 
 previous example, the existing static method does not work well in those situations.
 We want to have a theory for dynamic analysis that if the theory says 
-an attack leaks $x$ bits of secret information from side-channel vulnerabilities,
-then $x$ should be useful in estimating the sensitive level of side-channels.
-However, the above method all fails in the real attack model.
+an attack leaks $x$ bits of secret information from a side-channel vulnerability,
+then $x$ should be useful in estimating the sensitive level of the side-channel.
+However, the above method all fails in real attack models.
 \begin{figure}
   \centering
    \includegraphics[width=.8\columnwidth]{./figures/RA.pdf}
@@ -136,7 +138,7 @@ that
  & ~~~~~~ \mathit{Initial\ uncertainty} - \mathit{Remaining\ uncertainty}. 
 \end{align*}
 
-Now we come compare the equation~\ref{eq:2} with the above slogan, we will
+Now we come compare Eq.~(\ref{eq:2}) with the above slogan, we will
 find $H(K)$ is the $\mathit{Initial\ uncertainty}$ and $H(K|O)$ is
 $\mathit{Remaining\ uncertainty}$. During a side-channel attack, 
 the observation ($o$) is known.  We have $H(K|O) = H(K|o)$.
@@ -150,10 +152,10 @@ For a program ($\beta$) without knowing any domain information, any sensitive
 input should appear equally. Therefore, for any $k \in K$, $p(k) = \frac{1}{|K|}$.
 So we have 
 $$H(K) = \sum_{k {\in} K}\frac{1}{|K|}\log_2{|K|} = \log_2{|K|}$$
-For any $k' \in K - K^o$, $p(k'|o) = 0$. We can get the following equation:
+For any $k' \in K \setminus K^o$, $p(k'|o) = 0$. We get
 \begin{align*}
-H(K;o) &= - \sum_{k {\in} K^o}{p(k|o)\log_2p(k|o)} 
-          - \sum_{k` {\in} (K - K^o)}{p(k'|o)\log_2p(k'|o)}\\
+H(K;o) &= - \sum_{k {\in} K^o}{p(k|o)\log_2p(k|o)} \\
+       & \qquad   - \sum_{k` {\in} (K \setminus K^o)}{p(k'|o)\log_2p(k'|o)}\\
        &= \sum_{k {\in} K^o}\frac{1}{|K^o|}\log_2{|K^o|}\\
        &= \log_2{|K^o|}
 \end{align*}
@@ -177,10 +179,12 @@ $L_{P(k)=o^{2}} = \log_2{256} - \log_2{255} = 0$ bit.
 
 
 We can also calculate the leaked information
-from the sample code~\ref{background::side-channel}. As the size of input 
+from the sample code in Figure~\ref{background::side-channel}. As the size of input 
 sensitive information is usually public. The problem of quantifying the
 leaked information has been transferred into the problem of estimating
 the size of input key $|K^o|$ under the condition $o \in O$.
+The result is shown in Table~\ref{shtable2}. \fixme{interpret why the result makes
+  more sense that that of Table~\ref{shtable}.
 
 \begin{table}[ht]
     \centering
@@ -199,7 +203,7 @@ Leaked Information (bits)     & 1.0 & 11.7 & 1.0  & 12.0   \\
 \end{tabular}
 %    }
 \caption{The distribution of observations}
-\label{shtable}
+\label{shtable2}
 \end{table}
 
 \subsection{Our Conceptual Framework}
