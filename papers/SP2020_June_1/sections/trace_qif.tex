@@ -60,6 +60,8 @@ We want to have a theory for dynamic analysis that if the theory says
 an attack leaks $x$ bits of secret information from a side-channel vulnerability,
 then $x$ should be useful in estimating the sensitive level of the side-channel.
 However, the above method all fails in real attack models.
+This is the first challege we face \textbf{(Challege C1)}.
+
 \begin{figure}
   \centering
    \includegraphics[width=.8\columnwidth]{./figures/RA.pdf}
@@ -101,7 +103,7 @@ Then the problem of quantifying the amount of leaked information can be transfer
 following question. 
 \emph{How much uncertainty of $K$ can be reduced if an attacker knows $\beta$, $m$, and $o$?}
  
-\subsection{Theoretical Analysis}
+\subsection{Theoretical Analysis \textbf{(Solution to Challege C1)}}
 Now we present our metric to quantify the amount of leaked 
 information from dynamic analysis.
 
@@ -188,9 +190,9 @@ The result is shown in Table~\ref{shtable2}. \fixme{interpret why the result mak
 
 \begin{table}[ht]
     \centering
-
+\caption{The distribution of observations}
+\label{shtable2}
  %  \resizebox{.8\columnwidth}{!}{
-
 \begin{tabular}{l|cccc}
     \hline
 %Observation (o)     & $\emptyset$ & ${\{1\}}$ & ${\{2\}}$ & ${\{1, 2\}}$ \\ \hline
@@ -202,8 +204,6 @@ Leaked Information (bits)     & 1.0 & 11.7 & 1.0  & 12.0   \\
     \hline
 \end{tabular}
 %    }
-\caption{The distribution of observations}
-\label{shtable2}
 \end{table}
 
 \subsection{Our Conceptual Framework}

@@ -17,8 +17,8 @@ our methods.
 In general, \tool suffer from performance costs
 from the two following reasons. 
 \begin{itemize}
-    \item Symbolic Execution (Challenge a).
-    \item Counting the number of items in $K^o$ (Challenge b)
+    \item Symbolic Execution (\textbf{Challenge C2}).
+    \item Counting the number of items in $K^o$ (\textbf{Challenge C3})
 \end{itemize}
 
 \subsection{Trace-oriented Symbolic Execution}
@@ -65,7 +65,7 @@ transfers into 18 REIL IR instructions. If we assume the time of symbolically ex
 one instruction is constant, the design of adopting IR layers can introduce large overhead. 
 
 \vspace*{2pt}
-\textbf{Our Solution:}
+\textbf{Our Solution to Challenge C2a:}
 We adopt the approach from~\cite{217563} and implement the symbolic execution 
 directly on the top X86 instructions. In table~\ref{scala:ir}, 
 It shows that eliminating the IR layer can reduce the number
@@ -73,6 +73,9 @@ of instructions need to execute during the analysis.
 
 \begin{table}[ht]
       \centering
+      \caption{The number of X86 instructions and the number
+      of REIL IR instructions on each trace of crypto programs.}
+      \label{scala:ir}
       \begin{tabular}{cccc}
             \hline
                               & \begin{tabular}[c]{@{}c@{}}Number of\\ x86 Instructions\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of\\ REIL IR\end{tabular} & \begin{tabular}[c]{@{}c@{}}Ratio\\  (REIL/x86)\end{tabular} \\ \hline
@@ -81,9 +84,6 @@ of instructions need to execute during the analysis.
             RSA OpenSSL 0.9.7 & 16,980,109                                                           &                                                             &                                                             \\
             RSA mbed TLS 2.5  & 22,109,246                                                           &                                                             &                                                             \\ \hline
             \end{tabular}
-      \caption{The number of X86 instructions and the number
-      of REIL IR instructions on each trace of crypto programs.}
-      \label{scala:ir}
       \end{table}
 
 \subsubsection{Constraint Solvers}
@@ -110,7 +110,7 @@ Despite the rapid development of SMT solvers in recent years, constraint solving
 remains one of the obstacles to achieve the scalability for real-world crypto systems.
 
 \vspace*{2pt}
-\textbf{Our Solution:}
+\textbf{Our Solution to Challenge C2b:}
 Instead of feeding the formula $f_a(k_1) \neq f_a(k_2)$ into a SMT solver, we just
 randomly pick up $k_1, k_2 \in K$ and test them if can satisfy the formula. Our
 solution is based on the following intuition. For most combination of 
@@ -120,7 +120,7 @@ suppose each time we only have 5\% chance find such $k_1, k_2$, then
 after we test with different input combination with 100 times, we have 
 $1 - (1-0.05)^{100} = 99.6\%$ chance find such $k_1, k_2$.
 
-\subsection{Counting the number}
+\subsection{Counting the Number}
 \label{MCreasons}
 The problem of quantifying the amount of leaked information can be reduced to 
 the problem of computing the number of items in $K^o$ according to the definition~\ref{def}.
@@ -139,7 +139,7 @@ If we take each byte (8 bits) in the original buffer as one symbol, the formula 
 as many as 512 symbols. 
 
 \vspace*{6pt}
-\textbf{Our Solution to Challenge b:}
+\textbf{Our Solution to Challenge C3:}
 We adopt multiple step Monte Carlo sampling methods to count the number of possible inputs
 that satisfies the logic formula groups. The key idea is that 
 we split those constraints into several small formulas and sample them independently.  
@@ -154,7 +154,7 @@ We will introduce the method in the following subsection.
 
 In this section, we present the algorithm to calculate the information
 leakage based on the definition~\ref{def}, answering to
-\textbf{Challenge b}. 
+\textbf{Challenge C3}. 
 
 \subsubsection{Problem Statement}
 With each leakage site, we model it with a math formula constraint with the method 
