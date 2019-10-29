@@ -14,11 +14,12 @@ In this section, we begin by discussing the bottlenecks of applying the
 above approaches in real-world crypto systems. After that, we propose
 our methods.
 
-In general, \tool{} suffers from performance costs
-from the two following reasons. 
+In general, \tool{} faces the following performance and cost  challenges
+in order to \emph{scale to production crypto system analysis}. 
 \begin{itemize}
-    \item Symbolic Execution (\textbf{Challenge C2}).
-    \item Counting the number of items in $K^o$ (\textbf{Challenge C3})
+    \item Symbolic execution (\textbf{Challenge C2})
+    \item Constraint solving (\textbf{Challenge C3})
+    \item Counting the number of items in $K^o$ (\textbf{Challenge C4})
 \end{itemize}
 
 \subsection{Trace-oriented Symbolic Execution}
@@ -41,7 +42,7 @@ We observe that finding side-channels using symbolic execution is different from
 traditional general symbolic execution and can be optimized to be as efficient as other
 methods with the approaches  below.
 
-\subsubsection{Interpret Instructions Symbolically}
+%\subsubsection{Interpret Instructions Symbolically}
 
 The number of machine instructions is enormous, and the semantics of each instruction is complex. 
 Intel Developer Manual~\cite{intelsys}
@@ -68,7 +69,7 @@ transfers into 18 REIL IR instructions. If we assume the time of symbolically ex
 one instruction is constant, the design of adopting IR layers can introduce large overhead. 
 
 \vspace*{2pt}
-\textbf{Our Solution to Challenge C2a:}
+\textbf{Our Solution to Challenge C2:}
 We adopt the approach from~\cite{217563} and implement the symbolic execution 
 directly on the top x86 instructions. Table~\ref{scala:ir} 
  shows that eliminating the IR layer can reduce the number
@@ -92,7 +93,7 @@ of instructions executed during the analysis.
       }
       \end{table}
 
-\subsubsection{Constraint Solvers}
+\subsection{Constraint Solving}
 As discussed in \S\ref{side-channel:condition}, the problem
 of identifying side-channels can be reduced to the  
 question below.
@@ -117,7 +118,7 @@ Despite the rapid development of SMT solvers in recent years, constraint solving
 remains one of the obstacles to achieve the scalability for real-world crypto systems.
 
 \vspace*{2pt}
-\textbf{Our Solution to Challenge C2b:}
+\textbf{Our Solution to Challenge C3:}
 Instead of feeding the formula $f_a(k_1) \neq f_a(k_2)$ into a SMT solver, we just
 randomly pick up $k_1, k_2 \in K$ and test them if they can satisfy the formula. Our
 solution is based on the following intuition. For most combination of 
@@ -148,7 +149,7 @@ If we take each byte (8 bits) in the original buffer as one symbol, the formula 
 as many as 512 symbols. 
 
 \vspace*{6pt}
-\textbf{Our Solution to Challenge C3:}
+\textbf{Our Solution to Challenge C4:}
 We adopt multiple step Monte Carlo sampling methods to count the number of possible inputs
 that satisfy the logic formula groups. The key idea is to  
  split those constraints into several small formulas and sample them independently.  
@@ -163,7 +164,7 @@ that satisfy the logic formula groups. The key idea is to
 
 In this section, we present the algorithm to calculate the information
 leakage based on Definition~\ref{def} (\S\ref{sec:trace-qif}), answering to
-\textbf{Challenge C3}. 
+\textbf{Challenge C4}. 
 
 \subsubsection{Problem Statement}
 With each leakage site, we model it with a math formula constraint with the method 
