@@ -10,13 +10,13 @@ and have been studied for years~\cite{7163052, 217543, 217589, lee2017inferring,
 These vulnerabilities result from vulnerable software and shared hardware components.
 By observing the outputs or hardware behaviors, attackers can
 infer the program execution flow that manipulate secrets and 
-guess the secrets such as encryption keys~\cite{xxx}.
+guess the secrets such as encryption keys~\cite{Osvik2006}.
 
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against 
 software-based side-channel attacks. Hardware level solutions, 
 including reducing shared resources, adopting oblivious RAM, and using
-transnational memory~\cite{182946,203878,217537} need new hardware features or changes
+transnational memory~\cite{203878,217537} need new hardware features or changes
 to modern complex computer systems, which is impractical and hard to adopt in 
 reality. Therefore, a more promising and universal direction is software countermeasures, 
 detecting and eliminating side channel vulnerabilities from code.
@@ -26,26 +26,27 @@ many of them are caused by the following two specific types:
 data flow from secrets to load addresses and data flow from secrets to branch conditions.
 We call them secret-dependent control-flow and memory-access correspondingly.
 Therefore, a central problem is identifying those two code patterns automatically.
-Recent works~\cite{203878,data,caches} adopt static and dynamic analysis
+Recent works~\cite{203878,217537,Wichelmann:2018:MFF:3274694.3274741,Brotzman19Casym,236338,182946} 
+adopt static and dynamic analysis
 to detect side-channels.
 They can find many potential leak sites in real-world software, 
 but fail to report how severe a potential leakage could be. 
 Many of the reported vulnerabilities are typically hard to exploit
-and leak very little information. For example, DATA~\cite{xxx} reports
+and leak very little information. For example, DATA~\cite{217537} reports
 2,246 potential leakage site for the RSA implementation in OpenSSL\@.
-After some inspectations, 1,510 are dismissed, but it still
+After some inspections, 1,510 are dismissed, but it still
 leaves 278 control-flow and 460 data-access patterns. For software
 developers, it is hard for them to fix all those vulnerabilities,
 let alone the majority of them are negligible.
 While some vulnerabilities can be used to recover the full secret
-keys~\cite{xxx}, many other vulnerabilities prove to be less serious in reality.
+keys~\cite{184415}, many other vulnerabilities prove to be less serious in reality.
 
 To assess the sensitive level of side-channel vulnerabilities, we need a proper 
 quantification metric.
-Static methods, usually with abstract interpretation, can give a leakage upper bound, 
+Static methods~\cite{182946,5207642}, usually with abstract interpretations, can give a leakage upper bound, 
 which is useful to justify the implementation is secure when they report zero or little leakage. 
-However, they cannot indicate how serious the leakage is because of over-approximation~\cite{xxx}. 
-For example, CacheAudit~\cite{xxx} reports that the upper bound leakage of AES-128 exceeds 
+However, they cannot indicate how serious the leakage is because of over-approximation. 
+For example, CacheAudit~\cite{182946} reports that the upper bound leakage of AES-128 exceeds 
 the original key size! The dynamic methods take another approach with a concrete input and 
 run the program in real environment. Although they are very precise in term of true leakages, 
 no existing tool can precisely assess the severity of the vulnerabilities they discover.
@@ -77,17 +78,17 @@ We use constraints to model the relation between the original sensitive input an
 each leakage site. We run the instruction level symbolic execution on the whole
 execution trace to generate the constraints. Symbolic execution can provide the fine-grained
 information but is usually believed to be an expensive operation in terms of performance. 
-Therefore, existing dynamic symbolic execution based works~\cite{xxx} either only analyze 
-small programs or apply some domain knowledges to simplify the execution. We systematically
-analyze the bottleneck of the symbolic execution and optimzie it scalable to
-real-world cryptosystems. 
+Therefore, existing dynamic symbolic execution based works~\cite{203878,236338} either only analyze 
+small programs or apply some domain knowledge to simplify the execution. We systematically
+analyze the bottleneck of the symbolic execution and optimize it scalable to
+real-world crypto systems. 
 
 We apply the above technique and build a tool called \tool{}, 
   %\footnote{CleverHans is a horse that can ``count''.
   %Our tool uses an advanced method to count the number of leaked bits from side channels.}
 which can discover potential information leakage sites 
 as well as estimating how many bits they can leak for each leakage site. 
-We assume that adversaries can exploit secret-dependnet control-flow transfers and 
+We assume that adversaries can exploit secret-dependent control-flow transfers and 
 data-access patterns when the program processes different sensitive data. 
 %We refer them as the potential information leakage sites. 
 First, we collect the dynamic execution trace for each input of the target libraries 
@@ -159,12 +160,12 @@ In summary, we make the following contributions:
     method to estimate the information leakage. Some initial results
     indicate the the sampling method suffers from the curse of
     dimensionality problem. We therefore design a guided sampling
-    method and provide the corresponding error esitimate.
+    method and provide the corresponding error estimate.
         
   \item We implement the proposed method into a practical tool and
     apply it on several real-world software. \tool{} successfully
     identifies memory-related side-channel vulnerabilities and
-    provides the corresponding information leakge. The information
+    provides the corresponding information leakage. The information
     leakage result provides the detailed information that can help
     developers to fix the reported vulnerabilities.
 \end{itemize}
