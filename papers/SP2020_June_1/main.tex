@@ -77,18 +77,20 @@ no existing tools can precisely report the number of leaked
 bits for each leakage site, for production systems.
 
 To overcome this limitation, we propose a novel method to precisely
-quantify the leaked information from side-channel vulnerabilities.  We
-model each leakage as a constraint and use these constraints to
-divide the input space into subsets such that  %.  Among those subsets,
-only one subset satisfies every constraint.  %As we discuss later,
-The cardinality of the subset corresponds to the amount of leaked
-information from those leakages.
-We use symbolic execution to
+quantify the leaked information from side-channel vulnerabilities.
+Our quantification method is dramatically different from previous methods
+and the results are confirmed to be much more precise and usable in practice. 
+We model each leakage as a constraint.  %%  and use these constraints to
+ %% divide the input space into subsets such that  %.  Among those subsets,
+ %% only one subset satisfies every constraint.  %As we discuss later,
+ %% The cardinality of the subset corresponds to the amount of leaked
+ %% information from those leakages. 
+We scale  symbolic execution to production software to 
 generate the constraints, 
-%% It is widely believed that symbolic
-%% execution is expensive in terms of performance. We systematically
-%% analyze the bottlenecks of the current dynamic symbolic execution
-%% approach and make it scalable to real-world cryptosystems.
+ %% It is widely believed that symbolic
+ %% execution is expensive in terms of performance. We systematically
+ %% analyze the bottlenecks of the current dynamic symbolic execution
+ %% approach and make it scalable to real-world cryptosystems.
 and then run Monte Carlo sampling to estimate the number of
 leaked information.  % for each detected vulnerability.
 By using   %With the help of
@@ -101,19 +103,18 @@ estimate how many bits are leaked.  \tool{} outperforms existing
 dynamic side-channel detection tools in terms of performance and
 accuracy. Also, \tool{} can report a very fined-grained vulnerability
 leakage information. 
-%% Compared to existing abstract interpretation
-%% approaches that can only give upper leakage bounds, the information
-%% reported by our tool is more useful for developers to identify the
-%% severity level of each side-channel vulnerability.
- We evaluated 
-\tool{} on OpenSSL, MbedTLS, and found several severe side-channel
-vulnerabilities.
-\fixme{Need to update the rest of the abstract after the evaluation section is done.}
-Compared with previous research, the results are
-surprisingly different.  First, it shows that most of the reported
-vulnerabilities are hard to exploit in practice.  Second, we also find
-several sensitive vulnerabilities that are missed by existing tools.
-We confirmed those vulnerabilities with manual checks and software
+ %% Compared to existing abstract interpretation
+ %% approaches that can only give upper leakage bounds, the information
+ %% reported by our tool is more useful for developers to identify the
+ %% severity level of each side-channel vulnerability.
+We evaluated 
+ \tool{} on OpenSSL and MbedTLS\@.
+ %, and found several severe side-channel vulnerabilities.
+ %Compared with previous research, the results are surprisingly different.
+Our results show that most of the reported
+vulnerabilities are hard to exploit in practice.  We also find
+several sensitive vulnerabilities that are missed by the existing tools.
+We confirmed those vulnerabilities with manual checks and by the
 developers.
     %% which are confirmed with manual checks and software developpers. 
 
