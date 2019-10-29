@@ -78,7 +78,8 @@ We use constraints to model the relation between the original sensitive input an
 each leakage site. We run the instruction level symbolic execution on the whole
 execution trace to generate the constraints. Symbolic execution can provide the fine-grained
 information but is usually believed to be an expensive operation in terms of performance. 
-Therefore, existing dynamic symbolic execution based works~\cite{203878,236338} either only analyze 
+Therefore, existing dynamic symbolic execution based works~\cite{203878,236338,Brotzman19Casym} 
+either only analyze 
 small programs or apply some domain knowledge to simplify the execution. We systematically
 analyze the bottleneck of the symbolic execution and optimize it scalable to
 real-world crypto systems. 
@@ -129,7 +130,7 @@ the code can still leak the same information.
 %monte carlo sampling method to estimate the total information leakage.
 
 We apply \tool{} on both symmetric and asymmetric ciphers from
-real-world crypto libraries including OpenSSL and mbedTLS\@. The
+real-world crypto libraries including OpenSSL and mbed TLS\@. The
 experimental result confirms that \tool{} can precisely identify the
 previous known vulnerabilities, report how much information is leaked
 and which byte in the original sensitive buffer is leaked.  Although
@@ -156,7 +157,7 @@ In summary, we make the following contributions:
     %% program semantics.
         
   \item We transfer the information quantification problem into a
-    probabilty distribution problem and use the Monte Carlo sampling
+    counting problem and use the Monte Carlo sampling
     method to estimate the information leakage. Some initial results
     indicate the the sampling method suffers from the curse of
     dimensionality problem. We therefore design a guided sampling
