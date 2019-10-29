@@ -1,6 +1,6 @@
 \section{Scalable to Real-world Crypto Systems}
 
-In section~\ref{trace_qif}, we propose a better information leakage definition
+In \S\ref{sec:trace-qif}, we propose a better information leakage definition
 for realistic attack scenarios, model two types of address-based side-channel
 leakages
 as math formulas, and quantify them by calculating the number of input
@@ -32,7 +32,8 @@ or apply some domain knowledge to simplify the analysis.
 Those tools interpret each instruction and update the memory cells and registers with
 formulas that captured the semantics of the execution and search different 
 input values that can lead to different execution behaviors using constraint solver.
-We implement the approach~\ref{trace_qif} and model the side-channels as formulas.
+We implement the approach presented in \S\ref{sec:trace-qif} and
+model the side-channels as formulas.
 While the tool can finish analyzing some simple cases like AES, 
 it can not handle complicated cases like RSA. 
 
@@ -44,18 +45,20 @@ methods with the approaches  below.
 
 The number of machine instructions is enormous, and the semantics of each instruction is complex. 
 Intel Developer Manual~\cite{intelsys}
-introduces more than 1000 different X86 instructions. 
-It is tedious to implement the manually
+introduces more than 1000 different x86 instructions. 
+It is tedious to implement the manual 
 rules for every instruction.
 
-Therefore, existing binary analysis tools 
-~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} 
+Therefore, existing binary analysis tools~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} 
 usually translate machine instructions into intermediate languages (IR). 
-The IR typically has fewer instructions compared to original machine instructions. 
-The IR layer designs, which significantly
-simplify the implementation, also introduce significant overhead as well~\cite{217563}. First, transferring machine
-instruction into IR is time-consuming. REIL IR, adopted in
-CacheS~\cite{236338}, has multiple transform processes (binary -> VEX IR -> BAP IR -> REIL IR).
+The IR typically has fewer instructions compared to the original machine ISA\@. 
+However, the IR layer designs, which significantly
+simplify the implementation, also introduce significant overhead~\cite{217563}.
+First, transferring machine
+instruction into IR is time-consuming.
+For example, REIL IR~\cite{xxxxxxxxxxx}, adopted in
+CacheS~\cite{236338}, has multiple transform processes, from binary to VEX IR, BAP IR,
+and finally REIL IR\@. 
 As IR can also introduce additional conditional jump instructions,
 in order to precisely identify secret-dependent control-flow,
 we need to rule out conditional jump instructions introduced by
@@ -67,13 +70,13 @@ one instruction is constant, the design of adopting IR layers can introduce larg
 \vspace*{2pt}
 \textbf{Our Solution to Challenge C2a:}
 We adopt the approach from~\cite{217563} and implement the symbolic execution 
-directly on the top X86 instructions. In table~\ref{scala:ir}, 
-It shows that eliminating the IR layer can reduce the number
-of instructions need to execute during the analysis.
+directly on the top x86 instructions. Table~\ref{scala:ir} 
+ shows that eliminating the IR layer can reduce the number
+of instructions executed during the analysis.
 
-\begin{table}[ht]
-      \centering
-      \caption{The number of X86 instructions and the number
+\begin{table}%[ht]
+      \centering%\small\footnotesize
+      \caption{The number of x86 instructions and the number
       of REIL and VEX IR instructions on each trace of crypto programs.}
       \label{scala:ir}
       \resizebox{\columnwidth}{!}{%
@@ -90,50 +93,53 @@ of instructions need to execute during the analysis.
       \end{table}
 
 \subsubsection{Constraint Solvers}
-As discussed in section~\ref{side-channel:condition}, the problem
+As discussed in \S\ref{side-channel:condition}, the problem
 of identifying side-channels can be reduced to the  
 question below.
 
-
+\begin{quote}
 \textit{Can we find two different input variables $k_1, k_2 \in K$ that satisfy the
         formula $f_a(k_1) \neq f_a(k_2)$?}
+\end{quote}
 
 Existing approach relies on satisfiability modulo theories (SMT) solvers (e.g, Z3) to 
 find satisfying $k_1$ and $k_2$.
 We argue that while it is a universal approach to solving constraints with SMT 
-solvers, for constraints with above formats, using testing works is more
+solvers, for constraints with the above formats, using custom heuristics and testing
+ is much more
 efficient in practice. Constraint solving is a decision problem expressed in 
 logic formulas. SMT solvers transfer the inputted SMT formula into 
 the boolean conjunctive normal form (CNF) and feed it into the internal 
 SAT solver. The translation process, called ``bit blasting'', is time-consuming.
 Also, as SAT problem is a well-known NP-complete problem, it is also hard to 
-deal when it comes to practical uses.
-
+deal when it comes to practical uses with very large formulas. 
 Despite the rapid development of SMT solvers in recent years, constraint solving still
 remains one of the obstacles to achieve the scalability for real-world crypto systems.
 
 \vspace*{2pt}
 \textbf{Our Solution to Challenge C2b:}
 Instead of feeding the formula $f_a(k_1) \neq f_a(k_2)$ into a SMT solver, we just
-randomly pick up $k_1, k_2 \in K$ and test them if can satisfy the formula. Our
+randomly pick up $k_1, k_2 \in K$ and test them if they can satisfy the formula. Our
 solution is based on the following intuition. For most combination of 
 $(k_{1}, k_{2} )$, the formula $f_a(k_1) \neq f_a(k_2)$ holds. As long as 
 $f_a$ is not a constant function, such $k_1, k_2$ must exist. For example,
-suppose each time we only have 5\% chance find such $k_1, k_2$, then
+suppose each time we only have 5\% chance to find such $k_1, k_2$, then
 after we test with different input combination with 100 times, we have 
-$1 - (1-0.05)^{100} = 99.6\%$ chance find such $k_1, k_2$.
+$1 - (1-0.05)^{100} = 99.6\%$ chance find such $k_1, k_2$. Such random algorithms
+work well for our problem. 
 
 \subsection{Counting the Number}
 \label{MCreasons}
 The problem of quantifying the amount of leaked information can be reduced to 
-the problem of computing the number of items in $K^o$ according to the definition~\ref{def}.
-However, we find while there are various propositional model counters (\#SAT), there is no
-open source modulo theories counter (\#SMT) available.
+the problem of computing the number of items in $K^o$, according to Definition~\ref{def}
+introduced in \S\ref{sec:trace-qif}.
+However, we find while there are various propositional model counters (e.g., \#SAT),
+they are not sufficient scalable for production crypto system analysis. 
+%there is no open source modulo theories counter (\#SMT) available.
 
 One naive method approximating the number of solutions is based on Monte Carlo sampling.
 However, the number of satisfying values could be exponentially small. Consider the formula
-$f_i={k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, $k_1$, $k_2$, $k_3$ and $k_4$ 
-all represent one byte in the original sensitive input buffer, 
+$f_i\equiv{k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, where $k_1$, $k_2$, $k_3$, and $k_4$ each represents one byte in the original sensitive input buffer, 
 there is only one satisfying solution of total $2^{32}$ possible
 values, which requires exponentially many samples to get a tight bound. 
 Monte Carlo method also suffers from the curse of dimensionality. For example, 
@@ -144,9 +150,9 @@ as many as 512 symbols.
 \vspace*{6pt}
 \textbf{Our Solution to Challenge C3:}
 We adopt multiple step Monte Carlo sampling methods to count the number of possible inputs
-that satisfies the logic formula groups. The key idea is that 
-we split those constraints into several small formulas and sample them independently.  
-We will introduce the method in the following subsection.
+that satisfy the logic formula groups. The key idea is to  
+ split those constraints into several small formulas and sample them independently.  
+%We will introduce the method in the following subsection.
 
 \subsection{Information Leakage Estimation}
 
@@ -156,7 +162,7 @@ We will introduce the method in the following subsection.
 \renewcommand{\addr}[1]{{\xi}_{#1}}
 
 In this section, we present the algorithm to calculate the information
-leakage based on the definition~\ref{def}, answering to
+leakage based on Definition~\ref{def} (\S\ref{sec:trace-qif}), answering to
 \textbf{Challenge C3}. 
 
 \subsubsection{Problem Statement}
