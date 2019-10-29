@@ -1,9 +1,10 @@
 \subsection{Implementation}
-We implement \tool{} with 14320 lines of code in C++11. 
+We implement \tool{} with 16,729 lines of code in C++ and Python. 
 It has three components, Intel
 Pin tool that can collect the execution trace, 
 the instruction-level symbolic execution
-engine, and the backend that can estimate the information leakage. 
+engine, and the backend that can estimate the information leakage.
+The breakdown is shown in Table~\ref{tbl:implementation}. 
 The tool can also report the memory address of the leakage site. 
 To assist the developers fix the bugs, we also have several Python 
 scripts that can report the leakage location in the source code with the 
@@ -13,7 +14,7 @@ debug information and the symbol information. A sample report can be found
 \begin{table}[h]
     \centering
 %    \resizebox{.8\columnwidth}{!}{
-    \caption{\tool{}' main components and sizes}
+    \caption{\tool{}' main components and sizes}\label{tbl:implementation}
     \begin{tabular}{lr@{~}@{}l}
     \hline
     Component                            & \multicolumn{2}{c}{Lines of Code (LOC)}    \\ \hline
