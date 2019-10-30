@@ -23,9 +23,9 @@ def data2form(finame, foname, enc, library, version):
              ' with the amount of leak information' +
              'The mark $*$ means timeout,' +
              'which indicates more severe leakages ' +
-             '(see \S\ref{loc:timeout}).' +
+             '(see \\S\\ref{loc:timeout}).' +
              '}\\label{tab:' + enc + library + '}\n' +
-             '%\\resizebox{\\columnwidth}{!}{' +
+             '%\\resizebox{\\columnwidth}{!}{\n' +
              '\\begin{tabular}{clrrr}\n\\hline\n')
 
     fo.write('\\textbf{File} & ' +

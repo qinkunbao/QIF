@@ -47,10 +47,10 @@ def plot(formName, line1, line2):
 
 time1 = count('time_openssl1.1.1')
 time2 = []
-for i in range(len(time1)-1):
-    time2.append(time1[i + 1] - time1[i])
+# for i in range(len(time1)-1):
+#     time2.append(time1[i + 1] - time1[i])
 
-print(time2)
+# print(time2)
 # time2 = count('se_non_optimized')
 # time2 = []
 # time2[0] += 1
