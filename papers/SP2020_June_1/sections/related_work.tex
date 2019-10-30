@@ -40,17 +40,20 @@ MI scores are less meaningful for dynamic analysis.
 \subsection{Quantification}
 
 Quantitative Information Flow (QIF) aims at providing an information
-leakage estimate for the sensitive information given the public
+leakage estimation for the sensitive information given the public
 output. If zero bits of the information is leaked, the program is
 called non-interference. McCamant and Ernst~\cite{McCamantE2008} quantify the
 information leakage as the network flow
-capacity. Phan et al.~\cite{Phan:2012:SQI:2382756.2382791} propose symbolic
+capacity. Backes et al.~\cite{5207642} proposes an automated method 
+for QIF by computing an equivalence relation on the set of input keys.
+But the approach cannot handle real-world programs with bitwise operations.
+Phan et al.~\cite{Phan:2012:SQI:2382756.2382791} propose symbolic
 QIF. The goal of their work is to ensure the program is
 non-interference. They adopt an over approximation way of estimating
 the total information leakage and their method does not work for
 secret-dependent memory access
 side-channels. CHALICE~\cite{Chattopadhyay:2017:QIL:3127041.3127044}
-quantifies the information for a given cache behavior. CHALICE 
+quantifies the leaked information for a given cache behavior. CHALICE 
 symbolically reason about cache behavior and estimate the amount
 of leaked information based on cache miss/hit.
 Their approach can only scale to small programs, 
