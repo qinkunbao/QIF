@@ -8,7 +8,7 @@ basicPath = './'
 resultPath = basicPath + 'form/latex/'
 
 
-def data2form(finame, foname, enc, library):
+def data2form(finame, foname, enc, library, version):
     sys.stdout.write(foname)
     sys.stdout.flush()
 
@@ -19,7 +19,7 @@ def data2form(finame, foname, enc, library):
              '\\centering\n' +
              '\\caption{' +
              'Summary of all vulnerabilities in ' + enc +
-             ' implemented by ' + library +
+             ' implemented by ' + library + ' ' + version +
              ' with the amount of leak information' +
              '}\\label{tab:' + enc + library + '}\n' +
              '\\resizebox{\\columnwidth}{!}{' +
@@ -85,11 +85,11 @@ for enc in ['AES', 'DES', 'RSA']:
         finame = 'result_' + enc + '-mbedTLS-' + version + 'Inst_data.txt'
         foname = enc + '.mbedTLS.' + version
         foname = resultPath + foname.replace('.', '-') + '.tex'
-        data2form(finame, foname, enc, 'mbedTLS')
+        data2form(finame, foname, enc, 'mbedTLS', version)
 
     # openssl
     for version in ['0.9.7', '1.0.2f', '1.0.2k', '1.1.0f', '1.1.1']:
         finame = 'result_' + enc + '-openssl-' + version + 'Inst_data.txt'
         foname = enc + '.openssl.' + version
         foname = resultPath + foname.replace('.', '-') + '.tex'
-        data2form(finame, foname, enc, 'openssl')
+        data2form(finame, foname, enc, 'openssl', version)

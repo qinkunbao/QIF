@@ -26,7 +26,7 @@ side-channel vulnerabilities from code.
 Regarding the root cause of software-based side channels, many of them originate
 from the following two specific circumstances: data flow from secrets to load
 addresses and data flow from secrets to branch conditions. We refer to them as
-secret-dependent data accesses and secret-dependent control-flows respectively. A
+ secret-dependent memory-access and control-flow, respectively. A
 central problem is how to identify these two code patterns automatically. Recent
 works~\cite{203878,217537,Wichelmann:2018:MFF:3274694.3274741,Brotzman19Casym,236338,182946}
 adopt static and dynamic analysis to detect side-channels. They are capable to find
@@ -60,7 +60,7 @@ scenarios. The average information assumes that the target program has
 \emph{variable} or \emph{random} sensitive information when an attack is
 launched. However, for real-world attacks, an adversary may run the target
 problem again and over again with \emph{fixed} unknown sensitive information
-such as the key. Therefore, the previous threat model cannot simulate real attack
+such as the key. Therefore, the previous threat model cannot model real attack
 scenarios. In contrast, our method is more precise and fine-grained. We quantify
 the amount of leaked information as the cardinality of the set of possible
 inputs based on attackers' observations.
@@ -82,9 +82,8 @@ provide fine-grained information but is usually believed to be an expensive
 operation in terms of performance. Therefore, existing dynamic symbolic
 execution based works~\cite{203878,236338,Brotzman19Casym} either only analyze
 small programs or apply some domain knowledge to simplify the execution. We
-systematically analyze the bottleneck of the trace-based 
-symbolic execution and optimize the performance and make it scalable
-towards real-world cryptosystems.
+systematically analyze the bottleneck of the symbolic execution and optimize it
+to be scalable to real-world cryptosystems.
 
 We apply the above technique and build a tool called \tool{},
 %\footnote{CleverHans is a horse that can ``count''. Our tool uses an advanced

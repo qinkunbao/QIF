@@ -1,19 +1,16 @@
-\begin{table*}%[h]
+\begin{table}[h]
 \centering
-\caption{Summary of all vulnerabilities in RSA implemented by openssl with the amount of leak information.
-The mark $*$ means timeout,
-      which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:RSAopenssl}
-%\resizebox{\columnwidth}{!}{
-\begin{tabular}{lrrcc}
+\caption{Summary of all vulnerabilities in RSA implemented by openssl 1.1.1 with the amount of leak information}\label{tab:RSAopenssl}
+\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
 \hline
-\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{Leakedbits} & \textbf{Type} \\\hline
+\textbf{File} & \textbf{Line Num} & \textbf{Function} & \textbf{Leakedbits} & \textbf{Type} \\\hline
 rsa\_ossl.c&399&rsa\_ossl\_private\_decrypt&0 &CF\\
-bn\_lib.c&555&BN\_ucmp&*&\\
+bn\_lib.c&555&BN\_ucmp&Failed&\\
 bn\_gcd.c&199&int\_bn\_mod\_inverse&0 &CF\\
 bn\_gcd.c&247&int\_bn\_mod\_inverse&14&CF\\
 bn\_gcd.c&225&int\_bn\_mod\_inverse&13&CF\\
 ct\_b64.c&168&\_\_udivdi3&0 &CF\\
-bn\_div.c&374&bn\_div\_fixed\_top&*&\\
+bn\_div.c&374&bn\_div\_fixed\_top&Failed&\\
 bn\_lib.c&955&bn\_correct\_top&2 &CF\\
 ct\_b64.c&168&\_\_memset\_sse2\_rep&0 &CF\\
 ct\_b64.c&168&\_\_memset\_sse2\_rep&0 &CF\\
@@ -36,5 +33,5 @@ ct\_b64.c&168&\_\_memset\_sse2\_rep&0 &DA\\
 ct\_b64.c&168&\_\_memset\_sse2\_rep&0 &DA\\
 \hline
 \end{tabular}
-%}
-\end{table*}
+}
+\end{table}

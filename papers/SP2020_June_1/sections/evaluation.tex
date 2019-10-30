@@ -10,6 +10,12 @@
         of leakage information. A summary of all vulnerabilities with the amount of
         leak information can be found in the appendix.
     }\label{fig:Testtt}
+\newlength{\x}
+\newlength{\y}
+\settowidth{\x}{~~}
+\settowidth{\y}{m}
+\addtolength{\x}{-1\y}
+\newcommand{\foo}{\mbox{\hspace*{\the\x}}}
     \begin{tabular}{clrrrrrrr}
         \hline
         \textbf{Algorithm} & \textbf{Implementation}  & \textbf{Lekage Sites} & \textbf{CF}         & \textbf{DF}
@@ -37,7 +43,7 @@
         RSA                & OpenSSL 1.0.2k           & 36                    & 27                  & 9                    & 15,285,210  & 12   & 39 ~~      & 282   ~~        \\
         RSA                & OpenSSL 1.1.0f           & 31                    & 22                  & 9                    & 16,390,750  & 13   & 32 ~~      & 262 ~~          \\
         RSA                & OpenSSL 1.1.1            & 26                    & 20                  & 6                    & 18,207,020  & 12   & 7 ~~       & 455 ~~          \\\hline
-        Total              &                          & 883                   & 205                 & 678                  & 128,042,089 &      & 213m    ~~ & 1,688m ~~       \\\hline
+        Total              &                          & 883                   & 205                 & 678                  & 128,042,089 &      & 213m \foo  & 1,688m \foo     \\\hline
     \end{tabular}
 \end{table*}
 
