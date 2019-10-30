@@ -41,100 +41,91 @@
     \end{tabular}
 \end{table*}
 
-We evaluate \tool{} on real-world crypto libraries,
-OpenSSL and mbedTLS.
-OpenSSL is the most commonly used
-crypto libraries in today's software.
-Mbed TLS (previous known as PolarSSL) is designed to
-be easy to understand and fit on small embedded device.
+We evaluate \tool{} on real-world crypto libraries, OpenSSL and mbedTLS. OpenSSL
+is the most commonly used crypto libraries in today's software. Mbed TLS
+(previous known as PolarSSL) is designed to be easy to understand and fit on
+small embedded device.
 
 
-We build the source code into 32-bit x86 Linux executables with the
-GCC 8.0 under Ubuntu 14.04. Although we use use symbol information to track
-back leakage sites in the source code, our tool can also
-work on stripped binaries. We develop a Pin tool based on Intel Pin (version 3.7)
-to record the execution trace. We run our experiments on a 2.90GHz
-Intel Xeon(R) E5-2690 CPU with 128GB RAM memory.
-During our evaluation process, we are interested in the following
+We build the source code into 32-bit x86 Linux executables with the GCC 8.0
+under Ubuntu 14.04. Although we use use symbol information to track back leakage
+sites in the source code, our tool can also work on stripped binaries. We
+develop a Pin tool based on Intel Pin (version 3.7) to record the execution
+trace. We run our experiments on a 2.90GHz Intel Xeon(R) E5-2690 CPU with 128GB
+RAM memory. During our evaluation process, we are interested in the following
 aspects:
 \begin{enumerate}
     \item  \textbf{Identifying side-channels leakages.}
-          The first step of \tool{} is to identify side-channel leakages.
-          Is \tool{} effective to detect side-channels in real-world
-          crypto systems? (~\ref{sec:eval_overview})
+          The first step of \tool{} is to identify side-channel leakages. Is
+          \tool{} effective to detect side-channels in real-world crypto
+          systems? (~\ref{sec:eval_overview})
     \item  \textbf{Scalability}
-          Is \tool{} scalable to real-world crypto systems?
-          How effective are
+          Is \tool{} scalable to real-world crypto systems? How effective are
           the design decisions made by \tool{} in terms of scalability?
           (~\ref{sec:eval_overview},~\ref{eval:scala})
     \item  \textbf{Quantifying side-channel leakages.}
-          Can \tool{} precisely report the number of leaked bits in crypto libraries?
-          Are the numbers of leaked bits reported by \tool{} useful to justify
-          the severity levels of the side-channel vulnerabilities?
+          Can \tool{} precisely report the number of leaked bits in crypto
+          libraries? Are the numbers of leaked bits reported by \tool{} useful
+          to justify the severity levels of the side-channel vulnerabilities?
           (~\ref{sec:eval_case},~\ref{sec::eval_rsa},~\ref{sec:eval_countermeasures})
 
 \end{enumerate}
 
 \subsection{Evaluation Result Overview} \label{sec:eval_overview}
-In this section, we present an overview of the evaluation result.
-\tool{} find 883 leakages in total from real-world crypto system libraries.
-Among those 883 leak points, 205 of them are leaked due
-to secret-dependent control-flow transfers and 678 of them are leaked
-due to secret-dependent memory accesses.
+In this section, we present an overview of the evaluation result. \tool{} find
+883 leakages in total from real-world crypto system libraries. Among those 883
+leak points, 205 of them are leaked due to secret-dependent control-flow
+transfers and 678 of them are leaked due to secret-dependent memory accesses.
 
 For the crypto libraries, \tool{} finds that secret-dependent memory accesses
-cause most leakages.
-\textbf{
-    \tool{} also identifies that most side-channel vulnerabilities
-    leak very little information in practice, which confirms our initial
-    assumptions.  Without our tool, developers will not be able to
-    distinguish those ``vulnerabilities'' from severe ones and ignore them for sure.
-    However, we do find some vulnerabilities that \tool\ reports with more severe leakages.
-    Some of them have been confirmed by existing research that those
-    vulnerabilities can be exploited by realize real attacks.}
+cause most leakages. \textbf{\tool{} also identifies that most side-channel
+vulnerabilities leak very little information in practice, which confirms our
+initial assumptions.  Without our tool, developers will not be able to
+distinguish those ``vulnerabilities'' from severe ones and ignore them for sure.
+However, we do find some vulnerabilities that \tool\ reports with more severe
+leakages. Some of them have been confirmed by existing research that those
+vulnerabilities can be exploited by realize real attacks.}
 
-All the symmetric key implementations in OpenSSL and mbedTLS have
-significant leakages due to the implementation of the lookup table
-to speed up the computation. Every leakage found during the evaluation
-belongs to the type of secret-dependent memory accesses. We believe that
-the secret-dependent control-flow transfers have been widely studied in
-the past few years, and developers have patched most of those leakages.
-One method to address the leakage is to use bit-slicing. We will analyse
-the corresponding countermeasure in the following sections.
+All the symmetric key implementations in OpenSSL and mbedTLS have significant
+leakages due to the implementation of the lookup table to speed up the
+computation. Every leakage found during the evaluation belongs to the type of
+secret-dependent memory accesses. We believe that the secret-dependent
+control-flow transfers have been widely studied in the past few years, and
+developers have patched most of those leakages. One method to address the
+leakage is to use bit-slicing. We will analyse the corresponding countermeasure
+in the following sections.
 
-\tool{} find several leakage sites for both the implementation of DES and AES
-in OpenSSL and mbedTLS\@. \tool{} confirms that all those leakages come from
-table lookups. mbedTLS 2.15 and 2.5 have the same implementations
-of DES and AES so they have the same leakage report. One proper fix would be
-a scalar bit-sliced implementation. However, we do not see the bit-sliced
-implementation of AES and DES in various versions of OpenSSL and mbedTLS\@.
-However, we find the new implementation of OpenSSL instead uses typical four 1K
-tables. It only uses 1K of the tables. This implementation is rather easy but is
-still vulnerable to a side channel attack. However, the countermeasures do
-somehow decrease the total amount of leaked information.
+\tool{} find several leakage sites for both the implementation of DES and AES in
+OpenSSL and mbedTLS\@. \tool{} confirms that all those leakages come from table
+lookups. mbedTLS 2.15 and 2.5 have the same implementations of DES and AES so
+they have the same leakage report. One proper fix would be a scalar bit-sliced
+implementation. However, we do not see the bit-sliced implementation of AES and
+DES in various versions of OpenSSL and mbedTLS\@. However, we find the new
+implementation of OpenSSL instead uses typical four 1K tables. It only uses 1K
+of the tables. This implementation is rather easy but is still vulnerable to a
+side channel attack. However, the countermeasures do somehow decrease the total
+amount of leaked information.
 
 We also evaluates our tool on the RSA implementation. With the optimizations
 introduced in \S\ref{sec:scala}, we do not apply any domain knowledge to
-simplify the analysis. Therefore, our tools can identify all the leakage
-sites reported by CacheD~\cite{203878} in a shorter time. Our tool
-finds that most leakages in RSA occur in the big number implementation.
-We also find the newer versions of RSA in OpenSSL tend to have fewer leakages detected
-by \tool{}. We will discuss the version changes and corresponding leakages
-in the next section.
+simplify the analysis. Therefore, our tools can identify all the leakage sites
+reported by CacheD~\cite{203878} in a shorter time. Our tool finds that most
+leakages in RSA occur in the big number implementation. We also find the newer
+versions of RSA in OpenSSL tend to have fewer leakages detected by \tool{}. We
+will discuss the version changes and corresponding leakages in the next section.
 
 In addition to identifying side-channel leakages, \tool{} can also estimate how
-much information is leaked from each vulnerability. \tool{} achieves
-the goal by estimating number of keys that satisfy the constraints.
-During the evaluation, for each leakage site,
-\tool{} will stop once 1) it has 95\% confidence
-possibility that the error of estimated leaked information is less than
-1 bit or 2) it cannot reach the termination condition after 10 minutes. In
-the latter case, it means the number of satisfying keys is very small and the leakage is
-very serious. The tool marks the Monte Carlo is failed. During the
-evaluation, we find \tool{} can quantify every side-channel leakage
-for every symmetric encryption. For asymmetric encryptions, Monte
-Carlo quantification sometimes fail. We manually check those leakage
-sites and find most of them are serious. \fixme{details on those severe leakages?}
+much information is leaked from each vulnerability. \tool{} achieves the goal by
+estimating number of keys that satisfy the constraints. During the evaluation,
+for each leakage site, \tool{} will stop once 1) it has 95\% confidence
+possibility that the error of estimated leaked information is less than 1 bit or
+2) it cannot reach the termination condition after 10 minutes. In the latter
+case, it means the number of satisfying keys is very small and the leakage is
+very serious. The tool marks the Monte Carlo is failed. During the evaluation,
+we find \tool{} can quantify every side-channel leakage for every symmetric
+encryption. For asymmetric encryptions, Monte Carlo quantification sometimes
+fail. We manually check those leakage sites and find most of them are serious.
+\fixme{details on those severe leakages?}
 \subsection{Scalability}\label{eval:scala}
 
 \subsubsection{Running Time}
@@ -145,26 +136,23 @@ sites and find most of them are serious. \fixme{details on those severe leakages
 \end{figure}
 
 \subsubsection{Comparison with the Existing Tools}
-\tool{} is designed to quantify side-channel leakages. But it can
-find side-channels leakages as well. In this section, we compare
-\tool{} with the existing trace-based side-channel identification
-tools.
+\tool{} is designed to quantify side-channel leakages. But it can find
+side-channels leakages as well. In this section, we compare \tool{} with the
+existing trace-based side-channel identification tools.
 
-\tool{} can not only identify all the leakage sites reported by CacheD,
-but also many new ones.
-CacheD fails to detect many other vulnerabilities for two
-reasons. First, CacheD only can only detect secret-dependent
-memory access vulnerabilities. But \tool{} can detect
-secret-dependent control-flows as well. Second, CacheD suffers
-from some performance issues and uses some domain knowledge
-to simplify symbolic execution and has to trim the traces before processing. The design does
-not introduce false positives, but can neglect some vulnerabilities.
-On the contrary, \tool{} does not apply any domain knowledge and can find
-more vulnerabilities. The table~\ref{eval:cacheD} shows that \tool{} is
-three times faster than CacheD. As the time of symbolic execution grow
-quadratically, \tool{} is much faster than CacheD when analyzing the same
-number of instructions. For example, when we test~\tool{} on
-AES from OpenSSL 0.9.7, ~\tool{} is more than 100x faster than CacheD.
+\tool{} can not only identify all the leakage sites reported by CacheD, but also
+many new ones. CacheD fails to detect many other vulnerabilities for two
+reasons. First, CacheD only can only detect secret-dependent memory access
+vulnerabilities. But \tool{} can detect secret-dependent control-flows as well.
+Second, CacheD suffers from some performance issues and uses some domain
+knowledge to simplify symbolic execution and has to trim the traces before
+processing. The design does not introduce false positives, but can neglect some
+vulnerabilities. On the contrary, \tool{} does not apply any domain knowledge
+and can find more vulnerabilities. The table~\ref{eval:cacheD} shows that
+\tool{} is three times faster than CacheD. As the time of symbolic execution
+grow quadratically, \tool{} is much faster than CacheD when analyzing the same
+number of instructions. For example, when we test~\tool{} on AES from OpenSSL
+0.9.7, ~\tool{} is more than 100x faster than CacheD.
 
 
 \begin{table}[]
@@ -187,20 +175,19 @@ AES from OpenSSL 0.9.7, ~\tool{} is more than 100x faster than CacheD.
 
 \subsection{Vulnerability Case Study}\label{sec:eval_case}
 \subsubsection{AES in mbedTLS}
-During our evaluation, we find mbedTLS 2.5 and 2.15.1 have
-the same implementation of AES\@. Our tool provides the same leakage report
-for both versions. \tool{} identifies that most leakages are in
-function \emph{mbedtls\_internal\_aes\_decrypt}. (Other leakage sites are
-in function \emph{mbedtls\_aes\_setkey\_enc}.) All leakages
-are caused by secret-dependent memory accesses.
-Shown in Figure~\ref{mbedtls_aes}, there are seven leakage sites in
-total. Leakage 1, 2, 3 are the same and leakage 4, 5, 6, 7 are the
+During our evaluation, we find mbedTLS 2.5 and 2.15.1 have the same
+implementation of AES\@. Our tool provides the same leakage report for both
+versions. \tool{} identifies that most leakages are in function
+\emph{mbedtls\_internal\_aes\_decrypt}. (Other leakage sites are in function
+\emph{mbedtls\_aes\_setkey\_enc}.) All leakages are caused by secret-dependent
+memory accesses. Shown in Figure~\ref{mbedtls_aes}, there are seven leakage
+sites in total. Leakage 1, 2, 3 are the same and leakage 4, 5, 6, 7 are the
 same. They both use a pre-computed lookup table to speed up computation.
-However, \tool{} reports leakage 1, 2, 3 typically leak more information compared
-to leakage 4, 5, 6, 7. We check the source code and find leakage 1, 2, 3
-use secret to access the lookup table \emph{RT0, RT1, RT2, RT3}, which
-is 8K each. On the contrary, leakage 4, 5, 6, 7 each accesses a smaller lookup table (2K).
-Therefore, leakage 4, 5, 6, 7 leak less information.
+However, \tool{} reports leakage 1, 2, 3 typically leak more information
+compared to leakage 4, 5, 6, 7. We check the source code and find leakage 1, 2,
+3 use secret to access the lookup table \emph{RT0, RT1, RT2, RT3}, which is 8K
+each. On the contrary, leakage 4, 5, 6, 7 each accesses a smaller lookup table
+(2K). Therefore, leakage 4, 5, 6, 7 leak less information.
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -252,13 +239,12 @@ if( mbedtls_mpi_cmp_int( N, 0 ) < 0 || ( N->p[0] & 1 ) == 0 )
     \label{mbedtls_rsa_1}
 \end{figure}
 
-\tool{} reports one bit information is leaked from the branch at line 2 and
-it leaks less information than other leakages.
-Function \emph{mbedtls\_mpi\_exp\_mod} performs sliding-window exponentiation for
-big numbers.
-The leakage is caused by checking the signed bit of the big number $N$.
-Therefore, the leakage can only tell whether $N$ is greater than zero, which is one
-bit leak, not severe.
+\tool{} reports one bit information is leaked from the branch at line 2 and it
+leaks less information than other leakages. Function
+\emph{mbedtls\_mpi\_exp\_mod} performs sliding-window exponentiation for big
+numbers. The leakage is caused by checking the signed bit of the big number $N$.
+Therefore, the leakage can only tell whether $N$ is greater than zero, which is
+one bit leak, not severe.
 
 
 \begin{figure}[h!]
@@ -275,32 +261,31 @@ while( c != 0 );
     \label{mbedtls_rsa_2}
 \end{figure}
 
-Function \emph{mpi\_mul\_hlp} is notoriously for a series of timing attacks. Recent
-patches have fixed many leakages in function \emph{mpi\_mul\_hlp}.
+Function \emph{mpi\_mul\_hlp} is notoriously for a series of timing attacks.
+Recent patches have fixed many leakages in function \emph{mpi\_mul\_hlp}.
 \tool{} reports 8 bits of information is leaked from line 5.
-\emph{mpi\_mul\_hlp} is a helper function to perform
-mbedtls\_mpi multiplication. As the code will be executed many times,
-each time it will leak independent information. The leakage is severe
-compared to the previous one.
+\emph{mpi\_mul\_hlp} is a helper function to perform mbedtls\_mpi
+multiplication. As the code will be executed many times, each time it will leak
+independent information. The leakage is severe compared to the previous one.
 
 \subsection{Case Study of RSA in OpenSSL}~\label{sec::eval_rsa}
-For the crypto libraries, it is likely that an updated version has less vulnerabilities
-compared to the previous versions because software developers have patched some
-of those vulnerabilities.
+For the crypto libraries, it is likely that an updated version has less
+vulnerabilities compared to the previous versions because software developers
+have patched some of those vulnerabilities.
 
-We test five versions of OpenSSL (0.9.7, 1.0.2f, 1.0.2k, 1.1.0f, 1.1.1).
-The result, as shown in Figure~\ref{fig:rsa}, confirms
-our assumptions. The newer version of
-OpenSSL leaked less amount of information compared to the previous versions.
-After version 0.9.7g, OpenSSL adopted a fixed-window mod\_exp implementation
-for RSA\@. With the new design, the sequence of squares and multiples and the
-memory access patterns are independent of the secret key. \tool{}'s result
-confirms the new exponentiation implementation has quite effectively mitigated
-most of leakages because the other four versions have less leakages than 0.9.7.
-OpenSSL version 1.0.2f, 1.0.2k and 1.1.0f almost have the same amount of leakage.
-We check the changelog and find only one change for patching vulnerabilities
-for RSA (CVE-2016-0702). RSA changelog also claims OpenSSL 1.1.1 adopted
-``numerous side-channel attack mitigations.'' The result confirms our assumptions.
+We test five versions of OpenSSL (0.9.7, 1.0.2f, 1.0.2k, 1.1.0f, 1.1.1). The
+result, as shown in Figure~\ref{fig:rsa}, confirms our assumptions. The newer
+version of OpenSSL leaked less amount of information compared to the previous
+versions. After version 0.9.7g, OpenSSL adopted a fixed-window mod\_exp
+implementation for RSA\@. With the new design, the sequence of squares and
+multiples and the memory access patterns are independent of the secret key.
+\tool{}'s result confirms the new exponentiation implementation has quite
+effectively mitigated most of leakages because the other four versions have less
+leakages than 0.9.7. OpenSSL version 1.0.2f, 1.0.2k and 1.1.0f almost have the
+same amount of leakage. We check the changelog and find only one change for
+patching vulnerabilities for RSA (CVE-2016-0702). RSA changelog also claims
+OpenSSL 1.1.1 adopted ``numerous side-channel attack mitigations.'' The result
+confirms our assumptions.
 \begin{figure*}
     \centering
     \vspace*{-9pt}
@@ -331,8 +316,8 @@ for RSA (CVE-2016-0702). RSA changelog also claims OpenSSL 1.1.1 adopted
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
 Bit-slicing is a software technology that is capable of implementing algorithms
-with high efficiency and constant running time.
-Eli Biham \textit{et al}. first use gate circuits to implement the SBOX of DES.
+with high efficiency and constant running time. Eli Biham \textit{et al}. first
+use gate circuits to implement the SBOX of DES.
 % Cite: A Fast New DES Implementation in Software
 Based on his work Matthew Kwan present a better implementation of DES with fewer
 gates and first used the term Bit-slicing.
@@ -343,11 +328,11 @@ single-bit logical operations (AND, XOR, OR, NOT, etc.). These operations are
 then carried out for multiple instances of the function in parallel, using
 bitwise operations on a CPU. The original intention of Bit-slicing
 Implementation is to accelerate the crypto algorithms. However, thanks to the
-features of gate operations, the implementations gain additional security properties.
-Since the table lookup operation and conditional jump operation will be replaced
-with single-bit logical gates, without directly non-input data access or control
-flow change, thus both the data access type and control flow type of side-channel
-leakage will be avoided.
+features of gate operations, the implementations gain additional security
+properties. Since the table lookup operation and conditional jump operation will
+be replaced with single-bit logical gates, without directly non-input data
+access or control flow change, thus both the data access type and control flow
+type of side-channel leakage will be avoided.
 
 \begin{figure}[h!]
     \centering

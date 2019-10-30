@@ -1,69 +1,62 @@
 \section{Related Work}
 
-There is vast amount of work on side channel detection,
-quantification, and mitigation. Here we only present the closely
-related work to ours.
+There is vast amount of work on side channel detection, quantification, and
+mitigation. Here we only present the closely related work to ours.
 
 \subsection{Detection}
 
-There are a large number of works on side-channel vulnerability
-detections in recent years.  CacheAudit~\cite{182946} uses abstract
-domains to compute the over approximation of cache-based side-channel
-information leakage upper bound. However, due to over approximation they make,
-CacheAudit can indicate the program is
-side-channel free if the program has zero leakage.  However, it is
-less useful to judge the sensitive level of the side-channel leakage
-based on the leakage provided by CacheAudit. CacheS~\cite{236338}
-improves the work of CacheAudit by proposing the novel abstract
-domains, which only track secret-related code. Like CacheAudit, CacheS
-can not provide the information to indicate the sensitive level of
-side-channel vulnerabilities. CacheSym~\cite{Brotzman19Casym} introduces
-a static cache-aware symbolic reasoning technique to cover multiple
-paths for the target program. Still, their approaches cannot assess
-the sensitive level for each side-channel vulnerability.
+There are a large number of works on side-channel vulnerability detections in
+recent years.  CacheAudit~\cite{182946} uses abstract domains to compute the
+over approximation of cache-based side-channel information leakage upper bound.
+However, due to over approximation they make, CacheAudit can indicate the
+program is side-channel free if the program has zero leakage.  However, it is
+less useful to judge the sensitive level of the side-channel leakage based on
+the leakage provided by CacheAudit. CacheS~\cite{236338} improves the work of
+CacheAudit by proposing the novel abstract domains, which only track
+secret-related code. Like CacheAudit, CacheS can not provide the information to
+indicate the sensitive level of side-channel vulnerabilities.
+CacheSym~\cite{Brotzman19Casym} introduces a static cache-aware symbolic
+reasoning technique to cover multiple paths for the target program. Still, their
+approaches cannot assess the sensitive level for each side-channel
+vulnerability.
 
-The dynamic approach, usually comes with taint analysis and symbolic
-execution, can perform a very precise analysis. CacheD~\cite{203878}
-takes a concrete program execution trace and run the symbolic
-execution on the top of the trace to get the formula of each memory
-address. During the symbolic execution, every value except the
-sensitive key uses the concrete value. Therefore, CacheD is quite
-precise in term of false positives. We adopted a similar idea to model
-the secret-dependent memory accesses. DATA~\cite{217537} detects
-address-based side-channel vulnerabilities by comparing different
-execution traces under various test
-inputs. MicroWalk~\cite{Wichelmann:2018:MFF:3274694.3274741} uses
-mutual information (MI) between sensitive input and execution state to
-detect side-channels. They can only detect control-flow channels and
-MI scores are less meaningful for dynamic analysis.
+The dynamic approach, usually comes with taint analysis and symbolic execution,
+can perform a very precise analysis. CacheD~\cite{203878} takes a concrete
+program execution trace and run the symbolic execution on the top of the trace
+to get the formula of each memory address. During the symbolic execution, every
+value except the sensitive key uses the concrete value. Therefore, CacheD is
+quite precise in term of false positives. We adopted a similar idea to model the
+secret-dependent memory accesses. DATA~\cite{217537} detects address-based
+side-channel vulnerabilities by comparing different execution traces under
+various test inputs. MicroWalk~\cite{Wichelmann:2018:MFF:3274694.3274741} uses
+mutual information (MI) between sensitive input and execution state to detect
+side-channels. They can only detect control-flow channels and MI scores are less
+meaningful for dynamic analysis.
 
 \subsection{Quantification}
 
-Quantitative Information Flow (QIF) aims at providing an information
-leakage estimation for the sensitive information given the public
-output. If zero bits of the information is leaked, the program is
-called non-interference. McCamant and Ernst~\cite{McCamantE2008} quantify the
-information leakage as the network flow
-capacity. Backes et al.~\cite{5207642} proposes an automated method
-for QIF by computing an equivalence relation on the set of input keys.
-But the approach cannot handle real-world programs with bitwise operations.
-Phan et al.~\cite{Phan:2012:SQI:2382756.2382791} propose symbolic
-QIF. The goal of their work is to ensure the program is
-non-interference. They adopt an over approximation way of estimating
-the total information leakage and their method does not work for
-secret-dependent memory access
-side-channels. CHALICE~\cite{Chattopadhyay:2017:QIL:3127041.3127044}
-quantifies the leaked information for a given cache behavior. CHALICE
-symbolically reason about cache behavior and estimate the amount
-of leaked information based on cache miss/hit.
-Their approach can only scale to small programs,
-which limits its usage in real-world applications.
-On the contrary, \tool{} can assess the sensitive level of
-side-channels with different granularities. It can also analyze
-side-channels in real-world crypto libraries.
+Quantitative Information Flow (QIF) aims at providing an information leakage
+estimation for the sensitive information given the public output. If zero bits
+of the information is leaked, the program is called non-interference. McCamant
+and Ernst~\cite{McCamantE2008} quantify the information leakage as the network
+flow capacity. Backes et al.~\cite{5207642} proposes an automated method for QIF
+by computing an equivalence relation on the set of input keys. But the approach
+cannot handle real-world programs with bitwise operations. Phan et
+al.~\cite{Phan:2012:SQI:2382756.2382791} propose symbolic QIF. The goal of their
+work is to ensure the program is non-interference. They adopt an over
+approximation way of estimating the total information leakage and their method
+does not work for secret-dependent memory access side-channels.
+CHALICE~\cite{Chattopadhyay:2017:QIL:3127041.3127044} quantifies the leaked
+information for a given cache behavior. CHALICE symbolically reason about cache
+behavior and estimate the amount of leaked information based on cache miss/hit.
+Their approach can only scale to small programs, which limits its usage in
+real-world applications. On the contrary, \tool{} can assess the sensitive level
+of side-channels with different granularities. It can also analyze side-channels
+in real-world crypto libraries.
 
 \subsection{Mitigation}
-Both
-hardware-based~\cite{Page2005PartitionedCA, Wang:2007:NCD:1250662.1250723,Zhang:2015:HDL:2775054.2694372,Li:2014:SLH:2541940.2541947, 236344}
-and software-based~\cite{shih2017t,Coppens:2009:PMT:1607723.1608124, brickell2006software}
-side-channels mitigation methods have been proposed recently.
+Both hardware-based~\cite{Page2005PartitionedCA,
+Wang:2007:NCD:1250662.1250723,Zhang:2015:HDL:2775054.2694372,Li:2014:SLH:2541940.2541947,
+236344} and software-based~\cite{shih2017t,Coppens:2009:PMT:1607723.1608124,
+brickell2006software} side-channels mitigation methods have been proposed
+recently.

@@ -1,22 +1,19 @@
 %\section{Design}
 \section{Design and Implementation}
-In this section, we describe the design of \tool{} by focusing on
-how our design solves the challenges discussed in the previous
-section.
+In this section, we describe the design of \tool{} by focusing on how our design
+solves the challenges discussed in the previous section.
 
 %\subsection{Overview}
 %\subsection{Workflow}
 \subsection{Design}
 The shortcomings of the existing work inspire us to design a new tool to detect
-and quantify side-channel vulnerabilities in binaries. The tool has three
-steps, as shown in Figure~\ref{fig:workflow}.
-First, we run the target program with a concrete input
-(sensitive information) under the dynamic binary instrumentation (DBI) frameworks
-to collect execution traces. After that, we run the symbolic execution
-to capture the fined-grained semantic information of each secret-dependent
-control-flow transfers and data-accesses.
-Finally we run Monte Carlo (MC) simulations to estimate the amount of leaked
-information.
+and quantify side-channel vulnerabilities in binaries. The tool has three steps,
+as shown in Figure~\ref{fig:workflow}. First, we run the target program with a
+concrete input (sensitive information) under the dynamic binary instrumentation
+(DBI) frameworks to collect execution traces. After that, we run the symbolic
+execution to capture the fined-grained semantic information of each
+secret-dependent control-flow transfers and data-accesses. Finally we run Monte
+Carlo (MC) simulations to estimate the amount of leaked information.
 
 \begin{figure*}[ht]
     \centering
@@ -28,25 +25,26 @@ information.
 \begin{enumerate}
     \item \emph{Execution trace generation.} The design goal of \tool{} is to
           estimate the information leakage as precisely as possible. Therefore,
-          we sacrifice the soundness for the precision in terms of program analysis.
-          Previous works~\cite{203878,217537} have demonstrated the effectiveness of the
-          dynamic analysis. We follow their approaches and run the target binary under
-          dynamic binary instrumentations (DBI) to record execution traces and
-          the runtime information.
-    \item \emph{Instruction level symbolic execution.} We model attackers' observations
-          from side-channel vulnerabilities with logic formulas. Each formula captures the
-          fined-grained information between input secrets and leakage sites. In consideration
-          of precision and performance, we remove the intermediate language(IR) layer of
-          the symbolic execution.
-          Also, the engine only symbolically executes the instruction that might be
-          affected by the input key. We use random testing instead of SMT solvers to find
-          satisfying variables.
-          The above design significantly reduces the overhead of symbolic executions, which
-          makes the tool scale to real-world programs.
+          we sacrifice the soundness for the precision in terms of program
+          analysis. Previous works~\cite{203878,217537} have demonstrated the
+          effectiveness of the dynamic analysis. We follow their approaches and
+          run the target binary under dynamic binary instrumentations (DBI) to
+          record execution traces and the runtime information.
+    \item \emph{Instruction level symbolic execution.} We model attackers'
+          observations from side-channel vulnerabilities with logic formulas.
+          Each formula captures the fined-grained information between input
+          secrets and leakage sites. In consideration of precision and
+          performance, we remove the intermediate language(IR) layer of the
+          symbolic execution. Also, the engine only symbolically executes the
+          instruction that might be affected by the input key. We use random
+          testing instead of SMT solvers to find satisfying variables. The above
+          design significantly reduces the overhead of symbolic executions,
+          which makes the tool scale to real-world programs.
     \item \emph{Leakage estimation.} We transfer the information leakage quantification
           problem into the problem of counting the number of assignments that satisfy the
-          formulas which model the observations from attackers. We propose a Monte Carlo
-          method to estimate the number of satisfying solutions. With the help of central
+          formulas which model the observations from attackers. We propose a
+          Monte Carlo method to estimate the number of satisfying solutions.
+          With the help of central
           limit theorems (CLT), we also give an error estimate with the probability.
 
 \end{enumerate}

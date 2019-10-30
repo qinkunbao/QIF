@@ -1,53 +1,48 @@
 \section{Discussions and Limitations}
-In the section, we discuss \tool's limitations, usages, and
-some future works.
+In the section, we discuss \tool's limitations, usages, and some future works.
 
-\tool{} works on the native x86 execution traces. The design,
-which is very precise in terms of true leakages compared to other
-static source code method~\cite{197207,BacelarAlmeida:2013:FVS:2483313.2483334},
-also suffers from limitations of dynamic approaches as well.
-\tool{} is not sound and has coverage problem. Each time we only
-get one single execution trace. Therefore, we may neglect
-some side-channel vulnerabilities on other traces. However,
-we argue that it is not a crucial problems for analyzing crypto
-libraries. Because crypto libraries are designed to have the same
-code coverage for various inputs. Our evaluation also confirms
-the above point. For symmetric encryptions during our evaluation,
-there is no secret-dependent control-flow transfers. RSA implementations
-have several secret-dependent control-flow transfers. But after we
-manually check those leakages cites. We find most of them are useful
-for bound checking, which do not leak much information and have
-negligible effects on the whole code coverage as well.
+\tool{} works on the native x86 execution traces. The design, which is very
+precise in terms of true leakages compared to other static source code
+method~\cite{197207,BacelarAlmeida:2013:FVS:2483313.2483334}, also suffers from
+limitations of dynamic approaches as well. \tool{} is not sound and has coverage
+problem. Each time we only get one single execution trace. Therefore, we may
+neglect some side-channel vulnerabilities on other traces. However, we argue
+that it is not a crucial problems for analyzing crypto libraries. Because crypto
+libraries are designed to have the same code coverage for various inputs. Our
+evaluation also confirms the above point. For symmetric encryptions during our
+evaluation, there is no secret-dependent control-flow transfers. RSA
+implementations have several secret-dependent control-flow transfers. But after
+we manually check those leakages cites. We find most of them are useful for
+bound checking, which do not leak much information and have negligible effects
+on the whole code coverage as well.
 
-One of the motivations of \tool{} is that while recent works
-have reported lots of tentative side-channel vulnerabilities,
-most of them are unpatched by developers. Our evaluation result
-also confirms it. For RSA, the latest OpenSSL\@ only has one leakage
-site that can leak more than 3 bits while there are 22 leakage sites
-according to \tool{}. DES implementation of OpenSSL\@ has several
-sensitive leakages. But given the end life status of DES, it is
-still unpatched for the worth of engineering effort. At the early
-stage of the project, we hope to find some sensitive leakages but are
-neglected by communities for years. But somehow every sensitive leakages
-identified by \tool{} are known to people before. We think the main reason is
-that we only test famous crypto algorithms in well-known crypto libraries.
-Those code bases have been studied for years. So it is unlikely to have
-unknown sensitive leakages. We leave the task of applying
-\tool{} on other libraries and non-crypto libraries in the future.
+One of the motivations of \tool{} is that while recent works have reported lots
+of tentative side-channel vulnerabilities, most of them are unpatched by
+developers. Our evaluation result also confirms it. For RSA, the latest
+OpenSSL\@ only has one leakage site that can leak more than 3 bits while there
+are 22 leakage sites according to \tool{}. DES implementation of OpenSSL\@ has
+several sensitive leakages. But given the end life status of DES, it is still
+unpatched for the worth of engineering effort. At the early stage of the
+project, we hope to find some sensitive leakages but are neglected by
+communities for years. But somehow every sensitive leakages identified by
+\tool{} are known to people before. We think the main reason is that we only
+test famous crypto algorithms in well-known crypto libraries. Those code bases
+have been studied for years. So it is unlikely to have unknown sensitive
+leakages. We leave the task of applying \tool{} on other libraries and
+non-crypto libraries in the future.
 
-%\tool{} works on the native x86 instructions, while
-%some existing works~\cite{197207,BacelarAlmeida:2013:FVS:2483313.2483334} 
-%find side-channels vulnerabilities from source code level 
-%or intermediate languages (e.g., VEX, REIL). Apart from the scalability
-%issues for IR implementations, \tool{} is designed to work on the
-%native x86 instructions for the following considerations. First, compliers can 
-%introduce or mitigate side channels vulnerabilities. 
-%For example, the GCC compiler may or may not translate the $!$ operator into conditional branches. 
-%If the branch is secret-dependent, the attacker could learn some sensitive information.
-%However, source-based methods fail to know how those the machine code looks like, which
-%leads to false positives or false negatives.  
-%Second, we find many crypto libraries have lots of inlined assembly code. In general, 
-%it is hard to convert assembly code into source code
-%or IR.
+%\tool{} works on the native x86 instructions, while some existing
+%works~\cite{197207,BacelarAlmeida:2013:FVS:2483313.2483334} find side-channels
+%vulnerabilities from source code level or intermediate languages (e.g., VEX,
+%REIL). Apart from the scalability issues for IR implementations, \tool{} is
+%designed to work on the native x86 instructions for the following
+%considerations. First, compliers can introduce or mitigate side channels
+%vulnerabilities. For example, the GCC compiler may or may not translate the $!$
+%operator into conditional branches. If the branch is secret-dependent, the
+%attacker could learn some sensitive information. However, source-based methods
+%fail to know how those the machine code looks like, which leads to false
+%positives or false negatives.  
+%Second, we find many crypto libraries have lots of inlined assembly code. In
+%general, it is hard to convert assembly code into source code or IR.
 
 
