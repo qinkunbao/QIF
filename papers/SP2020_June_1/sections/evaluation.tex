@@ -10,40 +10,40 @@
         of leakage information. A summary of all vulnerabilities with the amount of
         leak information can be found in the appendix.
     }\label{fig:Testtt}
-\newlength{\x}
-\newlength{\y}
-\settowidth{\x}{~~}
-\settowidth{\y}{m}
-\addtolength{\x}{-1\y}
-\newcommand{\foo}{\mbox{\hspace*{\the\x}}}
+    \newlength{\x}
+    \newlength{\y}
+    \settowidth{\x}{~~}
+    \settowidth{\y}{m}
+    \addtolength{\x}{-1\y}
+    \newcommand{\foo}{\mbox{\hspace*{\the\x}}}
     \begin{tabular}{clrrrrrrr}
         \hline
         \textbf{Algorithm} & \textbf{Implementation}  & \textbf{Lekage Sites} & \textbf{CF}         & \textbf{DF}
-                           & \textbf{\# Instructions} & \textbf{Max Leakeage} & \textbf{Sym.\ Exe.} & \textbf{Monte Carlo}                                                     \\\hline
-                           &                          &                       &                     &                      &             & bits & ms         & ms              \\\cline{7-9}
-        AES                & Mbed TLS 2.5             & 68                    & 0                   & 68                   & 39,855      & 8    & 570 ~~     & 850 ~~          \\
-        AES                & Mbed TLS 2.15            & 68                    & 0                   & 68                   & 39,855      & 8    & 550 ~~     & 829 ~~          \\
-        AES                & OpenSSL 0.9.7            & 75                    & 0                   & 75                   & 1,704       & 10   & 319 ~~     & 7,720 ~~        \\
-        AES                & OpenSSL 1.0.2f           & 88                    & 0                   & 88                   & 1,350       & 12   & 72 ~~      & 1,500 ~~        \\
-        AES                & OpenSSL 1.0.2k           & 88                    & 0                   & 88                   & 1,350       & 11   & 83 ~~      & 1,441 ~~        \\
-        AES                & OpenSSL 1.1.0f           & 88                    & 0                   & 88                   & 1,420       & 12   & 87 ~~      & 1,454 ~~        \\
-        AES                & OpenSSL 1.1.1            & 88                    & 0                   & 88                   & 1,586       & 8    & 91 ~~      & 1,250 ~~        \\
-        DES                & Mbed TLS 2.5             & 15                    & 0                   & 15                   & 4,596       & 1    & 114 ~~     & 144 ~~          \\
-        DES                & Mbed TLS 2.15            & 15                    & 0                   & 15                   & 4,596       & 1    & 106 ~~     & 137 ~~          \\
-        DES                & OpenSSL 0.9.7            & 6                     & 0                   & 6                    & 2,976       & 7    & 149 ~~     & 4,193       ~~  \\
-        DES                & OpenSSL 1.0.2f           & 8                     & 0                   & 8                    & 2,593       & 9    & 239 ~~     & 5,311       ~~  \\
-        DES                & OpenSSL 1.0.2k           & 8                     & 0                   & 8                    & 2,593       & 9    & 235 ~~     & 5,080        ~~ \\
-        DES                & OpenSSL 1.1.0f           & 8                     & 0                   & 8                    & 4,260       & 9    & 256 ~~     & 5,027        ~~ \\
-        DES                & OpenSSL 1.1.1            & 6                     & 0                   & 6                    & 8,272       & 7    & 235 ~~     & 4,584       ~~  \\
-                           &                          &                       &                     &                      &             &      & minutes    & minutes         \\\cline{8-9}
-        RSA                & Mbed TLS 2.5             & 6                     & 6                   & 0                    & 22,109,246  & 9    & 38 ~~      & 20  ~~          \\
-        RSA                & Mbed TLS 2.15            & 12                    & 0                   & 12                   & 24,484,441  & 9    & 39 ~~      & 241  ~~         \\
-        RSA                & OpenSSL 0.9.7            & 105                   & 103                 & 2                    & 16,980,109  & 13   & 28 ~~      & 266 ~~          \\
-        RSA                & OpenSSL 1.0.2f           & 38                    & 27                  & 11                   & 14,468,307  & 10   & 28 ~~      & 160  ~~         \\
-        RSA                & OpenSSL 1.0.2k           & 36                    & 27                  & 9                    & 15,285,210  & 12   & 39 ~~      & 282   ~~        \\
-        RSA                & OpenSSL 1.1.0f           & 31                    & 22                  & 9                    & 16,390,750  & 13   & 32 ~~      & 262 ~~          \\
-        RSA                & OpenSSL 1.1.1            & 26                    & 20                  & 6                    & 18,207,020  & 12   & 7 ~~       & 455 ~~          \\\hline
-        Total              &                          & 883                   & 205                 & 678                  & 128,042,089 &      & 213m \foo  & 1,688m \foo     \\\hline
+                           & \textbf{\# Instructions} & \textbf{Max Leakeage} & \textbf{Sym.\ Exe.} & \textbf{Monte Carlo}                                                    \\\hline
+                           &                          &                       &                     &                      &             & bits & ms        & ms              \\\cline{7-9}
+        AES                & Mbed TLS 2.5             & 68                    & 0                   & 68                   & 39,855      & 8    & 570 ~~    & 850 ~~          \\
+        AES                & Mbed TLS 2.15            & 68                    & 0                   & 68                   & 39,855      & 8    & 550 ~~    & 829 ~~          \\
+        AES                & OpenSSL 0.9.7            & 75                    & 0                   & 75                   & 1,704       & 10   & 319 ~~    & 7,720 ~~        \\
+        AES                & OpenSSL 1.0.2f           & 88                    & 0                   & 88                   & 1,350       & 12   & 72 ~~     & 1,500 ~~        \\
+        AES                & OpenSSL 1.0.2k           & 88                    & 0                   & 88                   & 1,350       & 11   & 83 ~~     & 1,441 ~~        \\
+        AES                & OpenSSL 1.1.0f           & 88                    & 0                   & 88                   & 1,420       & 12   & 87 ~~     & 1,454 ~~        \\
+        AES                & OpenSSL 1.1.1            & 88                    & 0                   & 88                   & 1,586       & 8    & 91 ~~     & 1,250 ~~        \\
+        DES                & Mbed TLS 2.5             & 15                    & 0                   & 15                   & 4,596       & 1    & 114 ~~    & 144 ~~          \\
+        DES                & Mbed TLS 2.15            & 15                    & 0                   & 15                   & 4,596       & 1    & 106 ~~    & 137 ~~          \\
+        DES                & OpenSSL 0.9.7            & 6                     & 0                   & 6                    & 2,976       & 7    & 149 ~~    & 4,193       ~~  \\
+        DES                & OpenSSL 1.0.2f           & 8                     & 0                   & 8                    & 2,593       & 9    & 239 ~~    & 5,311       ~~  \\
+        DES                & OpenSSL 1.0.2k           & 8                     & 0                   & 8                    & 2,593       & 9    & 235 ~~    & 5,080        ~~ \\
+        DES                & OpenSSL 1.1.0f           & 8                     & 0                   & 8                    & 4,260       & 9    & 256 ~~    & 5,027        ~~ \\
+        DES                & OpenSSL 1.1.1            & 6                     & 0                   & 6                    & 8,272       & 7    & 235 ~~    & 4,584       ~~  \\
+                           &                          &                       &                     &                      &             &      & minutes   & minutes         \\\cline{8-9}
+        RSA                & Mbed TLS 2.5             & 6                     & 6                   & 0                    & 22,109,246  & 9    & 38 ~~     & 20  ~~          \\
+        RSA                & Mbed TLS 2.15            & 12                    & 0                   & 12                   & 24,484,441  & 9    & 39 ~~     & 241  ~~         \\
+        RSA                & OpenSSL 0.9.7            & 105                   & 103                 & 2                    & 16,980,109  & 13   & 28 ~~     & 266 ~~          \\
+        RSA                & OpenSSL 1.0.2f           & 38                    & 27                  & 11                   & 14,468,307  & 10   & 28 ~~     & 160  ~~         \\
+        RSA                & OpenSSL 1.0.2k           & 36                    & 27                  & 9                    & 15,285,210  & 12   & 39 ~~     & 282   ~~        \\
+        RSA                & OpenSSL 1.1.0f           & 31                    & 22                  & 9                    & 16,390,750  & 13   & 32 ~~     & 262 ~~          \\
+        RSA                & OpenSSL 1.1.1            & 26                    & 20                  & 6                    & 18,207,020  & 12   & 7 ~~      & 455 ~~          \\\hline
+        Total              &                          & 883                   & 205                 & 678                  & 128,042,089 &      & 213m \foo & 1,688m \foo     \\\hline
     \end{tabular}
 \end{table*}
 
@@ -139,14 +139,15 @@ We will present the details in the subsequent sections.
 %\subsection{Scalability}
 \label{eval:scala}
 
+%% Fix tonight
 %\subsubsection{Running Time}
-\begin{figure}
-    \centering
-    \includegraphics[width=.8\columnwidth]{./figures/result/running_time.pdf}
-    \caption{With the optimization introduced, \tool{} can be scalable to RSA}
-\end{figure}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=.8\columnwidth]{./figures/result/running_time.pdf}
+%    \caption{With the optimization introduced, \tool{} can be scalable to RSA}
+%\end{figure}
 
-%\subsubsection{Comparison with the Existing Tools}
+\subsubsection{Comparison with the Existing Tools}
 \tool{} is designed to quantify side-channel leakages. But it can find
 side-channels leakages as well. In this section, we compare \tool{} with the
 existing trace-based side-channel identification tools.
@@ -325,18 +326,18 @@ confirms our assumptions.
         \label{fig:rsa-5}
     }
     \caption{RSA implementation in different versions of OpenSSL. The mark $*$ means timeout,
-      which indicates more severe leakages (see \S\ref{loc:timeout}).
-      \fixme{replace ``failed'' with the timeout mark in the figures}}
+        which indicates more severe leakages (see \S\ref{loc:timeout}).
+        \fixme{replace ``failed'' with the timeout mark in the figures}}
     \label{fig:rsa}
 \end{figure*}
 
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
 Bit-slicing is a software technology that is capable of implementing algorithms
-with high efficiency and constant running time. Eli Biham et al.\ \cite{xxxxxxx} first
+with high efficiency and constant running time. Eli Biham et al.~\cite{Biham:1997:FND:647932.757246} first
 use gate circuits to implement the SBOX of DES\@.
 % Cite: A Fast New DES Implementation in Software
-Based on his work Matthew Kwan present a better implementation of DES with fewer
+Based on his work Matthew Kwan~\cite{Kwan2000ReducingTG} present a better implementation of DES with fewer
 gates and first used the term Bit-slicing.
 % Cite: Reducing the Gate Count of Bitslice DES 
 This approach can immune cryptographic algorithms to cache and timing-related
@@ -351,72 +352,40 @@ be replaced with single-bit logical gates, without directly non-input data
 access or control flow change, thus both the data access type and control flow
 type of side-channel leakage will be avoided.
 
-\begin{figure}[h!]
-    \centering
-    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-...
-uint8_t na = ~a;
-uint8_t nb = ~b;
-uint8_t nc = ~c;
 
-uint8_t t0 = (b & nc);
-uint8_t t1 = (b | nc);
+% \subsubsection{Scatter and Gather}
+% The scatter-gather technology is also a common defence method to cache-based timing attacks.
+% \begin{figure}[h!]
+%     \centering
+%     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+% ...
+% align ( buf ):
+%     return buf - ( buf & ( block size - 1 ) ) + block size
 
-*l = (a & nb) | t0;
-*r = (na & t1) | t0;
-...
-\end{lstlisting}
-    \caption{SBOX\_with\_BitSlicing}
-    \label{SBOX_bitslicing}
-\end{figure}
+% scatter ( buf, p, k ):
+%     for i := 0 to N - 1 do
+%         buf [k + i * spacing] := p [k][i]
 
-\begin{figure}[h!]
-    \centering
-    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-...
-uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
-x = (a << 2) + (b << 1) + c;
-*l = SBOX[x] >> 1;
-*r = SBOX[x] & 0b01;
-...
-\end{lstlisting}
-    \caption{SBOX\_without\_BitSlicing}
-    \label{SBOX_da}
-\end{figure}
+% gather ( r, buf, k ):
+%     for i := 0 to N - 1 do
+%         r [i] := buf [k + i * spacing]
+% ...
+% \end{lstlisting}
+%     \caption{Scatter\_and\_Gather}
+%     \label{Scatter_and_Gather}
+% \end{figure}
 
-\subsubsection{Scatter and Gather}
-The scatter-gather technology is also a common defence method to cache-based timing attacks.
-\begin{figure}[h!]
-    \centering
-    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-...
-align ( buf ):
-    return buf - ( buf & ( block size - 1 ) ) + block size
-
-scatter ( buf, p, k ):
-    for i := 0 to N - 1 do
-        buf [k + i * spacing] := p [k][i]
-
-gather ( r, buf, k ):
-    for i := 0 to N - 1 do
-        r [i] := buf [k + i * spacing]
-...
-\end{lstlisting}
-    \caption{Scatter\_and\_Gather}
-    \label{Scatter_and_Gather}
-\end{figure}
-
-\begin{figure}[h!]
-    \centering
-    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-...
-uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
-align(buf);
-scatter(buf, SBOX, k);
-...
-\end{lstlisting}
-    \caption{Sbox\_with\_Scatter\_and\_Gather}
-    \label{SBOX_sg}
-\end{figure}
+% \begin{figure}[h!]
+%     \centering
+%     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+% ...
+% uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
+% align(buf);
+% scatter(buf, SBOX, k);
+% ...
+% \end{lstlisting}
+%     \caption{Sbox\_with\_Scatter\_and\_Gather}
+%     \label{SBOX_sg}
+% \end{figure}
 
 \subsubsection{Smaller Lookup Tables}

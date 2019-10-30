@@ -1,7 +1,8 @@
-\begin{table}[h]
+\begin{table*}%[h]
 \centering
-\caption{Summary of all vulnerabilities in AES implemented by mbedTLS with the amount of leak information}\label{tab:AESmbedTLS}
-\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
+\caption{Summary of all vulnerabilities in AES implemented by mbedTLS 2.15.1 with the amount of leak informationThe mark $*$ means timeout,which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:AESmbedTLS}
+%\resizebox{\columnwidth}{!}{
+\begin{tabular}{clrrr}
 \hline
 \textbf{File} & \textbf{Line Num} & \textbf{Function} & \textbf{Leakedbits} & \textbf{Type} \\\hline
 aes.c&595&mbedtls\_aes\_setkey\_enc&8 &DA\\
@@ -74,5 +75,5 @@ aes.c&884&mbedtls\_internal\_aes\_encrypt&2 &DA\\
 aes.c&884&mbedtls\_internal\_aes\_encrypt&1 &DA\\
 \hline
 \end{tabular}
-}
-\end{table}
+%}
+\end{table*}

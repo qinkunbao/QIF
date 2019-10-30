@@ -34,44 +34,100 @@
 
 \IncMargin{1em}
 \begin{algorithm}
-\SetAlgoLined
-\DontPrintSemicolon
+      \SetAlgoLined
+      \DontPrintSemicolon
 
-\KwIn{{The constraint $G_{i}= C_{i_1} \land C_{i_2}
-\land \ldots \land C_{i_m}$}}    
-\KwOut{{The number of assignments that satisfy $G_{i}$ $|K_{G_{i}}|$}}
+      \KwIn{{The constraint $G_{i}= C_{i_1} \land C_{i_2}
+                              \land \ldots \land C_{i_m}$}}
+      \KwOut{{The number of assignments that satisfy $G_{i}$ $|K_{G_{i}}|$}}
 
-\SetKwProg{RW}{RandomWalk}{}{}
-\SetKwProg{MM}{MetropolisMove}{}{} 
-$n$: the number of sampling times \;
-$P$: a probability generator \;
-$k$: the input assignment \;
-$n_{s}$: the number of satisfying assignments \;
-$\#k$: the satisfying number of k \fixme{this number is not used syntactically} \; 
-Initialization: \;
-$\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}C_{i_j}(k_0)$ \;
-\For{$t\leftarrow 1$ \KwTo $n$} {
-     $p$ $\leftarrow$ $P$ \;
-     \If{$p \geq 0.5$}
-     {
-       $v$ $\leftarrow$ \RW{$v$} {}
-     }
-     \Else{
-           $v$ $\leftarrow$ \MM{$v$} {}
-     }
-     \If{$v$ satisfies $G_{i}$}
-     {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
-}
-$|K_{G_{i}}|$ $\leftarrow$ $n_s|K| / n$
-\caption{Metropolis Sampling}
+      \SetKwProg{RW}{RandomWalk}{}{}
+      \SetKwProg{MM}{MetropolisMove}{}{}
+      $n$: the number of sampling times \;
+      $P$: a probability generator \;
+      $k$: the input assignment \;
+      $n_{s}$: the number of satisfying assignments \;
+      $\#k$: the satisfying number of k \fixme{this number is not used syntactically} \;
+      Initialization: \;
+      $\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}C_{i_j}(k_0)$ \;
+      \For{$t\leftarrow 1$ \KwTo $n$} {
+            $p$ $\leftarrow$ $P$ \;
+            \If{$p \geq 0.5$}
+            {
+                  $v$ $\leftarrow$ \RW{$v$} {}
+            }
+            \Else{
+                  $v$ $\leftarrow$ \MM{$v$} {}
+            }
+            \If{$v$ satisfies $G_{i}$}
+            {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
+      }
+      $|K_{G_{i}}|$ $\leftarrow$ $n_s|K| / n$
+      \caption{Metropolis Sampling}
 \end{algorithm}
 \DecMargin{1em}
 
+\clearpage
+\section{SBOX Example of Bit-slicing}
+\label{appendix:SBOX}
 
-
+\begin{figure}[h!]
+      \centering
+      \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+  ...
+  uint8_t na = ~a;
+  uint8_t nb = ~b;
+  uint8_t nc = ~c;
+  
+  uint8_t t0 = (b & nc);
+  uint8_t t1 = (b | nc);
+  
+  *l = (a & nb) | t0;
+  *r = (na & t1) | t0;
+  ...
+  \end{lstlisting}
+      \caption{SBOX\_with\_BitSlicing}
+      \label{SBOX_bitslicing}
+  \end{figure}
+  
+  \begin{figure}[h!]
+      \centering
+      \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+  ...
+  uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
+  x = (a << 2) + (b << 1) + c;
+  *l = SBOX[x] >> 1;
+  *r = SBOX[x] & 0b01;
+  ...
+  \end{lstlisting}
+      \caption{SBOX\_without\_BitSlicing}
+      \label{SBOX_da}
+  \end{figure}
 
 \section{Detailed Evaluation Results}
 \label{sec:result-table}
+\fixme{Some talbes are too long to fit in}
+
+\input{figures/form/latex/AES-mbedTLS-2-5.tex}
+\input{figures/form/latex/AES-mbedTLS-2-15-1.tex}
+\input{figures/form/latex/AES-openssl-0-9-7.tex}
+\input{figures/form/latex/AES-openssl-1-0-2f.tex}
+\input{figures/form/latex/AES-openssl-1-0-2k.tex}
+\input{figures/form/latex/AES-openssl-1-1-0f.tex}
+\input{figures/form/latex/AES-openssl-1-1-1.tex}
+
+\input{figures/form/latex/DES-mbedTLS-2-5.tex}
+\input{figures/form/latex/DES-mbedTLS-2-15-1.tex}
+\input{figures/form/latex/DES-openssl-0-9-7.tex}
+\input{figures/form/latex/DES-openssl-1-0-2f.tex}
+\input{figures/form/latex/DES-openssl-1-0-2k.tex}
+\input{figures/form/latex/DES-openssl-1-1-0f.tex}
+\input{figures/form/latex/DES-openssl-1-1-1.tex}
 
 \input{figures/form/latex/RSA-mbedTLS-2-5.tex}
+\input{figures/form/latex/RSA-mbedTLS-2-15-1.tex}
+\input{figures/form/latex/RSA-openssl-0-9-7.tex}
+\input{figures/form/latex/RSA-openssl-1-0-2f.tex}
+\input{figures/form/latex/RSA-openssl-1-0-2k.tex}
+\input{figures/form/latex/RSA-openssl-1-1-0f.tex}
 \input{figures/form/latex/RSA-openssl-1-1-1.tex}
