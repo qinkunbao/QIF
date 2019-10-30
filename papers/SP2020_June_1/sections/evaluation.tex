@@ -139,14 +139,15 @@ We will present the details in the subsequent sections.
 %\subsection{Scalability}
 \label{eval:scala}
 
+%% Fix tonight
 %\subsubsection{Running Time}
-\begin{figure}
-    \centering
-    \includegraphics[width=.8\columnwidth]{./figures/result/running_time.pdf}
-    \caption{With the optimization introduced, \tool{} can be scalable to RSA}
-\end{figure}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=.8\columnwidth]{./figures/result/running_time.pdf}
+%    \caption{With the optimization introduced, \tool{} can be scalable to RSA}
+%\end{figure}
 
-%\subsubsection{Comparison with the Existing Tools}
+\subsubsection{Comparison with the Existing Tools}
 \tool{} is designed to quantify side-channel leakages. But it can find
 side-channels leakages as well. In this section, we compare \tool{} with the
 existing trace-based side-channel identification tools.
@@ -332,11 +333,11 @@ confirms our assumptions.
 
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
-\fixme{Rewrite} Bit-slicing is a software technology that is capable of implementing algorithms
-with high efficiency and constant running time. Eli Biham et al.\ \cite{xxxxxxx} first
+Bit-slicing is a software technology that is capable of implementing algorithms
+with high efficiency and constant running time. Eli Biham et al.~\cite{Biham:1997:FND:647932.757246} first
 use gate circuits to implement the SBOX of DES\@.
 % Cite: A Fast New DES Implementation in Software
-Based on his work Matthew Kwan present a better implementation of DES with fewer
+Based on his work Matthew Kwan~\cite{Kwan2000ReducingTG} present a better implementation of DES with fewer
 gates and first used the term Bit-slicing.
 % Cite: Reducing the Gate Count of Bitslice DES 
 This approach can immune cryptographic algorithms to cache and timing-related
