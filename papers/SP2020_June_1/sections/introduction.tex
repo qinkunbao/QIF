@@ -1,7 +1,7 @@
 \section{Introduction}
 %% side channels are important
 Side channels are inevitable in modern computer systems as the sensitive
-information may leak through many kinds of inadvertent behaviors, such as power,
+information may be leaked through many kinds of inadvertent behaviors, such as power,
 electromagnetic radiation, and even
 sound~\cite{agrawal2002side,kar20178,chari1999towards,217605,genkin2014rsa}.
 Among them, software-based side channels, such as cache attacks, memory page
@@ -30,7 +30,7 @@ addresses and data flow from secrets to branch conditions. We refer to them as
 central problem is how to identify these two code patterns automatically. Recent
 works~\cite{203878,217537,Wichelmann:2018:MFF:3274694.3274741,Brotzman19Casym,236338,182946}
 adopt static and dynamic analysis to detect side-channels. They are capable to find
-potential leak sites in real-world software, but fail to report how severe a
+potential leak sites in real-world software, but fail to report how severe each
 potential leakage could be. Moreover, many of the reported vulnerabilities are typically
 hard to exploit and leak very little information. For example,
 DATA~\cite{217537} reports 2,246 potential leakage site for the RSA
