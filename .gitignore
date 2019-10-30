@@ -88,3 +88,4 @@ papers/*/main.pdf
 .DS_Store
 *.swp
 
+.history

@@ -1,37 +1,37 @@
 \subsection{Implementation}
-We implement \tool{} with 16,729 lines of code in C++ and Python. 
+We implement \tool{} with 16,729 lines of code in C++ and Python.
 It has three components, Intel
-Pin tool that can collect the execution trace, 
+Pin tool that can collect the execution trace,
 the instruction-level symbolic execution
 engine, and the backend that can estimate the information leakage.
-The breakdown is shown in Table~\ref{tbl:implementation}. 
-The tool can also report the memory address of the leakage site. 
-To assist the developers fix the bugs, we also have several Python 
-scripts that can report the leakage location in the source code with the 
+The breakdown is shown in Table~\ref{tbl:implementation}.
+The tool can also report the memory address of the leakage site.
+To assist the developers fix the bugs, we also have several Python
+scripts that can report the leakage location in the source code with the
 debug information and the symbol information. A sample report can be found
- in the appendix.
+in the appendix.
 
 \begin{table}[h]
     \centering
-%    \resizebox{.8\columnwidth}{!}{
+    %    \resizebox{.8\columnwidth}{!}{
     \caption{\tool{}' main components and sizes}\label{tbl:implementation}
     \begin{tabular}{lr@{~}@{}l}
-    \hline
-    Component                            & \multicolumn{2}{c}{Lines of Code (LOC)}    \\ \hline
-    Trace Logging                        & 501 lines &of C++       \\ 
-    Symbolic Execution                   & 14,963 lines &of C++    \\ 
-    Data Flow                            & 451 lines &of C++       \\
-    Monte Carlo Sampling                 & 603 lines &of C++       \\ 
-    Others                               & 211 lines &of Python    \\ \hline
-    Total    & 16,729 lines & \\\hline
+        \hline
+        Component            & \multicolumn{2}{c}{Lines of Code (LOC)}             \\ \hline
+        Trace Logging        & 501 lines                               & of C++    \\
+        Symbolic Execution   & 14,963 lines                            & of C++    \\
+        Data Flow            & 451 lines                               & of C++    \\
+        Monte Carlo Sampling & 603 lines                               & of C++    \\
+        Others               & 211 lines                               & of Python \\ \hline
+        Total                & 16,729 lines                            &           \\\hline
     \end{tabular}
-%    }
+    %    }
 \end{table}
 
-Our current implementation supports part of the Intel 32-bit instructions, 
-including bitwise operations, control transfer, data movement, and logic 
-instructions, which are essential in finding memory-based side-channel vulnerabilities. For other 
-instructions the current implementation does not support, 
+Our current implementation supports part of the Intel 32-bit instructions,
+including bitwise operations, control transfer, data movement, and logic
+instructions, which are essential in finding memory-based side-channel vulnerabilities. For other
+instructions the current implementation does not support,
 the tool will use the real values to update the registers and memory cells.
 Therefore, the tool may miss some leakages but will not give us any new
 false positives with the implementation.
