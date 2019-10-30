@@ -121,11 +121,13 @@ for each leakage site, \tool{} will stop once 1) it has 95\% confidence
 possibility that the error of estimated leaked information is less than 1 bit or
 2) it cannot reach the termination condition after 10 minutes. In the latter
 case, it means the number of satisfying keys is very small and the leakage is
-very serious. The tool marks the Monte Carlo is failed. During the evaluation,
+quite severe. \emph{That is, timeout indicates severe leakage.} %The tool marks the Monte Carlo is failed.
+During the evaluation,
 we find \tool{} can quantify every side-channel leakage for every symmetric
-encryption. For asymmetric encryptions, Monte Carlo quantification sometimes
-fail. We manually check those leakage sites and find most of them are serious.
-\fixme{details on those severe leakages?}
+encryption. For asymmetric encryptions, Monte Carlo sometimes
+times out. We manually check those leakage sites and find most of them are quite severe.
+We will present the details in the subsequent sections.
+
 \subsection{Scalability}\label{eval:scala}
 
 \subsubsection{Running Time}
