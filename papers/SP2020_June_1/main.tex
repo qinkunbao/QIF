@@ -67,18 +67,18 @@ showlines=true
 \begin{abstract}
     Side-channel attacks allow adversaries to infer sensitive information based
     on non-functional characteristics. Existing work on software side-channel
-    detections can identify many potential vulnerabilities.
+    detections can identify numerous potential vulnerabilities.
     %side-channel leakage sites.
-    However, in practice many such vulnerabilities leak negligible amount of
-    sensitive information and thus developers are often reluctant to address
+    However, in practice, many such vulnerabilities leak a negligible amount of
+    sensitive information, and thus developers are often reluctant to address
     them.
     %Those leakage sites can leak one bit, two bits, or many bits.
     On the other hand, no existing tools can precisely report the number of
-    leaked bits for each leakage site, for production systems.
+    leaked bits for each leakage site for production systems.
 
     To overcome this limitation, we propose a novel method to precisely quantify
     the leaked information from side-channel vulnerabilities. Our quantification
-    method is dramatically different from previous methods and the results are
+    method is dramatically different from previous methods, and the results are
     confirmed to be much more precise and usable in practice. We model each
     leakage as a constraint.
     %  and use these constraints to divide the input space into subsets such
@@ -86,15 +86,15 @@ showlines=true
     %  constraint.  %As we discuss later, The cardinality of the subset
     %  corresponds to the amount of leaked information from those leakages. 
     We scale  symbolic execution to production software to generate the
-    constraints,
+    constraints
     % It is widely believed that symbolic execution is expensive in terms of
     % performance. We systematically analyze the bottlenecks of the current
     % dynamic symbolic execution approach and make it scalable to real-world
     % crypto systems.
     and then run Monte Carlo sampling to estimate the number of leaked
-    information.  
+    information.
     % for each detected vulnerability.
-    By using   
+    By using
     %With the help of
     the Central Limit Theorem, we can also give the error bound for estimation.
 
