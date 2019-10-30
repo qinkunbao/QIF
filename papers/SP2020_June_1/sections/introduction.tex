@@ -1,7 +1,7 @@
 \section{Introduction}
 %% side channels are important
 Side channels are inevitable in modern computer systems as the sensitive
-information may be leaked by many kinds of inadvertent behaviors, such as power,
+information may leak through many kinds of inadvertent behaviors, such as power,
 electromagnetic radiation, and even
 sound~\cite{agrawal2002side,kar20178,chari1999towards,217605,genkin2014rsa}.
 Among them, software-based side channels, such as cache attacks, memory page
@@ -15,9 +15,9 @@ keys~\cite{Osvik2006,Gullasch:2011:CGB:2006077.2006784,203878,10.1007/978-3-540-
 
 %% to deal with side channels, we can protect or detect them and detection is better
 Various countermeasures have been proposed to defend against software-based
-side-channel attacks. Hardware-level solutions, including reducing shared
+side-channel attacks. Hardware-level solutions, such as reducing shared
 resources, adopting oblivious RAM, and using transnational
-memory~\cite{203878,217537,shih2017t,Zhang:2015:HDL:2775054.2694372} need new
+memory~\cite{203878,217537,shih2017t,Zhang:2015:HDL:2775054.2694372}, need new
 hardware features or changes to modern complex computer systems, which is
 impractical and hard to adopt in reality. Therefore, a more promising and
 universal direction is software countermeasures, detecting and eliminating
@@ -25,21 +25,21 @@ side-channel vulnerabilities from code.
 
 Regarding the root cause of software-based side channels, many of them originate
 from the following two specific circumstances: data flow from secrets to load
-addresses and data flow from secrets to branch conditions. We refer them to as
-memory-access correspondingly and secret-dependent control-flow. Therefore, a
-central problem is identifying those two code patterns automatically. Recent
+addresses and data flow from secrets to branch conditions. We refer to them as
+memory-access control-flow and secret-dependent control-flow, respectively. A
+central problem is how to identify these two code patterns automatically. Recent
 works~\cite{203878,217537,Wichelmann:2018:MFF:3274694.3274741,Brotzman19Casym,236338,182946}
-adopt static and dynamic analysis to detect side-channels. They can find many
+adopt static and dynamic analysis to detect side-channels. They are capable to find
 potential leak sites in real-world software, but fail to report how severe a
-potential leakage could be. Many of the reported vulnerabilities are typically
+potential leakage could be. Moreover, many of the reported vulnerabilities are typically
 hard to exploit and leak very little information. For example,
 DATA~\cite{217537} reports 2,246 potential leakage site for the RSA
 implementation in OpenSSL\@. After some inspections, 1,510 are dismissed, but it
-still leaves 460 data-access patterns and 278 control-flow. For software
-developers, it is hard to fix all those vulnerabilities, let alone the majority
-of them are negligible. While some vulnerabilities can be used to recover the
-full secret keys~\cite{184415}, many other vulnerabilities prove to be less
-serious in reality.
+still leaves 460 data-access patterns and 278 control-flows. For software
+developers, it is hard to fix all these vulnerabilities, let alone the majority
+of them are negligible. That is, some vulnerabilities can be exploited to recover the
+full secret keys~\cite{184415}, but many other vulnerabilities prove to be less
+severe in reality.
 
 To assess the sensitive level of side-channel vulnerabilities, we need a proper
 quantification metric. Static methods~\cite{182946,5207642}, usually with
@@ -51,16 +51,16 @@ bound leakage of AES-128 exceeds the original key size! The dynamic methods take
 another approach with a concrete input and run the program in the real
 environment. Although they are very precise in terms of actual leakages, no
 existing tool can precisely assess the severity of the vulnerabilities they
-discover.
+discover. 
 
 To overcome these limitations, we propose a novel method to quantify information
-leakage more precisely. Different from previous works, which only consider the
+leakage more precisely. Unlike previous works that only consider the
 ``average'' information leakage, we study the problem based on real attack
-scenarios. The average information assumes that the target program will have
+scenarios. The average information assumes that the target program has
 \emph{variable} or \emph{random} sensitive information when an attack is
 launched. However, for real-world attacks, an adversary may run the target
 problem again and over again with \emph{fixed} unknown sensitive information
-such as the key. Therefore, the previous threat model cannot model real attack
+such as the key. Therefore, the previous threat model cannot simulate real attack
 scenarios. In contrast, our method is more precise and fine-grained. We quantify
 the amount of leaked information as the cardinality of the set of possible
 inputs based on attackers' observations.
@@ -69,11 +69,11 @@ inputs based on attackers' observations.
 Before an attack, an adversary has a large but finite input space. Every time
 when the adversary observes a leakage site, he can eliminate some potential
 inputs and reduce the size of the input space. The smaller the input space is,
-the more information is actually gained. In an extreme case, if the size of the
+the more information is obtained. In an extreme case, if the size of the
 input space reduces to one, the adversary can determine the input information
 uniquely, which means all the secret information (e.g., the whole secret key) is
 leaked. By counting the number of distinct inputs, we can quantify the
-information leakage more precisely.
+information leakage precisely.
 
 We use constraints to model the relation between the original sensitive input
 and each leakage site. We run the instruction level symbolic execution on the
@@ -83,12 +83,12 @@ operation in terms of performance. Therefore, existing dynamic symbolic
 execution based works~\cite{203878,236338,Brotzman19Casym} either only analyze
 small programs or apply some domain knowledge to simplify the execution. We
 systematically analyze the bottleneck of the symbolic execution and optimize it
-scalable to real-world cryptosystems.
+towards real-world cryptosystems.
 
 We apply the above technique and build a tool called \tool{},
 %\footnote{CleverHans is a horse that can ``count''. Our tool uses an advanced
 %%method to count the number of leaked bits from side channels.} 
-which can discover potential information leakage sites as well as estimating how
+to discover potential information leakage sites as well as estimate how
 many bits they can leak for each leakage site. We assume that adversaries can
 exploit secret-dependent control-flow transfers and data-access patterns when
 the program processes different sensitive data.
@@ -100,7 +100,7 @@ several independent bytes, and each byte is regarded as a unique symbol. Those
 formulas can precisely model side-channel vulnerabilities. Then we extend the
 problem to multiple leakages and related leakages and introduce the Monte Carlo
 sampling method to estimate the single and combined information leakage. In
-fact, if an application has a different sensitive input but still satisfies the
+fact, if an application has a different sensitive input but still satisfies
 the formula, the code can still leak the same information.
 
 
