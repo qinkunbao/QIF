@@ -7,10 +7,8 @@ import sys
 basicPath = './'
 resultPath = basicPath + 'form/latex/'
 
-# TODO: get form name
 
-
-def data2form(finame, foname):
+def data2form(finame, foname, enc, library):
     sys.stdout.write(foname)
     sys.stdout.flush()
 
@@ -19,7 +17,11 @@ def data2form(finame, foname):
     fo = open(foname, 'w')
     fo.write('\\begin{table}[h]\n' +
              '\\centering\n' +
-             '\\caption{}\\label{fig:}\n' +
+             '\\caption{' +
+             'Summary of all vulnerabilities in ' + enc +
+             ' implemented by ' + library +
+             ' with the amount of leak information' +
+             '}\\label{tab:' + enc + library + '}\n' +
              '\\resizebox{\\columnwidth}{!}{' +
              '\\begin{tabular}{clrrr}\n\\hline\n')
 
@@ -36,16 +38,10 @@ def data2form(finame, foname):
 
     # buf = fi.readline()
 
+    while buf and buf[:8] != 'Address:':
+        buf = fi.readline()
+
     while buf:
-        while buf and buf[:8] != 'Address:':
-            buf = fi.readline()
-
-        # leakage = ''
-        # ltype = ''
-        # lfile = ''
-        # lnumber = ''
-        # lfunction = ''
-
         if buf[17:22] == 'Monte':
             leakage = 'Failed'
             ltype = ''
@@ -70,7 +66,9 @@ def data2form(finame, foname):
                  leakage + '&' + ltype + '\\\\\n')
         #  leakage + '&' + ltype + '& \\\\\n')
 
-        buf = fi.readline()
+        # buf = fi.readline()
+        while buf and buf[:8] != 'Address:':
+            buf = fi.readline()
 
     fo.write('\\hline\n' + '\\end{tabular}\n}\n' + '\\end{table}')
 
@@ -87,11 +85,11 @@ for enc in ['AES', 'DES', 'RSA']:
         finame = 'result_' + enc + '-mbedTLS-' + version + 'Inst_data.txt'
         foname = enc + '.mbedTLS.' + version
         foname = resultPath + foname.replace('.', '-') + '.tex'
-        data2form(finame, foname)
+        data2form(finame, foname, enc, 'mbedTLS')
 
     # openssl
     for version in ['0.9.7', '1.0.2f', '1.0.2k', '1.1.0f', '1.1.1']:
         finame = 'result_' + enc + '-openssl-' + version + 'Inst_data.txt'
         foname = enc + '.openssl.' + version
         foname = resultPath + foname.replace('.', '-') + '.tex'
-        data2form(finame, foname)
+        data2form(finame, foname, enc, 'openssl')
