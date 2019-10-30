@@ -10,6 +10,12 @@
         of leakage information. A summary of all vulnerabilities with the amount of
         leak information can be found in the appendix.
     }\label{fig:Testtt}
+\newlength{\x}
+\newlength{\y}
+\settowidth{\x}{~~}
+\settowidth{\y}{m}
+\addtolength{\x}{-1\y}
+\newcommand{\foo}{\mbox{\hspace*{\the\x}}}
     \begin{tabular}{clrrrrrrr}
         \hline
         \textbf{Algorithm} & \textbf{Implementation}  & \textbf{Lekage Sites} & \textbf{CF}         & \textbf{DF}
@@ -37,7 +43,7 @@
         RSA                & OpenSSL 1.0.2k           & 36                    & 27                  & 9                    & 15,285,210  & 12   & 39 ~~      & 282   ~~        \\
         RSA                & OpenSSL 1.1.0f           & 31                    & 22                  & 9                    & 16,390,750  & 13   & 32 ~~      & 262 ~~          \\
         RSA                & OpenSSL 1.1.1            & 26                    & 20                  & 6                    & 18,207,020  & 12   & 7 ~~       & 455 ~~          \\\hline
-        Total              &                          & 883                   & 205                 & 678                  & 128,042,089 &      & 213m    ~~ & 1,688m ~~       \\\hline
+        Total              &                          & 883                   & 205                 & 678                  & 128,042,089 &      & 213m \foo  & 1,688m \foo     \\\hline
     \end{tabular}
 \end{table*}
 
@@ -58,33 +64,32 @@ aspects:
     \item  \textbf{Identifying side-channels leakages.}
           The first step of \tool{} is to identify side-channel leakages. Is
           \tool{} effective to detect side-channels in real-world crypto
-          systems? (~\ref{sec:eval_overview})
+          systems? (\S\ref{sec:eval_overview})
     \item  \textbf{Scalability}
           Is \tool{} scalable to real-world crypto systems? How effective are
           the design decisions made by \tool{} in terms of scalability?
-          (~\ref{sec:eval_overview},~\ref{eval:scala})
+          (\S\ref{sec:eval_overview} and \S\ref{eval:scala})
     \item  \textbf{Quantifying side-channel leakages.}
           Can \tool{} precisely report the number of leaked bits in crypto
           libraries? Are the numbers of leaked bits reported by \tool{} useful
           to justify the severity levels of the side-channel vulnerabilities?
-          (~\ref{sec:eval_case},~\ref{sec::eval_rsa},~\ref{sec:eval_countermeasures})
-
+          (\S\ref{sec:eval_case}, \S\ref{sec::eval_rsa}, and \S\ref{sec:eval_countermeasures})
 \end{enumerate}
 
 \subsection{Evaluation Result Overview} \label{sec:eval_overview}
-In this section, we present an overview of the evaluation result. \tool{} find
+In this section, we present an overview of the evaluation result. \tool{} found
 883 leakages in total from real-world crypto system libraries. Among those 883
 leak points, 205 of them are leaked due to secret-dependent control-flow
 transfers and 678 of them are leaked due to secret-dependent memory accesses.
 
 For the crypto libraries, \tool{} finds that secret-dependent memory accesses
-cause most leakages. \textbf{\tool{} also identifies that most side-channel
+cause most leakages. \tool{} also identifies that most side-channel
 vulnerabilities leak very little information in practice, which confirms our
 initial assumptions.  Without our tool, developers will not be able to
 distinguish those ``vulnerabilities'' from severe ones and ignore them for sure.
 However, we do find some vulnerabilities that \tool\ reports with more severe
 leakages. Some of them have been confirmed by existing research that those
-vulnerabilities can be exploited by realize real attacks.}
+vulnerabilities can be exploited by realize real attacks.
 
 All the symmetric key implementations in OpenSSL and mbedTLS have significant
 leakages due to the implementation of the lookup table to speed up the
@@ -95,7 +100,7 @@ developers have patched most of those leakages. One method to address the
 leakage is to use bit-slicing. We will analyse the corresponding countermeasure
 in the following sections.
 
-\tool{} find several leakage sites for both the implementation of DES and AES in
+\tool{} finds several leakage sites for both the implementation of DES and AES in
 OpenSSL and mbedTLS\@. \tool{} confirms that all those leakages come from table
 lookups. mbedTLS 2.15 and 2.5 have the same implementations of DES and AES so
 they have the same leakage report. One proper fix would be a scalar bit-sliced
@@ -121,19 +126,26 @@ for each leakage site, \tool{} will stop once 1) it has 95\% confidence
 possibility that the error of estimated leaked information is less than 1 bit or
 2) it cannot reach the termination condition after 10 minutes. In the latter
 case, it means the number of satisfying keys is very small and the leakage is
-very serious. The tool marks the Monte Carlo is failed. During the evaluation,
+quite severe. \emph{That is, timeout indicates severe leakage.}
+%The tool marks the Monte Carlo is failed.
+\label{loc:timeout}
+During the evaluation,
 we find \tool{} can quantify every side-channel leakage for every symmetric
-encryption. For asymmetric encryptions, Monte Carlo quantification sometimes
-fail. We manually check those leakage sites and find most of them are serious.
-\fixme{details on those severe leakages?}
-\subsection{Scalability}\label{eval:scala}
+encryption. For asymmetric encryptions, Monte Carlo sometimes
+times out. We manually check those leakage sites and find most of them are quite severe.
+We will present the details in the subsequent sections.
 
-\subsubsection{Running Time}
-\begin{figure}
-    \centering
-    \includegraphics[width=.8\columnwidth]{./figures/result/running_time.pdf}
-    \caption{With the optimization introduced in section, \tool{} can be scalable to RSA}
-\end{figure}
+\subsection{Comparison with the Existing Tools}
+%\subsection{Scalability}
+\label{eval:scala}
+
+%% Fix tonight
+%\subsubsection{Running Time}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=.8\columnwidth]{./figures/result/running_time.pdf}
+%    \caption{With the optimization introduced, \tool{} can be scalable to RSA}
+%\end{figure}
 
 \subsubsection{Comparison with the Existing Tools}
 \tool{} is designed to quantify side-channel leakages. But it can find
@@ -188,7 +200,8 @@ compared to leakage 4, 5, 6, 7. We check the source code and find leakage 1, 2,
 3 use secret to access the lookup table \emph{RT0, RT1, RT2, RT3}, which is 8K
 each. On the contrary, leakage 4, 5, 6, 7 each accesses a smaller lookup table
 (2K). Therefore, leakage 4, 5, 6, 7 leak less information.
-\begin{figure}[h!]
+
+\begin{figure}%[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 int mbedtls_internal_aes_encrypt( mbedtls_aes_context *ctx,
@@ -225,9 +238,9 @@ return( 0 );
 
 \subsubsection{RSA in mbedTLS}
 \tool{} identifies several side-channel leakages for the RSA implementation
-in MbedTLS. Here we introduce and analyze two cases.
+in MbedTLS. Here we introduce and analyze two cases. %, as shown in Figure~\ref{fig:mbedtls_rsa_1} and \ref{fig:mbedtls_rsa_2}.
 
-\begin{figure}[h!]
+\begin{figure}%[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 ...
@@ -236,10 +249,10 @@ if( mbedtls_mpi_cmp_int( N, 0 ) < 0 || ( N->p[0] & 1 ) == 0 )
 ...
 \end{lstlisting}
     \caption{mbedtls\_mpi\_exp\_mod}
-    \label{mbedtls_rsa_1}
+    \label{fig:mbedtls_rsa_1}
 \end{figure}
 
-\tool{} reports one bit information is leaked from the branch at line 2 and it
+\tool{} reports one bit information is leaked from the branch at line 2 in Figure~\ref{fig:mbedtls_rsa_1} and it
 leaks less information than other leakages. Function
 \emph{mbedtls\_mpi\_exp\_mod} performs sliding-window exponentiation for big
 numbers. The leakage is caused by checking the signed bit of the big number $N$.
@@ -247,7 +260,7 @@ Therefore, the leakage can only tell whether $N$ is greater than zero, which is
 one bit leak, not severe.
 
 
-\begin{figure}[h!]
+\begin{figure}%[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 ...
@@ -258,10 +271,11 @@ while( c != 0 );
 ...
 \end{lstlisting}
     \caption{mpi\_mul\_hlp}
-    \label{mbedtls_rsa_2}
+    \label{fig:mbedtls_rsa_2}
 \end{figure}
 
-Function \emph{mpi\_mul\_hlp} is notoriously for a series of timing attacks.
+Function \emph{mpi\_mul\_hlp}, shown in Figure~\ref{fig:mbedtls_rsa_2},
+is notoriously for a series of timing attacks.
 Recent patches have fixed many leakages in function \emph{mpi\_mul\_hlp}.
 \tool{} reports 8 bits of information is leaked from line 5.
 \emph{mpi\_mul\_hlp} is a helper function to perform mbedtls\_mpi
@@ -286,6 +300,7 @@ same amount of leakage. We check the changelog and find only one change for
 patching vulnerabilities for RSA (CVE-2016-0702). RSA changelog also claims
 OpenSSL 1.1.1 adopted ``numerous side-channel attack mitigations.'' The result
 confirms our assumptions.
+
 \begin{figure*}
     \centering
     \vspace*{-9pt}
@@ -310,14 +325,17 @@ confirms our assumptions.
         \includegraphics[width=.19\linewidth]{./figures/result/RSA-openssl-1-1-1.pdf}
         \label{fig:rsa-5}
     }
-    \caption{RSA implementation in different versions of OpenSSL}\label{fig:rsa}
-
+    \caption{RSA implementation in different versions of OpenSSL. The mark $*$ means timeout,
+      which indicates more severe leakages (see \S\ref{loc:timeout}).
+      \fixme{replace ``failed'' with the timeout mark in the figures}}
+    \label{fig:rsa}
 \end{figure*}
+
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
 Bit-slicing is a software technology that is capable of implementing algorithms
 with high efficiency and constant running time. Eli Biham~\cite{Kwan2000ReducingTG} first
-use gate circuits to implement the SBOX of DES.
+use gate circuits to implement the SBOX of DES\@.
 % Cite: A Fast New DES Implementation in Software
 Based on his work Matthew Kwan~\cite{Kwan2000ReducingTG} present a better implementation of DES with fewer
 gates and first used the term Bit-slicing.

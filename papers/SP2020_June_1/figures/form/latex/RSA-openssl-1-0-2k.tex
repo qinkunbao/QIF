@@ -1,46 +1,47 @@
-\begin{table}[h]
+\begin{table*}%[h]
 \centering
-\caption{Summary of all vulnerabilities in RSA implemented by openssl with the amount of leak information}\label{tab:RSAopenssl}
-\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
+\caption{Summary of all vulnerabilities in RSA implemented by openssl 1.0.2k with the amount of leak informationThe mark $*$ means timeout,which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:RSAopenssl}
+%\resizebox{\columnwidth}{!}{
+\begin{tabular}{clrrr}
 \hline
 \textbf{File} & \textbf{Line Num} & \textbf{Function} & \textbf{Leakedbits} & \textbf{Type} \\\hline
-bn\_lib.c&199&BN\_num\_bits&Failed&\\
+bn\_lib.c&199&BN\_num\_bits&*&\\
 bn\_lib.c&200&BN\_num\_bits&10&CF\\
 bn\_lib.c&201&BN\_num\_bits&13&DA\\
 bn\_shift.c&168&BN\_lshift&4 &CF\\
-bn\_lib.c&673&BN\_ucmp&Failed&\\
+bn\_lib.c&673&BN\_ucmp&*&\\
 bio\_asn1.c&484&\_\_udivdi3&6 &CF\\
-bn\_div.c&381&BN\_div&Failed&\\
-bn\_div.c&456&BN\_div&Failed&\\
+bn\_div.c&381&BN\_div&*&\\
+bn\_div.c&456&BN\_div&*&\\
 bn\_gcd.c&279&BN\_mod\_inverse&0 &CF\\
 bn\_gcd.c&302&BN\_mod\_inverse&7 &CF\\
 bn\_gcd.c&324&BN\_mod\_inverse&9 &CF\\
-bn\_add.c&255&BN\_usub&Failed&\\
+bn\_add.c&255&BN\_usub&*&\\
 bn\_gcd.c&327&BN\_mod\_inverse&13&CF\\
 bn\_gcd.c&305&BN\_mod\_inverse&14&CF\\
 bn\_lib.c&203&BN\_num\_bits&14&DA\\
 bn\_lib.c&208&BN\_num\_bits&14&CF\\
-bn\_lib.c&209&BN\_num\_bits&Failed&\\
-bn\_lib.c&212&BN\_num\_bits&Failed&\\
-bn\_gcd.c&515&BN\_mod\_inverse&Failed&\\
+bn\_lib.c&209&BN\_num\_bits&*&\\
+bn\_lib.c&212&BN\_num\_bits&*&\\
+bn\_gcd.c&515&BN\_mod\_inverse&*&\\
 bn\_div.c&381&BN\_div&8 &CF\\
-bn\_div.c&439&BN\_div&Failed&\\
+bn\_div.c&439&BN\_div&*&\\
 bn\_div.c&385&BN\_div&4 &CF\\
 bn\_div.c&381&BN\_div&0 &CF\\
 bn\_div.c&381&BN\_div&0 &CF\\
 bn\_div.c&469&BN\_div&1 &CF\\
 bn\_exp.c&716&BN\_mod\_exp\_mont\_consttime&1 &CF\\
 bn\_exp.c&836&BN\_mod\_exp\_mont\_consttime&0 &CF\\
-bn\_mont.c&262&BN\_from\_montgomery\_word&Failed&\\
-bn\_mont.c&263&BN\_from\_montgomery\_word&Failed&\\
-bn\_mont.c&264&BN\_from\_montgomery\_word&Failed&\\
-bn\_mont.c&266&BN\_from\_montgomery\_word&Failed&\\
-bn\_mont.c&276&BN\_from\_montgomery\_word&Failed&\\
-bn\_mont.c&282&BN\_from\_montgomery\_word&Failed&\\
+bn\_mont.c&262&BN\_from\_montgomery\_word&*&\\
+bn\_mont.c&263&BN\_from\_montgomery\_word&*&\\
+bn\_mont.c&264&BN\_from\_montgomery\_word&*&\\
+bn\_mont.c&266&BN\_from\_montgomery\_word&*&\\
+bn\_mont.c&276&BN\_from\_montgomery\_word&*&\\
+bn\_mont.c&282&BN\_from\_montgomery\_word&*&\\
 bn\_mont.c&201&BN\_from\_montgomery\_word&0 &CF\\
-bn\_asm.c&646&bn\_mul\_comba8&Failed&\\
-bn\_asm.c&787&bn\_sqr\_comba8&Failed&\\
+bn\_asm.c&646&bn\_mul\_comba8&*&\\
+bn\_asm.c&787&bn\_sqr\_comba8&*&\\
 \hline
 \end{tabular}
-}
-\end{table}
+%}
+\end{table*}

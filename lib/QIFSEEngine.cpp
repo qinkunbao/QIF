@@ -613,7 +613,7 @@ namespace tana {
             current_eip = it;
 
             //this->printMemory();
-            if((it->id % 10000 == 0) && (it->id < 1000000))
+            if((it->id % 1000 == 0) && (it->id < 100000))
             {
                 auto now_time = std::chrono::high_resolution_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::microseconds>(now_time - start_time);
@@ -623,7 +623,7 @@ namespace tana {
 
             }
 
-            if(it->id == 1000000)
+            if(it->id == 100000 || std::next(std::next(inst)) == end)
             {
                 std::ofstream se_time_file;
                 se_time_file.open("se_optimized.csv");
@@ -727,10 +727,10 @@ namespace tana {
 
                     // If the length of formula exceeds 50000, the tool
                     // will use concrete value instead
-                    if (sym_res[j]->length() > 50000) {
-                        auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
-                        writeReg(Registers::convertRegID2RegName(j), reg_v);
-                    }
+                    //if (sym_res[j]->length() > 50000) {
+                     //   auto reg_v = std::make_shared<BitVector>(ValueType::CONCRETE, con_res[j]);
+                    //    writeReg(Registers::convertRegID2RegName(j), reg_v);
+                    //}
 
 
                 }

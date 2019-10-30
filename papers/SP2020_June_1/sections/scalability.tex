@@ -279,35 +279,39 @@ with Theorem~\ref{IndependentConstraint} .
 
 With Theorem~\ref{IndependentConstraint}, we can transfer the problem of
 counting the number of solutions in a large constraint with high dimensions into
-counting solutions of several small constraints. We apply the following
-algorithm~\ref{algo:max-inde} to get the Maximum Independent Partition of the
-$c_t(\addr{1},\addr{2},\ldots,\addr{n})$.
+counting solutions of several small constraints.
+The algorithm to compute the Maximum Independent Partition of the
+$c_t(\addr{1},\addr{2},\ldots,\addr{n})$ is shown in  Appendix~\ref{appendix:partition}.
 
-\IncMargin{1em}
-\begin{algorithm}[h]
-      \DontPrintSemicolon
-      \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-      \Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
-      \Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
-      \For{$i\leftarrow 1$ \KwTo $n$}
-      {
-            $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
-            \For{$g_{i} \in G$}
-            {
-                  $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
-                  $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
-                  \If{$S \neq \emptyset$}
-                  {
-                        $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
-                        \textbf{break} \;
-                  }
-                  Insert $c_{\addr{i}}$ to $G$
-            }
-      }
-      \caption{The Maximum Independent Partition}
-      \label{algo:max-inde}
-\end{algorithm}
-\DecMargin{1em}
+%% We apply the following
+%% algorithm~\ref{algo:max-inde} to get the Maximum Independent Partition of the
+%% $c_t(\addr{1},\addr{2},\ldots,\addr{n})$.
+
+%% \IncMargin{1em}
+%% \begin{algorithm}[h]
+%%       \DontPrintSemicolon
+%%       \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+%%       \Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
+%%       \Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
+%%       \For{$i\leftarrow 1$ \KwTo $n$}
+%%       {
+%%             $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
+%%             \For{$g_{i} \in G$}
+%%             {
+%%                   $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
+%%                   $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
+%%                   \If{$S \neq \emptyset$}
+%%                   {
+%%                         $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
+%%                         \textbf{break} \;
+%%                   }
+%%                   Insert $c_{\addr{i}}$ to $G$
+%%             }
+%%       }
+%%       \caption{The Maximum Independent Partition}
+%%       \label{algo:max-inde}
+%% \end{algorithm}
+%% \DecMargin{1em}
 
 \subsubsection{Multiple Step Monte Carlo Sampling}
 
@@ -333,6 +337,7 @@ $K_{c_{i_j}}$ of $c_{i_j}$ by trying every possible 256 solutions. After that,
 we can only generate random input numbers for the rest input variables in
 constraint $g_{i}$. With the simple trick, we can reduce the number of input
 while still ensure the accuracy.
+The deailed algorithm is shown in Appendix~\ref{appendix:montecarlo}.
 
 %% the algorithm
 %\IncMargin{1em}

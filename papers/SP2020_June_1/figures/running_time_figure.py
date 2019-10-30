@@ -32,12 +32,12 @@ def plot(formName, line1, line2):
     plt.figure(figsize=(5, 5))
 
     plt.plot(range(len(line1)), line1, color='grey')
-    # plt.plot(range(len(line2)), line2, color='grey')
+    plt.plot(range(len(line2)), line2, color='grey')
 
-    plt.xticks(fontsize=18)
-    plt.yticks(fontsize=18)
-    plt.ylabel('Time (s)', fontsize=22)
-    plt.xlabel('Number of Instructions (10e4)', fontsize=22)
+    plt.xticks(fontsize=9)
+    plt.yticks(fontsize=9)
+    plt.ylabel('Time (s)', fontsize=11)
+    plt.xlabel('Number of Instructions (10e4)', fontsize=11)
     # plt.title(formName.replace('.', ' ', 2), fontsize = 10)
     plt.tight_layout()
     plt.savefig(figurePath + formName.replace('.', '-') +
@@ -45,6 +45,13 @@ def plot(formName, line1, line2):
     plt.close('all')
 
 
-time1 = count('se_optimized')
-time2 = count('se_non_optimized')
+time1 = count('time_openssl1.1.1')
+time2 = []
+# for i in range(len(time1)-1):
+#     time2.append(time1[i + 1] - time1[i])
+
+# print(time2)
+# time2 = count('se_non_optimized')
+# time2 = []
+# time2[0] += 1
 plot('running_time', time1, time2)
