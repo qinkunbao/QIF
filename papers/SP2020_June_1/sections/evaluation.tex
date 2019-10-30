@@ -120,7 +120,9 @@ for each leakage site, \tool{} will stop once 1) it has 95\% confidence
 possibility that the error of estimated leaked information is less than 1 bit or
 2) it cannot reach the termination condition after 10 minutes. In the latter
 case, it means the number of satisfying keys is very small and the leakage is
-quite severe. \emph{That is, timeout indicates severe leakage.} %The tool marks the Monte Carlo is failed.
+quite severe. \emph{That is, timeout indicates severe leakage.}
+%The tool marks the Monte Carlo is failed.
+\label{loc:timeout}
 During the evaluation,
 we find \tool{} can quantify every side-channel leakage for every symmetric
 encryption. For asymmetric encryptions, Monte Carlo sometimes
@@ -291,6 +293,7 @@ same amount of leakage. We check the changelog and find only one change for
 patching vulnerabilities for RSA (CVE-2016-0702). RSA changelog also claims
 OpenSSL 1.1.1 adopted ``numerous side-channel attack mitigations.'' The result
 confirms our assumptions.
+
 \begin{figure*}
     \centering
     \vspace*{-9pt}
@@ -315,9 +318,11 @@ confirms our assumptions.
         \includegraphics[width=.19\linewidth]{./figures/result/RSA-openssl-1-1-1.pdf}
         \label{fig:rsa-5}
     }
-    \caption{RSA implementation in different versions of OpenSSL \fixme{timeout}}\label{fig:rsa}
-
+    \caption{RSA implementation in different versions of OpenSSL (The mark $*$ means timeout,
+      which indicates more severe leakages (see \S\ref{loc:timeout}). \fixme{timeout mark in the figures}}
+    \label{fig:rsa}
 \end{figure*}
+
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
 Bit-slicing is a software technology that is capable of implementing algorithms
