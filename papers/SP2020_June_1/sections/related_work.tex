@@ -66,5 +66,7 @@ usually hard to adopt in reality. On the contrary, software approaches are usual
 easy to implement. Coppens et al.~\cite{Coppens:2009:PMT:1607723.1608124} 
 introduced a compiler-based approach to eliminate key-dependent 
 control-flow transfers. Crane et al.~\cite{crane2015thwarting} mitigated side-channels by randomizing
-software.
+software. As for crypto libraries, the basic idea is to eliminate key-dependent
+control-flow transfers and data accesses. Common approaches include bit-slicing~\cite{konighofer2008fast,rebeiro2006bitslice}, 
+unifying control-flows~\cite{Coppens:2009:PMT:1607723.1608124}.
 
