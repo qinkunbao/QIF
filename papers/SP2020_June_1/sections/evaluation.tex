@@ -71,19 +71,19 @@ aspects:
 \end{enumerate}
 
 \subsection{Evaluation Result Overview} \label{sec:eval_overview}
-In this section, we present an overview of the evaluation result. \tool{} find
+In this section, we present an overview of the evaluation result. \tool{} found
 883 leakages in total from real-world crypto system libraries. Among those 883
 leak points, 205 of them are leaked due to secret-dependent control-flow
 transfers and 678 of them are leaked due to secret-dependent memory accesses.
 
 For the crypto libraries, \tool{} finds that secret-dependent memory accesses
-cause most leakages. \textbf{\tool{} also identifies that most side-channel
+cause most leakages. \tool{} also identifies that most side-channel
 vulnerabilities leak very little information in practice, which confirms our
 initial assumptions.  Without our tool, developers will not be able to
 distinguish those ``vulnerabilities'' from severe ones and ignore them for sure.
 However, we do find some vulnerabilities that \tool\ reports with more severe
 leakages. Some of them have been confirmed by existing research that those
-vulnerabilities can be exploited by realize real attacks.}
+vulnerabilities can be exploited by realize real attacks.
 
 All the symmetric key implementations in OpenSSL and mbedTLS have significant
 leakages due to the implementation of the lookup table to speed up the
