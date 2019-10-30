@@ -29,11 +29,11 @@ if(password == 0x1b){
 }
 \end{lstlisting}
     \caption{A dummy password checker}
-    \label{figure:password checker}
+    \label{fig:password-checker}
 \end{figure}
 
-We consider the dummy password checker shown in Figure~\ref{figure:password
-checker}. The program will take an 8-bit number as the input and check if the
+We consider the dummy password checker shown in Figure~\ref{fig:password-checker}.
+The program will take an 8-bit number as the input and check if the
 input is the correct password. If an attacker knows the code executes branch
 $\{{1\}}$ by side-channel attacks, he can infer the password equals to 0x1b, in
 which case the attacker can fully retrieve the password. Therefore, the total
@@ -182,15 +182,15 @@ For any $k' \in K \setminus K^o$, $p(k'|o) = 0$. We get
 \end{mydef}
 
 With the new definition, if the attacker observes that the
-code~\ref{figure:password checker} runs the branch 1, then the $K^{o^{1}} =
+code in Figure~\ref{fig:password-checker} runs the branch 1, then the $K^{o^{1}} =
 \{\mathrm{0x1b}\}$. Therefore, the information leakage $L_{P(k)=o^{1}} =
 \log_2{256} - \log_2{1} = 8$ bits, which means the key is totally leaked. If the
-attacker observes the code runs branch2, the leaked information is
-$L_{P(k)=o^{2}} = \log_2{256} - \log_2{255} = 0$ bit.
+attacker observes the code runs branch 2, the leaked information is
+$L_{P(k)=o^{2}} = \log_2{256} - \log_2{255} \approx 0$ bit.
 
 
 We can also calculate the leaked information from the sample code in
-Figure~\ref{background::side-channel}. As the size of input sensitive
+Figure~\ref{fig:side-channel}. As the size of input sensitive
 information is usually public. The problem of quantifying the leaked information
 has been transferred into the problem of estimating the size of input key
 $|K^o|$ under the condition $o \in O$. The result is shown in
@@ -261,7 +261,7 @@ f_i(\beta, k, m) >> L = t_b >> L$ to model the observation on secret-dependent
 control-transfers.
 
 With the following definition, we can model an attacker's observation with math
-formulas. For example, in Figure~\ref{background::side-channel}, if an attacker
+formulas. For example, in Figure~\ref{fig:side-channel}, if an attacker
 observes the code executes 1, we have $c_5: k_1 + k_2 < 8$ to describe an
 attacker's knowledge and $K^{o5} = \{k_1,\, k_2\,|\, (k_1 + k_2) < 8\}$. If an
 attacker observes the code executes 2, we have $c_8: k_1 - k_2 > 0$ and $K^{o8}
