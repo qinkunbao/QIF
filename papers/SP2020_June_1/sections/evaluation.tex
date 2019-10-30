@@ -94,7 +94,7 @@ developers have patched most of those leakages. One method to address the
 leakage is to use bit-slicing. We will analyse the corresponding countermeasure
 in the following sections.
 
-\tool{} find several leakage sites for both the implementation of DES and AES in
+\tool{} finds several leakage sites for both the implementation of DES and AES in
 OpenSSL and mbedTLS\@. \tool{} confirms that all those leakages come from table
 lookups. mbedTLS 2.15 and 2.5 have the same implementations of DES and AES so
 they have the same leakage report. One proper fix would be a scalar bit-sliced
@@ -127,16 +127,18 @@ encryption. For asymmetric encryptions, Monte Carlo sometimes
 times out. We manually check those leakage sites and find most of them are quite severe.
 We will present the details in the subsequent sections.
 
-\subsection{Scalability}\label{eval:scala}
+\subsection{Comparison with the Existing Tools}
+%\subsection{Scalability}
+\label{eval:scala}
 
-\subsubsection{Running Time}
+%\subsubsection{Running Time}
 \begin{figure}
     \centering
     \includegraphics[width=.8\columnwidth]{./figures/result/running_time.pdf}
-    \caption{With the optimization introduced in section, \tool{} can be scalable to RSA}
+    \caption{With the optimization introduced, \tool{} can be scalable to RSA}
 \end{figure}
 
-\subsubsection{Comparison with the Existing Tools}
+%\subsubsection{Comparison with the Existing Tools}
 \tool{} is designed to quantify side-channel leakages. But it can find
 side-channels leakages as well. In this section, we compare \tool{} with the
 existing trace-based side-channel identification tools.
@@ -189,7 +191,8 @@ compared to leakage 4, 5, 6, 7. We check the source code and find leakage 1, 2,
 3 use secret to access the lookup table \emph{RT0, RT1, RT2, RT3}, which is 8K
 each. On the contrary, leakage 4, 5, 6, 7 each accesses a smaller lookup table
 (2K). Therefore, leakage 4, 5, 6, 7 leak less information.
-\begin{figure}[h!]
+
+\begin{figure}%[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 int mbedtls_internal_aes_encrypt( mbedtls_aes_context *ctx,
@@ -226,9 +229,9 @@ return( 0 );
 
 \subsubsection{RSA in mbedTLS}
 \tool{} identifies several side-channel leakages for the RSA implementation
-in MbedTLS. Here we introduce and analyze two cases.
+in MbedTLS. Here we introduce and analyze two cases. %, as shown in Figure~\ref{fig:mbedtls_rsa_1} and \ref{fig:mbedtls_rsa_2}.
 
-\begin{figure}[h!]
+\begin{figure}%[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 ...
@@ -237,10 +240,10 @@ if( mbedtls_mpi_cmp_int( N, 0 ) < 0 || ( N->p[0] & 1 ) == 0 )
 ...
 \end{lstlisting}
     \caption{mbedtls\_mpi\_exp\_mod}
-    \label{mbedtls_rsa_1}
+    \label{fig:mbedtls_rsa_1}
 \end{figure}
 
-\tool{} reports one bit information is leaked from the branch at line 2 and it
+\tool{} reports one bit information is leaked from the branch at line 2 in Figure~\ref{fig:mbedtls_rsa_1} and it
 leaks less information than other leakages. Function
 \emph{mbedtls\_mpi\_exp\_mod} performs sliding-window exponentiation for big
 numbers. The leakage is caused by checking the signed bit of the big number $N$.
@@ -248,7 +251,7 @@ Therefore, the leakage can only tell whether $N$ is greater than zero, which is
 one bit leak, not severe.
 
 
-\begin{figure}[h!]
+\begin{figure}%[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 ...
@@ -259,10 +262,11 @@ while( c != 0 );
 ...
 \end{lstlisting}
     \caption{mpi\_mul\_hlp}
-    \label{mbedtls_rsa_2}
+    \label{fig:mbedtls_rsa_2}
 \end{figure}
 
-Function \emph{mpi\_mul\_hlp} is notoriously for a series of timing attacks.
+Function \emph{mpi\_mul\_hlp}, shown in Figure~\ref{fig:mbedtls_rsa_2},
+is notoriously for a series of timing attacks.
 Recent patches have fixed many leakages in function \emph{mpi\_mul\_hlp}.
 \tool{} reports 8 bits of information is leaked from line 5.
 \emph{mpi\_mul\_hlp} is a helper function to perform mbedtls\_mpi
