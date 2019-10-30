@@ -1,159 +1,152 @@
 \section{Scalable to Real-world Crypto Systems}
 \label{sec:scala}
 
-In \S\ref{sec:trace-qif}, we propose a better information leakage definition
-for realistic attack scenarios, model two types of address-based side-channel
-leakages
-as math formulas, and quantify them by calculating the number of input
+In \S\ref{sec:trace-qif}, we propose a better information leakage definition for
+realistic attack scenarios, model two types of address-based side-channel
+leakages as math formulas, and quantify them by calculating the number of input
 keys ($K^o$) that satisfy those math formulas. Intuitively, we can use
-traditional symbolic execution to capture math formulas and use model
-counting to get the number of satisfying input keys ($K^o$).
-However, some preliminary experiments show that above approach suffers from the unbearable cost, 
-which impede its usage
-to detect and quantify side-channel leakages in real-world applications. 
-In this section, we begin by discussing the bottlenecks of applying the 
-above approaches in real-world crypto systems. After that, we propose
-our methods.
+traditional symbolic execution to capture math formulas and use model counting
+to get the number of satisfying input keys ($K^o$). However, some preliminary
+experiments show that above approach suffers from the unbearable cost, which
+impede its usage to detect and quantify side-channel leakages in real-world
+applications. In this section, we begin by discussing the bottlenecks of
+applying the above approaches in real-world crypto systems. After that, we
+propose our methods.
 
-In general, \tool{} faces the following performance and cost  challenges
-in order to \emph{scale to production crypto system analysis}. 
+In general, \tool{} faces the following performance and cost  challenges in
+order to \emph{scale to production crypto system analysis}.
 \begin{itemize}
-    \item Symbolic execution (\textbf{Challenge C2})
-    \item Constraint solving (\textbf{Challenge C3})
-    \item Counting the number of items in $K^o$ (\textbf{Challenge C4})
+      \item Symbolic execution (\textbf{Challenge C2})
+      \item Constraint solving (\textbf{Challenge C3})
+      \item Counting the number of items in $K^o$ (\textbf{Challenge C4})
 \end{itemize}
 
 \subsection{Trace-oriented Symbolic Execution}
-While symbolic execution can capture the fine-grained semantics of programs,
-it is also notorious for its unbearable performance cost. Previous 
-trace-oriented symbolic execution based
-works~\cite{203878,Chattopadhyay:2017:QIL:3127041.3127044} all 
-have large performance bottlenecks. As a result, those approaches 
-either only apply to small-size programs~\cite{Chattopadhyay:2017:QIL:3127041.3127044} 
-or apply some domain knowledge to simplify the analysis.
-Those tools interpret each instruction and update the memory cells and registers with
-formulas that captured the semantics of the execution and search different 
-input values that can lead to different execution behaviors using constraint solver.
-We implement the approach presented in \S\ref{sec:trace-qif} and
-model the side-channels as formulas.
-While the tool can finish analyzing some simple cases like AES, 
-it can not handle complicated cases like RSA. 
+While symbolic execution can capture the fine-grained semantics of programs, it
+is also notorious for its unbearable performance cost. Previous trace-oriented
+symbolic execution based
+works~\cite{203878,Chattopadhyay:2017:QIL:3127041.3127044} all have large
+performance bottlenecks. As a result, those approaches either only apply to
+small-size programs~\cite{Chattopadhyay:2017:QIL:3127041.3127044} or apply some
+domain knowledge to simplify the analysis. Those tools interpret each
+instruction and update the memory cells and registers with formulas that
+captured the semantics of the execution and search different input values that
+can lead to different execution behaviors using constraint solver. We implement
+the approach presented in \S\ref{sec:trace-qif} and model the side-channels as
+formulas. While the tool can finish analyzing some simple cases like AES, it can
+not handle complicated cases like RSA.
 
-We observe that finding side-channels using symbolic execution is different from 
-traditional general symbolic execution and can be optimized to be as efficient as other
-methods with the approaches  below.
+We observe that finding side-channels using symbolic execution is different from
+traditional general symbolic execution and can be optimized to be as efficient
+as other methods with the approaches  below.
 
 %\subsubsection{Interpret Instructions Symbolically}
 
-The number of machine instructions is enormous, and the semantics of each instruction is complex. 
-Intel Developer Manual~\cite{intelsys}
-introduces more than 1000 different x86 instructions. 
-It is tedious to implement the manual 
+The number of machine instructions is enormous, and the semantics of each
+instruction is complex. Intel Developer Manual~\cite{intelsys} introduces more
+than 1000 different x86 instructions. It is tedious to implement the manual
 rules for every instruction.
 
-Therefore, existing binary analysis tools~\cite{shoshitaishvili2016state, 10.1007/978-3-642-22110-1_37} 
-usually translate machine instructions into intermediate languages (IR). 
-The IR typically has fewer instructions compared to the original machine ISA\@. 
-However, the IR layer designs, which significantly
+Therefore, existing binary analysis tools~\cite{shoshitaishvili2016state,
+10.1007/978-3-642-22110-1_37} usually translate machine instructions into
+intermediate languages (IR). The IR typically has fewer instructions compared to
+the original machine ISA\@. However, the IR layer designs, which significantly
 simplify the implementation, also introduce significant overhead~\cite{217563}.
-First, transferring machine
-instruction into IR is time-consuming.
-For example, REIL IR~\cite{dullien2009reil}, adopted in
-CacheS~\cite{236338}, has multiple transform processes, from binary to VEX IR, BAP IR,
-and finally REIL IR\@. 
-As IR can also introduce additional conditional jump instructions,
-in order to precisely identify secret-dependent control-flow,
-we need to rule out conditional jump instructions introduced by
-IR, which is also time-consuming. Second, IR increases the total
-number of instructions. For example, x86 instruction \textit{test eax, eax} 
-transfers into 18 REIL IR instructions. If we assume the time of symbolically executing 
-one instruction is constant, the design of adopting IR layers can introduce large overhead. 
+First, transferring machine instruction into IR is time-consuming. For example,
+REIL IR~\cite{dullien2009reil}, adopted in CacheS~\cite{236338}, has multiple
+transform processes, from binary to VEX IR, BAP IR, and finally REIL IR\@. As IR
+can also introduce additional conditional jump instructions, in order to
+precisely identify secret-dependent control-flow, we need to rule out
+conditional jump instructions introduced by IR, which is also time-consuming.
+Second, IR increases the total number of instructions. For example, x86
+instruction \textit{test eax, eax} transfers into 18 REIL IR instructions. If we
+assume the time of symbolically executing one instruction is constant, the
+design of adopting IR layers can introduce large overhead.
 
 \vspace*{2pt}
 \textbf{Our Solution to Challenge C2:}
-We adopt the approach from~\cite{217563} and implement the symbolic execution 
-directly on the top x86 instructions. Table~\ref{scala:ir} 
- shows that eliminating the IR layer can reduce the number
-of instructions executed during the analysis.
+We adopt the approach from~\cite{217563} and implement the symbolic execution
+directly on the top x86 instructions. Table~\ref{scala:ir} shows that
+eliminating the IR layer can reduce the number of instructions executed during
+the analysis.
 
 \begin{table}%[ht]
       \centering%\small\footnotesize
       \caption{The number of x86 instructions and the number
-      of REIL and VEX IR instructions on each trace of crypto programs.}
+            of REIL and VEX IR instructions on each trace of crypto programs.}
       \label{scala:ir}
       \resizebox{\columnwidth}{!}{%
 
-      \begin{tabular}{cccc}
-            \hline
-                              & \begin{tabular}[c]{@{}c@{}}Number of\\ x86 Instructions\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of\\ VEX IR\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of\\ REIL IR\end{tabular} \\ \hline
-            AES OpenSSL 0.9.7 &  $1,704$                &              $23,938$ (15x)                       &         $62,045$ (36x)                        \\
-            DES OpenSSL 0.9.7 &  $2,976$                 &             $41,897$ (15x)                       &        $100,365$ (33x)                           \\
-            RSA OpenSSL 0.9.7 & $1.6*10^7$               &                    $2.4*10^8$ (15x)              &          $5.9*10^8$ (37x)                                           \\
-            RSA mbed TLS 2.5  & $2.2*10^7$               &                    $3.1*10^8$ (15x)              &         $8.6*10^8$  (39x)                                 \\ \hline
+            \begin{tabular}{cccc}
+                  \hline
+                                    & \begin{tabular}[c]{@{}c@{}}Number of\\ x86 Instructions\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of\\ VEX IR\end{tabular} & \begin{tabular}[c]{@{}c@{}}Number of\\ REIL IR\end{tabular} \\ \hline
+                  AES OpenSSL 0.9.7 & $1,704$                   & $23,938$ (15x)            & $62,045$ (36x)            \\
+                  DES OpenSSL 0.9.7 & $2,976$                   & $41,897$ (15x)            & $100,365$ (33x)           \\
+                  RSA OpenSSL 0.9.7 & $1.6*10^7$                & $2.4*10^8$ (15x)          & $5.9*10^8$ (37x)          \\
+                  RSA mbed TLS 2.5  & $2.2*10^7$                & $3.1*10^8$ (15x)          & $8.6*10^8$  (39x)         \\ \hline
             \end{tabular}
       }
-      \end{table}
+\end{table}
 
 \subsection{Constraint Solving}
-As discussed in \S\ref{side-channel:condition}, the problem
-of identifying side-channels can be reduced to the  
-question below.
+As discussed in \S\ref{side-channel:condition}, the problem of identifying
+side-channels can be reduced to the question below.
 
 \begin{quote}
-\textit{Can we find two different input variables $k_1, k_2 \in K$ that satisfy the
-        formula $f_a(k_1) \neq f_a(k_2)$?}
+      \textit{Can we find two different input variables $k_1, k_2 \in K$ that
+            satisfy the formula $f_a(k_1) \neq f_a(k_2)$?}
 \end{quote}
 
-Existing approach relies on satisfiability modulo theories (SMT) solvers (e.g, Z3) to 
-find satisfying $k_1$ and $k_2$.
-We argue that while it is a universal approach to solving constraints with SMT 
-solvers, for constraints with the above formats, using custom heuristics and testing
- is much more
-efficient in practice. Constraint solving is a decision problem expressed in 
-logic formulas. SMT solvers transfer the inputted SMT formula into 
-the boolean conjunctive normal form (CNF) and feed it into the internal 
-SAT solver. The translation process, called ``bit blasting'', is time-consuming.
-Also, as SAT problem is a well-known NP-complete problem, it is also hard to 
-deal when it comes to practical uses with very large formulas. 
-Despite the rapid development of SMT solvers in recent years, constraint solving still
-remains one of the obstacles to achieve the scalability for real-world crypto systems.
+Existing approach relies on satisfiability modulo theories (SMT) solvers (e.g,
+Z3) to find satisfying $k_1$ and $k_2$. We argue that while it is a universal
+approach to solving constraints with SMT solvers, for constraints with the above
+formats, using custom heuristics and testing is much more efficient in practice.
+Constraint solving is a decision problem expressed in logic formulas. SMT
+solvers transfer the inputted SMT formula into the boolean conjunctive normal
+form (CNF) and feed it into the internal SAT solver. The translation process,
+called ``bit blasting'', is time-consuming. Also, as SAT problem is a well-known
+NP-complete problem, it is also hard to deal when it comes to practical uses
+with very large formulas. Despite the rapid development of SMT solvers in recent
+years, constraint solving still remains one of the obstacles to achieve the
+scalability for real-world crypto systems.
 
 \vspace*{2pt}
 \textbf{Our Solution to Challenge C3:}
-Instead of feeding the formula $f_a(k_1) \neq f_a(k_2)$ into a SMT solver, we just
-randomly pick up $k_1, k_2 \in K$ and test them if they can satisfy the formula. Our
-solution is based on the following intuition. For most combination of 
-$(k_{1}, k_{2} )$, the formula $f_a(k_1) \neq f_a(k_2)$ holds. As long as 
+Instead of feeding the formula $f_a(k_1) \neq f_a(k_2)$ into a SMT solver, we
+just randomly pick up $k_1, k_2 \in K$ and test them if they can satisfy the
+formula. Our solution is based on the following intuition. For most combination
+of $(k_{1}, k_{2} )$, the formula $f_a(k_1) \neq f_a(k_2)$ holds. As long as
 $f_a$ is not a constant function, such $k_1, k_2$ must exist. For example,
-suppose each time we only have 5\% chance to find such $k_1, k_2$, then
-after we test with different input combination with 100 times, we have 
-$1 - (1-0.05)^{100} = 99.6\%$ chance find such $k_1, k_2$. Such random algorithms
-work well for our problem. 
+suppose each time we only have 5\% chance to find such $k_1, k_2$, then after we
+test with different input combination with 100 times, we have $1 -
+(1-0.05)^{100} = 99.6\%$ chance find such $k_1, k_2$. Such random algorithms
+work well for our problem.
 
 \subsection{Counting the Number}
 \label{MCreasons}
-The problem of quantifying the amount of leaked information can be reduced to 
-the problem of computing the number of items in $K^o$, according to Definition~\ref{def}
-introduced in \S\ref{sec:trace-qif}.
-However, we find while there are various propositional model counters (e.g., \#SAT),
-they are not sufficient scalable for production crypto system analysis. 
+The problem of quantifying the amount of leaked information can be reduced to
+the problem of computing the number of items in $K^o$, according to
+Definition~\ref{def} introduced in \S\ref{sec:trace-qif}. However, we find while
+there are various propositional model counters (e.g., \#SAT), they are not
+sufficient scalable for production crypto system analysis.
 %there is no open source modulo theories counter (\#SMT) available.
 
-One naive method approximating the number of solutions is based on Monte Carlo sampling.
-However, the number of satisfying values could be exponentially small. Consider the formula
-$f_i\equiv{k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} = 4$, where $k_1$, $k_2$, $k_3$, and $k_4$ each represents one byte in the original sensitive input buffer, 
-there is only one satisfying solution of total $2^{32}$ possible
-values, which requires exponentially many samples to get a tight bound. 
-Monte Carlo method also suffers from the curse of dimensionality. For example, 
-the length of RSA private key can be as long as 4096 bits.
-If we take each byte (8 bits) in the original buffer as one symbol, the formula can have 
-as many as 512 symbols. 
+One naive method approximating the number of solutions is based on Monte Carlo
+sampling. However, the number of satisfying values could be exponentially small.
+Consider the formula $f_i\equiv{k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} =
+4$, where $k_1$, $k_2$, $k_3$, and $k_4$ each represents one byte in the
+original sensitive input buffer, there is only one satisfying solution of total
+$2^{32}$ possible values, which requires exponentially many samples to get a
+tight bound. Monte Carlo method also suffers from the curse of dimensionality.
+For example, the length of RSA private key can be as long as 4096 bits. If we
+take each byte (8 bits) in the original buffer as one symbol, the formula can
+have as many as 512 symbols.
 
 \vspace*{6pt}
 \textbf{Our Solution to Challenge C4:}
-We adopt multiple step Monte Carlo sampling methods to count the number of possible inputs
-that satisfy the logic formula groups. The key idea is to  
- split those constraints into several small formulas and sample them independently.  
+We adopt multiple step Monte Carlo sampling methods to count the number of
+possible inputs that satisfy the logic formula groups. The key idea is to split
+those constraints into several small formulas and sample them independently.
 %We will introduce the method in the following subsection.
 
 \subsection{Information Leakage Estimation}
@@ -163,183 +156,183 @@ that satisfy the logic formula groups. The key idea is to
 \renewcommand{\addr}[1]{{\zeta}_{#1}}
 \renewcommand{\addr}[1]{{\xi}_{#1}}
 
-In this section, we present the algorithm to calculate the information
-leakage based on Definition~\ref{def} (\S\ref{sec:trace-qif}), answering to
-\textbf{Challenge C4}. 
+In this section, we present the algorithm to calculate the information leakage
+based on Definition~\ref{def} (\S\ref{sec:trace-qif}), answering to
+\textbf{Challenge C4}.
 
 \subsubsection{Problem Statement}
-With each leakage site, we model it with a math formula constraint with the method 
-presented in~\S\ref{side-channel:condition}.
-Suppose the address of the leakage site is $\addr{i}$,
-we use $c_{\addr{i}}$ to denote the constraint. For multiple leakage sites, 
-we use the conjunction of those constraints to represent those leakage sites. 
+With each leakage site, we model it with a math formula constraint with the
+method presented in~\S\ref{side-channel:condition}. Suppose the address of the
+leakage site is $\addr{i}$, we use $c_{\addr{i}}$ to denote the constraint. For
+multiple leakage sites, we use the conjunction of those constraints to represent
+those leakage sites.
 
-According to the definition~\ref{def}, to calculate the amount of leaked 
-information, the key is calculating $\frac{|K|}{|K^o|}$. $K^o$ represents
-the set that contains every input keys that satisfy the constraint. As the 
+According to the definition~\ref{def}, to calculate the amount of leaked
+information, the key is calculating $\frac{|K|}{|K^o|}$. $K^o$ represents the
+set that contains every input keys that satisfy the constraint. As the
 cardinality of $K$ is known, the key problem is to estimate the cardinality of
-$K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site has
-the following constraints: $c_{\addr{1}}, c_{\addr{2}}, \ldots, c_{\addr{n}}$ respectively. 
-The total leakage has the constraint 
-$c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}}) = c_{\addr{1}} \land c_{\addr{2}} 
-\land \ldots \land c_{\addr{n}}$. The problem of estimating the total leaked information 
-can be reduced to the problem of counting the number of different solutions 
-that satisfies the constraint $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$. 
-A native method for approximating 
-the result is to pick $k$ elements from $K$ and check how many of them are also
-contained in $K^o$. If $q$ elements are also in $K^o$. In expectation, we can
-use $\frac{k}{q}$ to approximate the value of $\frac{|K|}{|K^o|}$.
+$K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site
+has the following constraints: $c_{\addr{1}}, c_{\addr{2}}, \ldots,
+c_{\addr{n}}$ respectively. The total leakage has the constraint
+$c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}}) = c_{\addr{1}} \land c_{\addr{2}}
+\land \ldots \land c_{\addr{n}}$. The problem of estimating the total leaked
+information can be reduced to the problem of counting the number of different
+solutions that satisfies the constraint
+$c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$. A native method for
+approximating the result is to pick $k$ elements from $K$ and check how many of
+them are also contained in $K^o$. If $q$ elements are also in $K^o$. In
+expectation, we can use $\frac{k}{q}$ to approximate the value of
+$\frac{|K|}{|K^o|}$.
 
-However, as discussed in \S\ref{MCreasons},
-the above sampling method will typically fail in practice due to the following two problems:
+However, as discussed in \S\ref{MCreasons}, the above sampling method will
+typically fail in practice due to the following two problems:
 
 \begin{enumerate}
-      \item The curse of dimensionality. $c_t({\addr{1}},\ldots,{\addr{n}})$ is 
-      the conjunction of many constraints. 
-      Therefore, the input variables of each constraints will also be 
-      the input variables of the $c_t({\addr{1}},\ldots,{\addr{n}})$. 
-      The sampling method will fail as 
-      $n$ increases. For example, if the program has $2$ byte input equals to 2, 
-      the whole search space is 
-      a $256^2$ cube. If we want the sampling distance between each point equals to $d$,
-      we need $256^2d$ points. If the program has $10$ byte input, 
-      we need $256^{10}d$ points if we 
-      still we want the sampling distance equals to $d$. 
+      \item The curse of dimensionality. $c_t({\addr{1}},\ldots,{\addr{n}})$ is
+            the conjunction of many constraints. Therefore, the input variables
+            of each constraints will also be the input variables of the
+            $c_t({\addr{1}},\ldots,{\addr{n}})$. The sampling method will fail
+            as $n$ increases. For example, if the program has $2$ byte input
+            equals to 2, the whole search space is a $256^2$ cube. If we want
+            the sampling distance between each point equals to $d$, we need
+            $256^2d$ points. If the program has $10$ byte input, we need
+            $256^{10}d$ points if we still we want the sampling distance equals
+            to $d$.
 
       \item The number of satisfying assignments could be exponentially small.
-      According to Chernoff bound, we need exponentially many samples to get 
-      a tight bound. On an extreme situation, if the constraint only has one unique
-      satisfying solution, the simple Monte Carlo method cannot find the satisfying
-      assignment even after sampling many points.
+            According to Chernoff bound, we need exponentially many samples to
+            get a tight bound. On an extreme situation, if the constraint only
+            has one unique satisfying solution, the simple Monte Carlo method
+            cannot find the satisfying assignment even after sampling many
+            points.
 \end{enumerate}
 
-However, despite the two problems. We also observe two characteristics
-of the problem:
+However, despite the two problems. We also observe two characteristics of the
+problem:
 \begin{enumerate}
-      \item $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$ is the conjunction of several
-      short constraints $c_{\addr{i}}$. The set containing the input variables of 
-      $c_{\addr{i}}$ is the subset of the input variables of 
-      $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$.
-      Some constraints have completely different input variables from other constraints.
-      %\item For each constraint $F(C_{{addr}_i})$, the satisfying assignments
-      %are close to each other, which means if we find one satisfying assignment, we 
-      %are more likely to find other satisfying assignments nearby than randomly
-      %pick one point in the whole searching space.
-      
+      \item $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$ is the conjunction of
+            several short constraints $c_{\addr{i}}$. The set containing the
+            input variables of $c_{\addr{i}}$ is the subset of the input
+            variables of $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$. Some
+            constraints have completely different input variables from other
+            constraints.
+            %\item For each constraint $F(C_{{addr}_i})$, the satisfying assignments
+            %are close to each other, which means if we find one satisfying assignment, we 
+            %are more likely to find other satisfying assignments nearby than randomly
+            %pick one point in the whole searching space.
+
 \end{enumerate}
 
-In regard to the above problems, we present our methods. First, we split 
-$c_t(\addr{1},\addr{2},\ldots,\addr{n})$ into several independent constraint groups. After
-that, we run multiple step sampling method for each constraint.
+In regard to the above problems, we present our methods. First, we split
+$c_t(\addr{1},\addr{2},\ldots,\addr{n})$ into several independent constraint
+groups. After that, we run multiple step sampling method for each constraint.
 
 \subsubsection{Maximum Independent Partition}
 
-For a constraint $c_{\addr{i}}$, we define function $\pi$, which maps
-the constraint into a set of different input symbols. For example, 
-$\pi(k1 + k2 > 128) = \{k1, k2\}$.
+For a constraint $c_{\addr{i}}$, we define function $\pi$, which maps the
+constraint into a set of different input symbols. For example, $\pi(k1 + k2 >
+128) = \{k1, k2\}$.
 
 \begin{mydef}[]
       \label{independentC}
-      Given two constraints $c_m$ and $c_n$, we call them independent iff 
+      Given two constraints $c_m$ and $c_n$, we call them independent iff
       $$\pi(c_m) \cap \pi(c_n) = \emptyset$$
 \end{mydef}
 
-Based on the definition~\ref{independentC}, we can split
-the constraint $c_t(\addr{1},\addr{2},\ldots,\addr{n})$ into several 
-independent constraints. There are many partitions. For our project, 
-we are interested in the following one.
+Based on the definition~\ref{independentC}, we can split the constraint
+$c_t(\addr{1},\addr{2},\ldots,\addr{n})$ into several independent constraints.
+There are many partitions. For our project, we are interested in the following
+one.
 
 \begin{mydef}\label{Goodpartition}
-   For the constraint $c_t(\addr{1},\addr{2},\ldots,\addr{n})$,
-   we call the constraint group
-   $g_{1}, g_{2}, \ldots, g_{m}$
-   the maximum independent partition of $c_t(\addr{1},\addr{2},\ldots,\addr{n})$ iff
-   \begin{enumerate}
-      \item $g_{1} \land g_{2} \land \ldots \land g_{m} = c_t(\addr{1},\addr{2},\ldots,\addr{n})$
-      \item $\forall \quad i, j \in \{1, 2, 3, \ldots, m\} \quad \textrm{and} \quad 
-            i \neq j, \quad \pi(g_{i}) \cap \pi(g_{j}) = \emptyset $
-      \item For any other partitions  $h_{1}, h_{2}, \ldots, h_{m'}$ satisfy 1) and
-            2), $m \geq m'$    
-   \end{enumerate}
-   
+      For the constraint $c_t(\addr{1},\addr{2},\ldots,\addr{n})$,
+      we call the constraint group
+      $g_{1}, g_{2}, \ldots, g_{m}$
+      the maximum independent partition of $c_t(\addr{1},\addr{2},\ldots,\addr{n})$ iff
+      \begin{enumerate}
+            \item $g_{1} \land g_{2} \land \ldots \land g_{m} = c_t(\addr{1},\addr{2},\ldots,\addr{n})$
+            \item $\forall \quad i, j \in \{1, 2, 3, \ldots, m\} \quad \textrm{and} \quad
+                        i \neq j, \quad \pi(g_{i}) \cap \pi(g_{j}) = \emptyset $
+            \item For any other partitions  $h_{1}, h_{2}, \ldots, h_{m'}$ satisfy 1) and
+                  2), $m \geq m'$
+      \end{enumerate}
+
 \end{mydef}
 
-The reason we want a good partition of the constraints is that we want to 
-reduce the dimensions. Consider the example in the previous section,
-$$c: ({k_1} = 1)\land({k_2} = 2)\land({k_3} > 4)\land({k_3} - {k_4} > 10)$$
-A good partition of $F$ would be
-$$g_{1}: ({k_1} = 1)\quad g_{2}: ({k_2} = 2)\quad g_{3}: ({k_3} > 4) \land ({k_3} - {k_4} > 10)$$     
-So instead of sampling in the four dimension space, we can
-sample each constraint in the less dimension space and combine them
-together with Theorem~\ref{IndependentConstraint} .
+The reason we want a good partition of the constraints is that we want to reduce
+the dimensions. Consider the example in the previous section,
+$$c: ({k_1} = 1)\land({k_2} = 2)\land({k_3} > 4)\land({k_3} - {k_4} > 10)$$ A
+good partition of $F$ would be
+$$g_{1}: ({k_1} = 1)\quad g_{2}: ({k_2} = 2)\quad g_{3}: ({k_3} > 4) \land
+({k_3} - {k_4} > 10)$$ So instead of sampling in the four dimension space, we
+can sample each constraint in the less dimension space and combine them together
+with Theorem~\ref{IndependentConstraint} .
 
 \begin{theorem}
       \label{IndependentConstraint}
-Let $g_{1}, g_{2}, \ldots, g_{m}$ be a maximum independent partition of 
-$c_t(\addr{1},\addr{2},\ldots,\addr{n})$.
-$K_c$ is the input set that satisfies constraint $c$. We can have the following
-equation in regard to the size of $K_c$
-$$|K_{c_t(\addr{1},\addr{2},\ldots,\addr{n})}| = |K_{g_{1}}|*|K_{g_{2}}|*\ldots*|K_{g_{n}}|$$
+      Let $g_{1}, g_{2}, \ldots, g_{m}$ be a maximum independent partition of
+      $c_t(\addr{1},\addr{2},\ldots,\addr{n})$.
+      $K_c$ is the input set that satisfies constraint $c$. We can have the following
+      equation in regard to the size of $K_c$
+      $$|K_{c_t(\addr{1},\addr{2},\ldots,\addr{n})}| = |K_{g_{1}}|*|K_{g_{2}}|*\ldots*|K_{g_{n}}|$$
 \end{theorem}
 
-With Theorem~\ref{IndependentConstraint}, we can transfer the problem of counting the number of 
-solutions in a large constraint with high
-dimensions into counting solutions of 
-several small constraints. We apply the following algorithm~\ref{algo:max-inde} to get the 
-Maximum Independent Partition
-of the $c_t(\addr{1},\addr{2},\ldots,\addr{n})$.
+With Theorem~\ref{IndependentConstraint}, we can transfer the problem of
+counting the number of solutions in a large constraint with high dimensions into
+counting solutions of several small constraints. We apply the following
+algorithm~\ref{algo:max-inde} to get the Maximum Independent Partition of the
+$c_t(\addr{1},\addr{2},\ldots,\addr{n})$.
 
 \IncMargin{1em}
 \begin{algorithm}[h]
-\DontPrintSemicolon
-\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-\Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
-\Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
-\For{$i\leftarrow 1$ \KwTo $n$}
-{
-   $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
-   \For{$g_{i} \in G$} 
-   {
-   $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
-   $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
-   \If{$S \neq \emptyset$}
-   {
-      $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
-      \textbf{break} \;
-   }
-   Insert $c_{\addr{i}}$ to $G$
-   }
-}
-\caption{The Maximum Independent Partition}
-\label{algo:max-inde}
+      \DontPrintSemicolon
+      \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+      \Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
+      \Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
+      \For{$i\leftarrow 1$ \KwTo $n$}
+      {
+            $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
+            \For{$g_{i} \in G$}
+            {
+                  $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
+                  $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
+                  \If{$S \neq \emptyset$}
+                  {
+                        $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
+                        \textbf{break} \;
+                  }
+                  Insert $c_{\addr{i}}$ to $G$
+            }
+      }
+      \caption{The Maximum Independent Partition}
+      \label{algo:max-inde}
 \end{algorithm}
 \DecMargin{1em}
 
 \subsubsection{Multiple Step Monte Carlo Sampling}
 
-After we split those constraints into several small constraints, we count
-the number of solutions for each constraint. Even though the dimension
-has been reduced greatly after the previous step, this is still a
-\#P problem. For our project, we apply the approximate counting instead of
-exact counting for two reasons. First, we don't need to have a very precise
-result of the exact number of total solutions. As the information is defined with
-a logarithmic function. We do not need to distinguish between constraints having
-$10^{10}$ or $10^{10} + 10$ solutions.
-Second, as the constraint could be very complicated. The exact model counting
-approaches, like DPLL search, have difficulty scaling up to large problem sizes.
+After we split those constraints into several small constraints, we count the
+number of solutions for each constraint. Even though the dimension has been
+reduced greatly after the previous step, this is still a \#P problem. For our
+project, we apply the approximate counting instead of exact counting for two
+reasons. First, we don't need to have a very precise result of the exact number
+of total solutions. As the information is defined with a logarithmic function.
+We do not need to distinguish between constraints having $10^{10}$ or $10^{10} +
+10$ solutions. Second, as the constraint could be very complicated. The exact
+model counting approaches, like DPLL search, have difficulty scaling up to large
+problem sizes.
 
-We apply the ``counting by sampling" method. The basic idea is as follows.
-For the constraint $g_{i}= c_{i_1} \land c_{i_2} \land ,\ldots, \land c_{i_j} \land ,\ldots, 
-\land c_{i_m}$, 
-if the solution satisfies $g_{i}$, it should also
-satisfies any constraint from $c_{i_1}$ to $c_{i_m}$. In other words,
-$K_{c_gi}$ should be the subset of $K_{c_1}$, $K_{c_2}$, \ldots , $K_{c_m}$.
-We notice that $c_i$ usually has less numbers of input compared to $g_{i}$.
-For example, if $c_{i_j}$ has only one input variable, we can find the exact
-solution set $K_{c_{i_j}}$ of $c_{i_j}$ by trying every possible 256 solutions. After that,
-we can only generate random input numbers for the rest input variables in 
-constraint $g_{i}$. With the simple trick, we can reduce the number of input while
-still ensure the accuracy.
+We apply the ``counting by sampling" method. The basic idea is as follows. For
+the constraint $g_{i}= c_{i_1} \land c_{i_2} \land ,\ldots, \land c_{i_j} \land
+,\ldots, \land c_{i_m}$, if the solution satisfies $g_{i}$, it should also
+satisfies any constraint from $c_{i_1}$ to $c_{i_m}$. In other words, $K_{c_gi}$
+should be the subset of $K_{c_1}$, $K_{c_2}$, \ldots , $K_{c_m}$. We notice that
+$c_i$ usually has less numbers of input compared to $g_{i}$. For example, if
+$c_{i_j}$ has only one input variable, we can find the exact solution set
+$K_{c_{i_j}}$ of $c_{i_j}$ by trying every possible 256 solutions. After that,
+we can only generate random input numbers for the rest input variables in
+constraint $g_{i}$. With the simple trick, we can reduce the number of input
+while still ensure the accuracy.
 
 %% the algorithm
 %\IncMargin{1em}
@@ -378,32 +371,30 @@ still ensure the accuracy.
 %\DecMargin{1em}
 
 \subsubsection{Error Estimation}
-In this part, we analyze the accuracy the result from Monte Carlo approximation. 
-We use central limit theorem (CLT) and uncertainty propagation theorem
-to estimate errors of the number of leaked bits for each site.
+In this part, we analyze the accuracy the result from Monte Carlo approximation.
+We use central limit theorem (CLT) and uncertainty propagation theorem to
+estimate errors of the number of leaked bits for each site.
 
-Let $n$ be the number of samples and $n_s$ be the number of samples
-that satisfy the constraint $C$. Then we can get $\hat{p} = \frac{n_s}{n}$.
-If we run the same experiment multiple times, each time we can
-get a $\hat{p}$. 
-As each $\hat{p}$ is independent and identically distributed, according to 
-central limit theorem, the mean value should 
-satisfy normal distribution.
-$$ \frac{\bar{p}-E(p)}{\sigma\sqrt{n}} \rightarrow N(0,1) $$
-Here $E(p)$ is the mean value of $p$ and $\sigma$ is the standard 
-variance of $p$. If we use the observed value $\hat{p}$ 
-to the represent standard deviation.
-We can claim that we have 95\% confidence that the error 
-$\Delta p= \bar{p} - E(p)$ falls in the interval:
+Let $n$ be the number of samples and $n_s$ be the number of samples that satisfy
+the constraint $C$. Then we can get $\hat{p} = \frac{n_s}{n}$. If we run the
+same experiment multiple times, each time we can get a $\hat{p}$. As each
+$\hat{p}$ is independent and identically distributed, according to central limit
+theorem, the mean value should satisfy normal distribution.
+$$ \frac{\bar{p}-E(p)}{\sigma\sqrt{n}} \rightarrow N(0,1) $$ Here $E(p)$ is the
+mean value of $p$ and $\sigma$ is the standard variance of $p$. If we use the
+observed value $\hat{p}$ to the represent standard deviation. We can claim that
+we have 95\% confidence that the error $\Delta p= \bar{p} - E(p)$ falls in the
+interval:
 $$ |\Delta p| \leq 1.96\sqrt{\frac{ \hat{p} (1- \hat{p} )}{n}}$$
 
-Since we use $L = \log_{2}p$ to estimate the amount of leaked information,
-we can have the following error propagation formula $\Delta L = \frac{\Delta p}{p\ln2}$
-by differentiation. For \tool, we want the error of estimated leaked information ($\Delta L$) is 
-less than 1 bit. So we can get $\frac{\Delta p}{p\ln2} \leq 1$. As long as
-$ n \geq \frac{1.96^2(1-p)}{p(\ln2)^2}$, we have 95\% confidence the error of estimated 
-leaked information is less than 1 bit. During the simulation, if $n$ and $p$ satisfy
-the above equation, Monte Carlo Simulation will terminate.
+Since we use $L = \log_{2}p$ to estimate the amount of leaked information, we
+can have the following error propagation formula $\Delta L = \frac{\Delta
+p}{p\ln2}$ by differentiation. For \tool, we want the error of estimated leaked
+information ($\Delta L$) is less than 1 bit. So we can get $\frac{\Delta
+p}{p\ln2} \leq 1$. As long as $ n \geq \frac{1.96^2(1-p)}{p(\ln2)^2}$, we have
+95\% confidence the error of estimated leaked information is less than 1 bit.
+During the simulation, if $n$ and $p$ satisfy the above equation, Monte Carlo
+Simulation will terminate.
 
 
 
