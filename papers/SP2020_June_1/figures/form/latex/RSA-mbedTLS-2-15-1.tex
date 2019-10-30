@@ -1,22 +1,22 @@
-\begin{table}[h]
+\begin{table*}%[h]
 \centering
-\caption{Summary of all vulnerabilities in RSA implemented by mbedTLS 2.15.1 with the amount of leak information}\label{tab:RSAmbedTLS}
-\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
+\caption{Summary of all vulnerabilities in RSA implemented by mbedTLS 2.15.1 with the amount of leak informationThe mark $*$ means timeout,which indicates more severe leakages (see \Sef{loc:timeout}).}\label{tab:RSAmbedTLS}
+%\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
 \hline
 \textbf{File} & \textbf{Line Num} & \textbf{Function} & \textbf{Leakedbits} & \textbf{Type} \\\hline
-bignum.c&855&mbedtls\_mpi\_cmp\_mpi&Failed&\\
+bignum.c&855&mbedtls\_mpi\_cmp\_mpi&*&\\
 rsa.c&184&rsa\_check\_context.isra.0&0 &CF\\
-bignum.c&825&mbedtls\_mpi\_cmp\_abs&Failed&\\
-bignum.c&197&mbedtls\_mpi\_copy&Failed&\\
+bignum.c&825&mbedtls\_mpi\_cmp\_abs&*&\\
+bignum.c&197&mbedtls\_mpi\_copy&*&\\
 bignum.c&629&mbedtls\_mpi\_exp\_mod&1 &CF\\
-bignum.c&829&mbedtls\_mpi\_cmp\_abs&Failed&\\
-bignum.c&859&mbedtls\_mpi\_cmp\_mpi&Failed&\\
+bignum.c&829&mbedtls\_mpi\_cmp\_abs&*&\\
+bignum.c&859&mbedtls\_mpi\_cmp\_mpi&*&\\
 bignum.c&873&mbedtls\_mpi\_cmp\_mpi&2 &CF\\
 bignum.c&874&mbedtls\_mpi\_cmp\_mpi&2 &CF\\
 bignum.c&840&mbedtls\_mpi\_cmp\_abs&8 &CF\\
 bignum.c&841&mbedtls\_mpi\_cmp\_abs&9 &CF\\
-bignum.c&201&mbedtls\_mpi\_mul\_mpi&Failed&\\
+bignum.c&201&mbedtls\_mpi\_mul\_mpi&*&\\
 \hline
 \end{tabular}
-}
-\end{table}
+%}
+\end{table*}

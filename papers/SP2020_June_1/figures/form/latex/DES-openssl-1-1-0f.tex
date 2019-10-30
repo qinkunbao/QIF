@@ -1,7 +1,7 @@
-\begin{table}[h]
+\begin{table*}%[h]
 \centering
-\caption{Summary of all vulnerabilities in DES implemented by openssl 1.1.0f with the amount of leak information}\label{tab:DESopenssl}
-\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
+\caption{Summary of all vulnerabilities in DES implemented by openssl 1.1.0f with the amount of leak informationThe mark $*$ means timeout,which indicates more severe leakages (see \Sef{loc:timeout}).}\label{tab:DESopenssl}
+%\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
 \hline
 \textbf{File} & \textbf{Line Num} & \textbf{Function} & \textbf{Leakedbits} & \textbf{Type} \\\hline
 set\_key.c&351&DES\_set\_key\_unchecked&7 &DA\\
@@ -14,5 +14,5 @@ set\_key.c&364&DES\_set\_key\_unchecked&4 &DA\\
 set\_key.c&365&DES\_set\_key\_unchecked&0 &DA\\
 \hline
 \end{tabular}
-}
-\end{table}
+%}
+\end{table*}

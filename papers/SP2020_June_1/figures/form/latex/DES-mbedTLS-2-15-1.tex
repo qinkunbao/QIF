@@ -1,7 +1,7 @@
-\begin{table}[h]
+\begin{table*}%[h]
 \centering
-\caption{Summary of all vulnerabilities in DES implemented by mbedTLS 2.15.1 with the amount of leak information}\label{tab:DESmbedTLS}
-\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
+\caption{Summary of all vulnerabilities in DES implemented by mbedTLS 2.15.1 with the amount of leak informationThe mark $*$ means timeout,which indicates more severe leakages (see \Sef{loc:timeout}).}\label{tab:DESmbedTLS}
+%\resizebox{\columnwidth}{!}{\begin{tabular}{clrrr}
 \hline
 \textbf{File} & \textbf{Line Num} & \textbf{Function} & \textbf{Leakedbits} & \textbf{Type} \\\hline
 des.c&437&mbedtls\_des\_setkey&0 &DA\\
@@ -21,5 +21,5 @@ des.c&441&mbedtls\_des\_setkey&1 &DA\\
 des.c&444&mbedtls\_des\_setkey&1 &DA\\
 \hline
 \end{tabular}
-}
-\end{table}
+%}
+\end{table*}
