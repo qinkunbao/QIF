@@ -1,5 +1,77 @@
+
+\section{Algorithm to Compute the Maximum Independent Partition}
+\label{appendix:partition}
+
+
+\IncMargin{1em}
+\begin{algorithm}[h]
+      \DontPrintSemicolon
+      \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+      \Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
+      \Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
+      \For{$i\leftarrow 1$ \KwTo $n$}
+      {
+            $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
+            \For{$g_{i} \in G$}
+            {
+                  $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
+                  $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
+                  \If{$S \neq \emptyset$}
+                  {
+                        $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
+                        \textbf{break} \;
+                  }
+                  Insert $c_{\addr{i}}$ to $G$
+            }
+      }
+      \caption{The Maximum Independent Partition}
+      \label{algo:max-inde}
+\end{algorithm}
+\DecMargin{1em}
+
+\section{Algorithm to Compute the Number of Satisfying Assignments}
+\label{appendix:montecarlo}
+
+\IncMargin{1em}
+\begin{algorithm}
+\SetAlgoLined
+\DontPrintSemicolon
+
+\KwIn{{The constraint $G_{i}= C_{i_1} \land C_{i_2}
+\land \ldots \land C_{i_m}$}}    
+\KwOut{{The number of assignments that satisfy $G_{i}$ $|K_{G_{i}}|$}}
+
+\SetKwProg{RW}{RandomWalk}{}{}
+\SetKwProg{MM}{MetropolisMove}{}{} 
+$n$: the number of sampling times \;
+$P$: a probability generator \;
+$k$: the input assignment \;
+$n_{s}$: the number of satisfying assignments \;
+$\#k$: the satisfying number of k \fixme{this number is not used syntactically} \; 
+Initialization: \;
+$\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}C_{i_j}(k_0)$ \;
+\For{$t\leftarrow 1$ \KwTo $n$} {
+     $p$ $\leftarrow$ $P$ \;
+     \If{$p \geq 0.5$}
+     {
+       $v$ $\leftarrow$ \RW{$v$} {}
+     }
+     \Else{
+           $v$ $\leftarrow$ \MM{$v$} {}
+     }
+     \If{$v$ satisfies $G_{i}$}
+     {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
+}
+$|K_{G_{i}}|$ $\leftarrow$ $n_s|K| / n$
+\caption{Metropolis Sampling}
+\end{algorithm}
+\DecMargin{1em}
+
+
+
+
 \section{Detailed Evaluation Results}
-\label{sec:Result Table}
+\label{sec:result-table}
 
 \input{figures/form/latex/RSA-mbedTLS-2-5.tex}
 \input{figures/form/latex/RSA-openssl-1-1-1.tex}
