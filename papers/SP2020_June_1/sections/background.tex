@@ -54,6 +54,7 @@ while(i>0){
 }
         \end{lstlisting}
         \caption{Secret-dependent control-flow transfers}
+        \label{fig:secret:cf}
     \end{minipage}
     \hfill
     \begin{minipage}{0.45\linewidth}
@@ -68,12 +69,14 @@ uint32_t a = *RK++ ^ \
 ...
         \end{lstlisting}
         \caption{Secret-dependent memory accesses}
+        \label{fig:secret:da}
     \end{minipage}
 \end{figure}
 
 The key intuition is that each side-channel attacks above happen when a
 program accesses different memory addresses if the program has different
-sensitive inputs. More specifically, if a program shows different patterns in
+sensitive inputs. As shown in Figure~\ref{fig:secret:cf} and Figure~\ref{fig:secret:da}, 
+if a program shows different patterns in
 control transfers or data accesses when the program processes different
 sensitive inputs, the program could possibly have side channels vulnerabilities.
 Different kinds of side-channels can be exploited to retrieve information in
