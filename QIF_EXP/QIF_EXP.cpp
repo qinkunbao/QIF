@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
     uint64_t max_instruction, each_step;
     vector<double> se_time_vector;
     max_instruction = 1000000;
-    each_step = 1000;
+    each_step = 20000;
 
     for(uint64_t start_ins = 0; start_ins <= max_instruction; start_ins +=each_step ) {
 
