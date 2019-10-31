@@ -9,6 +9,7 @@
 #include <set>
 #include <iostream>
 #include <string>
+#include <iomanip> 
 #include "MonteCarlo.hpp"
 #include "error.hpp"
 #include "Trace2ELF.hpp"
