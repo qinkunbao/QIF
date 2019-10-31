@@ -399,6 +399,85 @@ namespace tana {
 
     }
 
+    bool parse_trace_qif(std::ifstream &trace_file, std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,\
+                         std::vector<std::unique_ptr<Inst_Base>> &L,\
+                         std::vector<uint8_t> &key_value, \
+                         const std::shared_ptr<Function> &fun, \
+                         uint64_t inst_limit){
+        std::string line;
+        uint32_t id_count = 1, num = 1;
+        getline(trace_file, line);
+
+        while(line.find("Start") != std::string::npos)
+        {
+            uint32_t addr_taint = 0, size_taint = 0;
+            std::istringstream fun_buf(line);
+            std::string start_taint, taint_len, temp_str;
+            getline(fun_buf, temp_str, ';');
+            getline(fun_buf, start_taint, ';');
+            getline(fun_buf, taint_len, ';');
+            addr_taint = stoul(start_taint, nullptr, 16);
+            size_taint = stoul(taint_len, nullptr, 10);
+            auto key_tuple = std::make_tuple(addr_taint, size_taint);
+            key_symbol.push_back(key_tuple);
+
+            // Get key value
+            getline(trace_file, line);
+            std::istringstream strbuf(line);
+            std::string key_temp;
+            uint8_t key_concrete;
+            uint32_t index;
+
+            for (index = 0; index < (size_taint / 8); ++index) {
+                getline(strbuf, key_temp, ';');
+                key_concrete = std::stoul(key_temp, nullptr, 16);
+                key_value.push_back(key_concrete);
+            }
+            getline(trace_file, line);
+        }
+
+        while (trace_file.good())
+        {
+            if (line.empty()) {
+                break;
+            }
+
+
+            if (line.find("END") != std::string::npos) {
+                return true;
+            }
+
+            auto ins_index = num++;
+            id_count++;
+
+            std::unique_ptr<Inst_Base> ins = nullptr;
+
+            if(line.find("libc") != std::string::npos){
+                std::string line2;
+                getline(trace_file, line2);
+                ins = LibC_Factory::makeInst(line + "; " + line2);
+            }
+
+            else {
+                ins = Inst_Dyn_Factory::makeInst(line, false, fun);
+            }
+
+            ins->id = ins_index;
+
+            L.push_back(std::move(ins));
+
+            if(L.size() > inst_limit)
+            {
+                return true;
+            }
+
+            getline(trace_file, line);
+        }
+
+        return trace_file.good();
+
+    }
+
     bool parse_trace_qif(std::ifstream &trace_file, std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,
                          std::vector<std::unique_ptr<Inst_Base>> &L,
                          std::vector<uint8_t> &key_value, uint64_t instsize, \

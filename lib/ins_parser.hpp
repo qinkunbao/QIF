@@ -52,4 +52,10 @@ namespace tana {
                          std::vector<uint8_t> &key_value, uint64_t inst_size, \
                          const std::shared_ptr<Function> &fun);
 
+    bool parse_trace_qif(std::ifstream &trace_file, std::vector<std::tuple<uint32_t , uint32_t >> &key_symbol,\
+                         std::vector<std::unique_ptr<Inst_Base>> &L,\
+                         std::vector<uint8_t> &key_value, \
+                         const std::shared_ptr<Function> &fun, \
+                         uint64_t inst_limit);
+
 }

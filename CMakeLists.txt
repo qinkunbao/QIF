@@ -130,6 +130,9 @@ add_executable(StaticSE
 add_executable(QIF
         QIF/QIF.cpp)
 
+add_executable(QIF_EXP
+        QIF_EXP/QIF_EXP.cpp)
+
 add_executable(TestCMD
         test/test_cmd.cpp)
 
@@ -154,6 +157,7 @@ target_link_libraries(BitTaint TraceLib)
 target_link_libraries(StaticSE TraceLib)
 target_link_libraries(TestConstrain TraceLib)
 target_link_libraries(QIF TraceLib)
+target_link_libraries(QIF_EXP TraceLib)
 target_link_libraries(TestRandom TraceLib)
 target_link_libraries(TestDebugInfo TraceLib)
 target_link_libraries(TestDebugInfoStr TraceLib)
