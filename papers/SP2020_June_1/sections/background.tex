@@ -71,7 +71,7 @@ uint32_t a = *RK++ ^ \
     \end{minipage}
 \end{figure}
 
-The key intuition is that each side-channel attacks above happen when the
+The key intuition is that each side-channel attacks above happen when a
 program accesses different memory addresses if the program has different
 sensitive inputs. More specifically, if a program shows different patterns in
 control transfers or data accesses when the program processes different
@@ -102,17 +102,16 @@ address is irrelevant in causing those cached-based side-channels.
 
 \subsection{Exisiting Information Leakage Quantification}\label{sec:background_leak}
 
-Given an event $e$ that occurs with the probability $p(e)$, if the event $e$
-happens, then we receive
+Given an event $e$ that occurs with the probability $p(e)$, we receive
 \begin{displaymath}
     I = - \log_2p(e)
 \end{displaymath}
-bits of information by knowing the event $e$. Considering a char variable $a$
+bits of information by knowing the event $e$ happens. Considering a char variable $a$
 with one byte storage size in a C program, its value ranges from 0 to 255.
-Assume \textit{a} has the uniform distribution. If at one time we observe that
-$a$ equals $1$, the probability of this observation is $\frac{1}{256}$. So the
-information we get is $-\log(\frac{1}{256}) = 8$ bits, which is exactly the size
-of the char variable in the C program.
+Assume $a$ has a uniform distribution. If we observe that
+$a$ equals $1$, the probability of this observation is $\frac{1}{256}$. So 
+we get $-\log(\frac{1}{256}) = 8$ bits information, which is exactly the size
+of a char variable in the C program.
 
 Existing works on information leakage quantification typically uses Shannon
 entropy~\cite{Wichelmann:2018:MFF:3274694.3274741},
@@ -127,10 +126,10 @@ value of $K$. The Shannon entropy $H(K)$ is defined as
 \end{displaymath}
 
 Shannon entropy can be used to quantify the initial uncertainty about the
-sensitive information. It measures how much information is in a system.
+sensitive information. It measures the amount of information in a system.
 
-Min-entropy describes the information leaks from
-the most likely input in a program. For example, min-entropy can be used to describe the
+Min-entropy describes the information leaks for a program with the most likely input. 
+For example, min-entropy can be used to describe the
 best chance of success in guessing one's password in one chance using the
 most common password, which is defined as
 \begin{displaymath}
@@ -142,7 +141,7 @@ Max-entropy is defined solely on the number of possible observations.
 \begin{displaymath}
     \mathit{max\text{-}entropy} = -\log_2{n}
 \end{displaymath}
-As it is easy to compute, most recent works use max-entropy as the definition of
+As it is easy to compute, most recent works~\cite{182946,Doychev:2017:RAS:3062341.3062388} use max-entropy as the definition of
 the amount of leaked information.
 
 To illustrate how the above definitions work, we consider the following code
@@ -168,10 +167,10 @@ if (t2 > 0) {              // branch 2
 In this paper we assume an attacker can observe if branch 1 and branch 2 are
 executed or not. Therefore, an attacker can have four different observations
 depending on the value of $\mathit{key}$: $\emptyset$ for neither branch 1 nor
-branch 2 executed, $\{1\}$ for only branch 1 executed, $\{2\}$ for only branch 2
-executed, and $\{1, 2\}$ for both branch 1 and branch 2 executed. Now the
+branch 2 is executed, $\{1\}$ for only branch 1 is executed, $\{2\}$ for only branch 2 is
+executed, and $\{1, 2\}$ for both branch 1 and branch 2 are executed. Now the
 question is how much information can be leaked from the above code if an
-attacker can know which branch is executed?
+attacker knows which branch is executed?
 
 \begin{table}[ht]
     \centering
@@ -192,8 +191,8 @@ attacker can know which branch is executed?
 
 
 Assuming $key$ is uniformly distributed, we can calculate the corresponding
-possibility by counting the number of possible solutions. Table~\ref{shtable}
-describes the probability of each observation. The three types of leakage are
+possibility by counting the number of possible inputs. Table~\ref{shtable}
+describes the probability of each observation. The three types of leakage metrics are
 calculated as follows.
 
 \vspace{3pt}
@@ -223,10 +222,10 @@ Based on Shannon entropy, the leakage equals to
                                     & = 1.006\ \mathrm{bits}
 \end{align*}
 
-In the next section, we will prove that those measures work well only
-theoretically or in a static analysis setting where only assume the average case
-on leakage. Generally, they do not apply to dynamic analysis or practical
-settings. We will show that the static or theoretical results could be
+In the next section, we will show that those measures work well only
+theoretically in a static analysis setting where only assume the average 
+leakage. Generally, they do not apply to dynamic analysis or practical
+settings. We will present that the static or theoretical results could be
 dramatically different from the real world, and we do need a better method to
 quantify the information leakage from a practical point of view.
 
