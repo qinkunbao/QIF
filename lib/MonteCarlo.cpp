@@ -364,7 +364,7 @@ namespace tana {
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
                 float leaked_information = -log(portion) / log(2);
                 std::cout << "Address: " << std::hex << addr << std::dec
-                          << " Leaked:" << std::setprecision(2) << leaked_information << " bits"
+                          << " Leaked:" << std::fixed <<std::setprecision(1) << leaked_information << " bits"
                           << " Type: " << type_str << " "
                           << " Num of Satisfied: " << num
                           << " Total Sampling Numbers: " << sample_num
@@ -410,7 +410,7 @@ namespace tana {
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
                 float leaked_information = -log(portion) / log(2.0);
                 myfile << "Address: " << std::hex << addr << std::dec
-                       << " Leaked:" << std::setprecision(2) << leaked_information << " bits"
+                       << " Leaked:" << std::fixed<<std::setprecision(1) << leaked_information << " bits"
                        << " Type: " << type_str << " "
                        << " Num of Satisfied: " << num
                        << " Total Sampling Numbers: " << sample_num
@@ -452,7 +452,7 @@ namespace tana {
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
                 float leaked_information = -log(portion) / log(2.0);
                 myfile << "Address: " << std::hex << addr << std::dec
-                       << " Leaked:" << std::setprecision(2) << leaked_information << " bits"
+                       << " Leaked:" << std::fixed<<std::setprecision(1) << leaked_information << " bits"
                        << " Type: " << type_str << " "
                        << " Num of Satisfied: " << num
                        << " Total Sampling Numbers: " << sample_num
