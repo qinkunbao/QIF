@@ -1,6 +1,7 @@
 \begin{table}%[h]
 \centering\tiny\scriptsize
-\caption{Summary of all vulnerabilities in AES implemented by mbedTLS 2.15.1 with the amount of leak information. The mark $*$ means timeout, which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:AESmbedTLS}
+\renewcommand{\baselinestretch}{0.96}\selectfont
+\caption{Leakages in AES implemented bymbedTLS 2.15.1}\label{tab:AESmbedTLS2.15.1}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
@@ -76,4 +77,5 @@ aes.c& 884&mbedtls\_internal\_aes\_encrypt&1 &DA\\
 \hline
 \end{tabular}
 %}
+\renewcommand{\baselinestretch}{1.0}\selectfont
 \end{table}

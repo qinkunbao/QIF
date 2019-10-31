@@ -1,6 +1,7 @@
 \begin{table}%[h]
 \centering\tiny\scriptsize
-\caption{Summary of all vulnerabilities in RSA implemented by mbedTLS 2.5 with the amount of leak information. The mark $*$ means timeout, which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:RSAmbedTLS}
+\renewcommand{\baselinestretch}{0.96}\selectfont
+\caption{Leakages in RSA implemented bymbedTLS 2.5}\label{tab:RSAmbedTLS2.5}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
@@ -14,4 +15,5 @@ bignum.c& 829&mbedtls\_mpi\_cmp\_abs&9 &CF\\
 \hline
 \end{tabular}
 %}
+\renewcommand{\baselinestretch}{1.0}\selectfont
 \end{table}

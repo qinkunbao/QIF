@@ -15,23 +15,19 @@ def data2form(finame, foname, enc, library, version):
     fi = open(finame, 'r')
     buf = fi.readline()
     fo = open(foname, 'w')
-    fo.write('\\begin{table*}%[h]\n' +
-             '\\centering\n' +
-             '\\caption{' +
-             'Summary of all vulnerabilities in ' + enc +
-             ' implemented by ' + library + ' ' + version +
-             ' with the amount of leak information' +
-             'The mark $*$ means timeout,' +
-             'which indicates more severe leakages ' +
-             '(see \\S\\ref{loc:timeout}).' +
-             '}\\label{tab:' + enc + library + '}\n' +
+    fo.write('\\begin{table}%[h]\n' +
+             '\\centering\\tiny\\scriptsize\n' +
+             '\\renewcommand{\\baselinestretch}{0.96}\\selectfont\n' +
+             '\\caption{Leakages in ' + enc +
+             ' implemented by' + library + ' ' + version + '}'
+             '\\label{tab:' + enc + library + version + '}\n' +
              '%\\resizebox{\\columnwidth}{!}{\n' +
-             '\\begin{tabular}{clrrr}\n\\hline\n')
+             '\\begin{tabular}{lrlrr}\n\\hline\n')
 
     fo.write('\\textbf{File} & ' +
-             '\\textbf{Line Num} & ' +
+             '\\textbf{Line No.} & ' +
              '\\textbf{Function} & ' +
-             '\\textbf{Leakedbits} & ' +
+             '\\textbf{Leaked Bits} & ' +
              '\\textbf{Type} ' +
              '\\\\\\hline\n')
     #  '\\textbf{Location} ' + '\\\\\\hline\n')
@@ -73,7 +69,10 @@ def data2form(finame, foname, enc, library, version):
         while buf and buf[:8] != 'Address:':
             buf = fi.readline()
 
-    fo.write('\\hline\n' + '\\end{tabular}\n%}\n' + '\\end{table*}')
+    fo.write('\\hline\n' +
+             '\\end{tabular}\n%}\n' +
+             '\\renewcommand{\\baselinestretch}{1.0}\\selectfont\n' +
+             '\\end{table}\n')
 
     fo.close()
     fi.close()

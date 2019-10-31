@@ -1,11 +1,11 @@
 \begin{table}%[h]
 \centering\tiny\scriptsize
-%\caption{RSA implemented by openssl 1.1.1}\label{tab:RSAopenssl}
-\caption{Summary of all vulnerabilities in RSA implemented by openssl 1.1.1 with the amount of leak information. The mark $*$ means timeout, which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:RSAopenssl}
+\renewcommand{\baselinestretch}{0.96}\selectfont
+\caption{Leakages in RSA implemented byopenssl 1.1.1}\label{tab:RSAopenssl1.1.1}
 %\resizebox{\columnwidth}{!}{
-\begin{tabular}{l@{}rl@{}rr}
+\begin{tabular}{lrlrr}
 \hline
-\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\hspace*{-2.5em}Leaked Bits} & \textbf{Type} \\\hline
+\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{Leaked Bits} & \textbf{Type} \\\hline
 rsa\_ossl.c& 399&rsa\_ossl\_private\_decrypt&0 &CF\\
 bn\_lib.c& 555&BN\_ucmp&*&\\
 bn\_gcd.c& 199&int\_bn\_mod\_inverse&0 &CF\\
@@ -36,4 +36,5 @@ ct\_b64.c& 168&\_\_memset\_sse2\_rep&0 &DA\\
 \hline
 \end{tabular}
 %}
+\renewcommand{\baselinestretch}{1.0}\selectfont
 \end{table}

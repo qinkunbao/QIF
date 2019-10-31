@@ -1,6 +1,7 @@
 \begin{table}%[h]
 \centering\tiny\scriptsize
-\caption{Summary of all vulnerabilities in DES implemented by openssl 0.9.7 with the amount of leak information. The mark $*$ means timeout, which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:DESopenssl}
+\renewcommand{\baselinestretch}{0.96}\selectfont
+\caption{Leakages in DES implemented byopenssl 0.9.7}\label{tab:DESopenssl0.9.7}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
@@ -14,4 +15,5 @@ set\_key.c& 385&DES\_set\_key\_unchecked&2 &DA\\
 \hline
 \end{tabular}
 %}
+\renewcommand{\baselinestretch}{1.0}\selectfont
 \end{table}

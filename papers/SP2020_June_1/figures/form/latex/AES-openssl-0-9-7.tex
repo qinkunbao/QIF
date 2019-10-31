@@ -1,6 +1,7 @@
 \begin{table}%[h]
 \centering\tiny\scriptsize
-\caption{Summary of all vulnerabilities in AES implemented by openssl 0.9.7 with the amount of leak information. The mark $*$ means timeout, which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:AESopenssl}
+\renewcommand{\baselinestretch}{0.96}\selectfont
+\caption{Leakages in AES implemented byopenssl 0.9.7}\label{tab:AESopenssl0.9.7}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
@@ -83,4 +84,5 @@ aes\_core.c& 961&AES\_encrypt&4 &DA\\
 \hline
 \end{tabular}
 %}
+\renewcommand{\baselinestretch}{1.0}\selectfont
 \end{table}
