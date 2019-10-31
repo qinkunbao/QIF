@@ -11,9 +11,9 @@ Existing static-based side-channel quantification
 works~\cite{182946,Wichelmann:2018:MFF:3274694.3274741 } define information
 leakage using max entropy or Shannon entropy. These definitions provide a strong
 security guarantee when one tries to prove a program is secure.  If zero bit of
-information leakage is reported, teh program is secure. However, it is not
-useful in practice if a tool reports the program leaks some information because
-when being reported is the ``average'' leakage while in an attack scenario, the
+information leakage is reported, the program is secure. However, it is not
+useful in practice if their tools report the program leaks some information. Because
+their reported result is the ``average'' leakage, while in an attack scenario, the
 leakage could be much severe.
 %Moreover, those metrics does not apply to static method.
 
@@ -32,13 +32,13 @@ if(strcmp(key, "password")){
     \label{fig:password-checker}
 \end{figure}
 
-We consider the dummy password checker shown in Figure~\ref{fig:password-checker}.
-The program will take an 8 byte char array as the input and check if the
+We consider a dummy password checker shown in Figure~\ref{fig:password-checker}.
+The password checker will take an 8 byte char array as the input and check if the
 input is the correct password. If an attacker knows the code executes branch
 $\{{1\}}$ by side-channel attacks, he can infer the password equals to ``password'', in
-which case the attacker can fully retrieve the password. Therefore, the total
-information leakage should be 64 bits, which equals to the size of the sensitive
-input if an attacker observes the code executes branch $1$ .
+which case the attacker can fully retrieve the password. Therefore, the total leaked
+information should be 64 bits, which equals to the size of the sensitive
+input, when an attacker observes the code executes branch $1$ .
 
 However, previous static-based approach cannot precisely reflect the amount of
 the leakage. According to the definition of Shannon entropy, the leakage will be
@@ -48,9 +48,9 @@ will report the code has $\log_2{2} = 1$ bit leakage.
 
 Both approaches fail to tell how much information is leaked during the execution
 precisely. The problem with existing methods is that they are static-based and
-the input values are neglected by the previous definition. They assume the
-attacker runs the program multiple times with many different sensitive
-information as the input. As shown in Figure~\ref{fig:gap}, previous models,
+the input values are neglected by their approaches. They assume an
+attacker runs the program multiple times with many different or random sensitive
+inputs. As shown in Figure~\ref{fig:gap}, previous models,
 both Shannon entropy and max entropy, give an ``average'' estimate of the
 information leakage. However, it is not the typical scenario for an adversary to
 launch a side-channel attack. When a side-channel attack happens, the adversary
@@ -61,8 +61,8 @@ existing static method does not work well in those situations. We want to have a
 theory for dynamic analysis that if the theory says an attack leaks $x$ bits of
 secret information from a side-channel vulnerability, then $x$ should be useful
 in estimating the sensitive level of the side-channel. However, the above methods
-all fail in real attack models. This is the first challege we face
-\textbf{(Challege C1)}.
+all fail in real attack models. This is the first challenge we face
+\textbf{(Challenge C1)}.
 
 \begin{figure}
     \centering
@@ -72,34 +72,35 @@ all fail in real attack models. This is the first challege we face
 
 
 \subsection{Notations}
-In the section, we give the necessary definitions and notations for dealing with
-programs and side-channels. We use capital letters (e.g., $A$) to represent the
-set. $|S|$ represents the cardinality of set $A$. We use corresponding small
+In the section, we give necessary definitions and notations for dealing with
+programs and side-channels. We use capital letters (e.g., $A$) to represent a
+set. $|A|$ represents the cardinality of the set $A$. We use corresponding small
 letters to represents one element in the set (e.g., $a \in A$).
 
-We assume the program ($\beta$) has $K$ as the sensitive input. $K$ should be a
+We assume a program ($\beta$) has $K$ as the sensitive input. $K$ should be a
 finite set of keys. The program also takes known messages $M$ as the input. The
-model applies to most of the cryptosystems. For example, during the AES
-encryption, $\beta$ is the encryption function. $K$ is AES key and $M$ is the
-message to be encrypted. During the execution, an adversary may have some
+model applies to most of crypto systems. For example, during the AES
+encryption, $\beta$ is the encryption function. $K$ is AES key and $M$ is 
+messages to be encrypted. During the execution, an adversary may have some
 observations ($O$) from the program. Examples of those observations include
 timing, CPU usages, and Electromagnetic signals (EM). For this paper, we
-consider the secret-dependent control-flows and secret-dependent memory accesses
-as the observations.
+consider secret-dependent control-flows and secret-dependent memory accesses
+as observations.
 
-With the above definitions, we have the following mapping between $\beta$, $K$,
+With the above definitions, we define the following mapping between $\beta$, $K$,
 $M$, and $O$:
 
 \begin{displaymath}
     \beta(K, M) \rightarrow O
 \end{displaymath}
 
+We model a side-channel with the following way.
 An adversary does not have access to $K$, but he knows $\beta$, $M$, and $O$.
 For one execution of a deterministic program, once $k \in K$ and $m \in M$ are
-fixed, the observation ($o \in O$) is also determined. As an attacker, he knows
+fixed, the observation ($o \in O$) should also be determined. As an attacker, he knows
 $\beta$, $o$, and $m$. The attacker wants to infer the value of $k$. We use
-$K^o$ to denote the set of possible $k$ values that still produce the same
-observations:
+$K^o$ to denote the set of possible $k$ values that produce the same
+observation:
 
 \begin{displaymath}
     K^o = \{ k \in K \, |\, \beta(k, m) \rightarrow o\}
@@ -112,9 +113,9 @@ transferred into the following question.
 Now we present our metric to quantify the amount of leaked information from
 dynamic analysis.
 
-In information theory, the mutual information (MI) of is a measure of the mutual
-dependence between the two variables. Here we use MI to describe the leakage
-between $K$ and $O$, which is defined as:
+In information theory, the mutual information (MI) is a measure of the mutual
+dependence between the two variables. Here we use MI to describe the information 
+dependence between $K$ and $O$, which is defined as:
 
 \begin{equation} \label{eq:1}
     I(K;O) = \sum_{k {\in} K}{\sum_{o {\in} O}{p(k, o)\log_2\frac{p(k, o)}{p(k)p(o)}}}
@@ -126,15 +127,15 @@ Alternatively, the mutual information can also be equivalently expressed as:
     I(K;O) = H(K) - H(K|O)
 \end{equation}
 
-$H(K|O)$ is the entropy of $K$ conditioned on $O$. It quantifies the uncertainty
+$H(K|O)$ is the entropy of $K$ with the condition $O$. It quantifies the uncertainty
 of $K$ given the value of $O$. In other word, the conditional entropy $H(K|O)$
-marks the uncertainty about $K$ after the adversary has gained some observations
+marks the uncertainty about $K$ after an adversary has gained some observations
 ($O$).
 \begin{equation}
     H(K|O) = - \sum_{o {\in} O} {p(o) \sum_{k {\in} K}{p(k|o)\log_2p(k|o)}}
 \end{equation}
 
-In the project, we hope to give a very precise definition of information
+In this project, we hope to give a very precise definition of information
 leakages. Suppose an attacker run the target program multiple times with one
 fixed input, we want to know how much information he can infer by observing the
 memory access patterns ($o$). We come to the simple slogan
@@ -147,7 +148,7 @@ that
      & ~~~~~~ \mathit{Initial\ uncertainty} - \mathit{Remaining\ uncertainty}.
 \end{align*}
 
-Now we come compare Eq.~(\ref{eq:2}) with the above slogan, we will find $H(K)$
+Now we come compare Eq.~(\ref{eq:2}) with the above slogan, we find $H(K)$
 is the $\mathit{Initial\ uncertainty}$ and $H(K|O)$ is $\mathit{Remaining\
 uncertainty}$. During a side-channel attack, the observation ($o$) is known.  We
 have $H(K|O) = H(K|o)$.
@@ -181,12 +182,12 @@ For any $k' \in K \setminus K^o$, $p(k'|o) = 0$. We get
     $$L_{\beta(k)\rightarrow o} = \log_2{|K|} - \log_2{|K^o|}$$
 \end{mydef}
 
-With the new definition, if the attacker observes that the
+With the new definition, if an attacker observes that the
 code in Figure~\ref{fig:password-checker} runs the branch 1, then the $K^{o^{1}} =
-\{\mathrm{0x1b}\}$. Therefore, the information leakage $L_{P(k)=o^{1}} =
-\log_2{256} - \log_2{1} = 8$ bits, which means the key is totally leaked. If the
+\{\mathrm{``password"}\}$. Therefore, the information leakage $L_{P(k)=o^{1}} =
+\log_2{2^{64}} - \log_2{1} = 64$ bits, which means the key is totally leaked. If the
 attacker observes the code runs branch 2, the leaked information is
-$L_{P(k)=o^{2}} = \log_2{256} - \log_2{255} \approx 0$ bit.
+$L_{P(k)=o^{2}} = \log_2{2^{64}} - \log_2{(2^{64}-1)} \approx 0$ bit.
 
 
 We can also calculate the leaked information from the sample code in
@@ -235,7 +236,7 @@ accesses}. In other words, an adversary have observations based on control-flows
 and data accesses.
 
 \subsubsection{Secret-dependent Control Transfers}
-We think a control-flow is secret-dependence if different input sensitive keys
+We think a control-flow is secret-dependent if different input sensitive keys
 ($K$) can lead to different branch conditions. For a specific branch, the branch
 condition is either true or false. Therefore, the branch condition is always a
 boolean variable.
@@ -249,7 +250,7 @@ the observation on secret-dependent control-transfers.
 
 \subsubsection{Secret-dependent Data Accesses}
 Similar to secret-dependent control transfers, a data access is
-secret-dependence if different input sensitive keys ($K$) can lead to different
+secret-dependent if different input sensitive keys ($K$) can lead to different
 memory addresses. We use the model from CacheD~\cite{203878}. The low $L$ bits
 of the address is irrelevant in side-channels.
 
