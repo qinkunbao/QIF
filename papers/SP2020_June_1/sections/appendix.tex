@@ -2,7 +2,7 @@
 \section{Algorithm to Compute the Maximum Independent Partition}
 \label{appendix:partition}
 
-
+{\small
 \IncMargin{1em}
 \begin{algorithm}[h]
     \DontPrintSemicolon
@@ -28,10 +28,13 @@
     \label{algo:max-inde}
 \end{algorithm}
 \DecMargin{1em}
+}
 
+\newpage
 \section{Algorithm to Compute the Number of Satisfying Assignments}
 \label{appendix:montecarlo}
-
+~
+{\small
 \IncMargin{1em}
 \begin{algorithm}
     \SetAlgoLined
@@ -66,11 +69,13 @@
     \caption{Metropolis Sampling}
 \end{algorithm}
 \DecMargin{1em}
+}
 
-\clearpage
+
+%\clearpage
 \section{SBOX Example of Bit-slicing}
 \label{appendix:SBOX}
-
+~
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -96,6 +101,8 @@ ret = l << 1 + r;
     \label{fig:SBOX_bitslicing}
 \end{figure}
 
+~
+
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -110,8 +117,10 @@ if (password <= 0b111)      \\Leaks 5 bits of password
     \label{fig:SBOX_da}
 \end{figure}
 
-\section{Example for Lookup Table}
+~
 
+\section{Example for Lookup Table}
+~
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -162,11 +171,11 @@ void encrypt(char *output, char * key, uint32_t len)
 \label{sec:result-table}
 
 Here we present the detailed experimental results.
-Due to space limitation, we selected representative implementations of
+Due to space limitation, we select the representative implementations of
 AES, DES, and RSA in
 mbedTLS-2-5,
 openssl-1-1-0f,  and
-openssl-1-1-1.
+openssl-1-1-1.  
 %For RSA, we also include openssl-1-0-2f and openssl-1-0-2k.
 The results are representative to other versions.
 All the results will be made available in electronic format online
@@ -174,10 +183,9 @@ when the paper is published. %at \fixme{http://tinyurl}.
 
 In all the tables presented in this appendix, the mark ``$*$'' means timeout,
 which indicates more severe leakages. See \S\ref{loc:timeout} for the details.
-Also notice that the `0' leakage does not equals to no leakage in that leakage
-site. We round the calculated numbers of leaked bits as an integer. As a result,
-the `0' leaked bits mean the leakage sites leak some but less one bit of
-information, see \S~\ref{sssec:errest} for the details.
+Also note that we round the calculated numbers of leaked bits as an integer.
+Hence the `0' leakage does not equals to no leakage but some leakage size
+between 0 and 0.5 bit, see \S\ref{sssec:errest} for the details.
 
 \input{figures/form/latex/AES-mbedTLS-2-5.tex}
 %% \input{figures/form/latex/AES-mbedTLS-2-15-1.tex}
