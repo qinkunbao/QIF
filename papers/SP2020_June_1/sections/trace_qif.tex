@@ -21,8 +21,8 @@ leakage could be much severe.
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.03\textwidth,xrightmargin=.01\textwidth]
-uint8_t password = input();
-if(password == 0x1b){
+char key[9] = input();
+if(strcmp(key, "password")){
     pass();     //branch 1
 }else{
     fail();     //branch 2
@@ -33,17 +33,17 @@ if(password == 0x1b){
 \end{figure}
 
 We consider the dummy password checker shown in Figure~\ref{fig:password-checker}.
-The program will take an 8-bit number as the input and check if the
+The program will take an 8 byte char array as the input and check if the
 input is the correct password. If an attacker knows the code executes branch
-$\{{1\}}$ by side-channel attacks, he can infer the password equals to 0x1b, in
+$\{{1\}}$ by side-channel attacks, he can infer the password equals to ``password'', in
 which case the attacker can fully retrieve the password. Therefore, the total
-information leakage should be 8 bits, which equals to the size of the sensitive
+information leakage should be 64 bits, which equals to the size of the sensitive
 input if an attacker observes the code executes branch $1$ .
 
 However, previous static-based approach cannot precisely reflect the amount of
 the leakage. According to the definition of Shannon entropy, the leakage will be
-$\frac{1}{256}*\log_{2}\frac{1}{256} + \frac{255}{256} *\log_{2}\frac{255}{256}=
-0.24$ bits. Because the program has two branches, tools based on max-entropy
+$\frac{1}{2^{64}}*\log_{2}\frac{1}{2^{64}} + \frac{2^{64}-1}{2^{64}} *\log_{2}\frac{2^{64}-1}{2^{64}} \approx
+0$ bits. Because the program has two branches, tools based on max-entropy
 will report the code has $\log_2{2} = 1$ bit leakage.
 
 Both approaches fail to tell how much information is leaked during the execution
