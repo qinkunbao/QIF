@@ -70,11 +70,6 @@ int main(int argc, char *argv[]) {
         fileName = output_name;
     }
 
-    ifstream trace_file(argv[1]);
-    if (!trace_file.is_open()) {
-        cout << "Can't open files" << endl;
-        return 1;
-    }
 
     vector<unique_ptr<Inst_Base>> inst_list;
     vector<uint8_t> key_value;
@@ -88,6 +83,12 @@ int main(int argc, char *argv[]) {
 
 
         auto start = high_resolution_clock::now();
+
+        ifstream trace_file(argv[1]);
+        if (!trace_file.is_open()) {
+            cout << "Can't open files" << endl;
+            return 1;
+        }
 
         parse_trace_qif(trace_file, key_symbol, inst_list, key_value, func, start_ins);
 
@@ -123,6 +124,8 @@ int main(int argc, char *argv[]) {
         double now_second = (se_duration.count()) / 1000000.0;
 
         se_time_vector.push_back(now_second);
+
+        trace_file.close();
     }
 
     std::ofstream se_time_file;
