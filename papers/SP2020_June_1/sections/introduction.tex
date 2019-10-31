@@ -18,10 +18,10 @@ Various countermeasures have been proposed to defend against software-based
 side-channel attacks. Hardware-level solutions, such as reducing shared
 resources, adopting oblivious RAM, and using transnational
 memory~\cite{203878,217537,shih2017t,Zhang:2015:HDL:2775054.2694372}, need new
-hardware features or changes to modern complex computer systems, which is
+hardware features or changes in modern complex computer systems, which is
 impractical and hard to adopt in reality. Therefore, a more promising and
 universal direction is software countermeasures, detecting and eliminating
-side-channel vulnerabilities from code.
+side-channel vulnerabilities from code base.
 
 Regarding the root cause of software-based side channels, many of them originate
 from the following two specific circumstances: data flow from secrets to load
@@ -35,7 +35,7 @@ potential leakage could be. Moreover, many of the reported vulnerabilities are t
 hard to exploit and leak very little information. For example,
 DATA~\cite{217537} reports 2,246 potential leakage site for the RSA
 implementation in OpenSSL\@. After some inspections, 1,510 are dismissed, but it
-still leaves 460 data-access patterns and 278 control-flows. For software
+still leaves 460 data-access leakages and 278 control-flow leakages. For software
 developers, it is hard to fix all these vulnerabilities, let alone the majority
 of them are negligible. That is, some vulnerabilities can be exploited to recover the
 full secret keys~\cite{184415}, but many other vulnerabilities prove to be less
@@ -45,22 +45,22 @@ To assess the sensitive level of side-channel vulnerabilities, we need a proper
 quantification metric. Static methods~\cite{182946,5207642}, usually with
 abstract interpretations, can give a leakage upper bound, which is useful to
 justify the implementation is secure when they report zero or little leakage.
-However, they cannot indicate how serious the leakage is because of
-over-approximation. For example, CacheAudit~\cite{182946} reports that the upper
+However, they cannot indicate how serious the leakage is because of the
+over-approximation method they apply. For example, CacheAudit~\cite{182946} reports that the upper
 bound leakage of AES-128 exceeds the original key size! The dynamic methods take
-another approach with a concrete input and run the program in the real
+another approach with a concrete input and run the program in a real
 environment. Although they are very precise in terms of actual leakages, no
-existing tool can precisely assess the severity of the vulnerabilities they
-discover. 
+existing tool can precisely assess the severity of the vulnerabilities in production
+software. 
 
 To overcome these limitations, we propose a novel method to quantify information
-leakage more precisely. Unlike previous works that only consider the
+leakage precisely. Unlike previous works that only consider the
 ``average'' information leakage, we study the problem based on real attack
 scenarios. The average information assumes that the target program has
 \emph{variable} or \emph{random} sensitive information when an attack is
 launched. However, for real-world attacks, an adversary may run the target
 problem again and over again with \emph{fixed} unknown sensitive information
-such as the key. Therefore, the previous threat model cannot model real attack
+as the input. Therefore, the previous threat model cannot model real attack
 scenarios. In contrast, our method is more precise and fine-grained. We quantify
 the amount of leaked information as the cardinality of the set of possible
 inputs based on attackers' observations.
@@ -76,7 +76,7 @@ leaked. By counting the number of distinct inputs, we can quantify the
 information leakage precisely.
 
 We use constraints to model the relation between the original sensitive input
-and each leakage site. We run the instruction level symbolic execution on the
+and the attacker's observations. We run the instruction level symbolic execution on the
 whole execution trace to generate the constraints. Symbolic execution can
 provide fine-grained information but is usually believed to be an expensive
 operation in terms of performance. Therefore, existing dynamic symbolic
@@ -95,13 +95,11 @@ the program processes different sensitive data.
 %We refer them as the potential information leakage sites. 
 First, we collect the dynamic execution trace for each input of the target
 libraries and then run symbolic execution on the traces. In this way, we model
-each side-channel leakage as a math formula. The sensitive input is divided into
+each side-channel leakage as a logic formula. The sensitive input is divided into
 several independent bytes, and each byte is regarded as a unique symbol. Those
 formulas can precisely model side-channel vulnerabilities. Then we extend the
 problem to multiple leakages and related leakages and introduce the Monte Carlo
-sampling method to estimate the single and combined information leakage. In
-fact, if an application has a different sensitive input but still satisfies
-the formula, the code can still leak the same information.
+sampling method to estimate the single and combined information leakage. 
 
 
 %Based on the fixed attack target, we classify the software-based side-channel
@@ -134,13 +132,13 @@ the formula, the code can still leak the same information.
 
 We apply \tool{} on both symmetric and asymmetric ciphers from real-world crypto
 libraries, including OpenSSL and mbed TLS\@. The experimental result confirms
-that \tool{} can precisely identify the previously known vulnerabilities, report
+that \tool{} can precisely identify previously known vulnerabilities, report
 how much information is leaked and which byte in the original sensitive buffer
 is leaked. Although some of the analyzed crypto libraries have a number of
 side-channels, they actually leak very little information. Also, we perform the
 analysis of widely deployed software countermeasures against side channels.
 \tool\ also discovers new vulnerabilities. With the help of \tool{}, we confirm
-that those vulnerabilities can be exploited.
+that those vulnerabilities are serious.
 
 In summary, we make the following contributions:
 
@@ -160,7 +158,7 @@ In summary, we make the following contributions:
 
       \item We transfer the information quantification problem into a counting
             problem and use the Monte Carlo sampling method to estimate the
-            information leakage. Some initial results indicate the the sampling
+            information leakage. Some initial results indicate the sampling
             method suffers from the curse of dimensionality problem. We,
             therefore, design a guided sampling method and provide the
             corresponding error estimate.

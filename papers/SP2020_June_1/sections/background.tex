@@ -1,14 +1,14 @@
 \section{Background and Threat Model}
-In this section, we first present an introduction to software-based side-channel
-attacks. Moreover, we analyze the root cause of many software-based
+In this section, we first present an introduction to address-based side-channel
+attacks. Moreover, we analyze the root cause of many address-based
 side-channels. We find many of them caused by two specific side-channel
 vulnerabilities: secret-dependent control-flow transfers and secret-dependent
 memory accesses. Therefore, we will focus on identifying and quantifying those
-leakages in the paper. After that, we discuss existing methods of side-channel
-detection and quantification.
+leakages in the paper. After that, we discuss existing information leakage quantification 
+metrics.
 
-\subsection{Software-based Side-channels}
-Side-channels are information channels that can leak sensitive information
+\subsection{Address-based Side-channels}
+Me-channels are information channels that can leak sensitive information
 unconsciously through different execution behaviors.  Fundamentally, those
 differences were caused by shared hardware components (e.g., CPU cache, TLB, and
 DRAM) in modern computer systems~\cite{ge2018survey,szefer2019survey}. Depending
@@ -19,22 +19,22 @@ For example, cached-based
 side-channels~\cite{yarom2017cachebleed,191010,184415,7163050,Osvik2006,liu2015last,yarom2014flush+}
 rely on the time differences between cache miss and cache hit. We introduce two
 common attack strategies, namely Prime+Probe~\cite{liu2015last} and
-Flush+Reload~\cite{yarom2014flush+}. Prime+Probe targets a single cache set. The
+Flush+Reload~\cite{yarom2014flush+}. Prime+Probe targets a single cache set. An
 attacker preloads the cache set with its own data and waits until the victim
 executes the program. If the victim accesses the cache set and evicts part of
 the data, the attacker will experience a slow measurement. If not, it will be
 fast. By knowing which cache set the target program accesses, the attacker can
-infer locations of the sensitive information. While Flush+Reload targets a
+infer part of the sensitive information. While Flush+Reload targets a
 single cache line, it requires the attacker and the victim share the same memory
 address space. During the ``flush'' stage, the attacker flushes the ``monitored
-memory'' from the cache and then waits for the victim to access the memory,
+memory'' from the cache and also waits for the victim to access the memory,
 which will load the sensitive information to the cache line. In the next phase,
 the attacker reloads the ``monitored memory''. By measuring the time difference
 brought by cache hit and miss, the attacker can know whether the victim has
 accessed the ``monitored memory'' and further infer the sensitive information.
 
-There are some other types of side-channels which target different hardware
-layers other than CPU cache as well. For example, the controlled-channel
+Some other types of side-channels target different hardware
+layers other than CPU cache. For example, the controlled-channel
 attack~\cite{7163052}, where an attacker works in the kernel space, can infer
 sensitive data in the shielding systems by observing the page fault sequences
 after restricting some code and data pages.
