@@ -329,41 +329,54 @@ confirms our assumptions.
 
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
-% introduction
-Bit-slicing is a software technology that is capable of implementing algorithms
-with high efficiency and constant running time. The basic concept is to
-implement a function in terms of single-bit logical operations (AND, XOR, OR,
-NOT, etc.). 
+
+Bit-slicing is an efficient method to construct constant-time implementation for
+side channel to mitigation. The basic concept is to
+implement a function in terms of single-bit logical gate operations, such as AND, XOR, OR,
+and NOT\@. 
 % Eli Biham et al.~\cite{Biham:1997:FND:647932.757246} first use gate
 % circuits to implement the SBOX of DES\@. Based on his work Matthew
 % Kwan~\cite{Kwan2000ReducingTG} present a better implementation of DES with fewer
 % gates and first used the term Bit-slicing. 
 % This approach can immune cryptographic algorithms to cache and timing-related
 % side-channel attacks. 
-Figure~\ref{fig:SBOX_bitslicing} describe a Bit-slicing implement of
-secret-depend Substitution-box (SBOX) shown in Figure~\ref{fig:SBOX_da}. Since
-the table lookup operation and conditional jump operation will be replaced with
-single-bit logical gates, without directly non-input data access or control flow
-change, thus both the data access type and control flow type of side-channel
-leakage will be avoided.
+%Figure~\ref{fig:SBOX_bitslicing} describe a Bit-slicing implement of
+%secret-depend Substitution-box (SBOX) shown in Figure~\ref{fig:SBOX_da}.
+   Since
+the table lookups and conditional jumps are replaced with
+single-bit logical gates, with no secret-dependent memory addresses or control flow,
+ both the data access and control flow types of side-channel
+leakages are mitigated.
 
-Consider an SBOX take the password bits as input and output 2-bit transform
-result. The plain implementation will first ensure the input does not overflow
-and then directly access the table for the substitution result, as described in
-Figure~\ref{fig:SBOX_da}. While we apply the Bit-sliding to this SBOX, the check
-and access process will transfer to a series of logical operations described in
-Figure~\ref{fig:SBOX_bitslicing}. We apply \tool to both implementations.
-According to the result, there exist two leakage sites in non-bit-slicing
-implementation: one control-flow type leakage from check operation and one data
-access type leakage from the table lookup operation of directly access method
-(line 6 and line 7 in Figure~\ref{fig:SBOX_da}). The number of leaked bits is 5
-and 4, respectively. For the leakage from line 6, according to
+We would like to test \tool\ on bit-slicing. We adopted the SBOX implementations,
+commonly used in block ciphers such as DES and AES, with and without bit-slicing, and
+apply \tool\ to confirm the mitigation. 
+The SBOX implementation with and without bit-slicing are shown in Figure~\ref{fig:SBOX_bitslicing} and Figure~\ref{fig:SBOX_da}, respectively, in Appendix~\ref{appendix:SBOX}.
+Consider an SBOX take some bits derived from a password as input and output 2-bit transform
+result.
+The plain implementation has a range check on the password input and a secret-dependent table lookup
+while
+bit-slicing does not.  
+%% The plain implementation will first ensure the input does not overflow
+%% and then directly access the table for the substitution result, as described in
+%% Figure~\ref{fig:SBOX_da}. While we apply the Bit-sliding to this SBOX, the check
+%% and access process will transfer to a series of logical operations described in
+%% Figure~\ref{fig:SBOX_bitslicing}.
+\tool\ reports that there are both control-flow and data access types of leakage in
+the non-bit-slicing implementation  
+%% We apply \tool to both implementations.
+%% According to the result, there exist two leakage sites in non-bit-slicing
+%% implementation: one control-flow type leakage from check operation and one data
+%% access type leakage from the table lookup operation of directly access method
+(line 6 and line 7 in Figure~\ref{fig:SBOX_da}).
+The number of leaked bits is 5
+and 4, respectively. At line 6, according to
 Definition~\ref{def}, the input set $K$ is $[0,2^8-1]$, the observed input set
 $K^o$ is $[0,2^3-1]$. Thus, the leakage $L_{\beta(k)\rightarrow o}$ based on the
 observation ($o$) is $L_{\beta(k)\rightarrow o} = \log_2{|K|} - \log_2{|K^o|} =
-8-3 = 5$ bit, which verify the result from \tool. Similarly, we can verify the
-result of the other leakage site. And for the Bit-slicing implementation,
-\tool{} finds no leakage.
+8-3 = 5$ bit, which confirms the result from \tool. Similarly, we can verify the
+result of the other leakage site.  
+\tool{} reports no leakage on the bit-slicing implementation. 
 % The basic concept is to express a function
 % in terms of single-bit logical operations (AND, XOR, OR, NOT, etc.). These
 % operations are then carried out for multiple instances of the function in
