@@ -67,44 +67,54 @@
 \end{algorithm}
 \DecMargin{1em}
 
-%% \clearpage
-%% \section{SBOX Example of Bit-slicing}
-%% \label{appendix:SBOX}
+\clearpage
+\section{SBOX Example of Bit-slicing}
+\label{appendix:SBOX}
 
-%% \begin{figure}[h!]
-%%       \centering
-%%       \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-%%   ...
-%%   uint8_t na = ~a;
-%%   uint8_t nb = ~b;
-%%   uint8_t nc = ~c;
-  
-%%   uint8_t t0 = (b & nc);
-%%   uint8_t t1 = (b | nc);
-  
-%%   *l = (a & nb) | t0;
-%%   *r = (na & t1) | t0;
-%%   ...
-%%   \end{lstlisting}
-%%       \caption{SBOX\_with\_BitSlicing}
-%%       \label{SBOX_bitslicing}
-%%   \end{figure}
-  
-%%   \begin{figure}[h!]
-%%       \centering
-%%       \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-%%   ...
-%%   uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
-%%   x = (a << 2) + (b << 1) + c;
-%%   *l = SBOX[x] >> 1;
-%%   *r = SBOX[x] & 0b01;
-%%   ...
-%%   \end{lstlisting}
-%%       \caption{SBOX\_without\_BitSlicing}
-%%       \label{SBOX_da}
-%%   \end{figure}
+\begin{figure}[h]
+      \centering
+      \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+...
+uint8_t password = input();
 
-\newpage
+a = *password & 0b001;
+b = (*password & 0b010) >> 1;
+c = (*password & 0b100) >> 2;
+
+na = ~a & 1;
+nb = ~b & 1;
+nc = ~c & 1;
+
+t0 = (b & nc);
+t1 = (b | nc);
+
+l = (a & nb) | t0;
+r = (na & t1) | t0;
+
+ret = l << 1 + r;
+...
+      \end{lstlisting}
+      \caption{SBOX\_with\_BitSlicing}
+      \label{fig:SBOX_bitslicing}
+\end{figure}
+
+\begin{figure}[h]
+      \centering
+      \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+...
+uint8_t password = input();
+
+uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
+
+if (password <= 0b111)
+    ret = SBOX[password];
+...
+      \end{lstlisting}
+      \caption{SBOX\_without\_BitSlicing}
+      \label{fig:SBOX_da}
+\end{figure}
+
+% \newpage
 \section{Detailed Experimental Results}
 \label{sec:result-table}
 
