@@ -361,9 +361,9 @@ namespace tana {
             if (num != 0) {
                 float portion =
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
-                float leaked_information = abs(-log(portion) / log(2));
+                float leaked_information = -log(portion) / log(2);
                 std::cout << "Address: " << std::hex << addr << std::dec
-                          << " Leaked:" << leaked_information << " bits"
+                          << " Leaked:" << std::setprecision(2) << leaked_information << " bits"
                           << " Type: " << type_str << " "
                           << " Num of Satisfied: " << num
                           << " Total Sampling Numbers: " << sample_num
@@ -378,7 +378,9 @@ namespace tana {
                     std::cout << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
-                std::cout << "Address: " << std::hex << addr << std::dec;
+                std::cout << "Address: " << std::hex << addr << std::dec
+                << " Type: " << type_str << " " << std::endl;
+
                 std::cout << " Monte Carlo Failed" << std::endl;
                 if(t2e != nullptr)
                 {
@@ -405,9 +407,9 @@ namespace tana {
             if (num != 0) {
                 float portion =
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
-                float leaked_information = abs(-log(portion) / log(2.0));
+                float leaked_information = -log(portion) / log(2.0);
                 myfile << "Address: " << std::hex << addr << std::dec
-                       << " Leaked:" << leaked_information << " bits"
+                       << " Leaked:" << std::setprecision(2) << leaked_information << " bits"
                        << " Type: " << type_str << " "
                        << " Num of Satisfied: " << num
                        << " Total Sampling Numbers: " << sample_num
@@ -420,7 +422,9 @@ namespace tana {
                            << t2e->locateSym(addr)->line_number << std::endl;
                 }
             } else {
-                myfile << "Address: " << std::hex << addr << std::dec;
+                myfile << "Address: " << std::hex << addr << std::dec
+                        << " Type: " << type_str << " " << std::endl;
+
                 myfile << " Monte Carlo Failed" << "\n";
                 if(t2e != nullptr)
                 {
@@ -445,9 +449,9 @@ namespace tana {
             if (num != 0) {
                 float portion =
                         (static_cast<float>(num)) / (static_cast<float>(sample_num));
-                float leaked_information = abs(-log(portion) / log(2.0));
+                float leaked_information = -log(portion) / log(2.0);
                 myfile << "Address: " << std::hex << addr << std::dec
-                       << " Leaked:" << leaked_information << " bits"
+                       << " Leaked:" << std::setprecision(2) << leaked_information << " bits"
                        << " Type: " << type_str << " "
                        << " Num of Satisfied: " << num
                        << " Total Sampling Numbers: " << sample_num
@@ -463,7 +467,9 @@ namespace tana {
                     myfile << func->getFunctionAndLibrary(addr) << "\n" << std::endl;
                 }
             } else {
-                myfile << "Address: " << std::hex << addr << std::dec;
+                myfile << "Address: " << std::hex << addr << std::dec
+                        << " Type: " << type_str << " " << std::endl;
+
                 myfile << " Monte Carlo Failed" << std::endl;
                 if(t2e != nullptr)
                 {
