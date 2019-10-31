@@ -43,7 +43,7 @@ severe in reality.
 
 To assess the sensitive level of side-channel vulnerabilities, we need a proper
 quantification metric. Static methods~\cite{182946,5207642}, usually with
-abstract interpretations, can give a leakage upper bound, which is useful to
+abstract interpretation, can give a leakage upper bound, which is useful to
 justify the implementation is secure when they report zero or little leakage.
 However, they cannot indicate how serious the leakage is because of the
 over-approximation method they apply. For example, CacheAudit~\cite{182946} reports that the upper
@@ -57,7 +57,7 @@ To overcome these limitations, we propose a novel method to quantify information
 leakage precisely. Unlike previous works that only consider the
 ``average'' information leakage, we study the problem based on real attack
 scenarios. The average information assumes that the target program has
-\emph{variable} or \emph{random} sensitive information when an attack is
+\emph{variable} or \emph{random} sensitive information as input when an attack is
 launched. However, for real-world attacks, an adversary may run the target
 problem again and over again with \emph{fixed} unknown sensitive information
 as the input. Therefore, the previous threat model cannot model real attack

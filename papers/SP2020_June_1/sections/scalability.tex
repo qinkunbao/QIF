@@ -331,9 +331,9 @@ number of solutions for each constraint. Even though the dimension has been
 reduced greatly after the previous step, this is still a \#P problem. For our
 project, we apply the approximate counting instead of exact counting for two
 reasons. First, we do not need to have a very precise result of the exact number
-of total solutions. As the information is defined with a logarithmic function.
+of total solutions since the information is defined with a logarithmic function.
 We do not need to distinguish between constraints having $10^{10}$ or $10^{10} +
-10$ solutions. Second, the exact
+10$ solutions; they are very close to after taking logarithmic. Second, the exact
 model counting approaches, like DPLL search, have difficulty scaling up to large
 problem sizes.
 
@@ -343,10 +343,10 @@ the constraint $g_{i}= c_{i_1} \land c_{i_2} \land ,\ldots, \land c_{i_j} \land
 satisfies any constraint from $c_{i_1}$ to $c_{i_m}$. In other words, $K_{c_gi}$
 should be the subset of $K_{c_1}$, $K_{c_2}$, \ldots , $K_{c_m}$. We notice that
 $c_i$ usually has less numbers of input compared to $g_{i}$. For example, if
-$c_{i_j}$ has only one input variable, we can find the exact solution set
+$c_{i_j}$ has only one 8-bit input variable, we can find the exact solution set
 $K_{c_{i_j}}$ of $c_{i_j}$ by trying every possible 256 solutions. After that,
 we can only generate random input numbers for the rest input variables in
-constraint $g_{i}$. With the simple trick, we can reduce the number of input
+constraint $g_{i}$. With this simple yet effective trick, we can reduce the number of input
 while still ensure the accuracy.
 The deailed algorithm is shown in Appendix~\ref{appendix:montecarlo}.
 
