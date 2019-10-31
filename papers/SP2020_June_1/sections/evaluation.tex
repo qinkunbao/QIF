@@ -388,8 +388,6 @@ result of the other leakage site.
 % non-input data access or control flow change, thus both the data access type and
 % control flow type of side-channel leakage will be avoided.
 
-% analysis & compare
-
 % \subsubsection{Scatter and Gather}
 % The scatter-gather technology is also a common defence method to cache-based timing attacks.
 % \begin{figure}[h!]
@@ -426,3 +424,4 @@ result of the other leakage site.
 % \end{figure}
 
 \subsubsection{Smaller Lookup Tables}
+Considering Cache-Collision Timing Attack described in \ref{10.1007/11894063_16}, the probability of the leakage being observed is decreased by fewer byte-wide for the lookup table. Thus theoritycally, a one byte-wide lookup table (See Figure~\ref{}) will leaks less information than a four byte-wide one (See Figure~\ref{}).

@@ -5,27 +5,27 @@
 
 \IncMargin{1em}
 \begin{algorithm}[h]
-      \DontPrintSemicolon
-      \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
-      \Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
-      \Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
-      \For{$i\leftarrow 1$ \KwTo $n$}
-      {
-            $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
-            \For{$g_{i} \in G$}
+    \DontPrintSemicolon
+    \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+    \Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
+    \Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
+    \For{$i\leftarrow 1$ \KwTo $n$}
+    {
+        $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
+        \For{$g_{i} \in G$}
+        {
+            $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
+            $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
+            \If{$S \neq \emptyset$}
             {
-                  $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
-                  $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
-                  \If{$S \neq \emptyset$}
-                  {
-                        $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
-                        \textbf{break} \;
-                  }
-                  Insert $c_{\addr{i}}$ to $G$
+                $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
+                \textbf{break} \;
             }
-      }
-      \caption{The Maximum Independent Partition}
-      \label{algo:max-inde}
+            Insert $c_{\addr{i}}$ to $G$
+        }
+    }
+    \caption{The Maximum Independent Partition}
+    \label{algo:max-inde}
 \end{algorithm}
 \DecMargin{1em}
 
@@ -34,36 +34,36 @@
 
 \IncMargin{1em}
 \begin{algorithm}
-      \SetAlgoLined
-      \DontPrintSemicolon
+    \SetAlgoLined
+    \DontPrintSemicolon
 
-      \KwIn{{The constraint $g_{i}= c_{i_1} \land c_{i_2}
-                              \land \ldots \land c_{i_m}$}}
-      \KwOut{{The number of assignments that satisfy $g_{i}$ $|K_{g_{i}}|$}}
+    \KwIn{{The constraint $g_{i}= c_{i_1} \land c_{i_2}
+                    \land \ldots \land c_{i_m}$}}
+    \KwOut{{The number of assignments that satisfy $g_{i}$ $|K_{g_{i}}|$}}
 
-      \SetKwProg{RW}{RandomWalk}{}{}
-      \SetKwProg{MM}{MetropolisMove}{}{}
-      $n$: the number of sampling times \;
-      $P$: a probability generator \;
-      $k$: the input assignment \;
-      $n_{s}$: the number of satisfying assignments \;
-      $\#k$: the satisfying number of k \fixme{this number is not used syntactically} \;
-      Initialization: \;
-      $\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}c_{i_j}(k_0)$ \;
-      \For{$t\leftarrow 1$ \KwTo $n$} {
-            $p$ $\leftarrow$ $P$ \;
-            \If{$p \geq 0.5$}
-            {
-                  $v$ $\leftarrow$ \RW{$v$} {}
-            }
-            \Else{
-                  $v$ $\leftarrow$ \MM{$v$} {}
-            }
-            \If{$v$ satisfies $g_{i}$}
-            {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
-      }
-      $|K_{g_{i}}|$ $\leftarrow$ $n_s|K| / n$
-      \caption{Metropolis Sampling}
+    \SetKwProg{RW}{RandomWalk}{}{}
+    \SetKwProg{MM}{MetropolisMove}{}{}
+    $n$: the number of sampling times \;
+    $P$: a probability generator \;
+    $k$: the input assignment \;
+    $n_{s}$: the number of satisfying assignments \;
+    $\#k$: the satisfying number of k \fixme{this number is not used syntactically} \;
+    Initialization: \;
+    $\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}c_{i_j}(k_0)$ \;
+    \For{$t\leftarrow 1$ \KwTo $n$} {
+        $p$ $\leftarrow$ $P$ \;
+        \If{$p \geq 0.5$}
+        {
+            $v$ $\leftarrow$ \RW{$v$} {}
+        }
+        \Else{
+            $v$ $\leftarrow$ \MM{$v$} {}
+        }
+        \If{$v$ satisfies $g_{i}$}
+        {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
+    }
+    $|K_{g_{i}}|$ $\leftarrow$ $n_s|K| / n$
+    \caption{Metropolis Sampling}
 \end{algorithm}
 \DecMargin{1em}
 
@@ -72,9 +72,8 @@
 \label{appendix:SBOX}
 
 \begin{figure}[h!]
-      \centering
-      \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-...
+    \centering
+    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 uint8_t password = input();
 
 a = *password & 0b001;
@@ -92,27 +91,71 @@ l = (a & nb) | t0;
 r = (na & t1) | t0;
 
 ret = l << 1 + r;
-...
       \end{lstlisting}
-      \caption{SBOX with BitSlicing}
-      \label{fig:SBOX_bitslicing}
+    \caption{SBOX with BitSlicing}
+    \label{fig:SBOX_bitslicing}
 \end{figure}
 
 \begin{figure}[h!]
-      \centering
-      \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-...
+    \centering
+    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 uint8_t password = input();
 
 uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
 
-if (password <= 0b111)
-    ret = SBOX[password];
-...
+if (password <= 0b111)      \\Leaks 5 bits of password
+    ret = SBOX[password];   \\Leaks 4 bits of password
       \end{lstlisting}
-      \caption{SBOX without BitSlicing}
-      \label{fig:SBOX_da}
+    \caption{SBOX without BitSlicing}
+    \label{fig:SBOX_da}
 \end{figure}
+
+\section{Example for Lookup Table}
+
+\begin{figure}[h!]
+    \centering
+    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+static const uint8_t T[16] = {
+      0x63U, 0x7cU, 0x77U, 0x7bU, 0xf2U, 0x6bU, 0x6fU, 0xc5U,
+      0x30U, 0x01U, 0x67U, 0x2bU, 0xfeU, 0xd7U, 0xabU, 0x76U,
+};
+      \end{lstlisting}
+    \caption{One Byte-wide Lookup Table}
+    \label{fig:one_byte_table}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+static const uint32_t T[16] = {
+    0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
+    0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
+    0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
+    0xe7fefe19U, 0xb5d7d762U, 0x4dababe6U, 0xec76769aU,
+};
+    \end{lstlisting}
+    \caption{Four Byte-wide Lookup Table}
+    \label{fig:four_byte_table}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+    \centering
+    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+void encrypt(char *output, char * key, uint32_t len)
+\\ char key[] = {1,2,3,4,5,6,7,8,9,10,11,12};
+{
+    for(int i = 0; i < len; ++i)
+        output[i] = T[key[i]];
+
+}
+    \end{lstlisting}
+    \caption{Encrypt Function with Table Lookup}
+    \label{fig:table_lookup}
+\end{figure}
+
+
 
 % \newpage
 \section{Detailed Experimental Results}
@@ -121,10 +164,10 @@ if (password <= 0b111)
 Here we present the detailed experimental results.
 Due to space limitation, we selected representative implementations of
 AES, DES, and RSA in
-mbedTLS-2-5, 
+mbedTLS-2-5,
 openssl-1-1-0f,  and
-openssl-1-1-1.  
-  %For RSA, we also include openssl-1-0-2f and openssl-1-0-2k.
+openssl-1-1-1.
+%For RSA, we also include openssl-1-0-2f and openssl-1-0-2k.
 The results are representative to other versions.
 All the results will be made available in electronic format online
 when the paper is published. %at \fixme{http://tinyurl}.
