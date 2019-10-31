@@ -5,9 +5,9 @@ In \S\ref{sec:trace-qif}, we propose a better information leakage definition for
 realistic attack scenarios, model two types of address-based side-channel
 leakages as math formulas, and quantify them by calculating the number of input
 keys ($K^o$) that satisfy those math formulas. Intuitively, we can use
-traditional symbolic execution to capture math formulas and use model counting
+traditional symbolic execution to capture math formulas and model counting
 to get the number of satisfying input keys ($K^o$). However, some preliminary
-experiments show that above approach suffers from the unbearable cost, which
+experiments show that above approach suffers from unbearable costs, which
 impede its usage to detect and quantify side-channel leakages in real-world
 applications. In this section, we begin by discussing the bottlenecks of
 applying the above approaches in real-world crypto systems. After that, we
@@ -22,7 +22,7 @@ order to \emph{scale to production crypto system analysis}.
 \end{itemize}
 
 \subsection{Trace-oriented Symbolic Execution}
-While symbolic execution can capture the fine-grained semantics of programs, it
+While symbolic execution can capture fine-grained semantics of programs, it
 is also notorious for its unbearable performance cost. Previous trace-oriented
 symbolic execution based
 works~\cite{203878,Chattopadhyay:2017:QIL:3127041.3127044} all have large
@@ -38,28 +38,31 @@ not handle complicated cases like RSA.
 
 We observe that finding side-channels using symbolic execution is different from
 traditional general symbolic execution and can be optimized to be as efficient
-as other methods with the approaches  below.
+as other methods with approaches  below.
 
 %\subsubsection{Interpret Instructions Symbolically}
-
-The number of machine instructions is enormous, and the semantics of each
+Existing binary analysis tools~\cite{shoshitaishvili2016state,
+10.1007/978-3-642-22110-1_37} usually translate machine instructions into
+intermediate languages (IR). Because 
+the number of machine instructions is enormous, and the semantics of each
 instruction is complex. Intel Developer Manual~\cite{intelsys} introduces more
 than 1000 different x86 instructions. It is tedious to implement the manual
-rules for every instruction.
+rules for every instruction. On the contrary,
+IR typically has fewer instructions compared to
+the original machine ISA\@. However, the IR layer designs, which
+simplify the workload implementation those tools, 
+also introduce significant overhead~\cite{217563}.
 
-Therefore, existing binary analysis tools~\cite{shoshitaishvili2016state,
-10.1007/978-3-642-22110-1_37} usually translate machine instructions into
-intermediate languages (IR). The IR typically has fewer instructions compared to
-the original machine ISA\@. However, the IR layer designs, which significantly
-simplify the implementation, also introduce significant overhead~\cite{217563}.
-First, transferring machine instruction into IR is time-consuming. For example,
+
+First, transferring machine instructions into IR is time-consuming. For example,
 REIL IR~\cite{dullien2009reil}, adopted in CacheS~\cite{236338}, has multiple
 transform processes, from binary to VEX IR, BAP IR, and finally REIL IR\@. As IR
 can also introduce additional conditional jump instructions, in order to
-precisely identify secret-dependent control-flow, we need to rule out
+precisely identify secret-dependent control-flows, we need to rule out
 conditional jump instructions introduced by IR, which is also time-consuming.
 Second, IR increases the total number of instructions. For example, x86
-instruction \textit{test eax, eax} transfers into 18 REIL IR instructions. If we
+instruction \textit{test eax, eax} transfers into 18 REIL IR instructions. 
+If we
 assume the time of symbolically executing one instruction is constant, the
 design of adopting IR layers can introduce large overhead.
 
@@ -98,7 +101,8 @@ side-channels can be reduced to the question below.
 \end{quote}
 
 Existing approach relies on satisfiability modulo theories (SMT) solvers (e.g,
-Z3) to find satisfying $k_1$ and $k_2$. We argue that while it is a universal
+Z3~\cite{DeMoura:2008:ZES:1792734.1792766}) to find satisfying $k_1$ and $k_2$. 
+We argue that while it is a universal
 approach to solving constraints with SMT solvers, for constraints with the above
 formats, using custom heuristics and testing is much more efficient in practice.
 Constraint solving is a decision problem expressed in logic formulas. SMT
@@ -216,6 +220,13 @@ problem:
             variables of $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$. Some
             constraints have completely different input variables from other
             constraints.
+
+            \item Each time when we sample $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$
+            with a point, the sampling result is \emph{Satisfied} or not \emph{Not Satisfied}.
+            The result is randomly generated in a way that does not depend on the result in 
+            previous experiments. Also, as the amount of leaked information is calculated
+            by $\log$ function, we do not need to precisely count the number of solutions for
+            a given constraint.
             %\item For each constraint $F(C_{{addr}_i})$, the satisfying assignments
             %are close to each other, which means if we find one satisfying assignment, we 
             %are more likely to find other satisfying assignments nearby than randomly
