@@ -149,7 +149,7 @@ side-channels leakages as well. In this section, we compare \tool{} with the
 existing trace-based side-channel identification tools. 
 
 As shown in Table~\ref{eval:cacheD},
-\tool{} can not only identify all the leakage sites reported by CacheD, but also
+\tool{} can not only identify all the leakage sites reported by CacheD~\cite{203878}, but also
 many new ones. CacheD fails to detect many other vulnerabilities for two
 reasons. First, CacheD only can only detect secret-dependent memory access
 vulnerabilities. But \tool{} can detect secret-dependent control-flows as well.
@@ -162,6 +162,14 @@ and can find more vulnerabilities. The table~\ref{eval:cacheD} shows that
 grow quadratically, \tool{} is much faster than CacheD when analyzing the same
 number of instructions. For example, when we test~\tool{} on AES from OpenSSL
 0.9.7, ~\tool{} is more than 100x faster than CacheD.
+
+Since DATA~\cite{217537} compares several execution traces to identify
+side-channel leakages, \tool{} also outperfoms DATA in terms of performance.
+For example, it takes 234 minutes for DATA to analysis the RSA of implementation
+in OpenSSL 1.1.0f. \tool{} only spends 13 minutes according to Table~\ref{table:over_result}.
+Also, DATA reports report 278 control-flow and 460 data leaks. Among those leakages,
+they found two vulnerabilities. On the contrary, \tool{} can report how many bits is 
+actually leaked, which eases the pain to discover sensitive leakages.
 
 
 \begin{table}[]
