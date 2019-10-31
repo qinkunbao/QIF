@@ -67,67 +67,82 @@
 \end{algorithm}
 \DecMargin{1em}
 
-\clearpage
-\section{SBOX Example of Bit-slicing}
-\label{appendix:SBOX}
+%% \clearpage
+%% \section{SBOX Example of Bit-slicing}
+%% \label{appendix:SBOX}
 
-\begin{figure}[h!]
-      \centering
-      \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-  ...
-  uint8_t na = ~a;
-  uint8_t nb = ~b;
-  uint8_t nc = ~c;
+%% \begin{figure}[h!]
+%%       \centering
+%%       \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+%%   ...
+%%   uint8_t na = ~a;
+%%   uint8_t nb = ~b;
+%%   uint8_t nc = ~c;
   
-  uint8_t t0 = (b & nc);
-  uint8_t t1 = (b | nc);
+%%   uint8_t t0 = (b & nc);
+%%   uint8_t t1 = (b | nc);
   
-  *l = (a & nb) | t0;
-  *r = (na & t1) | t0;
-  ...
-  \end{lstlisting}
-      \caption{SBOX\_with\_BitSlicing}
-      \label{SBOX_bitslicing}
-  \end{figure}
+%%   *l = (a & nb) | t0;
+%%   *r = (na & t1) | t0;
+%%   ...
+%%   \end{lstlisting}
+%%       \caption{SBOX\_with\_BitSlicing}
+%%       \label{SBOX_bitslicing}
+%%   \end{figure}
   
-  \begin{figure}[h!]
-      \centering
-      \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-  ...
-  uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
-  x = (a << 2) + (b << 1) + c;
-  *l = SBOX[x] >> 1;
-  *r = SBOX[x] & 0b01;
-  ...
-  \end{lstlisting}
-      \caption{SBOX\_without\_BitSlicing}
-      \label{SBOX_da}
-  \end{figure}
+%%   \begin{figure}[h!]
+%%       \centering
+%%       \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+%%   ...
+%%   uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
+%%   x = (a << 2) + (b << 1) + c;
+%%   *l = SBOX[x] >> 1;
+%%   *r = SBOX[x] & 0b01;
+%%   ...
+%%   \end{lstlisting}
+%%       \caption{SBOX\_without\_BitSlicing}
+%%       \label{SBOX_da}
+%%   \end{figure}
 
-\section{Detailed Evaluation Results}
+\newpage
+\section{Detailed Experimental Results}
 \label{sec:result-table}
-\fixme{Some talbes are too long to fit in}
+
+Here we present the detailed experimental results.
+Due to space limitation, we selected representative implementations of
+AES, DES, and RSA in
+mbedTLS-2-5, 
+openssl-1-1-0f,  and
+openssl-1-1-1.  
+  %For RSA, we also include openssl-1-0-2f and openssl-1-0-2k.
+The results are representative to other versions, but all the results
+are available in electronic format online at \fixme{http://tinyurl}.
+
+In all the tables presented in this appendix, the mark
+``$*$'' means timeout, which indicates more severe leakages.
+See \S\ref{loc:timeout} for the details.
 
 \input{figures/form/latex/AES-mbedTLS-2-5.tex}
-\input{figures/form/latex/AES-mbedTLS-2-15-1.tex}
-\input{figures/form/latex/AES-openssl-0-9-7.tex}
-\input{figures/form/latex/AES-openssl-1-0-2f.tex}
-\input{figures/form/latex/AES-openssl-1-0-2k.tex}
+%% \input{figures/form/latex/AES-mbedTLS-2-15-1.tex}
+%% \input{figures/form/latex/AES-openssl-0-9-7.tex}
+%% \input{figures/form/latex/AES-openssl-1-0-2f.tex}
+%% \input{figures/form/latex/AES-openssl-1-0-2k.tex}
 \input{figures/form/latex/AES-openssl-1-1-0f.tex}
 \input{figures/form/latex/AES-openssl-1-1-1.tex}
 
+
 \input{figures/form/latex/DES-mbedTLS-2-5.tex}
-\input{figures/form/latex/DES-mbedTLS-2-15-1.tex}
-\input{figures/form/latex/DES-openssl-0-9-7.tex}
-\input{figures/form/latex/DES-openssl-1-0-2f.tex}
-\input{figures/form/latex/DES-openssl-1-0-2k.tex}
+%% \input{figures/form/latex/DES-mbedTLS-2-15-1.tex}
+%% \input{figures/form/latex/DES-openssl-0-9-7.tex}
+%% \input{figures/form/latex/DES-openssl-1-0-2f.tex}
+%% \input{figures/form/latex/DES-openssl-1-0-2k.tex}
 \input{figures/form/latex/DES-openssl-1-1-0f.tex}
 \input{figures/form/latex/DES-openssl-1-1-1.tex}
 
 \input{figures/form/latex/RSA-mbedTLS-2-5.tex}
-\input{figures/form/latex/RSA-mbedTLS-2-15-1.tex}
-\input{figures/form/latex/RSA-openssl-0-9-7.tex}
-\input{figures/form/latex/RSA-openssl-1-0-2f.tex}
-\input{figures/form/latex/RSA-openssl-1-0-2k.tex}
+%% \input{figures/form/latex/RSA-mbedTLS-2-15-1.tex}
+%% \input{figures/form/latex/RSA-openssl-0-9-7.tex}
+%% \input{figures/form/latex/RSA-openssl-1-0-2f.tex}
+%% \input{figures/form/latex/RSA-openssl-1-0-2k.tex}
 \input{figures/form/latex/RSA-openssl-1-1-0f.tex}
 \input{figures/form/latex/RSA-openssl-1-1-1.tex}

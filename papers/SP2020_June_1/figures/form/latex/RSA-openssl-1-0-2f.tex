@@ -1,6 +1,7 @@
-\begin{table*}%[h]
-\centering
-\caption{Summary of all vulnerabilities in RSA implemented by openssl 1.0.2f with the amount of leak informationThe mark $*$ means timeout,which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:RSAopenssl}
+\begin{table}%[h]
+\centering\tiny
+\caption{RSA implemented by openssl 1.0.2f}\label{tab:RSAopenssl}
+%\caption{Summary of all vulnerabilities in RSA implemented by openssl 1.0.2f with the amount of leak information. The mark $*$ means timeout, which indicates more severe leakages (see \S\ref{loc:timeout}).}\label{tab:RSAopenssl}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{clrrr}
 \hline
@@ -46,4 +47,4 @@ bn\_mont.c& 201&BN\_from\_montgomery\_word&0 &CF\\
 \hline
 \end{tabular}
 %}
-\end{table*}
+\end{table}
