@@ -51,7 +51,7 @@ def plot(formName):
 
             plt.yticks([10, 30, 50, 70])
 
-    xtitles[-1] = 'Failed'
+    xtitles[-1] = '*'
     plt.xticks(range(dataLength), xtitles)
 
     failedLable = plt.axes().get_xticklabels()
