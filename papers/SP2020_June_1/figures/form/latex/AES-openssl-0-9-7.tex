@@ -1,11 +1,11 @@
-\begin{table}%[h]
+\begin{table}[h!]
 \centering\tiny\scriptsize
 \renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in AES implemented byopenssl 0.9.7}\label{tab:AESopenssl0.9.7}
+\caption{Leakages in AES implemented by openssl 0.9.7}\label{tab:AESopenssl0.9.7}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
-\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{Leaked Bits} & \textbf{Type} \\\hline
+\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\# Leaked Bits} & \textbf{Type} \\\hline
 aes\_core.c& 662&AES\_set\_encrypt\_key&5 &DA\\
 aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
 aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\

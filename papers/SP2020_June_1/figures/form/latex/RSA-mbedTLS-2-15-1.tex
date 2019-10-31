@@ -1,11 +1,11 @@
-\begin{table}%[h]
+\begin{table}[h!]
 \centering\tiny\scriptsize
 \renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in RSA implemented bymbedTLS 2.15.1}\label{tab:RSAmbedTLS2.15.1}
+\caption{Leakages in RSA implemented by mbedTLS 2.15.1}\label{tab:RSAmbedTLS2.15.1}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
-\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{Leaked Bits} & \textbf{Type} \\\hline
+\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\# Leaked Bits} & \textbf{Type} \\\hline
 bignum.c& 855&mbedtls\_mpi\_cmp\_mpi&*&\\
 rsa.c& 184&rsa\_check\_context.isra.0&0 &CF\\
 bignum.c& 825&mbedtls\_mpi\_cmp\_abs&*&\\

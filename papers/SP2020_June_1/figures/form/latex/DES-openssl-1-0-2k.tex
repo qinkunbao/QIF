@@ -1,11 +1,11 @@
-\begin{table}%[h]
+\begin{table}[h!]
 \centering\tiny\scriptsize
 \renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in DES implemented byopenssl 1.0.2k}\label{tab:DESopenssl1.0.2k}
+\caption{Leakages in DES implemented by openssl 1.0.2k}\label{tab:DESopenssl1.0.2k}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
-\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{Leaked Bits} & \textbf{Type} \\\hline
+\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\# Leaked Bits} & \textbf{Type} \\\hline
 set\_key.c& 409&DES\_set\_key\_unchecked&7 &DA\\
 set\_key.c& 417&DES\_set\_key\_unchecked&9 &DA\\
 set\_key.c& 418&DES\_set\_key\_unchecked&7 &DA\\
