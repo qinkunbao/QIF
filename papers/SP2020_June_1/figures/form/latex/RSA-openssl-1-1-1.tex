@@ -1,11 +1,11 @@
-\begin{table}%[h]
+\begin{table}[h!]
 \centering\tiny\scriptsize
 \renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in RSA implemented byopenssl 1.1.1}\label{tab:RSAopenssl1.1.1}
+\caption{Leakages in RSA implemented by openssl 1.1.1}\label{tab:RSAopenssl1.1.1}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
-\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{Leaked Bits} & \textbf{Type} \\\hline
+\textbf{File} & \textbf{Line No.} & \textbf{Function} & \hspace*{-20em}\textbf{\# Leaked Bits} & \textbf{Type} \\\hline
 rsa\_ossl.c& 399&rsa\_ossl\_private\_decrypt&0 &CF\\
 bn\_lib.c& 555&BN\_ucmp&*&\\
 bn\_gcd.c& 199&int\_bn\_mod\_inverse&0 &CF\\

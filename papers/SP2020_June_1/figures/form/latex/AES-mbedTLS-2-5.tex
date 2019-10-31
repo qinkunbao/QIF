@@ -1,11 +1,11 @@
-\begin{table}%[h]
+\begin{table}[h!]
 \centering\tiny\scriptsize
 \renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in AES implemented bymbedTLS 2.5}\label{tab:AESmbedTLS2.5}
+\caption{Leakages in AES implemented by mbedTLS 2.5}\label{tab:AESmbedTLS2.5}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
-\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{Leaked Bits} & \textbf{Type} \\\hline
+\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\# Leaked Bits} & \textbf{Type} \\\hline
 aes.c& 536&mbedtls\_aes\_setkey\_enc&6 &DA\\
 aes.c& 536&mbedtls\_aes\_setkey\_enc&8 &DA\\
 aes.c& 536&mbedtls\_aes\_setkey\_enc&7 &DA\\

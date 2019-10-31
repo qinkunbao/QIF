@@ -1,11 +1,11 @@
-\begin{table}%[h]
+\begin{table}[h!]
 \centering\tiny\scriptsize
 \renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in RSA implemented byopenssl 0.9.7}\label{tab:RSAopenssl0.9.7}
+\caption{Leakages in RSA implemented by openssl 0.9.7}\label{tab:RSAopenssl0.9.7}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
-\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{Leaked Bits} & \textbf{Type} \\\hline
+\textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\# Leaked Bits} & \textbf{Type} \\\hline
 bn\_lib.c& 228&BN\_num\_bits&0 &CF\\
 bn\_lib.c& 229&BN\_num\_bits&3 &DA\\
 bn\_shift.c& 152&BN\_lshift&1 &CF\\
