@@ -64,11 +64,7 @@ aspects:
     \item  \textbf{Identifying side-channels leakages.}
           The first step of \tool{} is to identify side-channel leakages. Is
           \tool{} effective to detect side-channels in real-world crypto
-          systems? (\S\ref{sec:eval_overview})
-    \item  \textbf{Scalability}
-          Is \tool{} scalable to real-world crypto systems? How effective are
-          the design decisions made by \tool{} in terms of scalability?
-          (\S\ref{sec:eval_overview} and \S\ref{eval:scala})
+          systems? (\S\ref{sec:eval_overview} and \S\ref{eval:scala})
     \item  \textbf{Quantifying side-channel leakages.}
           Can \tool{} precisely report the number of leaked bits in crypto
           libraries? Are the numbers of leaked bits reported by \tool{} useful
@@ -327,7 +323,7 @@ confirms our assumptions.
         \label{fig:rsa-5}
     }
     \caption{RSA implementation in different versions of OpenSSL. The mark $*$ means timeout,
-        which indicates more severe leakages (see \S\ref{loc:timeout}).}
+        which indicates more severe leakages (see \S\ref{loc:timeout}).} 
     \label{fig:rsa}
 \end{figure*}
 
