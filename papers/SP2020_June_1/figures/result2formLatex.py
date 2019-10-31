@@ -58,7 +58,7 @@ def data2form(finame, foname, enc, library, version):
             ':') + 15: buf[buf[13:].find(':') + 15:].find(' ') + buf[13:].find(':') + 15]
         lfile = lfile.replace('_', '\\_')
 
-        lnumber = buf[-4:-1]
+        lnumber = buf[buf.find(' ', len(buf) - 6):-1]
 
         buf = fi.readline()
 
