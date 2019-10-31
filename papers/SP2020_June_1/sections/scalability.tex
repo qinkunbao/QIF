@@ -330,10 +330,10 @@ After we split those constraints into several small constraints, we count the
 number of solutions for each constraint. Even though the dimension has been
 reduced greatly after the previous step, this is still a \#P problem. For our
 project, we apply the approximate counting instead of exact counting for two
-reasons. First, we don't need to have a very precise result of the exact number
+reasons. First, we do not need to have a very precise result of the exact number
 of total solutions. As the information is defined with a logarithmic function.
 We do not need to distinguish between constraints having $10^{10}$ or $10^{10} +
-10$ solutions. Second, as the constraint could be very complicated. The exact
+10$ solutions. Second, the exact
 model counting approaches, like DPLL search, have difficulty scaling up to large
 problem sizes.
 
@@ -408,7 +408,7 @@ can have the following error propagation formula $\Delta L = \frac{\Delta
 p}{p\ln2}$ by differentiation. For \tool, we want the error of estimated leaked
 information ($\Delta L$) is less than 1 bit. So we can get $\frac{\Delta
 p}{p\ln2} \leq 1$. As long as $ n \geq \frac{1.96^2(1-p)}{p(\ln2)^2}$, we have
-95\% confidence the error of estimated leaked information is less than 1 bit.
+95\% confidence that the error of estimated leaked information is less than 1 bit.
 During the simulation, if $n$ and $p$ satisfy the above equation, Monte Carlo
 Simulation will terminate.
 
