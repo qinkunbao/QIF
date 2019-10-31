@@ -237,8 +237,9 @@ return( 0 );
 \end{figure}
 
 \subsubsection{RSA in mbedTLS}
-\tool{} identifies several side-channel leakages for the RSA implementation
-in MbedTLS. Here we introduce and analyze two cases. %, as shown in Figure~\ref{fig:mbedtls_rsa_1} and \ref{fig:mbedtls_rsa_2}.
+\tool{} identifies several side-channel leakages for the RSA implementation in
+MbedTLS. Here we introduce and analyze two cases. 
+%, as shown in Figure~\ref{fig:mbedtls_rsa_1} and \ref{fig:mbedtls_rsa_2}.
 
 \begin{figure}%[h!]
     \centering
@@ -252,12 +253,12 @@ if( mbedtls_mpi_cmp_int( N, 0 ) < 0 || ( N->p[0] & 1 ) == 0 )
     \label{fig:mbedtls_rsa_1}
 \end{figure}
 
-\tool{} reports one bit information is leaked from the branch at line 2 in Figure~\ref{fig:mbedtls_rsa_1} and it
-leaks less information than other leakages. Function
-\emph{mbedtls\_mpi\_exp\_mod} performs sliding-window exponentiation for big
-numbers. The leakage is caused by checking the signed bit of the big number $N$.
-Therefore, the leakage can only tell whether $N$ is greater than zero, which is
-one bit leak, not severe.
+\tool{} reports one bit information is leaked from the branch at line 2 in
+Figure~\ref{fig:mbedtls_rsa_1} and it leaks less information than other
+leakages. Function \emph{mbedtls\_mpi\_exp\_mod} performs sliding-window
+exponentiation for big numbers. The leakage is caused by checking the signed bit
+of the big number $N$. Therefore, the leakage can only tell whether $N$ is
+greater than zero, which is one bit leak, not severe.
 
 
 \begin{figure}%[h!]
@@ -333,25 +334,24 @@ confirms our assumptions.
 
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
 \subsubsection{Bit-slicing}
+% introduction
 Bit-slicing is a software technology that is capable of implementing algorithms
-with high efficiency and constant running time. Eli Biham et al.~\cite{Biham:1997:FND:647932.757246} first
-use gate circuits to implement the SBOX of DES\@.
-% Cite: A Fast New DES Implementation in Software
-Based on his work Matthew Kwan~\cite{Kwan2000ReducingTG} present a better implementation of DES with fewer
-gates and first used the term Bit-slicing.
-% Cite: Reducing the Gate Count of Bitslice DES 
-This approach can immune cryptographic algorithms to cache and timing-related
-side-channel attacks. The basic concept is to express a function in terms of
-single-bit logical operations (AND, XOR, OR, NOT, etc.). These operations are
-then carried out for multiple instances of the function in parallel, using
-bitwise operations on a CPU. The original intention of Bit-slicing
-Implementation is to accelerate the crypto algorithms. However, thanks to the
-features of gate operations, the implementations gain additional security
-properties. Since the table lookup operation and conditional jump operation will
-be replaced with single-bit logical gates, without directly non-input data
-access or control flow change, thus both the data access type and control flow
-type of side-channel leakage will be avoided.
-
+with high efficiency and constant running time. Eli Biham et
+al.~\cite{Biham:1997:FND:647932.757246} first use gate circuits to implement the
+SBOX of DES\@. Based on his work Matthew Kwan~\cite{Kwan2000ReducingTG} present
+a better implementation of DES with fewer gates and first used the term
+Bit-slicing. This approach can immune cryptographic algorithms to cache and
+timing-related side-channel attacks. The basic concept is to express a function
+in terms of single-bit logical operations (AND, XOR, OR, NOT, etc.). These
+operations are then carried out for multiple instances of the function in
+parallel, using bitwise operations on a CPU. The original intention of
+Bit-slicing Implementation is to accelerate the crypto algorithms. However,
+thanks to the features of gate operations, the implementations gain additional
+security properties. Since the table lookup operation and conditional jump
+operation will be replaced with single-bit logical gates, without directly
+non-input data access or control flow change, thus both the data access type and
+control flow type of side-channel leakage will be avoided.
+% analysis & compare
 
 % \subsubsection{Scatter and Gather}
 % The scatter-gather technology is also a common defence method to cache-based timing attacks.
