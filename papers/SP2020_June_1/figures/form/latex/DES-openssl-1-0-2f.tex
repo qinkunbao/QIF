@@ -1,19 +1,18 @@
 \begin{table}[h!]
 \centering\tiny\scriptsize
-\renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in DES implemented by openssl 1.0.2f}\label{tab:DESopenssl1.0.2f}
+\caption{Leakages in DES implemented by OpenSSL 1.0.2f}\label{tab:DESOpenSSL1.0.2f}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
 \textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\# Leaked Bits} & \textbf{Type} \\\hline
-set\_key.c& 409&DES\_set\_key\_unchecked&9 &DA\\
-set\_key.c& 417&DES\_set\_key\_unchecked&8 &DA\\
-set\_key.c& 418&DES\_set\_key\_unchecked&7 &DA\\
-set\_key.c& 423&DES\_set\_key\_unchecked&5 &DA\\
-set\_key.c& 420&DES\_set\_key\_unchecked&1 &DA\\
-set\_key.c& 422&DES\_set\_key\_unchecked&2 &DA\\
-set\_key.c& 422&DES\_set\_key\_unchecked&3 &DA\\
-set\_key.c& 425&DES\_set\_key\_unchecked&0 &DA\\
+set\_key.c& 409&DES\_set\_key\_unchecked&9.8 &DA\\
+set\_key.c& 417&DES\_set\_key\_unchecked&9.2 &DA\\
+set\_key.c& 418&DES\_set\_key\_unchecked&8.0 &DA\\
+set\_key.c& 423&DES\_set\_key\_unchecked&5.4 &DA\\
+set\_key.c& 420&DES\_set\_key\_unchecked&2.0 &DA\\
+set\_key.c& 422&DES\_set\_key\_unchecked&3.4 &DA\\
+set\_key.c& 422&DES\_set\_key\_unchecked&2.9 &DA\\
+set\_key.c& 425&DES\_set\_key\_unchecked&0.2 &DA\\
 \hline
 \end{tabular}
 %}

@@ -1,26 +1,25 @@
 \begin{table}[h!]
 \centering\tiny\scriptsize
-\renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in DES implemented by mbedTLS 2.15.1}\label{tab:DESmbedTLS2.15.1}
+\caption{Leakages in DES implemented by mbed TLS 2.15.1}\label{tab:DESmbed TLS2.15.1}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
 \textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\# Leaked Bits} & \textbf{Type} \\\hline
-des.c& 437&mbedtls\_des\_setkey&0 &DA\\
-des.c& 434&mbedtls\_des\_setkey&1 &DA\\
-des.c& 434&mbedtls\_des\_setkey&0 &DA\\
-des.c& 435&mbedtls\_des\_setkey&0 &DA\\
-des.c& 435&mbedtls\_des\_setkey&0 &DA\\
-des.c& 436&mbedtls\_des\_setkey&0 &DA\\
-des.c& 442&mbedtls\_des\_setkey&1 &DA\\
-des.c& 442&mbedtls\_des\_setkey&0 &DA\\
-des.c& 440&mbedtls\_des\_setkey&1 &DA\\
-des.c& 440&mbedtls\_des\_setkey&0 &DA\\
-des.c& 439&mbedtls\_des\_setkey&0 &DA\\
-des.c& 439&mbedtls\_des\_setkey&0 &DA\\
-des.c& 440&mbedtls\_des\_setkey&1 &DA\\
-des.c& 441&mbedtls\_des\_setkey&1 &DA\\
-des.c& 444&mbedtls\_des\_setkey&1 &DA\\
+des.c& 437&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 434&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 434&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 435&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 435&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 436&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 442&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 442&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 440&mbedtls\_des\_setkey&0.9 &DA\\
+des.c& 440&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 439&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 439&mbedtls\_des\_setkey&0.9 &DA\\
+des.c& 440&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 441&mbedtls\_des\_setkey&1.0 &DA\\
+des.c& 444&mbedtls\_des\_setkey&0.9 &DA\\
 \hline
 \end{tabular}
 %}

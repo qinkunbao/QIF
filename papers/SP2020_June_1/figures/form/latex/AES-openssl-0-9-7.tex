@@ -1,86 +1,85 @@
 \begin{table}[h!]
 \centering\tiny\scriptsize
-\renewcommand{\baselinestretch}{0.96}\selectfont
-\caption{Leakages in AES implemented by openssl 0.9.7}\label{tab:AESopenssl0.9.7}
+\caption{Leakages in AES implemented by OpenSSL 0.9.7}\label{tab:AESOpenSSL0.9.7}
 %\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrr}
 \hline
 \textbf{File} & \textbf{Line No.} & \textbf{Function} & \textbf{\# Leaked Bits} & \textbf{Type} \\\hline
-aes\_core.c& 662&AES\_set\_encrypt\_key&5 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&3 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 662&AES\_set\_encrypt\_key&4 &DA\\
-aes\_core.c& 880&AES\_encrypt&4 &DA\\
-aes\_core.c& 880&AES\_encrypt&10&DA\\
-aes\_core.c& 880&AES\_encrypt&5 &DA\\
-aes\_core.c& 880&AES\_encrypt&8 &DA\\
-aes\_core.c& 886&AES\_encrypt&4 &DA\\
-aes\_core.c& 886&AES\_encrypt&4 &DA\\
-aes\_core.c& 886&AES\_encrypt&9 &DA\\
-aes\_core.c& 886&AES\_encrypt&9 &DA\\
-aes\_core.c& 892&AES\_encrypt&10&DA\\
-aes\_core.c& 892&AES\_encrypt&5 &DA\\
-aes\_core.c& 892&AES\_encrypt&8 &DA\\
-aes\_core.c& 892&AES\_encrypt&4 &DA\\
-aes\_core.c& 898&AES\_encrypt&9 &DA\\
-aes\_core.c& 898&AES\_encrypt&10&DA\\
-aes\_core.c& 898&AES\_encrypt&5 &DA\\
-aes\_core.c& 898&AES\_encrypt&5 &DA\\
-aes\_core.c& 910&AES\_encrypt&4 &DA\\
-aes\_core.c& 910&AES\_encrypt&7 &DA\\
-aes\_core.c& 910&AES\_encrypt&9 &DA\\
-aes\_core.c& 910&AES\_encrypt&8 &DA\\
-aes\_core.c& 916&AES\_encrypt&9 &DA\\
-aes\_core.c& 916&AES\_encrypt&5 &DA\\
-aes\_core.c& 916&AES\_encrypt&8 &DA\\
-aes\_core.c& 916&AES\_encrypt&8 &DA\\
-aes\_core.c& 922&AES\_encrypt&7 &DA\\
-aes\_core.c& 922&AES\_encrypt&8 &DA\\
-aes\_core.c& 922&AES\_encrypt&8 &DA\\
-aes\_core.c& 922&AES\_encrypt&4 &DA\\
-aes\_core.c& 928&AES\_encrypt&9 &DA\\
-aes\_core.c& 928&AES\_encrypt&9 &DA\\
-aes\_core.c& 928&AES\_encrypt&5 &DA\\
-aes\_core.c& 928&AES\_encrypt&7 &DA\\
-aes\_core.c& 940&AES\_encrypt&3 &DA\\
-aes\_core.c& 940&AES\_encrypt&3 &DA\\
-aes\_core.c& 940&AES\_encrypt&4 &DA\\
-aes\_core.c& 947&AES\_encrypt&4 &DA\\
-aes\_core.c& 947&AES\_encrypt&4 &DA\\
-aes\_core.c& 947&AES\_encrypt&3 &DA\\
-aes\_core.c& 954&AES\_encrypt&4 &DA\\
-aes\_core.c& 954&AES\_encrypt&3 &DA\\
-aes\_core.c& 954&AES\_encrypt&3 &DA\\
-aes\_core.c& 961&AES\_encrypt&3 &DA\\
-aes\_core.c& 961&AES\_encrypt&4 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&5.3 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.9 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.4 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.3 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.1 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.4 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.1 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.0 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.7 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.0 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.7 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.2 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.8 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.2 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.8 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.1 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.1 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.0 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.2 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.9 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.2 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.9 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.0 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.8 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.2 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.1 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&3.8 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.1 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.1 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.0 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.1 &DA\\
+aes\_core.c& 662&AES\_set\_encrypt\_key&4.2 &DA\\
+aes\_core.c& 880&AES\_encrypt&5.4 &DA\\
+aes\_core.c& 880&AES\_encrypt&9.1 &DA\\
+aes\_core.c& 880&AES\_encrypt&5.1 &DA\\
+aes\_core.c& 880&AES\_encrypt&8.3 &DA\\
+aes\_core.c& 886&AES\_encrypt&4.8 &DA\\
+aes\_core.c& 886&AES\_encrypt&4.8 &DA\\
+aes\_core.c& 886&AES\_encrypt&9.2 &DA\\
+aes\_core.c& 886&AES\_encrypt&9.6 &DA\\
+aes\_core.c& 892&AES\_encrypt&10.6 &DA\\
+aes\_core.c& 892&AES\_encrypt&4.5 &DA\\
+aes\_core.c& 892&AES\_encrypt&9.3 &DA\\
+aes\_core.c& 892&AES\_encrypt&4.9 &DA\\
+aes\_core.c& 898&AES\_encrypt&10.6 &DA\\
+aes\_core.c& 898&AES\_encrypt&9.8 &DA\\
+aes\_core.c& 898&AES\_encrypt&5.2 &DA\\
+aes\_core.c& 898&AES\_encrypt&5.1 &DA\\
+aes\_core.c& 910&AES\_encrypt&4.9 &DA\\
+aes\_core.c& 910&AES\_encrypt&7.5 &DA\\
+aes\_core.c& 910&AES\_encrypt&9.1 &DA\\
+aes\_core.c& 910&AES\_encrypt&9.1 &DA\\
+aes\_core.c& 916&AES\_encrypt&8.7 &DA\\
+aes\_core.c& 916&AES\_encrypt&5.5 &DA\\
+aes\_core.c& 916&AES\_encrypt&8.6 &DA\\
+aes\_core.c& 916&AES\_encrypt&9.0 &DA\\
+aes\_core.c& 922&AES\_encrypt&7.6 &DA\\
+aes\_core.c& 922&AES\_encrypt&9.7 &DA\\
+aes\_core.c& 922&AES\_encrypt&9.0 &DA\\
+aes\_core.c& 922&AES\_encrypt&5.0 &DA\\
+aes\_core.c& 928&AES\_encrypt&8.4 &DA\\
+aes\_core.c& 928&AES\_encrypt&9.0 &DA\\
+aes\_core.c& 928&AES\_encrypt&5.3 &DA\\
+aes\_core.c& 928&AES\_encrypt&7.5 &DA\\
+aes\_core.c& 940&AES\_encrypt&3.8 &DA\\
+aes\_core.c& 940&AES\_encrypt&3.7 &DA\\
+aes\_core.c& 940&AES\_encrypt&4.2 &DA\\
+aes\_core.c& 947&AES\_encrypt&4.0 &DA\\
+aes\_core.c& 947&AES\_encrypt&5.0 &DA\\
+aes\_core.c& 947&AES\_encrypt&4.0 &DA\\
+aes\_core.c& 954&AES\_encrypt&4.0 &DA\\
+aes\_core.c& 954&AES\_encrypt&4.0 &DA\\
+aes\_core.c& 954&AES\_encrypt&3.9 &DA\\
+aes\_core.c& 961&AES\_encrypt&4.1 &DA\\
+aes\_core.c& 961&AES\_encrypt&4.2 &DA\\
 \hline
 \end{tabular}
 %}
