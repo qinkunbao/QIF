@@ -86,11 +86,17 @@
 }
 ~\vvv
 
-%\clearpage
+\clearpage
 \section{Mitigation Method Evaluation}
 %\section{SBOX Example of Bit-slicing}
 \label{appendix:SBOX}
 ~
+\vvv
+\vvv
+\vvv
+\vvv
+\vvv
+\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -115,9 +121,10 @@ ret = l << 1 + r;
     \caption{SBOX with BitSlicing}
     \label{fig:SBOX_bitslicing}
 \end{figure}
-
 ~\vvv
-
+\vvv
+\vvv
+\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -128,15 +135,16 @@ uint8_t SBOX[] = {1, 0, 3, 1, 2, 2, 3, 0};
 if (password <= 0b111)      \\Leaks 5 bits of password
     ret = SBOX[password];   \\Leaks 4 bits of password
       \end{lstlisting}
+\vvv
+\vvv
     \caption{SBOX without BitSlicing}
     \label{fig:SBOX_da}
 \end{figure}
-
 ~\vvv
-%\newpage
-
+\vvv
+\vvv
+\vvv
 %\section{Example for Lookup Table}
-~\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -148,6 +156,9 @@ static const uint8_t T[16] = {
     \label{fig:one_byte_table}
 \end{figure}
 ~\vvv
+\vvv
+\vvv
+\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -157,12 +168,17 @@ static const uint32_t T[16] = {
     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
     0xe7fefe19U, 0xb5d7d762U, 0x4dababe6U, 0xec76769aU};
     \end{lstlisting}
+\vvv
+\vvv
     \caption{Four-byte Entry Lookup Table}
     \label{fig:four_byte_table}
 \end{figure}
-
 ~\vvv
-
+\vvv
+\vvv
+\vvv
+\vvv
+\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -174,12 +190,17 @@ void encrypt_one(uint32_t *o, uint32_t *key, uint32_t l) {
                     (T[(key[i+3]) & 0xff]);
 }
     \end{lstlisting}
+\vvv
+\vvv
     \caption{Encrypt with One-byte Entry Lookup Table}
     \label{fig:one_byte_table_lookup}
 \end{figure}
 ~\vvv
-~\vvv
-~\vvv
+\vvv
+\vvv
+\vvv
+\vvv
+\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -191,13 +212,15 @@ void encrypt_four(uint32_t *o, uint32_t *key, uint32_t l) {
                     (T[(key[i+3]) & 0xff] & 0x000000ff);
 }
     \end{lstlisting}
+\vvv
+\vvv
     \caption{Encrypt with One-byte Entry Lookup Table}
     \label{fig:four_byte_table_lookup}
 \end{figure}
 
 
 
-%\clearpage
+\newpage
 \section{Detailed Experimental Results}
 \label{sec:result-table}
 
