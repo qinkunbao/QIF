@@ -163,15 +163,35 @@ static const uint32_t T[16] = {
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-void encrypt(char *output, char * key, uint32_t len)
-\\ char key[] = {1,2,3,4,5,6,7,8,9,10,11,12};
+void encrypt_one(uint32_t *o, uint32_t *key, uint32_t l)
 {
-    for(int i = 0; i < len; ++i)
-        output[i] = T[key[i]] & 0xff;
+    for (int i = 0; i < l; i+=4)
+        output[i] = (T[(key[i] >> 24)] << 24) ^
+                    (T[(key[i + 1] >> 16) & 0xff] << 16) ^
+                    (T[(key[i + 2] >> 8) & 0xff] << 8) ^
+                    (T[(key[i + 3]) & 0xff]);
 }
     \end{lstlisting}
-    \caption{Encrypt Function with Table Lookup}
-    \label{fig:table_lookup}
+    \caption{Encrypt Function with one Byte-wide Table Lookup}
+    \label{fig:one_byte_table_lookup}
+\end{figure}
+
+~
+
+\begin{figure}[h!]
+    \centering
+    \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
+void encrypt_four(uint32_t *o, uint32_t *key, uint32_t l)
+{
+    for (int i = 0; i < l; i+=4)
+        output[i] = (T[(key[i] >> 24)] & 0xff000000) ^
+                    (T[(key[i + 1] >> 16) & 0xff] & 0x00ff0000) ^
+                    (T[(key[i + 2] >> 8) & 0xff] & 0x0000ff00) ^
+                    (T[(key[i + 3]) & 0xff] & 0x000000ff);
+}
+    \end{lstlisting}
+    \caption{Encrypt Function with one Byte-wide Table Lookup}
+    \label{fig:four_byte_table_lookup}
 \end{figure}
 
 
