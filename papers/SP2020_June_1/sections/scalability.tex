@@ -43,12 +43,13 @@ as other methods with approaches below.
 %\subsubsection{Interpret Instructions Symbolically}
 Existing binary analysis tools~\cite{shoshitaishvili2016state,
 10.1007/978-3-642-22110-1_37} usually translate machine instructions into
-intermediate languages (IR). Because the number of machine instructions is
+intermediate languages (IR). The reason is that the number of machine instructions is
 enormous, and the semantics of each instruction is complex. Intel Developer
 Manual~\cite{intelsys} introduces more than 1000 different x86 instructions. It
-is tedious to implement the manual rule of every instruction. On the contrary,
+is tedious and hard to implement the manual rule for each instruction. 
+On the contrary,
 IR typically has fewer instructions compared to the original machine ISA\@.
-However, the simplified designs of IR layer, which predigest the implementation
+However, the IR layer, which predigest the implementation
 and reduce the workload of those tools, also introduce significant
 overhead~\cite{217563}.
 
