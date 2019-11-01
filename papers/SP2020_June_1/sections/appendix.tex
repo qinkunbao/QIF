@@ -44,29 +44,40 @@
                     \land \ldots \land c_{i_m}$}}
     \KwOut{{The number of assignments that satisfy $g_{i}$ $|K_{g_{i}}|$}}
 
-    \SetKwProg{RW}{RandomWalk}{}{}
-    \SetKwProg{MM}{MetropolisMove}{}{}
     $n$: the number of sampling times \;
-    $P$: a probability generator \;
-    $k$: the input assignment \;
+    $S_{c_i}$: the set contains input variables for $c_{i}$ \;
     $n_{s}$: the number of satisfying assignments \;
+    $N_{c_t}$: the set contains all solution for $c_t$ \;
+    $r$: times of reducing $g$\;
+    $k$: the input variable \;
+    $R$: a function that produces a random point from $S_{c_i}$\;
     %$\#k$: the satisfying number of k \fixme{this number is not used syntactically} \;
-    Initialization: \;
-    $\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}c_{i_j}(k_0)$ \;
-    \For{$t\leftarrow 1$ \KwTo $n$} {
-        $p$ $\leftarrow$ $P$ \;
-        \If{$p \geq 0.5$}
+    %Initialization: \;
+    $r$ $\leftarrow$ $1$,
+    $n$ $\leftarrow$ $0$ \;
+    \For{$t$ $\leftarrow$ $1$ \KwTo $m$} {
+        $S_{c_t}$ $\leftarrow$ $\pi(c_t)$ \;
+        \If{$|S_{c_t}| = 1$}
         {
-            $v$ $\leftarrow$ \RW{$v$} {}
+            $N_{c_t}$ $\leftarrow$ Compute all solutions of $c_i$ \;
+            $N_{c_t} = \{n_1, \ldots, n_m\},\ S_{c_t} = \{k\}  $ \;
+            $g_{i} = $ $g_i(k=n_1) \land \ldots \land g_i(k=n_m)$ \;
+            $r \leftarrow r+1$ \;
+
         }
-        \Else{
-            $v$ $\leftarrow$ \MM{$v$} {}
-        }
-        \If{$v$ satisfies $g_{i}$}
-        {$n_{s}$ $\leftarrow$ $n_{s} + 1$}
     }
-    $|K_{g_{i}}|$ $\leftarrow$ $n_s|K| / n$
-    \caption{Metropolis Sampling}
+    \While{$n \leq \frac{6p}{1-p}$} {
+        $S_{g_i}$ $\leftarrow$ $\pi(g_i)$ \;
+        $v \leftarrow R(S_{g_i})$ 
+        \If{$v$ satisfies $g_i$}
+        {
+           $n_s \leftarrow n_s + 1$
+        }
+        $n \leftarrow n +1,\ p = \frac{n_s}{n}$
+    }
+
+    $|K_{g_{i}}|$ $\leftarrow$ $n_s|K| / (n * r * range(k))$
+    \caption{Multiple Step Monte Carlo Sampling}
 \end{algorithm}
 \DecMargin{1em}
 }
