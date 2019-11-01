@@ -11,7 +11,7 @@ and quantify side-channel vulnerabilities in binaries. The tool has three steps,
 as shown in Figure~\ref{fig:workflow}. First, we run the target program with a
 concrete input (sensitive information) under the dynamic binary instrumentation
 (DBI) frameworks to collect execution traces. After that, we run the symbolic
-execution to capture the fined-grained semantic information of each
+execution to capture the fine-grained semantic information of each
 secret-dependent control-flow transfers and data-accesses. Finally we run Monte
 Carlo (MC) simulations to estimate the amount of leaked information.
 

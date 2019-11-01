@@ -41,7 +41,7 @@ Therefore, the total leaked information should be 64 bits, which equals to the
 size of the sensitive input, when an attacker observes the code executes branch
 $1$.
 
-However, previous static-based approach cannot precisely reflect the amount of
+However, previous static-based approaches cannot precisely reflect the amount of
 the leakage. According to the definition of Shannon entropy, the leakage will be
 $\frac{1}{2^{64}}*\log_{2}\frac{1}{2^{64}} + \frac{2^{64}-1}{2^{64}}
 *\log_{2}\frac{2^{64}-1}{2^{64}} \approx 0$ bits. Because the program has two
@@ -76,8 +76,8 @@ methods all fail in real attack models. This is the first challenge we face
 \subsection{Notations}
 In the section, we give necessary definitions and notations for dealing with
 programs and side-channels. We use capital letters (e.g., $A$) to represent a
-set. $|A|$ represents the cardinality of the set $A$. We use corresponding small
-letters to represents one element in the set (e.g., $a \in A$).
+set. $|A|$ represents the cardinality of the set $A$. We use corresponding lower case
+letters to represent one element in the set (e.g., $a \in A$).
 
 We assume a program ($\beta$) has $K$ as the sensitive input. $K$ should be a
 finite set of keys. The program also takes known messages $M$ as the input. The
@@ -85,7 +85,7 @@ model applies to most cryptosystems. For example, during the AES encryption,
 $\beta$ is the encryption function. $K$ is AES key, and $M$ is messages to be
 encrypted. During the execution, an adversary may have some observations ($O$)
 from the program. Examples of those observations include timing, CPU usages, and
-Electromagnetic signals (EM). For this paper, we consider secret-dependent
+Electromagnetic signals (EM). In this paper, we consider secret-dependent
 control-flows and secret-dependent memory accesses as observations.
 
 With the above definitions, we define the following mapping between $\beta$,
@@ -150,9 +150,9 @@ that
      & ~~~~~~ \mathit{Initial\ uncertainty} - \mathit{Remaining\ uncertainty}.
 \end{align*}
 
-Now we come compare Eq.~(\ref{eq:2}) with the above slogan, we find $H(K)$
+Now we compare Eq.~(\ref{eq:2}) with the above slogan, we find $H(K)$
 is the $\mathit{Initial\ uncertainty}$ and $H(K|O)$ is $\mathit{Remaining\
-uncertainty}$. During a side-channel attack, the observation ($o$) is known.  We
+uncertainty}$. During a real attack, the observation ($o$) is known.  We
 have $H(K|O) = H(K|o)$.
 
 Therefore, we define the amount of leaked information as
@@ -231,7 +231,7 @@ T$). Once $\beta$ (program), $k$ (secret), and $m$ (message, public) are
 determined, $t_i$ is also fixed. Therefore, $ t_i = f_i(\beta, k, m)$, where $f_
 i$ is a function mapping between $t_i$ and ($\beta$, $k$, $m$).
 
-In the paper, we consider two code patterns can be exploited by an attacker,
+In the paper, we consider two code patterns that can be exploited by an attacker,
 \emph{secret-dependent control transfers} and \emph{secret-dependent data
 accesses}. In other words, an adversary has observations based on control-flows
 and data accesses.

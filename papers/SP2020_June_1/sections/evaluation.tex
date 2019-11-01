@@ -74,7 +74,7 @@
 We evaluate \tool{} on real-world crypto libraries, OpenSSL and mbedTLS\@. OpenSSL
 is the most commonly used crypto libraries in today's software. Mbed TLS
 (previous known as PolarSSL) is designed to be easy to understand and fit on
-small embedded device.
+small embedded devices.
 
 We build the source code into 32-bit x86 Linux executables with the GCC 8.0
 under Ubuntu 14.04. Although we use use symbol information to track back leakage
@@ -101,30 +101,30 @@ Table~\ref{table:over_result} shows the overview of evaluation results. \tool{} 
 leak points, 205 of them are leaked due to secret-dependent control-flow
 transfers and 678 of them are leaked due to secret-dependent memory accesses.
 
-For the crypto libraries, \tool{} finds that secret-dependent memory accesses
+\tool{} finds that secret-dependent memory accesses
 cause most leakages. \tool{} also identifies that most side-channel
 vulnerabilities leak very little information in practice, which confirms our
 initial assumptions.  Without our tool, developers will not be able to
 distinguish those ``vulnerabilities'' from severe ones and ignore them for sure.
 However, we do find some vulnerabilities that \tool\ reports with more severe
 leakages. Some of them have been confirmed by existing research that those
-vulnerabilities can be exploited by realize real attacks.
+vulnerabilities can be exploited to realize real attacks.
 
-All the symmetric key implementations in OpenSSL and mbedTLS have significant
+All the symmetric encryption implementations in OpenSSL and mbed TLS\@ have significant
 leakages due to the implementation of the lookup table to speed up the
 computation. Every leakage found during the evaluation belongs to the type of
 secret-dependent memory accesses. We believe that the secret-dependent
 control-flow transfers have been widely studied in the past few years, and
 developers have patched most of those leakages. One method to address the
-leakage is to use bit-slicing. We will analyse the corresponding countermeasure
+leakage is to use bit-slicing. We will analyze the corresponding countermeasure
 in the following sections.
 
-\tool{} finds several leakage sites for both the implementation of DES and AES in
-OpenSSL and mbedTLS\@. \tool{} confirms that all those leakages come from table
+\tool{} finds several leakage sites for both implementations of DES and AES in
+OpenSSL and mbed TLS\@. \tool{} confirms that all those leakages come from table
 lookups. mbedTLS 2.15 and 2.5 have the same implementations of DES and AES so
 they have the same leakage report. One proper fix would be a scalar bit-sliced
 implementation. However, we do not see the bit-sliced implementation of AES and
-DES in various versions of OpenSSL and mbedTLS\@. However, we find the new
+DES in various versions of OpenSSL and mbed TLS\@. However, we find the new
 implementation of OpenSSL instead uses typical four 1K tables. It only uses 1K
 of the tables. This implementation is rather easy but is still vulnerable to a
 side channel attack. However, the countermeasures do somehow decrease the total
@@ -168,14 +168,14 @@ We will present the details in the subsequent sections.
 %\end{figure}
 
 %\subsubsection{Comparison with the Existing Tools}
-\tool{} is designed to quantify side-channel leakages. But it can find
+\tool{} is designed to quantify side-channel leakages. But it can detect
 side-channels leakages as well. In this section, we compare \tool{} with the
 existing trace-based side-channel identification tools.
 
 As shown in Table~\ref{eval:cacheD},
 \tool{} can not only identify all the leakage sites reported by CacheD~\cite{203878}, but also
 many new ones. CacheD fails to detect many other vulnerabilities for two
-reasons. First, CacheD only can only detect secret-dependent memory access
+reasons. First, CacheD can only detect secret-dependent memory access
 vulnerabilities. But \tool{} can detect secret-dependent control-flows as well.
 Second, CacheD suffers from some performance issues and uses some domain
 knowledge to simplify symbolic execution and has to trim the traces before
