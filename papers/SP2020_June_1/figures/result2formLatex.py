@@ -17,9 +17,12 @@ def data2form(finame, foname, enc, library, version):
     buf = fi.readline()
     fo = open(foname, 'w')
     fo.write('\\begin{table}[h!]\n' +
-             '\\centering\\tiny\\scriptsize\n' +
-             '\\renewcommand{\\baselinestretch}{0.96}\\selectfont\n' +
-             '\\caption{Leakages in ' + enc +
+             '\\centering\\tiny\\scriptsize\n')
+    if enc == "AES" and library == "openssl" and version == "1.1.0f":
+        fo.write('\\renewcommand{\\baselinestretch}{0.96}\\selectfont\n')
+    if enc == "AES" and library == "openssl" and version == "1.1.1":
+        fo.write('\\renewcommand{\\baselinestretch}{0.96}\\selectfont\n')
+    fo.write('\\caption{Leakages in ' + enc +
              ' implemented by ' + library + ' ' + version + '}'
              '\\label{tab:' + enc + library + version + '}\n' +
              '%\\resizebox{\\columnwidth}{!}{\n' +
