@@ -65,13 +65,17 @@ control-flows~\cite{Coppens:2009:PMT:1607723.1608124}.
 
 \subsection{Quantification}
 
-Quantitative Information Flow (QIF) aims at providing an information leakage
-estimation for the sensitive information given the public output. If zero bit
+Proposed by Denning~\cite{robling1982cryptography} and Gray~\cite{gray1992toward}, 
+Quantitative Information Flow (QIF) aims at providing an estimation of the amount of leaked
+information from the sensitive information given the public output. If zero bit
 of the information is leaked, the program is called non-interference. McCamant
 and Ernst~\cite{McCamantE2008} quantify the information leakage as the network
 flow capacity. Backes et al.~\cite{5207642} propose an automated method for QIF
 by computing an equivalence relation on the set of input keys. But the approach
-cannot handle real-world programs with bitwise operations. Phan et
+cannot handle real-world programs with bitwise operations. 
+For side-channels leakage quantification, we can think the attacker's observation is 
+the public output.
+Phan et
 al.~\cite{Phan:2012:SQI:2382756.2382791} propose symbolic QIF. The goal of their
 work is to ensure the program is non-interference. They adopt an over
 approximation way of estimating the total information leakage and their method
