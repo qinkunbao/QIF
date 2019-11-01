@@ -11,14 +11,14 @@
     \Output{The Maximum Independent Partition of $G = \{g_{1}, g_{2}  , \ldots,  g_{m} \}$ }
     \For{$i\leftarrow 1$ \KwTo $n$}
     {
-        $S_{c_i}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
+        $S_{c_{\addr{i}}}$ $\leftarrow$ $\pi(c_{\addr{i}})$ \;
         \For{$g_{i} \in G$}
         {
-            $S_{g_i}$ $\leftarrow$ $\pi(g_{i})$ \;
-            $S$ $\leftarrow$ $S_{C_i} \cap S_{G_i}$  \;
+            $S_{g_j}$ $\leftarrow$ $\pi(g_{j})$ \;
+            $S$ $\leftarrow$ $S_{c_{\addr{i}}} \cap S_{g_j}$  \;
             \If{$S \neq \emptyset$}
             {
-                $g_{i} \leftarrow g_{i} \land g_{\addr{i}}$ \;
+                $g_{j} \leftarrow g_{i} \land g_{\addr{i}}$ \;
                 \textbf{break} \;
             }
             Insert $c_{\addr{i}}$ to $G$
@@ -50,7 +50,7 @@
     $P$: a probability generator \;
     $k$: the input assignment \;
     $n_{s}$: the number of satisfying assignments \;
-    $\#k$: the satisfying number of k \fixme{this number is not used syntactically} \;
+    %$\#k$: the satisfying number of k \fixme{this number is not used syntactically} \;
     Initialization: \;
     $\#{k_0}$ $\leftarrow$ $\sum_{j=1}^{m}c_{i_j}(k_0)$ \;
     \For{$t\leftarrow 1$ \KwTo $n$} {
