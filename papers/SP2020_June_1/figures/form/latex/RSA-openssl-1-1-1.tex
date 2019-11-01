@@ -2,9 +2,10 @@
 \centering\tiny\scriptsize
 \caption{Leakages in RSA implemented by OpenSSL 1.1.1}\label{tab:RSAOpenSSL1.1.1}
 %\resizebox{\columnwidth}{!}{
-\begin{tabular}{lrlrr}
+\begin{tabular}{l@{~~}rlr@{~~}r}
 \hline
 \textbf{File} & \textbf{Line No.} & \textbf{Function} & \hspace*{-20em}\textbf{\# Leaked Bits} & \textbf{Type} \\\hline
+%\input{figures/form/latex/RSA-openssl-1-1-1-data.tex}
 rsa\_ossl.c& 399&rsa\_ossl\_private\_decrypt&0.0 &CF\\
 bn\_lib.c& 555&BN\_ucmp&*&CF\\
 bn\_gcd.c& 199&int\_bn\_mod\_inverse&1.0 &CF\\
