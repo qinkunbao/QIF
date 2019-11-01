@@ -1,10 +1,13 @@
 
+\newcommand{\vvv}{\vspace*{-3pt}}
+
+
 \section{Algorithm to Compute the Maximum Independent Partition}
 \label{appendix:partition}
-
+~
 {\small
 \IncMargin{1em}
-\begin{algorithm}[h]
+\begin{algorithm}[h]\small
     \DontPrintSemicolon
     \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
     \Input{$c_t(\addr{1},\addr{2},\ldots,\addr{n}) = c_{\addr{1}} \land c_{\addr{2}} \land \ldots \land c_{\addr{m}}$}
@@ -29,14 +32,14 @@
 \end{algorithm}
 \DecMargin{1em}
 }
-
-\newpage
+~
+%\newpage
 \section{Algorithm to Compute the Number of Satisfying Assignments}
 \label{appendix:montecarlo}
 ~
 {\small
 \IncMargin{1em}
-\begin{algorithm}
+\begin{algorithm}\small
     \SetAlgoLined
     \DontPrintSemicolon
 
@@ -81,7 +84,7 @@
 \end{algorithm}
 \DecMargin{1em}
 }
-
+~\vvv
 
 %\clearpage
 \section{SBOX Example of Bit-slicing}
@@ -112,7 +115,7 @@ ret = l << 1 + r;
     \label{fig:SBOX_bitslicing}
 \end{figure}
 
-~
+~\vvv
 
 \begin{figure}[h!]
     \centering
@@ -128,10 +131,11 @@ if (password <= 0b111)      \\Leaks 5 bits of password
     \label{fig:SBOX_da}
 \end{figure}
 
-\newpage
+~\vvv
+%\newpage
 
 \section{Example for Lookup Table}
-~
+~\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -143,7 +147,7 @@ static const uint8_t T[16] = {
     \caption{One Byte-wide Lookup Table}
     \label{fig:one_byte_table}
 \end{figure}
-~
+~\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -158,7 +162,7 @@ static const uint32_t T[16] = {
     \label{fig:four_byte_table}
 \end{figure}
 
-~
+~\vvv
 
 \begin{figure}[h!]
     \centering
@@ -176,7 +180,7 @@ void encrypt_one(uint32_t *o, uint32_t *key, uint32_t l)
     \label{fig:one_byte_table_lookup}
 \end{figure}
 
-~
+~\vvv
 
 \begin{figure}[h!]
     \centering
@@ -196,7 +200,7 @@ void encrypt_four(uint32_t *o, uint32_t *key, uint32_t l)
 
 
 
-% \newpage
+\newpage
 \section{Detailed Experimental Results}
 \label{sec:result-table}
 
@@ -220,14 +224,6 @@ after the decimal point, so $0.0$ really means very small amount of leakage, but
   %Hence the `0' leakage does not equals to no leakage but some leakage size
  % between 0 and 0.5 bit, see \S\ref{sssec:errest} for the details.
 
-\input{figures/form/latex/AES-mbedTLS-2-5.tex}
-%% \input{figures/form/latex/AES-mbedTLS-2-15-1.tex}
-%% \input{figures/form/latex/AES-openssl-0-9-7.tex}
-%% \input{figures/form/latex/AES-openssl-1-0-2f.tex}
-%% \input{figures/form/latex/AES-openssl-1-0-2k.tex}
-\input{figures/form/latex/AES-openssl-1-1-0f.tex}
-\input{figures/form/latex/AES-openssl-1-1-1.tex}
-
 
 \input{figures/form/latex/DES-mbedTLS-2-5.tex}
 %% \input{figures/form/latex/DES-mbedTLS-2-15-1.tex}
@@ -237,6 +233,7 @@ after the decimal point, so $0.0$ really means very small amount of leakage, but
 \input{figures/form/latex/DES-openssl-1-1-0f.tex}
 \input{figures/form/latex/DES-openssl-1-1-1.tex}
 
+
 \input{figures/form/latex/RSA-mbedTLS-2-5.tex}
 %% \input{figures/form/latex/RSA-mbedTLS-2-15-1.tex}
 %% \input{figures/form/latex/RSA-openssl-0-9-7.tex}
@@ -244,3 +241,12 @@ after the decimal point, so $0.0$ really means very small amount of leakage, but
 %% \input{figures/form/latex/RSA-openssl-1-0-2k.tex}
 \input{figures/form/latex/RSA-openssl-1-1-0f.tex}
 \input{figures/form/latex/RSA-openssl-1-1-1.tex}
+
+
+\input{figures/form/latex/AES-mbedTLS-2-5.tex}
+%% \input{figures/form/latex/AES-mbedTLS-2-15-1.tex}
+%% \input{figures/form/latex/AES-openssl-0-9-7.tex}
+%% \input{figures/form/latex/AES-openssl-1-0-2f.tex}
+%% \input{figures/form/latex/AES-openssl-1-0-2k.tex}
+\input{figures/form/latex/AES-openssl-1-1-0f.tex}
+\input{figures/form/latex/AES-openssl-1-1-1.tex}
