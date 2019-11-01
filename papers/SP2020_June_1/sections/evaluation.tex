@@ -3,7 +3,7 @@
 
 \begin{table*}
     \centering
-    \caption{Evaluation results overview. We evaluate two versions of mbedTLS and five
+    \caption{Evaluation results overview. We evaluate two versions of mbed TLS and five
         versions of OpenSSL\@. CF represents secret-dependent control-flow transfers and
         DF represents secret-dependent data-flow transfers. Side-channel leakages can
         be found by symbolic execution and we run Monte Carlo to estimate the amount
@@ -71,8 +71,8 @@
     \end{tabular}
 \end{table*}
 
-We evaluate \tool{} on real-world crypto libraries, OpenSSL and mbedTLS\@. OpenSSL
-is the most commonly used crypto libraries in today's software. Mbed TLS
+We evaluate \tool{} on real-world crypto libraries, OpenSSL and mbed TLS\@. OpenSSL
+is the most commonly used crypto libraries in today's software. mbed TLS\@
 (previous known as PolarSSL) is designed to be easy to understand and fit on
 small embedded devices.
 
@@ -214,8 +214,8 @@ actually leaked, which eases the pain to discover sensitive leakages.
 \end{table}
 
 \subsection{Vulnerability Case Study}\label{sec:eval_case}
-\subsubsection{AES in mbedTLS}
-During our evaluation, we find mbedTLS 2.5 and 2.15.1 have the same
+\subsubsection{AES in mbed TLS}
+During our evaluation, we find mbed TLS 2.5 and 2.15.1 have the same
 implementation of AES\@. Our tool provides the same leakage report for both
 versions. \tool{} identifies that most leakages are in function
 \emph{mbedtls\_internal\_aes\_decrypt}. (Other leakage sites are in function
@@ -264,7 +264,7 @@ return( 0 );
 
 \subsubsection{RSA in mbedTLS}
 \tool{} identifies several side-channel leakages for the RSA implementation in
-MbedTLS. Here we introduce and analyze two cases.
+Mbed TLS. Here we introduce and analyze two cases.
 %, as shown in Figure~\ref{fig:mbedtls_rsa_1} and \ref{fig:mbedtls_rsa_2}.
 
 \tool{} reports one bit information is leaked from the branch at line 2 in
