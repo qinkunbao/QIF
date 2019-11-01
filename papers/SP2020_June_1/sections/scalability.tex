@@ -29,7 +29,7 @@ works~\cite{203878,Chattopadhyay:2017:QIL:3127041.3127044} all have large
 performance bottlenecks. As a result, those approaches either only apply to
 small-size programs~\cite{Chattopadhyay:2017:QIL:3127041.3127044} or apply some
 domain knowledge to simplify the analysis. Those tools interpret each
-instruction and update the memory cells and registers with formulas that
+instruction and update memory cells and registers with formulas that
 captured the semantics of the execution and search different input values that
 can lead to different execution behaviors using constraint solver. We implement
 the approach presented in \S\ref{sec:trace-qif} and model the side-channels as
@@ -43,12 +43,13 @@ as other methods with approaches below.
 %\subsubsection{Interpret Instructions Symbolically}
 Existing binary analysis tools~\cite{shoshitaishvili2016state,
 10.1007/978-3-642-22110-1_37} usually translate machine instructions into
-intermediate languages (IR). Because the number of machine instructions is
+intermediate languages (IR). The reason is that the number of machine instructions is
 enormous, and the semantics of each instruction is complex. Intel Developer
 Manual~\cite{intelsys} introduces more than 1000 different x86 instructions. It
-is tedious to implement the manual rules for every instruction. On the contrary,
+is tedious and hard to implement the manual rule for each instruction. 
+On the contrary,
 IR typically has fewer instructions compared to the original machine ISA\@.
-However, the simplified designs of IR layer, which predigest the implementation
+However, the IR layer, which predigest the implementation
 and reduce the workload of those tools, also introduce significant
 overhead~\cite{217563}.
 
