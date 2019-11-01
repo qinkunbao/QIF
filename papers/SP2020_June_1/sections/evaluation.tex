@@ -18,8 +18,8 @@
     \newcommand{\foo}{\mbox{\hspace*{\the\x}}}
     \begin{tabular}{clrrrrrrr}
         \hline
-        \textbf{Algorithm} & \textbf{Implementation}  & \textbf{Lekage Sites} & \textbf{CF}         & \textbf{DF}
-                           & \textbf{\# Instructions} & \textbf{Max Leakeage} & \textbf{Sym.\ Exe.} & \textbf{Monte Carlo}                                                    \\\hline
+        \textbf{Algorithm} & \textbf{Implementation}  & \textbf{Leakage Sites} & \textbf{CF}         & \textbf{DF}
+                           & \textbf{\# Instructions} & \textbf{Max Leakage} & \textbf{Sym.\ Exe.} & \textbf{Monte Carlo}                                                    \\\hline
                            &                          &                       &                     &                      &             & bits & ms        & ms              \\\cline{7-9}
         AES                & Mbed TLS 2.5             & 68                    & 0                   & 68                   & 39,855      & 8    & 570 ~~    & 850 ~~          \\
         AES                & Mbed TLS 2.15            & 68                    & 0                   & 68                   & 39,855      & 8    & 550 ~~    & 829 ~~          \\
@@ -164,7 +164,7 @@ number of instructions. For example, when we test~\tool{} on AES from OpenSSL
 0.9.7, ~\tool{} is more than 100x faster than CacheD.
 
 Since DATA~\cite{217537} compares several execution traces to identify
-side-channel leakages, \tool{} also outperfoms DATA in terms of performance.
+side-channel leakages, \tool{} also outperforms DATA in terms of performance.
 For example, it takes 234 minutes for DATA to analysis the RSA of implementation
 in OpenSSL 1.1.0f. \tool{} only spends 13 minutes according to Table~\ref{table:over_result}.
 Also, DATA reports report 278 control-flow and 460 data leaks. Among those leakages,
@@ -304,7 +304,7 @@ effectively mitigated most of leakages because the other four versions have less
 leakages than 0.9.7. OpenSSL version 1.0.2f, 1.0.2k and 1.1.0f almost have the
 same amount of leakage. We check the changelog and find only one change for
 patching vulnerabilities for RSA (CVE-2016-0702). RSA changelog also claims
-OpenSSL 1.1.1 adopted ``numerous side-channel attack mitigations.'' The result
+OpenSSL 1.1.1 adopted ``numerous side-channel attack mitigation.'' The result
 confirms our assumptions.
 
 \begin{figure*}
@@ -376,10 +376,10 @@ in the non-bit-slicing implementation
 %% According to the result, there exist two leakage sites in non-bit-slicing
 %% implementation: one control-flow type leakage from check operation and one data
 %% access type leakage from the table lookup operation of directly access method
-(line 6 and line 7 in Figure~\ref{fig:SBOX_da}). The number of leaked bits is 5
-and 4, respectively. At line 6, according to Definition~\ref{def}, the input set
-$K$ is $[0,2^8-1]$, the observed input set $K^o$ is $[0,2^3-1]$. Thus, the
-leakage $L_{\beta(k)\rightarrow o}$ based on the observation ($o$) is
+(line 6 and line 7 in Figure~\ref{fig:SBOX_da}). The number of leaked bits is
+5.0 and 4.4, respectively. At line 6, according to Definition~\ref{def}, the
+input set $K$ is $[0,2^8-1]$, the observed input set $K^o$ is $[0,2^3-1]$. Thus,
+the leakage $L_{\beta(k)\rightarrow o}$ based on the observation ($o$) is
 $L_{\beta(k)\rightarrow o} = \log_2{|K|} - \log_2{|K^o|} = 8-3 = 5$ bit, which
 confirms the result from \tool. Similarly, we can verify the result of the other
 leakage site. \tool{} reports no leakage on the bit-slicing implementation.
