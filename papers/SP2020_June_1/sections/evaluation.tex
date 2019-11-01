@@ -19,31 +19,31 @@
     \begin{tabular}{clrrrrrrr}
         \hline
         \textbf{Algorithm} & \textbf{Implementation}  & \textbf{Leakage Sites} & \textbf{CF}         & \textbf{DF}
-                           & \textbf{\# Instructions} & \textbf{Max Leakage}  & \textbf{Sym.\ Exe.} & \textbf{Monte Carlo}                                                    \\\hline
-                           &                          &                       &                     &                      &             & bits & ms        & ms              \\\cline{7-9}
-        AES                & Mbed TLS 2.5             & 68                    & 0                   & 68                   & 39,855      & 8.6    & 512 ~~    & 1,052 ~~          \\
-        AES                & Mbed TLS 2.15            & 68                    & 0                   & 68                   & 39,855      & 9.1    & 520 ~~    & 1,057 ~~          \\
-        AES                & OpenSSL 0.9.7            & 75                    & 0                   & 75                   & 1,704       & 10.6   & 231 ~~    & 9,199 ~~        \\
-        AES                & OpenSSL 1.0.2f           & 88                    & 0                   & 88                   & 1,350       & 12.0   & 36 ~~     & 1,924 ~~        \\
-        AES                & OpenSSL 1.0.2k           & 88                    & 0                   & 88                   & 1,350       & 12.5   & 35 ~~     & 1,961 ~~        \\
-        AES                & OpenSSL 1.1.0f           & 88                    & 0                   & 88                   & 1,420       & 12.6   & 36 ~~     & 2,161 ~~        \\
-        AES                & OpenSSL 1.1.1            & 88                    & 0                   & 88                   & 1,586       & 4.4    & 43 ~~     & 1,631 ~~        \\
-        DES                & Mbed TLS 2.5             & 15                    & 0                   & 15                   & 4,596       & 1.1    & 58 ~~    & 162 ~~          \\
-        DES                & Mbed TLS 2.15            & 15                    & 0                   & 15                   & 4,596       & 1.0    & 57 ~~    & 162 ~~          \\
-        DES                & OpenSSL 0.9.7            & 6                     & 0                   & 6                    & 2,976       & 7.6    & 163 ~~    & 4,677       ~~  \\
-        DES                & OpenSSL 1.0.2f           & 8                     & 0                   & 8                    & 2,593       & 9.8    & 166 ~~    & 6,509       ~~  \\
-        DES                & OpenSSL 1.0.2k           & 8                     & 0                   & 8                    & 2,593       & 10.1    & 165 ~~    & 5,975        ~~ \\
-        DES                & OpenSSL 1.1.0f           & 8                     & 0                   & 8                    & 4,260       & 8.8    & 182 ~~    & 5,292        ~~ \\
-        DES                & OpenSSL 1.1.1            & 6                     & 0                   & 6                    & 8,272       & 7.5    & 229 ~~    & 5,152       ~~  \\
-                           &                          &                       &                     &                      &             &      & minutes   & minutes         \\\cline{8-9}
-        RSA                & Mbed TLS 2.5             & 6                     & 6                   & 0                    & 22,109,246  & 9    & 38 ~~     & 20  ~~          \\
-        RSA                & Mbed TLS 2.15            & 12                    & 0                   & 12                   & 24,484,441  & 9    & 39 ~~     & 241  ~~         \\
-        RSA                & OpenSSL 0.9.7            & 105                   & 103                 & 2                    & 16,980,109  & 13   & 28 ~~     & 266 ~~          \\
-        RSA                & OpenSSL 1.0.2f           & 38                    & 27                  & 11                   & 14,468,307  & 10   & 28 ~~     & 160  ~~         \\
-        RSA                & OpenSSL 1.0.2k           & 36                    & 27                  & 9                    & 15,285,210  & 12   & 39 ~~     & 282   ~~        \\
-        RSA                & OpenSSL 1.1.0f           & 31                    & 22                  & 9                    & 16,390,750  & 13   & 32 ~~     & 262 ~~          \\
-        RSA                & OpenSSL 1.1.1            & 26                    & 20                  & 6                    & 18,207,020  & 12   & 7 ~~      & 455 ~~          \\\hline
-        Total              &                          & 883                   & 205                 & 678                  & 128,042,089 &      & 213m \foo & 1,688m \foo     \\\hline
+                           & \textbf{\# Instructions} & \textbf{Max Leakage}   & \textbf{Sym.\ Exe.} & \textbf{Monte Carlo}                                                    \\\hline
+                           &                          &                        &                     &                      &             & bits & ms        & ms              \\\cline{7-9}
+        AES                & Mbed TLS 2.5             & 68                     & 0                   & 68                   & 39,855      & 8.6  & 512 ~~    & 1,052 ~~        \\
+        AES                & Mbed TLS 2.15            & 68                     & 0                   & 68                   & 39,855      & 9.1  & 520 ~~    & 1,057 ~~        \\
+        AES                & OpenSSL 0.9.7            & 75                     & 0                   & 75                   & 1,704       & 10.6 & 231 ~~    & 9,199 ~~        \\
+        AES                & OpenSSL 1.0.2f           & 88                     & 0                   & 88                   & 1,350       & 12.0 & 36 ~~     & 1,924 ~~        \\
+        AES                & OpenSSL 1.0.2k           & 88                     & 0                   & 88                   & 1,350       & 12.5 & 35 ~~     & 1,961 ~~        \\
+        AES                & OpenSSL 1.1.0f           & 88                     & 0                   & 88                   & 1,420       & 12.6 & 36 ~~     & 2,161 ~~        \\
+        AES                & OpenSSL 1.1.1            & 88                     & 0                   & 88                   & 1,586       & 4.4  & 43 ~~     & 1,631 ~~        \\
+        DES                & Mbed TLS 2.5             & 15                     & 0                   & 15                   & 4,596       & 1.1  & 58 ~~     & 162 ~~          \\
+        DES                & Mbed TLS 2.15            & 15                     & 0                   & 15                   & 4,596       & 1.0  & 57 ~~     & 162 ~~          \\
+        DES                & OpenSSL 0.9.7            & 6                      & 0                   & 6                    & 2,976       & 7.6  & 163 ~~    & 4,677       ~~  \\
+        DES                & OpenSSL 1.0.2f           & 8                      & 0                   & 8                    & 2,593       & 9.8  & 166 ~~    & 6,509       ~~  \\
+        DES                & OpenSSL 1.0.2k           & 8                      & 0                   & 8                    & 2,593       & 10.1 & 165 ~~    & 5,975        ~~ \\
+        DES                & OpenSSL 1.1.0f           & 8                      & 0                   & 8                    & 4,260       & 8.8  & 182 ~~    & 5,292        ~~ \\
+        DES                & OpenSSL 1.1.1            & 6                      & 0                   & 6                    & 8,272       & 7.5  & 229 ~~    & 5,152       ~~  \\
+                           &                          &                        &                     &                      &             &      & minutes   & minutes         \\\cline{8-9}
+        RSA                & Mbed TLS 2.5             & 6                      & 6                   & 0                    & 22,109,246  & 9.6  & 39 ~~     & 41  ~~          \\
+        RSA                & Mbed TLS 2.15            & 12                     & 12                  & 0                    & 24,484,441  & 8.7  & 44 ~~     & 251  ~~         \\
+        RSA                & OpenSSL 0.9.7            & 107                    & 105                 & 2                    & 17,002,523  & 17.2 & 23 ~~     & 428 ~~          \\
+        RSA                & OpenSSL 1.0.2f           & 38                     & 27                  & 11                   & 14,468,307  & 16.2 & 29 ~~     & 436  ~~         \\
+        RSA                & OpenSSL 1.0.2k           & 36                     & 27                  & 9                    & 15,285,210  & 14.2 & 40 ~~     & 714   ~~        \\
+        RSA                & OpenSSL 1.1.0f           & 31                     & 22                  & 9                    & 16,390,750  & 17.2 & 34 ~~     & 490 ~~          \\
+        RSA                & OpenSSL 1.1.1            & 27                     & 20                  & 7                    & 18,207,020  & 14.9 & 7 ~~      & 501 ~~          \\\hline
+        Total              &                          & 886                    & 219                 & 667                  & 128,061,910 &      & 209m \foo & 2,861m \foo     \\\hline
         %                    &                          &                       &                     &                      &             & bits & ms        & ms              \\\cline{7-9}
         % AES                & Mbed TLS 2.5             & 68                    & 0                   & 68                   & 39,855      & 8    & 570 ~~    & 850 ~~          \\
         % AES                & Mbed TLS 2.15            & 68                    & 0                   & 68                   & 39,855      & 8    & 550 ~~    & 829 ~~          \\
@@ -144,7 +144,7 @@ estimating number of keys that satisfy the constraints. During the evaluation,
 for each leakage site, \tool{} will stop once 1) it has 95\% confidence
 possibility that the error of estimated leaked information is less than 1 bit,
 which gives us confidence on the leakage quantification with the \emph{precision
-guarantee}, or 2) it cannot reach the termination condition after 10 minutes. In
+    guarantee}, or 2) it cannot reach the termination condition after 10 minutes. In
 the latter case, it means the number of satisfying keys is very small and the
 leakage is quite severe. \emph{That is, timeout indicates severe leakage.}
 %The tool marks the Monte Carlo is failed.
