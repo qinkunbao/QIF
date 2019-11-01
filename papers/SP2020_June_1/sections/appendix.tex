@@ -176,7 +176,7 @@ void encrypt_one(uint32_t *o, uint32_t *key, uint32_t l)
                     (T[(key[i+3]) & 0xff]);
 }
     \end{lstlisting}
-    \caption{Encrypt Function with one Byte-wide Table Lookup}
+    \caption{Encrypt Function with One Byte-wide Table Lookup}
     \label{fig:one_byte_table_lookup}
 \end{figure}
 
@@ -194,7 +194,7 @@ void encrypt_four(uint32_t *o, uint32_t *key, uint32_t l)
                     (T[(key[i+3]) & 0xff] & 0x000000ff);
 }
     \end{lstlisting}
-    \caption{Encrypt Function with one Byte-wide Table Lookup}
+    \caption{Encrypt Function with Four Byte-wide Table Lookup}
     \label{fig:four_byte_table_lookup}
 \end{figure}
 
