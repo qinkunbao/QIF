@@ -26,10 +26,15 @@ def data2form(finame, foname, enc, library, version):
         fo.write('\\caption{Leakages in ' + enc +
                  ' implemented by ' + library + ' ' + version + '}'
                  '\\label{tab:' + enc + library + version + '}\n' +
-                 '%\\resizebox{\\columnwidth}{!}{\n' +
-                 '\\begin{tabular}{lrlrr}\n\\hline\n')
+                 '%\\resizebox{\\columnwidth}{!}{\n')
 
-        fo.write('\\textbf{File} & ' +
+        if enc == "RSA" and library == "OpenSSL" and version in ["1.1.1", "1.1.0f"]:
+            fo.write('\\begin{tabular}{l@{~~}rlr@{~~}r}\n')
+        else:
+            fo.write('\\begin{tabular}{lrlrr}\n')
+
+        fo.write('\\hline\n' +
+                 '\\textbf{File} & ' +
                  '\\textbf{Line No.} & ' +
                  '\\textbf{Function} & ')
 
