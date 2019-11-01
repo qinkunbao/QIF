@@ -461,10 +461,12 @@ probability of leakage decreases when the lookup table entry or element size get
 smaller. We take AES as an example, for the last round of encryption, the algorithm
 uses a specialized 4 byte-wide table for the transformation, of which only one
 byte actually contributes to the result. Hence, a significant method to reduce
-the information leakage in AES is to reduce the size of the lookup table.  We
+the information leakage in AES is to reduce the size of the lookup table. We
 designed a demo to illustrate this countermeasure, a lookup table with one-byte
 size elements (see Figure~\ref{fig:one_byte_table}) will leak less information
-than a table with 4-byte element size (see Figure~\ref{fig:four_byte_table}).
-\tool{} reports one leakage site for each lookup table, with 12.0 bits for the
-table with smaller entries and 24.2 bits for the table with bigger entries,
-confirming the theory.
+than a table with 4-byte element size (see Figure~\ref{fig:four_byte_table}) and
+the encrypt function for each table to process the same amount of information
+respectively(see Figure~\ref{fig:one_byte_table_lookup} and
+Figure~\ref{fig:four_byte_table_lookup}).  \tool{} reports three leakage sites for
+each lookup table, with 4.0 bits for the table with smaller entries and 2.0
+bits for the table with bigger entries, confirming the theory.
