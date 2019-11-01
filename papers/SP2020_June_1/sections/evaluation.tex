@@ -457,8 +457,8 @@ leakage site. \tool{} reports no leakage on the bit-slicing implementation.
 
 \subsubsection{Smaller Lookup Tables}
 Considering the cache-collision timing attack \cite{Bonneau11894063_16}, the
-probability of leakage decreases when the lookup table entry or element size is
-smaller. We take AES an example, for the last round of encryption, the algorithm
+probability of leakage decreases when the lookup table entry or element size gets
+smaller. We take AES as an example, for the last round of encryption, the algorithm
 uses a specialized 4 byte-wide table for the transformation, of which only one
 byte actually contributes to the result. Hence, a significant method to reduce
 the information leakage in AES is to reduce the size of the lookup table.  We
