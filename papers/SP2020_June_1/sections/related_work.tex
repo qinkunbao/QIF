@@ -31,9 +31,9 @@ reasoning technique to cover multiple paths for the target program. Still, their
 approaches cannot assess the sensitive level for each side-channel
 vulnerability.
 
-The dynamic approach, usually comes with taint analysis and symbolic execution,
+The dynamic approach, usually with taint analysis and symbolic execution,
 can perform a very precise analysis. CacheD~\cite{203878} takes a concrete
-program execution trace and run the symbolic execution on the top of the trace
+ execution trace and run the symbolic execution on the top of the trace
 to get the formula of each memory address. During the symbolic execution, every
 value except the sensitive key uses the concrete value. Therefore, CacheD is
 quite precise in term of false positives. We adopted a similar idea to model the
@@ -60,7 +60,7 @@ to eliminate key-dependent control-flow transfers. Crane et
 al.~\cite{crane2015thwarting} mitigated side-channels by randomizing software.
 As for crypto libraries, the basic idea is to eliminate key-dependent
 control-flow transfers and data accesses. Common approaches include
-bit-slicing~\cite{konighofer2008fast,rebeiro2006bitslice}, unifying
+bit-slicing~\cite{konighofer2008fast,rebeiro2006bitslice} and unifying
 control-flows~\cite{Coppens:2009:PMT:1607723.1608124}.
 
 \subsection{Quantification}
@@ -97,6 +97,8 @@ exact model counters. Other approximate model counter includes
 \textit{Mbound}~\cite{gomes2006model}, and \textit{MiniCount}~\cite{kroc2008leveraging}. 
 Compared to \textit{ApproxCount},
 those model counters can give lower or upper bounds with guarantees.
+However, none of them can scale to production software analysis while
+our tool \tool\ can scale to real-world crypto libraries.
 
 
 
