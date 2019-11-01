@@ -1,16 +1,16 @@
 \section{Scalable to Real-world Crypto Systems}
 \label{sec:scala}
 
-In \S\ref{sec:trace-qif}, we propose a better information leakage definition for
+In \S\ref{sec:trace-qif}, we propose an advanced information leakage definition for
 realistic attack scenarios, model two types of address-based side-channel
 leakages as math formulas, and quantify them by calculating the number of input
 keys ($K^o$) that satisfy those math formulas. Intuitively, we can use
 traditional symbolic execution to capture math formulas and model counting
 to get the number of satisfying input keys ($K^o$). However, some preliminary
-experiments show that above approach suffers from unbearable costs, which
+experiments show that the above approach suffers from unbearable costs, which
 impede its usage to detect and quantify side-channel leakages in real-world
 applications. In this section, we begin by discussing the bottlenecks of
-applying the above approaches in real-world crypto systems. After that, we
+applying the above approaches in real-world cryptosystems. After that, we
 propose our methods.
 
 In general, \tool{} faces the following performance and cost  challenges in
@@ -38,20 +38,19 @@ not handle complicated cases like RSA.
 
 We observe that finding side-channels using symbolic execution is different from
 traditional general symbolic execution and can be optimized to be as efficient
-as other methods with approaches  below.
+as other methods with approaches below.
 
 %\subsubsection{Interpret Instructions Symbolically}
 Existing binary analysis tools~\cite{shoshitaishvili2016state,
 10.1007/978-3-642-22110-1_37} usually translate machine instructions into
-intermediate languages (IR). Because 
-the number of machine instructions is enormous, and the semantics of each
-instruction is complex. Intel Developer Manual~\cite{intelsys} introduces more
-than 1000 different x86 instructions. It is tedious to implement the manual
-rules for every instruction. On the contrary,
-IR typically has fewer instructions compared to
-the original machine ISA\@. However, the IR layer designs, which
-simplify the workload implementation those tools, 
-also introduce significant overhead~\cite{217563}.
+intermediate languages (IR). Because the number of machine instructions is
+enormous, and the semantics of each instruction is complex. Intel Developer
+Manual~\cite{intelsys} introduces more than 1000 different x86 instructions. It
+is tedious to implement the manual rules for every instruction. On the contrary,
+IR typically has fewer instructions compared to the original machine ISA\@.
+However, the simplified designs of IR layer, which predigest the implementation
+and reduce the workload of those tools, also introduce significant
+overhead~\cite{217563}.
 
 
 First, transferring machine instructions into IR is time-consuming. For example,
@@ -61,15 +60,14 @@ can also introduce additional conditional jump instructions, in order to
 precisely identify secret-dependent control-flows, we need to rule out
 conditional jump instructions introduced by IR, which is also time-consuming.
 Second, IR increases the total number of instructions. For example, x86
-instruction \textit{test eax, eax} transfers into 18 REIL IR instructions. 
-If we
+instruction \textit{test eax, eax} transfers into 18 REIL IR instructions. If we
 assume the time of symbolically executing one instruction is constant, the
 design of adopting IR layers can introduce large overhead.
 
 \vspace*{2pt}
 \textbf{Our Solution to Challenge C2:}
-We adopt the approach from~\cite{217563} and implement the symbolic execution
-directly on the top x86 instructions. Table~\ref{scala:ir} shows that
+We adopt the approach from QSYM~\cite{217563} and implement the symbolic execution
+directly on the top of x86 instructions. Table~\ref{scala:ir} shows that
 eliminating the IR layer can reduce the number of instructions executed during
 the analysis.
 
@@ -101,18 +99,18 @@ side-channels can be reduced to the question below.
 \end{quote}
 
 Existing approach relies on satisfiability modulo theories (SMT) solvers (e.g,
-Z3~\cite{DeMoura:2008:ZES:1792734.1792766}) to find satisfying $k_1$ and $k_2$. 
-We argue that while it is a universal
-approach to solving constraints with SMT solvers, for constraints with the above
-formats, using custom heuristics and testing is much more efficient in practice.
-Constraint solving is a decision problem expressed in logic formulas. SMT
-solvers transfer the inputted SMT formula into the boolean conjunctive normal
-form (CNF) and feed it into the internal SAT solver. The translation process,
-called ``bit blasting'', is time-consuming. Also, as SAT problem is a well-known
-NP-complete problem, it is also hard to deal when it comes to practical uses
-with very large formulas. Despite the rapid development of SMT solvers in recent
-years, constraint solving still remains one of the obstacles to achieve the
-scalability for real-world crypto systems.
+Z3~\cite{DeMoura:2008:ZES:1792734.1792766}) to find satisfying $k_1$ and $k_2$.
+We argue that while it is a universal approach to solving constraints with SMT
+solvers, for constraints with the above formats, using custom heuristics and
+testing is much more efficient in practice. Constraint solving is a decision
+problem expressed in logic formulas. SMT solvers transfer the inputted SMT
+formula into the boolean conjunctive normal form (CNF) and feed it into the
+internal boolean satisfiability problem (SAT) solver. The translation process,
+called ``bit blasting'', is time-consuming. Also, as the SAT problem is a
+well-known NP-complete problem, it is also hard to deal when it comes to
+practical uses with huge formulas. Despite the rapid development of SMT solvers
+in recent years, constraint solving remains one of the obstacles to achieve the
+scalability for real-world cryptosystems.
 
 \vspace*{2pt}
 \textbf{Our Solution to Challenge C3:}
@@ -130,25 +128,25 @@ work well for our problem.
 \label{MCreasons}
 The problem of quantifying the amount of leaked information can be reduced to
 the problem of computing the number of items in $K^o$, according to
-Definition~\ref{def} introduced in \S\ref{sec:trace-qif}. However, we find while
+Definition~\ref{def} introduced in \S\ref{sec:trace-qif}. However, we find that while
 there are various propositional model counters (e.g., \#SAT), they are not
-sufficient scalable for production crypto system analysis.
+sufficient scalable for production cryptosystem analysis.
 %there is no open source modulo theories counter (\#SMT) available.
 
-One naive method approximating the number of solutions is based on Monte Carlo
+One straightforward method approximating the number of solutions is based on Monte Carlo
 sampling. However, the number of satisfying values could be exponentially small.
 Consider the formula $f_i\equiv{k_1} = 1\land{k_2} = 2\land{k_3} = 3\land{k_4} =
 4$, where $k_1$, $k_2$, $k_3$, and $k_4$ each represents one byte in the
 original sensitive input buffer, there is only one satisfying solution of total
 $2^{32}$ possible values, which requires exponentially many samples to get a
 tight bound. Monte Carlo method also suffers from the curse of dimensionality.
-For example, the length of RSA private key can be as long as 4096 bits. If we
+For example, the length of an RSA private key can be as long as 4096 bits. If we
 take each byte (8 bits) in the original buffer as one symbol, the formula can
 have as many as 512 symbols.
 
 \vspace*{6pt}
 \textbf{Our Solution to Challenge C4:}
-We adopt multiple step Monte Carlo sampling methods to count the number of
+We adopt multiple-step Monte Carlo sampling methods to count the number of
 possible inputs that satisfy the logic formula groups. The key idea is to split
 those constraints into several small formulas and sample them independently.
 %We will introduce the method in the following subsection.
@@ -168,23 +166,23 @@ based on Definition~\ref{def} (\S\ref{sec:trace-qif}), answering to
 With each leakage site, we model it with a math formula constraint with the
 method presented in~\S\ref{side-channel:condition}. Suppose the address of the
 leakage site is $\addr{i}$, we use $c_{\addr{i}}$ to denote the constraint. For
-multiple leakage sites, we use the conjunction of those constraints to represent
-those leakage sites.
+multiple leakage sites, we take the conjunction of those constraints to
+represent those leakage sites.
 
-According to the definition~\ref{def}, to calculate the amount of leaked
-information, the key is calculating $\frac{|K|}{|K^o|}$. $K^o$ represents the
+According to the Definition~\ref{def}, to calculate the amount of leaked
+information, the key is to calculate $\frac{|K|}{|K^o|}$. $K^o$ represents the
 set that contains every input keys that satisfy the constraint. As the
-cardinality of $K$ is known, the key problem is to estimate the cardinality of
-$K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage site
-has the following constraints: $c_{\addr{1}}, c_{\addr{2}}, \ldots,
+cardinality of $K$ is known, the primary problem is to estimate the cardinality
+of $K^o$. Suppose an attacker can observe $n$ leakage sites, and each leakage
+site has the following constraints: $c_{\addr{1}}, c_{\addr{2}}, \ldots,
 c_{\addr{n}}$ respectively. The total leakage has the constraint
 $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}}) = c_{\addr{1}} \land c_{\addr{2}}
 \land \ldots \land c_{\addr{n}}$. The problem of estimating the total leaked
 information can be reduced to the problem of counting the number of different
 solutions that satisfies the constraint
 $c_t({\addr{1}},{\addr{2}},\ldots,{\addr{n}})$. A native method for
-approximating the result is to pick $k$ elements from $K$ and check how many of
-them are also contained in $K^o$. If $q$ elements are also in $K^o$. In
+approximating the result is to pick elements $k$ from $K$ and check if the
+element also contained in $K^o$. Assume $q$ elements satisfy this condition. In
 expectation, we can use $\frac{k}{q}$ to approximate the value of
 $\frac{|K|}{|K^o|}$.
 
@@ -236,7 +234,7 @@ problem:
 
 In regard to the above problems, we present our methods. First, we split
 $c_t(\addr{1},\addr{2},\ldots,\addr{n})$ into several independent constraint
-groups. After that, we run multiple step sampling method for each constraint.
+groups. After that, we run a multi-step sampling method for each constraint.
 
 \subsubsection{Maximum Independent Partition}
 
@@ -250,7 +248,7 @@ constraint into a set of different input symbols. For example, $\pi(k1 + k2 >
       $$\pi(c_m) \cap \pi(c_n) = \emptyset$$
 \end{mydef}
 
-Based on the definition~\ref{independentC}, we can split the constraint
+Based on the Definition~\ref{independentC}, we can split the constraint
 $c_t(\addr{1},\addr{2},\ldots,\addr{n})$ into several independent constraints.
 There are many partitions. For our project, we are interested in the following
 one.
@@ -289,10 +287,11 @@ with Theorem~\ref{IndependentConstraint} .
 \end{theorem}
 
 With Theorem~\ref{IndependentConstraint}, we can transfer the problem of
-counting the number of solutions in a large constraint with high dimensions into
-counting solutions of several small constraints.
-The algorithm to compute the Maximum Independent Partition of the
-$c_t(\addr{1},\addr{2},\ldots,\addr{n})$ is shown in  Appendix~\ref{appendix:partition}.
+counting the number of solutions to a complicated constraint in high-dimension
+space into counting solutions to several small constraints. The algorithm to
+compute the Maximum Independent Partition of the
+$c_t(\addr{1},\addr{2},\ldots,\addr{n})$ is shown in
+Appendix~\ref{appendix:partition}.
 
 %% We apply the following
 %% algorithm~\ref{algo:max-inde} to get the Maximum Independent Partition of the
@@ -328,14 +327,14 @@ $c_t(\addr{1},\addr{2},\ldots,\addr{n})$ is shown in  Appendix~\ref{appendix:par
 
 After we split those constraints into several small constraints, we count the
 number of solutions for each constraint. Even though the dimension has been
-reduced greatly after the previous step, this is still a \#P problem. For our
+significantly reduced after the previous step, this is still a \#P problem. For our
 project, we apply the approximate counting instead of exact counting for two
 reasons. First, we do not need to have a very precise result of the exact number
 of total solutions since the information is defined with a logarithmic function.
 We do not need to distinguish between constraints having $10^{10}$ or $10^{10} +
-10$ solutions; they are very close to after taking logarithmic. Second, the exact
-model counting approaches, like DPLL search, have difficulty scaling up to large
-problem sizes.
+10$ solutions; they are very close to after taking logarithmic. Second, the
+precise model counting approaches, like Davis–Putnam–Logemann–Loveland (DPLL)
+search, have difficulty scaling up to large problem sizes.
 
 We apply the ``counting by sampling" method. The basic idea is as follows. For
 the constraint $g_{i}= c_{i_1} \land c_{i_2} \land ,\ldots, \land c_{i_j} \land
@@ -348,7 +347,7 @@ $K_{c_{i_j}}$ of $c_{i_j}$ by trying every possible 256 solutions. After that,
 we can only generate random input numbers for the rest input variables in
 constraint $g_{i}$. With this simple yet effective trick, we can reduce the number of input
 while still ensure the accuracy.
-The deailed algorithm is shown in Appendix~\ref{appendix:montecarlo}.
+The detailed algorithm is shown in Appendix~\ref{appendix:montecarlo}.
 
 %% the algorithm
 %\IncMargin{1em}
@@ -388,18 +387,19 @@ The deailed algorithm is shown in Appendix~\ref{appendix:montecarlo}.
 
 \subsubsection{Error Estimation}
 \label{sssec:errest}
-In this part, we analyze the accuracy the result from Monte Carlo approximation.
-We use the central limit theorem (CLT) and uncertainty propagation theorem to
-estimate errors of the number of leaked bits for each site.
+In this part, we analyze the accuracy of the result from the Monte Carlo
+approximation. We use the central limit theorem (CLT) and uncertainty
+propagation theorem to estimate errors of the number of leaked bits for each
+site.
 
 Let $n$ be the number of samples and $n_s$ be the number of samples that satisfy
-the constraint $C$. Then we can get $\hat{p} = \frac{n_s}{n}$. If we run the
-same experiment multiple times, each time we can get a $\hat{p}$. As each
-$\hat{p}$ is independent and identically distributed, according to central limit
-theorem, the mean value should satisfy normal distribution.
+the constraint $C$. Then we can get $\hat{p} = \frac{n_s}{n}$. If we repeat the
+experiment multiple times, each time we can get a $\hat{p}$. As each
+$\hat{p}$ is independent and identically distributed, according to the central limit
+theorem, the mean value should follow normal distribution.
 $$ \frac{\bar{p}-E(p)}{\sigma\sqrt{n}} \rightarrow N(0,1) $$ Here $E(p)$ is the
-mean value of $p$ and $\sigma$ is the standard variance of $p$. If we use the
-observed value $\hat{p}$ to the represent standard deviation. We can claim that
+mean value of $p$, and $\sigma$ is the standard variance of $p$. If we use the
+observed value $\hat{p}$ to the describe standard deviation. We can claim that
 we have 95\% confidence that the error $\Delta p= \bar{p} - E(p)$ falls in the
 interval:
 $$ |\Delta p| \leq 1.96\sqrt{\frac{ \hat{p} (1- \hat{p} )}{n}}$$
@@ -407,11 +407,8 @@ $$ |\Delta p| \leq 1.96\sqrt{\frac{ \hat{p} (1- \hat{p} )}{n}}$$
 Since we use $L = \log_{2}p$ to estimate the amount of leaked information, we
 can have the following error propagation formula $\Delta L = \frac{\Delta
 p}{p\ln2}$ by differentiation. For \tool, we want the error of estimated leaked
-information ($\Delta L$) is less than 1 bit. So we can get $\frac{\Delta
+information ($\Delta L$) to be less than 1 bit. So we can get $\frac{\Delta
 p}{p\ln2} \leq 1$. As long as $ n \geq \frac{1.96^2(1-p)}{p(\ln2)^2}$, we have
 95\% confidence that the error of estimated leaked information is less than 1 bit.
-During the simulation, if $n$ and $p$ satisfy the above inequation, Monte Carlo
-Simulation will terminate.
-
-
-
+During the simulation, if $n$ and $p$ satisfy the above inequation, the Monte Carlo
+simulation will terminate.
