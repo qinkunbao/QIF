@@ -107,7 +107,7 @@ of the tables. This implementation is rather easy but is still vulnerable to a
 side channel attack. However, the countermeasures do somehow decrease the total
 amount of leaked information.
 
-We also evaluates our tool on the RSA implementation. With the optimizations
+We also evaluates our tool on the RSA implementations. With the optimizations
 introduced in \S\ref{sec:scala}, we do not apply any domain knowledge to
 simplify the analysis. Therefore, our tools can identify all the leakage sites
 reported by CacheD~\cite{203878} in a shorter time. Our tool finds that most
@@ -119,7 +119,9 @@ In addition to identifying side-channel leakages, \tool{} can also estimate how
 much information is leaked from each vulnerability. \tool{} achieves the goal by
 estimating number of keys that satisfy the constraints. During the evaluation,
 for each leakage site, \tool{} will stop once 1) it has 95\% confidence
-possibility that the error of estimated leaked information is less than 1 bit or
+possibility that the error of estimated leaked information is less than 1 bit,
+ which gives us confidence on the leakage quantification with the \emph{precision guarantee}, 
+or
 2) it cannot reach the termination condition after 10 minutes. In the latter
 case, it means the number of satisfying keys is very small and the leakage is
 quite severe. \emph{That is, timeout indicates severe leakage.}
@@ -237,8 +239,10 @@ PUT_UINT32_LE( X0, output,  0 );
 return( 0 );
 }
 \end{lstlisting}
+    \vspace*{-6pt}
     \caption{mbedtls\_internal\_aes\_encrypt}
     \label{mbedtls_aes}
+    \vspace*{-9pt}
 \end{figure}
 
 \subsubsection{RSA in mbedTLS}
@@ -261,8 +265,10 @@ if( mbedtls_mpi_cmp_int( N, 0 ) < 0 || ( N->p[0] & 1 ) == 0 )
     return( MBEDTLS_ERR_MPI_BAD_INPUT_DATA );
 ...
 \end{lstlisting}
+    \vspace*{-6pt}
     \caption{mbedtls\_mpi\_exp\_mod}
     \label{fig:mbedtls_rsa_1}
+    \vspace*{-6pt}
 \end{figure}
 
 \begin{figure}%[h!]
@@ -275,8 +281,10 @@ do {
 while( c != 0 );
 ...
 \end{lstlisting}
+    \vspace*{-6pt}
     \caption{mpi\_mul\_hlp}
     \label{fig:mbedtls_rsa_2}
+    \vspace*{-6pt}
 \end{figure}
 
 Function \emph{mpi\_mul\_hlp}, shown in Figure~\ref{fig:mbedtls_rsa_2},
@@ -330,9 +338,10 @@ confirms our assumptions.
         \includegraphics[width=.19\linewidth]{./figures/result/RSA-openssl-1-1-1.pdf}
         \label{fig:rsa-5}
     }
-    \caption{RSA implementation in different versions of OpenSSL\@. The mark $*$ means timeout,
+    \caption{RSA implementations in different versions of OpenSSL\@. The mark $*$ means timeout,
         which indicates more severe leakages (see \S\ref{loc:timeout}).} 
     \label{fig:rsa}
+\vspace*{-12pt}
 \end{figure*}
 
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
