@@ -194,9 +194,12 @@ when the paper is published. %at \fixme{http://tinyurl}.
 
 In all the tables presented in this appendix, the mark ``$*$'' means timeout,
 which indicates more severe leakages. See \S\ref{loc:timeout} for the details.
-Also note that we round the calculated numbers of leaked bits as an integer.
-Hence the `0' leakage does not equals to no leakage but some leakage size
-between 0 and 0.5 bit, see \S\ref{sssec:errest} for the details.
+Also note that we round the calculated numbers of leaked bits to include one digit
+after the decimal point, so $0.0$ really means very small amount of leakage, but not exactly zero. See \S\ref{sssec:errest} for the details of error estimate.
+
+  %as an integer.
+  %Hence the `0' leakage does not equals to no leakage but some leakage size
+ % between 0 and 0.5 bit, see \S\ref{sssec:errest} for the details.
 
 \input{figures/form/latex/AES-mbedTLS-2-5.tex}
 %% \input{figures/form/latex/AES-mbedTLS-2-15-1.tex}
