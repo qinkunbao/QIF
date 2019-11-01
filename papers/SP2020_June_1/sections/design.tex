@@ -12,7 +12,7 @@ as shown in Figure~\ref{fig:workflow}. First, we run the target program with a
 concrete input (sensitive information) under the dynamic binary instrumentation
 (DBI) frameworks to collect execution traces. After that, we run the symbolic
 execution to capture the fine-grained semantic information of each
-secret-dependent control-flow transfers and data-accesses. Finally we run Monte
+secret-dependent control-flow transfers and data-accesses. Finally, we run Monte
 Carlo (MC) simulations to estimate the amount of leaked information.
 
 \begin{figure*}[ht]
@@ -25,7 +25,7 @@ Carlo (MC) simulations to estimate the amount of leaked information.
 \begin{enumerate}
     \item \emph{Execution trace generation.} The design goal of \tool{} is to
           estimate the information leakage as precisely as possible. Therefore,
-          we sacrifice the soundness for the precision in terms of program
+          we sacrifice the soundness for precision in terms of program
           analysis. Previous works~\cite{203878,217537} have demonstrated the
           effectiveness of the dynamic analysis. We follow their approaches and
           run the target binary under dynamic binary instrumentations (DBI) to
