@@ -53,6 +53,7 @@ while(i>0){
     }
 }
         \end{lstlisting}
+\vspace*{-6pt}
         \caption{Secret-dependent control-flow transfers}
         \label{fig:secret:cf}
     \end{minipage}
@@ -68,9 +69,11 @@ uint32_t a = *RK++ ^ \
 (FSb[(secret >>24)] << 24 );
 ...
         \end{lstlisting}
+\vspace*{-6pt}
         \caption{Secret-dependent memory accesses}
         \label{fig:secret:da}
     \end{minipage}
+\vspace*{-12pt}
 \end{figure}
 
 The key intuition is that each side-channel attacks above happen when a
@@ -164,6 +167,7 @@ if (t2 > 0) {              // branch 2
     B();
 }
 \end{lstlisting}
+\vspace*{-6pt}
     \caption{Side-channel leakage}
     \label{fig:side-channel}
 \end{figure}
@@ -217,6 +221,7 @@ definition, the leakage equals to
 \vspace{3pt}
 \textbf{Shannon Entropy.}
 Based on Shannon entropy, the leakage equals to
+{\footnotesize
 \begin{align*}
     \mathit{Shannon\text{-}entropy} & = -(0.5016*\log_{2}0.5016      \\
                                     & \qquad+ 0.0003*\log_{2}0.0003  \\
@@ -224,7 +229,7 @@ Based on Shannon entropy, the leakage equals to
                                     & \qquad+ 0.0002*\log_{2}0.0002) \\
                                     & = 1.006\ \mathrm{bits}
 \end{align*}
-
+}
 In the next section, we will show that these measures work well only
 theoretically in a static analysis setting where only assume the average 
 leakage. Generally, they do not apply to dynamic analysis or practical
