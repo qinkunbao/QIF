@@ -90,8 +90,8 @@ def data2form(finame, foname, enc, library, version):
     sys.stdout.flush()
 
 
-# for enc in ['AES', 'DES', 'RSA']:
-for enc in ['AES', 'DES']:
+# for enc in ['AES', 'DES']:
+for enc in ['AES', 'DES', 'RSA']:
     # mbedTLS
     for version in ['2.5', '2.15.1']:
         finame = inputPath+'result_' + enc + '-mbedTLS-' + version + 'Inst_data.txt'
