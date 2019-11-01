@@ -12,7 +12,7 @@ resultPath = basicPath + 'form/latex/'
 def data2form(finame, foname, enc, library, version):
     sys.stdout.write(foname)
     sys.stdout.flush()
-
+    
     fi = open(finame, 'r')
     buf = fi.readline()
     fo = open(foname, 'w')
