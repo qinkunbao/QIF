@@ -142,8 +142,7 @@ if (password <= 0b111)      \\Leaks 5 bits of password
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
 static const uint8_t T[16] = {
       0x63U, 0x7cU, 0x77U, 0x7bU, 0xf2U, 0x6bU, 0x6fU, 0xc5U,
-      0x30U, 0x01U, 0x67U, 0x2bU, 0xfeU, 0xd7U, 0xabU, 0x76U,
-};
+      0x30U, 0x01U, 0x67U, 0x2bU, 0xfeU, 0xd7U, 0xabU, 0x76U};
       \end{lstlisting}
     \caption{One-byte Entry Lookup Table}
     \label{fig:one_byte_table}
@@ -156,8 +155,7 @@ static const uint32_t T[16] = {
     0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
     0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
-    0xe7fefe19U, 0xb5d7d762U, 0x4dababe6U, 0xec76769aU,
-};
+    0xe7fefe19U, 0xb5d7d762U, 0x4dababe6U, 0xec76769aU};
     \end{lstlisting}
     \caption{Four-byte Entry Lookup Table}
     \label{fig:four_byte_table}
@@ -168,8 +166,7 @@ static const uint32_t T[16] = {
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-void encrypt_one(uint32_t *o, uint32_t *key, uint32_t l)
-{
+void encrypt_one(uint32_t *o, uint32_t *key, uint32_t l) {
     for (int i = 0; i < l; i+=4)
         output[i] = (T[(key[i]>>24)] << 24) ^
                     (T[(key[i+1]>>16) & 0xff] << 16) ^
@@ -186,8 +183,7 @@ void encrypt_one(uint32_t *o, uint32_t *key, uint32_t l)
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
-void encrypt_four(uint32_t *o, uint32_t *key, uint32_t l)
-{
+void encrypt_four(uint32_t *o, uint32_t *key, uint32_t l) {
     for (int i = 0; i < l; i+=4)
         output[i] = (T[(key[i]>>24)] & 0xff000000) ^
                     (T[(key[i+1]>>16) & 0xff] & 0x00ff0000) ^
