@@ -12,16 +12,17 @@ resultPath = basicPath + 'form/latex/'
 def data2form(finame, foname, enc, library, version):
     sys.stdout.write(foname)
     sys.stdout.flush()
-    
+
     fi = open(finame, 'r')
     buf = fi.readline()
     fo = open(foname, 'w')
     fo.write('\\begin{table}[h!]\n' +
              '\\centering\\tiny\\scriptsize\n')
-    if enc == "AES" and library == "openssl" and version == "1.1.0f":
+    if enc == "AES" and library == "OpenSSL" and version == "1.1.0f":
         fo.write('\\renewcommand{\\baselinestretch}{0.96}\\selectfont\n')
-    if enc == "AES" and library == "openssl" and version == "1.1.1":
+    if enc == "AES" and library == "OpenSSL" and version == "1.1.1":
         fo.write('\\renewcommand{\\baselinestretch}{0.96}\\selectfont\n')
+
     fo.write('\\caption{Leakages in ' + enc +
              ' implemented by ' + library + ' ' + version + '}'
              '\\label{tab:' + enc + library + version + '}\n' +
@@ -32,7 +33,7 @@ def data2form(finame, foname, enc, library, version):
              '\\textbf{Line No.} & ' +
              '\\textbf{Function} & ')
 
-    if enc == "RSA" and library == "openssl" and version == "1.1.1":
+    if enc == "RSA" and library == "OpenSSL" and version == "1.1.1":
         fo.write('\\hspace*{-20em}')
 
     fo.write('\\textbf{\# Leaked Bits} & ' +
@@ -95,11 +96,11 @@ for enc in ['AES', 'DES', 'RSA']:
         finame = inputPath+'result_' + enc + '-mbedTLS-' + version + 'Inst_data.txt'
         foname = enc + '.mbedTLS.' + version
         foname = resultPath + foname.replace('.', '-') + '.tex'
-        data2form(finame, foname, enc, 'mbedTLS', version)
+        data2form(finame, foname, enc, 'mbed TLS', version)
 
     # openssl
     for version in ['0.9.7', '1.0.2f', '1.0.2k', '1.1.0f', '1.1.1']:
         finame = inputPath+'result_' + enc + '-openssl-' + version + 'Inst_data.txt'
         foname = enc + '.openssl.' + version
         foname = resultPath + foname.replace('.', '-') + '.tex'
-        data2form(finame, foname, enc, 'openssl', version)
+        data2form(finame, foname, enc, 'OpenSSL', version)
