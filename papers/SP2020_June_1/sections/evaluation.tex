@@ -457,9 +457,12 @@ leakage site. \tool{} reports no leakage on the bit-slicing implementation.
 
 \subsubsection{Smaller Lookup Tables}
 Considering the cache-collision timing attack 
-\cite{Bonneau11894063_16}, the probability of the leakage being observed is
-decreased by fewer byte-wide for the lookup table. Thus theoretically, a one
-byte-wide lookup table (See Figure~\ref{fig:one_byte_table}) will leaks less
-information than a four byte-wide one (See Figure~\ref{fig:four_byte_table}).
-\tool{} reports one leakage site for each lookup table. For the four byte-wide
-one, the number of leaked bits is 24.2 and the one byte-wide leaks 12.0 bits.
+\cite{Bonneau11894063_16}, the probability of leakage 
+decreases when the lookup table entry or element size is smaller.
+So in theory, a lookup table with one-byte size elements
+(see Figure~\ref{fig:one_byte_table}) will leak less
+information than a table with 4-byte element size
+(see Figure~\ref{fig:four_byte_table}).
+\tool{} reports one leakage site for each lookup table,
+with 12.0 bits for the table with smaller entries and
+24.2 bits for the table with bigger entries, confirming the theory.
