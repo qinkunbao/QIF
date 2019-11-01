@@ -456,13 +456,15 @@ leakage site. \tool{} reports no leakage on the bit-slicing implementation.
 % \end{figure}
 
 \subsubsection{Smaller Lookup Tables}
-Considering the cache-collision timing attack 
-\cite{Bonneau11894063_16}, the probability of leakage 
-decreases when the lookup table entry or element size is smaller.
-So in theory, a lookup table with one-byte size elements
-(see Figure~\ref{fig:one_byte_table}) will leak less
-information than a table with 4-byte element size
-(see Figure~\ref{fig:four_byte_table}).
-\tool{} reports one leakage site for each lookup table,
-with 12.0 bits for the table with smaller entries and
-24.2 bits for the table with bigger entries, confirming the theory.
+Considering the cache-collision timing attack \cite{Bonneau11894063_16}, the
+probability of leakage decreases when the lookup table entry or element size is
+smaller. We take AES an example, for the last round of encryption, the algorithm
+uses a specialized 4 byte-wide table for the transformation, of which only one
+byte actually contributes to the result. Hence, a significant method to reduce
+the information leakage in AES is to reduce the size of the lookup table.  We
+designed a demo to illustrate this countermeasure, a lookup table with one-byte
+size elements (see Figure~\ref{fig:one_byte_table}) will leak less information
+than a table with 4-byte element size (see Figure~\ref{fig:four_byte_table}).
+\tool{} reports one leakage site for each lookup table, with 12.0 bits for the
+table with smaller entries and 24.2 bits for the table with bigger entries,
+confirming the theory.
