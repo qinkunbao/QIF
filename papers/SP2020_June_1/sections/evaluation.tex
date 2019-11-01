@@ -5,7 +5,7 @@
     \centering
     \caption{Evaluation results overview. We evaluate two versions of mbedTLS and five
         versions of OpenSSL\@. CF represents secret-dependent control-flow transfers and
-        DF represents secret-dependent data-flow transfers. Side-channel leakagas can
+        DF represents secret-dependent data-flow transfers. Side-channel leakages can
         be found by symbolic execution and we run Monte Carlo to estimate the amount
         of leakage information. A summary of all vulnerabilities with the amount of
         leak information can be found in the appendix.
@@ -51,7 +51,6 @@ We evaluate \tool{} on real-world crypto libraries, OpenSSL and mbedTLS\@. OpenS
 is the most commonly used crypto libraries in today's software. Mbed TLS
 (previous known as PolarSSL) is designed to be easy to understand and fit on
 small embedded device.
-
 
 We build the source code into 32-bit x86 Linux executables with the GCC 8.0
 under Ubuntu 14.04. Although we use use symbol information to track back leakage
@@ -120,11 +119,10 @@ much information is leaked from each vulnerability. \tool{} achieves the goal by
 estimating number of keys that satisfy the constraints. During the evaluation,
 for each leakage site, \tool{} will stop once 1) it has 95\% confidence
 possibility that the error of estimated leaked information is less than 1 bit,
- which gives us confidence on the leakage quantification with the \emph{precision guarantee}, 
-or
-2) it cannot reach the termination condition after 10 minutes. In the latter
-case, it means the number of satisfying keys is very small and the leakage is
-quite severe. \emph{That is, timeout indicates severe leakage.}
+which gives us confidence on the leakage quantification with the \emph{precision
+guarantee}, or 2) it cannot reach the termination condition after 10 minutes. In
+the latter case, it means the number of satisfying keys is very small and the
+leakage is quite severe. \emph{That is, timeout indicates severe leakage.}
 %The tool marks the Monte Carlo is failed.
 \label{loc:timeout}
 During the evaluation,
@@ -148,7 +146,7 @@ We will present the details in the subsequent sections.
 %\subsubsection{Comparison with the Existing Tools}
 \tool{} is designed to quantify side-channel leakages. But it can find
 side-channels leakages as well. In this section, we compare \tool{} with the
-existing trace-based side-channel identification tools. 
+existing trace-based side-channel identification tools.
 
 As shown in Table~\ref{eval:cacheD},
 \tool{} can not only identify all the leakage sites reported by CacheD~\cite{203878}, but also
@@ -170,9 +168,8 @@ side-channel leakages, \tool{} also outperfoms DATA in terms of performance.
 For example, it takes 234 minutes for DATA to analysis the RSA of implementation
 in OpenSSL 1.1.0f. \tool{} only spends 13 minutes according to Table~\ref{table:over_result}.
 Also, DATA reports report 278 control-flow and 460 data leaks. Among those leakages,
-they found two vulnerabilities. On the contrary, \tool{} can report how many bits is 
+they found two vulnerabilities. On the contrary, \tool{} can report how many bits is
 actually leaked, which eases the pain to discover sensitive leakages.
-
 
 \begin{table}[]
     \caption{Comparison with CacheD}
@@ -243,7 +240,7 @@ return( 0 );
 
 \subsubsection{RSA in mbedTLS}
 \tool{} identifies several side-channel leakages for the RSA implementation in
-MbedTLS. Here we introduce and analyze two cases. 
+MbedTLS. Here we introduce and analyze two cases.
 %, as shown in Figure~\ref{fig:mbedtls_rsa_1} and \ref{fig:mbedtls_rsa_2}.
 
 \tool{} reports one bit information is leaked from the branch at line 2 in
@@ -335,9 +332,9 @@ confirms our assumptions.
         \label{fig:rsa-5}
     }
     \caption{RSA implementations in different versions of OpenSSL\@. The mark $*$ means timeout,
-        which indicates more severe leakages (see \S\ref{loc:timeout}).} 
+        which indicates more severe leakages (see \S\ref{loc:timeout}).}
     \label{fig:rsa}
-\vspace*{-12pt}
+    \vspace*{-12pt}
 \end{figure*}
 
 \subsection{Analysis of Software Countermeasures}\label{sec:eval_countermeasures}
@@ -346,7 +343,7 @@ confirms our assumptions.
 Bit-slicing is an efficient method to construct constant-time implementation for
 side channel to mitigation. The basic concept is to
 implement a function in terms of single-bit logical gate operations, such as AND, XOR, OR,
-and NOT\@. 
+and NOT\@.
 % Eli Biham et al.~\cite{Biham:1997:FND:647932.757246} first use gate
 % circuits to implement the SBOX of DES\@. Based on his work Matthew
 % Kwan~\cite{Kwan2000ReducingTG} present a better implementation of DES with fewer
@@ -355,41 +352,37 @@ and NOT\@.
 % side-channel attacks. 
 %Figure~\ref{fig:SBOX_bitslicing} describe a Bit-slicing implement of
 %secret-depend Substitution-box (SBOX) shown in Figure~\ref{fig:SBOX_da}.
-   Since
-the table lookups and conditional jumps are replaced with
-single-bit logical gates, with no secret-dependent memory addresses or control flow,
- both the data access and control flow types of side-channel
-leakages are mitigated.
+Since the table lookups and conditional jumps are replaced with single-bit
+logical gates, with no secret-dependent memory addresses or control flow, both
+the data access and control flow types of side-channel leakages are mitigated.
 
-We would like to test \tool\ on bit-slicing. We adopted the SBOX implementations,
-commonly used in block ciphers such as DES and AES, with and without bit-slicing, and
-apply \tool\ to confirm the mitigation. 
-The SBOX implementation with and without bit-slicing are shown in Figure~\ref{fig:SBOX_bitslicing} and Figure~\ref{fig:SBOX_da}, respectively, in Appendix~\ref{appendix:SBOX}.
-Consider an SBOX take some bits derived from a password as input and output 2-bit transform
-result.
-The plain implementation has a range check on the password input and a secret-dependent table lookup
-while
-bit-slicing does not.  
+We would like to test \tool\ on bit-slicing. We adopted the SBOX
+implementations, commonly used in block ciphers such as DES and AES, with and
+without bit-slicing, and apply \tool\ to confirm the mitigation. The SBOX
+implementation with and without bit-slicing are shown in
+Figure~\ref{fig:SBOX_bitslicing} and Figure~\ref{fig:SBOX_da}, respectively, in
+Appendix~\ref{appendix:SBOX}. Consider an SBOX take some bits derived from a
+password as input and output 2-bit transform result. The plain implementation
+has a range check on the password input and a secret-dependent table lookup
+while bit-slicing does not.
 %% The plain implementation will first ensure the input does not overflow
 %% and then directly access the table for the substitution result, as described in
 %% Figure~\ref{fig:SBOX_da}. While we apply the Bit-sliding to this SBOX, the check
 %% and access process will transfer to a series of logical operations described in
 %% Figure~\ref{fig:SBOX_bitslicing}.
-\tool\ reports that there are both control-flow and data access types of leakage in
-the non-bit-slicing implementation  
+\tool\ reports that there are both control-flow and data access types of leakage
+in the non-bit-slicing implementation
 %% We apply \tool to both implementations.
 %% According to the result, there exist two leakage sites in non-bit-slicing
 %% implementation: one control-flow type leakage from check operation and one data
 %% access type leakage from the table lookup operation of directly access method
-(line 6 and line 7 in Figure~\ref{fig:SBOX_da}).
-The number of leaked bits is 5
-and 4, respectively. At line 6, according to
-Definition~\ref{def}, the input set $K$ is $[0,2^8-1]$, the observed input set
-$K^o$ is $[0,2^3-1]$. Thus, the leakage $L_{\beta(k)\rightarrow o}$ based on the
-observation ($o$) is $L_{\beta(k)\rightarrow o} = \log_2{|K|} - \log_2{|K^o|} =
-8-3 = 5$ bit, which confirms the result from \tool. Similarly, we can verify the
-result of the other leakage site.  
-\tool{} reports no leakage on the bit-slicing implementation. 
+(line 6 and line 7 in Figure~\ref{fig:SBOX_da}). The number of leaked bits is 5
+and 4, respectively. At line 6, according to Definition~\ref{def}, the input set
+$K$ is $[0,2^8-1]$, the observed input set $K^o$ is $[0,2^3-1]$. Thus, the
+leakage $L_{\beta(k)\rightarrow o}$ based on the observation ($o$) is
+$L_{\beta(k)\rightarrow o} = \log_2{|K|} - \log_2{|K^o|} = 8-3 = 5$ bit, which
+confirms the result from \tool. Similarly, we can verify the result of the other
+leakage site. \tool{} reports no leakage on the bit-slicing implementation.
 % The basic concept is to express a function
 % in terms of single-bit logical operations (AND, XOR, OR, NOT, etc.). These
 % operations are then carried out for multiple instances of the function in
@@ -442,3 +435,5 @@ Considering Cache-Collision Timing Attack described in
 decreased by fewer byte-wide for the lookup table. Thus theoretically, a one
 byte-wide lookup table (See Figure~\ref{fig:one_byte_table}) will leaks less
 information than a four byte-wide one (See Figure~\ref{fig:four_byte_table}).
+\tool{} reports one leakage site for each lookup table. For the four byte-wide
+one, the number of leaked bits is 24.2 and the one byte-wide leaks 12.0 bits.
