@@ -49,21 +49,22 @@ branches, tools based on max-entropy will report the code has $\log_2{2} = 1$
 bit leakage.
 
 Both approaches fail to tell how much information is leaked during the execution
-precisely. The problem with existing methods is that they are static-based and
+precisely. The problem with existing methods is that they are static-based and,
 the input values are neglected by their approaches. They assume an attacker runs
 the program multiple times with many different or random sensitive inputs. As
-shown in Figure~\ref{fig:gap}, previous models, both Shannon entropy and max
+shown in Figure~\ref{fig:gap}(a), previous models, both Shannon entropy and max
 entropy, give an ``average'' estimate of the information leakage. However, it is
 not the typical scenario for an adversary to launch a side-channel attack. When
 a side-channel attack happens, the adversary wants to retrieve the sensitive
 information, in which case the sensitive information is fixed (e.g., AES keys).
 The adversary will run the attack over and over again and guess the value bit by
-bit. Like the previous example, the existing static method does not work well in
-those situations. We want to have a theory for dynamic analysis that if the
-theory says an attack leaks $x$ bits of secret information from a side-channel
-vulnerability, then $x$ should be useful in estimating the sensitive level of
-the side-channel. However, the above methods all fail in real attack models.
-This is the first challenge we face \textbf{(Challenge C1)}.
+bit, as in Figure~\ref{fig:gap}(b). Like the previous example, the existing
+static method does not work well in those situations. We want to produce a
+theory for dynamic analysis that if the theory says an attack leaks $x$ bits of
+secret information from a side-channel vulnerability, then $x$ should be useful
+in estimating the sensitive level of the side-channel. However, the above
+methods all fail in real attack models. This is the first challenge we face
+\textbf{(Challenge C1)}.
 
 \begin{figure}
     \centering
@@ -80,8 +81,8 @@ letters to represents one element in the set (e.g., $a \in A$).
 
 We assume a program ($\beta$) has $K$ as the sensitive input. $K$ should be a
 finite set of keys. The program also takes known messages $M$ as the input. The
-model applies to most of crypto systems. For example, during the AES encryption,
-$\beta$ is the encryption function. $K$ is AES key and $M$ is messages to be
+model applies to most cryptosystems. For example, during the AES encryption,
+$\beta$ is the encryption function. $K$ is AES key, and $M$ is messages to be
 encrypted. During the execution, an adversary may have some observations ($O$)
 from the program. Examples of those observations include timing, CPU usages, and
 Electromagnetic signals (EM). For this paper, we consider secret-dependent
@@ -137,7 +138,7 @@ some observations ($O$).
 \end{equation}
 
 In this project, we hope to give a very precise definition of information
-leakages. Suppose an attacker run the target program multiple times with one
+leakages. Suppose an attacker runs the target program multiple times with one
 fixed input, we want to know how much information he can infer by observing the
 memory access patterns ($o$). We come to the simple slogan
 ~\cite{10.1007/978-3-642-00596-1_21} %% where the information
@@ -159,7 +160,7 @@ Therefore, we define the amount of leaked information as
     Leakage = H(K;o) = H(K) - H(K|o)
 \end{displaymath}
 
-For a program ($\beta$) without knowing any domain information, any sensitive
+For a program ($\beta$) without knowing any domain information, all the sensitive
 input should appear equally. Therefore, for any $k \in K$, $p(k) =
 \frac{1}{|K|}$. So we have
 $$H(K) = \sum_{k {\in} K}\frac{1}{|K|}\log_2{|K|} = \log_2{|K|}$$
@@ -187,7 +188,7 @@ With the new definition, if an attacker observes that the code in
 Figure~\ref{fig:password-checker} runs the branch 1, then the $K^{o^{1}} =
 \{\mathrm{``password"}\}$. Therefore, the information leakage $L_{P(k)=o^{1}} =
 \log_2{2^{64}} - \log_2{1} = 64$ bits, which means the key is totally leaked. If
-the attacker observes the code runs branch 2, the leaked information is
+the attacker observes the code hits branch 2, the leaked information is
 $L_{P(k)=o^{2}} = \log_2{2^{64}} - \log_2{(2^{64}-1)} \approx 0$ bit.
 
 
@@ -222,7 +223,7 @@ information in some attack scenarios.
 
 \subsection{Our Conceptual Framework}
 \label{side-channel:condition}
-We now discuss how we model the observation (o), which is the direct information
+We now discuss how to model the observation (o), which is the direct information
 that an adversary can get during the attack.
 
 During the execution, a program ($\beta$) have many temporary values ($t_i \in
@@ -232,12 +233,12 @@ i$ is a function mapping between $t_i$ and ($\beta$, $k$, $m$).
 
 In the paper, we consider two code patterns can be exploited by an attacker,
 \emph{secret-dependent control transfers} and \emph{secret-dependent data
-accesses}. In other words, an adversary have observations based on control-flows
+accesses}. In other words, an adversary has observations based on control-flows
 and data accesses.
 
 \subsubsection{Secret-dependent Control Transfers}
 We think a control-flow is secret-dependent if different input sensitive keys
-($K$) can lead to different branch conditions. For a specific branch, the branch
+($K$) can lead to different branch conditions. For a specific branch, the
 condition is either true or false. Therefore, the branch condition is always a
 boolean variable.
 
@@ -249,21 +250,21 @@ equals to $t_b$. We use the constraint $c_i : f_i(\beta, k, m) = t_b$ to model
 the observation on secret-dependent control-transfers.
 
 \subsubsection{Secret-dependent Data Accesses}
-Similar to secret-dependent control transfers, a data access is secret-dependent
-if different input sensitive keys ($K$) can lead to different memory addresses.
-We use the model from CacheD~\cite{203878}. The low $L$ bits of the address is
-irrelevant in side-channels.
+Similar to secret-dependent control transfers, a data access operation is
+secret-dependent if different input sensitive keys ($K$) can lead to different
+memory addresses. We use the model from CacheD~\cite{203878}. The low $L$ bits
+of the address are irrelevant in side-channels.
 
-We think a data access is secret-dependent if:
+We consider a data access is secret-dependent if:
 $$\exists k_{i1}, k_{i2} \in K, \,f_i(\beta, k_{i1}, m) >> L \neq f_i(\beta, k_{i2}, m) >> L$$
 
 If the branch condition equals to $t_b$, we can use the constraint $c_i :
 f_i(\beta, k, m) >> L = t_b >> L$ to model the observation on secret-dependent
 control-transfers.
 
-With the following definition, we can model an attacker's observation with math
+With the above definitions, we can model an attacker's observation with math
 formulas. For example, in Figure~\ref{fig:side-channel}, if an attacker observes
-the code executes 1, we have $c_5: k_1 + k_2 < 8$ to describe an attacker's
-knowledge and $K^{o5} = \{k_1,\, k_2\,|\, (k_1 + k_2) < 8\}$. If an attacker
-observes the code executes 2, we have $c_8: k_1 - k_2 > 0$ and $K^{o8} =
-\{k_1,\, k_2\,|\, (k_1 - k_2) > 0\}$.
+the code executes the branch 1, we have $c_5: k_1 + k_2 < 8$ to describe an
+attacker's knowledge and $K^{o5} = \{k_1,\, k_2\,|\, (k_1 + k_2) < 8\}$. If an
+attacker observes the code executes the branch 2, we have $c_8: k_1 - k_2 > 0$
+and $K^{o8} = \{k_1,\, k_2\,|\, (k_1 - k_2) > 0\}$.
