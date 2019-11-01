@@ -87,7 +87,8 @@
 ~\vvv
 
 %\clearpage
-\section{SBOX Example of Bit-slicing}
+\section{Mitigation Method Evaluation}
+%\section{SBOX Example of Bit-slicing}
 \label{appendix:SBOX}
 ~
 \begin{figure}[h!]
@@ -134,7 +135,7 @@ if (password <= 0b111)      \\Leaks 5 bits of password
 ~\vvv
 %\newpage
 
-\section{Example for Lookup Table}
+%\section{Example for Lookup Table}
 ~\vvv
 \begin{figure}[h!]
     \centering
@@ -144,7 +145,7 @@ static const uint8_t T[16] = {
       0x30U, 0x01U, 0x67U, 0x2bU, 0xfeU, 0xd7U, 0xabU, 0x76U,
 };
       \end{lstlisting}
-    \caption{One Byte-wide Lookup Table}
+    \caption{One-byte Entry Lookup Table}
     \label{fig:one_byte_table}
 \end{figure}
 ~\vvv
@@ -158,7 +159,7 @@ static const uint32_t T[16] = {
     0xe7fefe19U, 0xb5d7d762U, 0x4dababe6U, 0xec76769aU,
 };
     \end{lstlisting}
-    \caption{Four Byte-wide Lookup Table}
+    \caption{Four-byte Entry Lookup Table}
     \label{fig:four_byte_table}
 \end{figure}
 
@@ -176,12 +177,12 @@ void encrypt_one(uint32_t *o, uint32_t *key, uint32_t l)
                     (T[(key[i+3]) & 0xff]);
 }
     \end{lstlisting}
-    \caption{Encrypt Function with One Byte-wide Table Lookup}
+    \caption{Encrypt with One-byte Entry Lookup Table}
     \label{fig:one_byte_table_lookup}
 \end{figure}
-
 ~\vvv
-
+~\vvv
+~\vvv
 \begin{figure}[h!]
     \centering
     \begin{lstlisting}[xleftmargin=.02\textwidth,xrightmargin=.01\textwidth]
@@ -194,13 +195,13 @@ void encrypt_four(uint32_t *o, uint32_t *key, uint32_t l)
                     (T[(key[i+3]) & 0xff] & 0x000000ff);
 }
     \end{lstlisting}
-    \caption{Encrypt Function with Four Byte-wide Table Lookup}
+    \caption{Encrypt with One-byte Entry Lookup Table}
     \label{fig:four_byte_table_lookup}
 \end{figure}
 
 
 
-\newpage
+%\clearpage
 \section{Detailed Experimental Results}
 \label{sec:result-table}
 
